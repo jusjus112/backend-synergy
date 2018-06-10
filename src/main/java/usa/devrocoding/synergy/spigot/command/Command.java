@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.entity.Player;
 import usa.devrocoding.synergy.spigot.Core;
+import usa.devrocoding.synergy.spigot.user.object.Rank;
 import usa.devrocoding.synergy.spigot.utilities.C;
 
 public abstract class Command {

@@ -3,6 +3,7 @@ package usa.devrocoding.synergy.spigot;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
+import usa.devrocoding.synergy.spigot.command.Command;
 
 import java.util.Arrays;
 

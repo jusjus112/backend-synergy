@@ -1,12 +1,10 @@
 package usa.devrocoding.synergy.spigot.files.json;
 
 import com.sun.istack.internal.NotNull;
-import jdk.nashorn.internal.parser.JSONParser;
 import org.json.simple.JSONObject;
-import us.jusjus.hubutils.spigot.api.ServerUtilAPI;
+import usa.devrocoding.synergy.spigot.Core;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 
 public class JSONFile {
@@ -19,7 +17,7 @@ public class JSONFile {
         this.fileName = fileName;
 
         try {
-            this.file = new File(ServerUtilAPI.getAPI().getDataFolder().getAbsolutePath() + File.separator + fileName + ".json");
+            this.file = new File(Core.getPlugin().getDataFolder() + File.separator + fileName + ".json");
             if (exists()) {
                 this.file.createNewFile();
             }

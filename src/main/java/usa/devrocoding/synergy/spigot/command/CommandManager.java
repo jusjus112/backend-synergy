@@ -1,18 +1,15 @@
 package usa.devrocoding.synergy.spigot.command;
 
 import com.google.common.collect.Lists;
-import net.metromc.spigot.MetroMC;
-import net.metromc.spigot.Module;
-import net.metromc.spigot.command.command.CommandHelp;
-import net.metromc.spigot.cooldown.recharge.Recharge;
-import net.metromc.spigot.user.object.User;
-import net.metromc.spigot.util.Permission;
-import net.metromc.spigot.util.UtilString;
+import com.mojang.authlib.yggdrasil.response.User;
 import org.bukkit.Bukkit;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.craftbukkit.v1_12_R1.CraftServer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import usa.devrocoding.synergy.spigot.Core;
+import usa.devrocoding.synergy.spigot.Module;
+import usa.devrocoding.synergy.spigot.utilities.UtilString;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -24,7 +21,7 @@ public class CommandManager extends Module {
     private final List<Command> commands = Lists.newArrayList();
     private Map<String, Command> knownCommands;
 
-    public CommandManager(MetroMC plugin) {
+    public CommandManager(Core plugin) {
         super(plugin, "Command Manager");
 
         try {
@@ -48,13 +45,12 @@ public class CommandManager extends Module {
         unregisterMinecraftCommand("whisper");
         unregisterMinecraftCommand("tell");
         unregisterMinecraftCommand("msg");
-
-        commands.add(new CommandHelp(plugin));
+//        commands.add(new CommandHelp(plugin));
     }
 
     @EventHandler
     public void onCommand(PlayerCommandPreprocessEvent e) {
-        List<String> args = UtilString.convert(e.getMessage().split(" "));  
+        List<String> args = UtilString.convert(e.getMessage().split(" "));
         String cmd = args.get(0).replaceAll("/", "");
 
         for(Command command : commands) {
@@ -62,13 +58,13 @@ public class CommandManager extends Module {
                 e.setCancelled(true);
                 args.remove(0);
 
-                User user = getPlugin().getUserManager().getUser(e.getPlayer());
+//                User user = getPlugin().getUserManager().getUser(e.getPlayer());
 
-                if(Permission.allowed(user, command.getRank(), false)) {
-                    if(Recharge.recharge(getPlugin(), e.getPlayer(), "Command " + command.getAliases()[0], command.getCooldown())) {
-                        command.execute(e.getPlayer(), args.toArray(new String[args.size()]));
-                    }
-                }
+//                if(Permission.allowed(user, command.getRank(), false)) {
+//                    if(Recharge.recharge(getPlugin(), e.getPlayer(), "Command " + command.getAliases()[0], command.getCooldown())) {
+//                        command.execute(e.getPlayer(), args.toArray(new String[args.size()]));
+//                    }
+//                }
             }
         }
     }
