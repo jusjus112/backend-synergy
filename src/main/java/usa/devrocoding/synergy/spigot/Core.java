@@ -60,7 +60,7 @@ public class Core extends JavaPlugin {
             // Connect to SQL
             this.databaseManager.connect();
         }catch (FileNotFoundException e){
-            Synergy.debug("Can't connect to your SQL service");
+            Synergy.debug("Can't connect to your SQL service provider");
             getPluginLoader().disablePlugin(this);
         }
 
