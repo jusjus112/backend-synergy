@@ -12,14 +12,14 @@ import org.bukkit.configuration.file.YamlConfiguration;
  * @Created 06-02-2017
  */
 
-public class UtilFile {
+public class YMLFile {
 	
 	private File file;
 	private FileConfiguration data;
 	private String dataFolder;
 	private String name;
 
-	public UtilFile(String dataFolder, String fileName) {
+	public YMLFile(String dataFolder, String fileName) {
 		this.dataFolder = dataFolder;
 		this.name = fileName;
 		

@@ -1,6 +1,5 @@
 package usa.devrocoding.synergy.spigot.files.json;
 
-import com.sun.istack.internal.NotNull;
 import org.json.simple.JSONObject;
 import usa.devrocoding.synergy.spigot.Core;
 
@@ -30,7 +29,7 @@ public class JSONFile {
         return this.file.exists();
     }
 
-    public JSONFile write(@NotNull String path, @NotNull String object){
+    public JSONFile write(String path, String object){
         main.put(path, object);
         return this;
     }

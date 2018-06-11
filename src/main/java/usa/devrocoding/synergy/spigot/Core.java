@@ -8,16 +8,13 @@ import usa.devrocoding.synergy.services.SQLService;
 import usa.devrocoding.synergy.services.sql.DatabaseManager;
 import usa.devrocoding.synergy.spigot.api.Synergy;
 import usa.devrocoding.synergy.spigot.api.SynergyAPI;
-import usa.devrocoding.synergy.spigot.assets.FileStructure;
 import usa.devrocoding.synergy.spigot.assets.PluginManager;
 import usa.devrocoding.synergy.spigot.assets.SynergyMani;
 import usa.devrocoding.synergy.spigot.command.CommandManager;
-import usa.devrocoding.synergy.spigot.files.yml.UtilFile;
+import usa.devrocoding.synergy.spigot.files.yml.YMLFile;
 import usa.devrocoding.synergy.spigot.runnable.RunnableManager;
 
 import java.io.FileNotFoundException;
-import java.sql.SQLInvalidAuthorizationSpecException;
-import java.sql.SQLTimeoutException;
 
 @SynergyMani(backend_name = "Synergy", main_color = ChatColor.AQUA, permission_prefix = "synergy.")
 public class Core extends JavaPlugin {
@@ -53,7 +50,7 @@ public class Core extends JavaPlugin {
         // Load the sql Service so SQL can be used
         try{
             // Initialize SQL
-            UtilFile f = getPluginManager().getFileStructure().getYMLFile("settings");
+            YMLFile f = getPluginManager().getFileStructure().getYMLFile("settings");
             this.databaseManager = new DatabaseManager(new SQLService(
                     f.get().getString("sql.host"),
                     f.get().getString("sql.database"),
@@ -63,7 +60,7 @@ public class Core extends JavaPlugin {
             // Connect to SQL
             this.databaseManager.connect();
         }catch (FileNotFoundException e){
-            Synergy.debug("Can't connect to the SQL service");
+            Synergy.debug("Can't connect to your SQL service");
             getPluginLoader().disablePlugin(this);
         }
 
