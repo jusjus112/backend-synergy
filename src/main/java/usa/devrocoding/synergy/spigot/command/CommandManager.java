@@ -1,7 +1,6 @@
 package usa.devrocoding.synergy.spigot.command;
 
 import com.google.common.collect.Lists;
-import com.mojang.authlib.yggdrasil.response.User;
 import org.bukkit.Bukkit;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.craftbukkit.v1_12_R1.CraftServer;
@@ -18,8 +17,8 @@ import java.util.Map;
 
 public class CommandManager extends Module {
 
-    private final List<Command> commands = Lists.newArrayList();
-    private Map<String, Command> knownCommands;
+    private final List<SynergyCommand> commands = Lists.newArrayList();
+    private Map<String, SynergyCommand> knownCommands;
 
     public CommandManager(Core plugin) {
         super(plugin, "Command Manager");
@@ -29,7 +28,7 @@ public class CommandManager extends Module {
             Field field = commandMap.getClass().getDeclaredField("knownCommands");
 
             field.setAccessible(true);
-            this.knownCommands = (Map<String, Command>) field.get(commandMap);
+            this.knownCommands = (Map<String, SynergyCommand>) field.get(commandMap);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -53,7 +52,7 @@ public class CommandManager extends Module {
         List<String> args = UtilString.convert(e.getMessage().split(" "));
         String cmd = args.get(0).replaceAll("/", "");
 
-        for(Command command : commands) {
+        for(SynergyCommand command : commands) {
             if(Arrays.asList(command.getAliases()).contains(cmd.toLowerCase())) {
                 e.setCancelled(true);
                 args.remove(0);
@@ -77,7 +76,7 @@ public class CommandManager extends Module {
         }, 1L);
     }
 
-    public List<Command> getCommands() {
+    public List<SynergyCommand> getCommands() {
         return commands;
     }
 }

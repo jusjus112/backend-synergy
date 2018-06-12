@@ -58,6 +58,7 @@ public class Core extends JavaPlugin {
                     f.get().getString("sql.password")));
 
             // Connect to SQL
+
             this.databaseManager.connect();
         }catch (FileNotFoundException e){
             Synergy.debug("Can't connect to your SQL service provider");

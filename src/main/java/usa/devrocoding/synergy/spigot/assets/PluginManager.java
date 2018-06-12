@@ -24,9 +24,9 @@ public class PluginManager extends Module {
 //                .add("sql", null, "sql", FileStructure.FileType.JSON)
                 .add("language_nl", "lang", "nl_NL", FileStructure.FileType.YML)
                 .add("modules", null, "modules", FileStructure.FileType.YML)
-                .add("brobot", null, "brobot", FileStructure.FileType.YML)
-                .add("buddy", null, "buddy", FileStructure.FileType.YML)
-                .add("settings", null, "settings", FileStructure.FileType.YML)
+                .add("brobot", null, "Brobot", FileStructure.FileType.YML)
+                .add("buddy", null, "Buddy", FileStructure.FileType.YML)
+                .add("settings", null, "Settings", FileStructure.FileType.YML)
                 .save();
     }
 

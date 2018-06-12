@@ -7,7 +7,7 @@ import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.user.object.Rank;
 import usa.devrocoding.synergy.spigot.utilities.C;
 
-public abstract class Command {
+public abstract class SynergyCommand {
 
     @Getter
     private final Core plugin;
@@ -22,11 +22,11 @@ public abstract class Command {
     @Setter
     private double cooldown = 1.0;
 
-    public Command(Core plugin, String description, String... aliases) {
+    public SynergyCommand(Core plugin, String description, String... aliases) {
         this(plugin, Rank.NONE, description, aliases);
     }
 
-    public Command(Core plugin, Rank rank, String description, String... aliases) {
+    public SynergyCommand(Core plugin, Rank rank, String description, String... aliases) {
         this.plugin = plugin;
         this.rank = rank;
         this.description = description;
