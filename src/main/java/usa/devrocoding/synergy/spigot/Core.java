@@ -46,7 +46,8 @@ public class Core extends JavaPlugin {
         // Print our logo into the console
         Arrays.stream(Synergy.getLogos().logo_colossal).forEach(s -> getServer().getConsoleSender().sendMessage(C.PLUGIN_COLOR.color()+s));
         System.out.println("  ");
-        Synergy.getLetterGenerator().generateFromText("132").stream().forEach(stringBuilder -> System.out.print(stringBuilder.toString()));
+
+        Synergy.getLetterGenerator().printText("sif11");
 
         this.pluginManager.load();
 
