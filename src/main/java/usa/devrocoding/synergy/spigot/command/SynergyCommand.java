@@ -5,7 +5,7 @@ import lombok.Setter;
 import org.bukkit.entity.Player;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.user.object.Rank;
-import usa.devrocoding.synergy.spigot.utilities.C;
+import usa.devrocoding.synergy.spigot.assets.C;
 
 public abstract class SynergyCommand {
 

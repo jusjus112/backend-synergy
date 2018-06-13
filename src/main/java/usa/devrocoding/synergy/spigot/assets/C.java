@@ -1,4 +1,4 @@
-package usa.devrocoding.synergy.spigot.utilities;
+package usa.devrocoding.synergy.spigot.assets;
 
 import lombok.Getter;
 import org.bukkit.ChatColor;
@@ -13,7 +13,8 @@ public enum C {
     SUCCESS_COLOUR(ChatColor.RED),
     CHAT_HIGHLIGHT_COLOUR(ChatColor.AQUA),
     TITLE_COLOR(ChatColor.GREEN),
-    SUBTITLE_COLOR(ChatColor.GRAY);
+    SUBTITLE_COLOR(ChatColor.GRAY),
+    PLUGIN_COLOR(ChatColor.YELLOW);
 
     private ChatColor color;
 

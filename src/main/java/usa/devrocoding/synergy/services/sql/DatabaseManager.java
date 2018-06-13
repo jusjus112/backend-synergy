@@ -19,7 +19,7 @@ public class DatabaseManager {
         this.sqlService = service;
     }
 
-    public void connect() {
+    public void connect() throws SQLException{
         System.out.println("[Synergy] Connecting to SQL....");
         if (getSqlService().isIniatialized()) {
             try {
@@ -27,9 +27,10 @@ public class DatabaseManager {
                         + "/" + getSqlService().getDatabase(), getSqlService().getUsername(), getSqlService().getPassword());
                 System.out.println("[Synergy] Connected to your SQL Service Provider");
             } catch (SQLException e) {
-                System.out.println("[Synergy ERROR] Can't connect to SQL");
-                System.out.println("[Synergy ERROR] " + e.getMessage());
+                throw new SQLException(e.getMessage());
             }
+        }else{
+            throw new SQLException("Settings.yml doesn't exist");
         }
     }
 

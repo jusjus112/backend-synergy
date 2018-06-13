@@ -1,24 +1,24 @@
-buildscript {
-    repositories {
-        jcenter()
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
-    }
-    dependencies {classpath "com.github.jengelman.gradle.plugins:shadow:2.0.4"}
-}
+//buildscript {
+//    repositories {
+//        jcenter()
+//        maven {
+//            url "https://plugins.gradle.org/m2/"
+//        }
+//    }
+//    dependencies {classpath "com.github.jengelman.gradle.plugins:shadow:2.0.4"}
+//}
 
 plugins {
-    id 'com.github.johnrengelman.shadow' version '2.0.4'
+//    id 'com.github.johnrengelman.shadow' version '2.0.4'
     id 'java'
     id 'maven'
     id 'eclipse'
-    id 'application'
+//    id 'application'
 }
 
 compileJava.options.encoding = 'UTF-8'
 group 'backend-synergy'
-mainClassName = 'usa.devrocoding.synergy.Synergy'
+//mainClassName = 'usa.devrocoding.synergy.Synergy'
 version '1.0-SNAPSHOT'
 sourceCompatibility = 1.8
 defaultTasks 'clean', 'build'
@@ -48,24 +48,24 @@ repositories {
     }
 }
 
-configurations {
-    provided
-    compile.extendsFrom provided
-}
+//configurations {
+//    provided
+//    compile.extendsFrom provided
+//}
 
-shadowJar {
-    baseName = 'Synergy'
-    classifier = null
-    version = '1.0.0'
-
-    mergeServiceFiles()
-    dependencies {
-        include(dependency('redis.clients:.*'))
-        include(dependency('org.apache.commons:.*'))
-        include(dependency('com.google.code.gson:.*'))
-        include(dependency('jline:.*'))
-    }
-}
+//shadowJar {
+//    baseName = 'Synergy'
+//    classifier = null
+//    version = '1.0.0'
+//
+//    mergeServiceFiles()
+//    dependencies {
+//        include(dependency('redis.clients:.*'))
+//        include(dependency('org.apache.commons:.*'))
+//        include(dependency('com.google.code.gson:.*'))
+//        include(dependency('jline:.*'))
+//    }
+//}
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
@@ -79,6 +79,6 @@ dependencies {
     compile group: 'com.google.guava', name: 'guava', version: 'r05'
 }
 
-processResources {
-    expand project.properties
-}
+//processResources {
+//    expand project.properties
+//}

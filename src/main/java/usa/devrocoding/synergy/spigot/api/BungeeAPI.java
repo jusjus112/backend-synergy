@@ -1,4 +1,7 @@
 package usa.devrocoding.synergy.spigot.api;
 
-public class SynergyAPI {
+public class BungeeAPI extends SynergyAPI{
+
+
+
 }

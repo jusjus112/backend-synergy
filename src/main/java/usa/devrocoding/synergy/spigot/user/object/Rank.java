@@ -3,8 +3,6 @@ package usa.devrocoding.synergy.spigot.user.object;
 import lombok.Getter;
 import org.bukkit.ChatColor;
 import usa.devrocoding.synergy.spigot.Core;
-import usa.devrocoding.synergy.spigot.api.Synergy;
-import usa.devrocoding.synergy.spigot.api.SynergyAPI;
 
 public enum Rank {
 
