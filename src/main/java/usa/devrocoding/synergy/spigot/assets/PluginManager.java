@@ -22,7 +22,7 @@ public class PluginManager extends Module {
         /* LOAD DEFAULT FILE STRUCTURE */
         this.fileStructure
 //                .add("sql", null, "sql", FileStructure.FileType.JSON)
-                .add("language_nl", "lang", "nl_NL", FileStructure.FileType.YML)
+                .add("language_nl", "lang", "nl_NL", FileStructure.FileType.JSON)
                 .add("modules", null, "modules", FileStructure.FileType.YML)
                 .add("brobot", null, "Brobot", FileStructure.FileType.YML)
                 .add("buddy", null, "Buddy", FileStructure.FileType.YML)

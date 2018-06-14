@@ -7,6 +7,7 @@ public enum C {
 
     CHAT_COLOUR(ChatColor.GRAY),
     PREFIX(ChatColor.GOLD),
+    ITEM_TITLE(ChatColor.YELLOW),
     PRIMARY_MESSAGE(ChatColor.GRAY),
     MESSAGE_HIGHLIGHT(ChatColor.GREEN),
     ERROR_COLOUR(ChatColor.RED),

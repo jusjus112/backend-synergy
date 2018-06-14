@@ -13,7 +13,10 @@ import usa.devrocoding.synergy.spigot.assets.PluginManager;
 import usa.devrocoding.synergy.spigot.assets.SynergyMani;
 import usa.devrocoding.synergy.spigot.command.CommandManager;
 import usa.devrocoding.synergy.spigot.files.yml.YMLFile;
+import usa.devrocoding.synergy.spigot.gui.GuiManager;
 import usa.devrocoding.synergy.spigot.runnable.RunnableManager;
+import usa.devrocoding.synergy.spigot.scoreboard.ScoreboardManager;
+import usa.devrocoding.synergy.spigot.user.UserManager;
 
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
@@ -33,6 +36,12 @@ public class Core extends JavaPlugin {
     private RunnableManager runnableManager;
     @Getter
     private DatabaseManager databaseManager;
+    @Getter
+    private GuiManager GUIManager;
+    @Getter
+    private ScoreboardManager scoreboardManager;
+    @Getter
+    private UserManager userManager;
 
     @Getter
     private SynergyMani manifest;
@@ -46,8 +55,6 @@ public class Core extends JavaPlugin {
         // Print our logo into the console
         Arrays.stream(Synergy.getLogos().logo_colossal).forEach(s -> getServer().getConsoleSender().sendMessage(C.PLUGIN_COLOR.color()+s));
         System.out.println("  ");
-
-        Synergy.getLetterGenerator().printText("sif11");
 
         this.pluginManager.load();
 
@@ -82,6 +89,9 @@ public class Core extends JavaPlugin {
         // Load the modules
         this.commandManager = new CommandManager(this);
         this.runnableManager = new RunnableManager(this);
+        this.GUIManager = new GuiManager(this);
+        this.scoreboardManager = new ScoreboardManager(this);
+        this.userManager = new UserManager(this);
 
         // Disable this to disable the API
         Synergy.setSpigotAPI(new SpigotAPI());
