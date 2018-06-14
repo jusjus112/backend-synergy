@@ -46,8 +46,11 @@ public class YMLFile {
 
 	public void setup(Object... things) {
 		if (!(things.length <=0)||things!=null){
-			for (int i=0;i<things.length;i+=2)
-				get().set(things[i].toString(), things[i+1]);
+			for (int i=0;i<things.length;i+=2) {
+				if (!get().contains(things[i].toString())) {
+					get().set(things[i].toString(), things[i + 1]);
+				}
+			}
 		}
 		save();
 	}

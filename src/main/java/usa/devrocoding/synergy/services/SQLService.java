@@ -20,8 +20,6 @@ public class SQLService {
 
         if (host != null && database != null && username != null)
             this.iniatialized = true;
-
-//        new DatabaseManager(this).connect();
     }
 
 }

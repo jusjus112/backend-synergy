@@ -22,15 +22,11 @@ public class DatabaseManager {
     public void connect() throws SQLException{
         System.out.println("[Synergy] Connecting to SQL....");
         if (getSqlService().isIniatialized()) {
-            try {
-                connection = DriverManager.getConnection("jdbc:mysql://" + getSqlService().getHost() + ":" + getSqlService().getPort()
-                        + "/" + getSqlService().getDatabase(), getSqlService().getUsername(), getSqlService().getPassword());
-                System.out.println("[Synergy] Connected to your SQL Service Provider");
-            } catch (SQLException e) {
-                throw new SQLException(e.getMessage());
-            }
+            connection = DriverManager.getConnection("jdbc:mysql://" + getSqlService().getHost() + ":" + getSqlService().getPort()
+                    + "/" + getSqlService().getDatabase(), getSqlService().getUsername(), getSqlService().getPassword());
+            System.out.println("[Synergy] Connected to your SQL Service Provider");
         }else{
-            throw new SQLException("Settings.yml doesn't exist");
+            throw new SQLException("SQL Information is wrong or empty! Check 'Settings.yml'");
         }
     }
 

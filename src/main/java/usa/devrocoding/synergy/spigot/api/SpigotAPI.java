@@ -6,6 +6,6 @@ import usa.devrocoding.synergy.spigot.Core;
 public class SpigotAPI extends Core {
 
     @Getter
-    private SynergyPlugin pluginManifest;
+    private SynergyPluginMani pluginManifest;
 
 }

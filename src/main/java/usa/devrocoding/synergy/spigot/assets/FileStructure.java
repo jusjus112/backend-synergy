@@ -27,18 +27,18 @@ public class FileStructure extends Module {
         if (ymlFiles.containsKey(key)){
             return ymlFiles.get(key);
         }
-        return null;
+        throw new FileNotFoundException("Cam't find the file with key '"+key+"'");
     }
 
     public JSONFile getJSONFile(String key)throws FileNotFoundException{
         if (jsonFiles.containsKey(key)){
             return jsonFiles.get(key);
         }
-        return null;
+        throw new FileNotFoundException("Cam't find the file with key '"+key+"'");
     }
 
     public FileStructure add(String key, String folder, String file, FileType type){
-        String query = null;
+        String query;
         switch (type){
             case YML:
                 if (ymlFiles.containsKey(key)){

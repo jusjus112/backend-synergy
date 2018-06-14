@@ -1,4 +1,9 @@
 package usa.devrocoding.synergy.spigot.api;
 
-public interface SynergyPlugin {
+public abstract class SynergyPlugin {
+
+    public abstract void init();
+    public abstract boolean deinit();
+    public abstract void onReload();
+
 }
