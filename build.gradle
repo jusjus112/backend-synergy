@@ -1,28 +1,30 @@
-buildscript {
-    repositories {
-        jcenter()
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
-    }
-    dependencies {classpath "com.github.jengelman.gradle.plugins:shadow:1.2.4"}
-}
+//buildscript {
+//    repositories {
+//        jcenter()
+//        maven {
+//            url "https://plugins.gradle.org/m2/"
+//        }
+//    }
+//    dependencies {classpath "com.github.jengelman.gradle.plugins:shadow:2.0.4"}
+//}
 
 plugins {
+//    id 'com.github.johnrengelman.shadow' version '2.0.4'
     id 'java'
+    id 'maven'
+    id 'eclipse'
+//    id 'application'
 }
-
-apply plugin: "com.github.johnrengelman.shadow"
-apply plugin: 'maven'
-apply plugin: 'eclipse'
-apply plugin: 'application'
 
 compileJava.options.encoding = 'UTF-8'
 group 'backend-synergy'
-mainClassName = 'usa.devrocoding.synergy.Synergy'
+//mainClassName = 'usa.devrocoding.synergy.Synergy'
 version '1.0-SNAPSHOT'
 sourceCompatibility = 1.8
 defaultTasks 'clean', 'build'
+
+jar.enabled = true
+tasks.jar.enabled = true
 
 repositories {
     mavenCentral()
@@ -46,20 +48,24 @@ repositories {
     }
 }
 
-configurations {
-    provided
-    compile.extendsFrom provided
-}
+//configurations {
+//    provided
+//    compile.extendsFrom provided
+//}
 
-shadowJar {
-    mergeServiceFiles()
-    dependencies {
-        include(dependency('redis.clients:.*'))
-        include(dependency('org.apache.commons:.*'))
-        include(dependency('com.google.code.gson:.*'))
-        include(dependency('com.google.guava:.*'))
-    }
-}
+//shadowJar {
+//    baseName = 'Synergy'
+//    classifier = null
+//    version = '1.0.0'
+//
+//    mergeServiceFiles()
+//    dependencies {
+//        include(dependency('redis.clients:.*'))
+//        include(dependency('org.apache.commons:.*'))
+//        include(dependency('com.google.code.gson:.*'))
+//        include(dependency('jline:.*'))
+//    }
+//}
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
@@ -71,9 +77,8 @@ dependencies {
     compile group: 'redis.clients', name: 'jedis', version: '2.9.0'
     compile group: 'com.google.code.gson', name: 'gson', version: '2.3.1'
     compile group: 'com.google.guava', name: 'guava', version: 'r05'
-    compileOnly "com.zaxxer:HikariCP:2.7.8"
 }
 
-processResources {
-    expand project.properties
-}
+//processResources {
+//    expand project.properties
+//}

@@ -18,9 +18,10 @@ public class SQLService {
         this.username = username;
         this.password = password;
 
-        this.iniatialized = true;
+        if (host != null && database != null && username != null)
+            this.iniatialized = true;
 
-        new DatabaseManager(this).connect();
+//        new DatabaseManager(this).connect();
     }
 
 }

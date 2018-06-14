@@ -8,16 +8,13 @@ import java.io.FileWriter;
 
 public class JSONFile {
 
-    private File file;
-    private String fileName;
     private JSONObject main = new JSONObject();
+    private File file;
 
     public JSONFile(String fileName){
-        this.fileName = fileName;
-
         try {
             this.file = new File(Core.getPlugin().getDataFolder() + File.separator + fileName + ".json");
-            if (exists()) {
+            if (!exists()) {
                 this.file.createNewFile();
             }
         }catch(Exception e){

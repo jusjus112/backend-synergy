@@ -3,7 +3,7 @@ package usa.devrocoding.synergy.spigot;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
-import usa.devrocoding.synergy.spigot.command.Command;
+import usa.devrocoding.synergy.spigot.command.SynergyCommand;
 
 import java.util.Arrays;
 
@@ -25,8 +25,8 @@ public abstract class Module implements Listener {
         Arrays.stream(listeners).forEach(listener -> getPlugin().getServer().getPluginManager().registerEvents(listener, plugin));
     }
 
-    public void registerCommand(Command... commands) {
-        for (Command command : commands) {
+    public void registerCommand(SynergyCommand... commands) {
+        for (SynergyCommand command : commands) {
             plugin.getCommandManager().getCommands().add(command);
         }
     }
