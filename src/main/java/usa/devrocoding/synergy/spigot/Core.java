@@ -81,7 +81,8 @@ public class Core extends JavaPlugin {
                     f.get().getString("sql.host"),
                     f.get().getString("sql.database"),
                     f.get().getString("sql.username"),
-                    f.get().getString("sql.password")));
+                    f.get().getString("sql.password"),
+                    f.get().getInt("sql.port")));
 
             // Connect to SQL
             this.databaseManager.connect();

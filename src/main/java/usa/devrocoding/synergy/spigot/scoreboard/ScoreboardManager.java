@@ -24,7 +24,7 @@ public class ScoreboardManager extends Module {
 
 	public ScoreboardManager(Core backend) {
 		super(backend, "Scoreboard Manager");
-		this.title = "  " + Synergy.getSpigotAPI().getPluginManifest().plugin_color() + ChatColor.BOLD.toString() + Synergy.getSpigotAPI().getPluginManifest().plugin_name() + "  ";
+		this.title = "  " + Core.getPlugin().getManifest().main_color() + ChatColor.BOLD.toString() + Core.getPlugin().getManifest().backend_name() + "  ";
 
 		this.scoreboardListener = new ScoreboardListener(backend, this);
 

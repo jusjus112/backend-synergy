@@ -1,6 +1,7 @@
 package usa.devrocoding.synergy.services.sql;
 
 import lombok.Getter;
+import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.services.SQLService;
 
 import java.sql.*;

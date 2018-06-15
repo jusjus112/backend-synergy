@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.user.object.Rank;
 import usa.devrocoding.synergy.spigot.assets.C;
+import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 
 public abstract class SynergyCommand {
 
@@ -31,6 +32,7 @@ public abstract class SynergyCommand {
         this.rank = rank;
         this.description = description;
         this.aliases = aliases;
+        this.usage = aliases;
     }
 
     public boolean checkArgs(String[] args) {
@@ -49,7 +51,7 @@ public abstract class SynergyCommand {
         p.sendMessage(C.PRIMARY_MESSAGE + "Could not find " + thing + " " + C.MESSAGE_HIGHLIGHT + attempt + C.PRIMARY_MESSAGE + ".");
     }
 
-    public abstract void execute(Player player, String[] args);
+    public abstract void execute(SynergyUser synergyUser, Player player, String[] args);
 
     public String getUsage() {
         String finalString = "";
@@ -59,6 +61,10 @@ public abstract class SynergyCommand {
         }
 
         return finalString;
+    }
+
+    public void sendUserMessage(SynergyUser user){
+
     }
 
     public void sendUsageMessage(Player player) {
