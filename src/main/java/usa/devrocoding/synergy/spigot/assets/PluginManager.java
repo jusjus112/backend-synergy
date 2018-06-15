@@ -32,7 +32,7 @@ public class PluginManager extends Module {
         /* LOAD DEFAULT FILE STRUCTURE */
         this.fileStructure
                 .add("modules", null, "Modules", FileStructure.FileType.YML)
-                .add("brobot", null, "Brobot", FileStructure.FileType.YML)
+                .add("bot_sam", null, "Brobot", FileStructure.FileType.YML)
                 .add("buddy", null, "Buddy", FileStructure.FileType.YML)
                 .add("settings", null, "Settings", FileStructure.FileType.YML)
                 .save();
@@ -47,7 +47,7 @@ public class PluginManager extends Module {
                         put("sql.port", 3306);
                     }}
             );
-            this.fileStructure.getYMLFile("brobot").setup(
+            this.fileStructure.getYMLFile("bot_sam").setup(
                     new HashMap<String, Object>(){{
                         put("messages.prefix_color", "&9");
                         put("messages.message_color", "&7");
