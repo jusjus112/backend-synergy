@@ -8,7 +8,7 @@ import java.lang.annotation.RetentionPolicy;
 
 @Documented
 @Retention(value = RetentionPolicy.RUNTIME)
-public @interface SynergyPlugin {
+public @interface SynergyPluginMani {
 
     /**
      * The name of this backend system

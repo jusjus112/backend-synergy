@@ -3,7 +3,9 @@ package usa.devrocoding.synergy.spigot.user.object;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import usa.devrocoding.synergy.spigot.assets.C;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 public class SynergyUser {
@@ -26,6 +28,10 @@ public class SynergyUser {
 
     public Player getPlayer() {
         return Bukkit.getPlayer(getUuid());
+    }
+
+    public void message(String... messages){
+        Arrays.stream(messages).forEach(s -> getPlayer().sendMessage(C.translateColors(s)));
     }
 
 }

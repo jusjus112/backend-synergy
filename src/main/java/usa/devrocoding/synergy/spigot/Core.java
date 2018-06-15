@@ -12,8 +12,12 @@ import usa.devrocoding.synergy.spigot.assets.C;
 import usa.devrocoding.synergy.spigot.assets.PluginManager;
 import usa.devrocoding.synergy.spigot.assets.SynergyMani;
 import usa.devrocoding.synergy.spigot.command.CommandManager;
+import usa.devrocoding.synergy.spigot.discord.DiscordManager;
+import usa.devrocoding.synergy.spigot.economy.EconomyManager;
 import usa.devrocoding.synergy.spigot.files.yml.YMLFile;
 import usa.devrocoding.synergy.spigot.gui.GuiManager;
+import usa.devrocoding.synergy.spigot.hologram.HologramManager;
+import usa.devrocoding.synergy.spigot.language.LanguageManager;
 import usa.devrocoding.synergy.spigot.runnable.RunnableManager;
 import usa.devrocoding.synergy.spigot.scoreboard.ScoreboardManager;
 import usa.devrocoding.synergy.spigot.user.UserManager;
@@ -42,6 +46,14 @@ public class Core extends JavaPlugin {
     private ScoreboardManager scoreboardManager;
     @Getter
     private UserManager userManager;
+    @Getter
+    private EconomyManager economyManager;
+    @Getter
+    private HologramManager hologramManager;
+    @Getter
+    private DiscordManager discordManager;
+    @Getter
+    private LanguageManager languageManager;
 
     @Getter
     private SynergyMani manifest;
@@ -69,7 +81,8 @@ public class Core extends JavaPlugin {
                     f.get().getString("sql.host"),
                     f.get().getString("sql.database"),
                     f.get().getString("sql.username"),
-                    f.get().getString("sql.password")));
+                    f.get().getString("sql.password"),
+                    f.get().getInt("sql.port")));
 
             // Connect to SQL
             this.databaseManager.connect();
@@ -92,6 +105,10 @@ public class Core extends JavaPlugin {
         this.GUIManager = new GuiManager(this);
         this.scoreboardManager = new ScoreboardManager(this);
         this.userManager = new UserManager(this);
+        this.economyManager = new EconomyManager(this);
+        this.hologramManager = new HologramManager(this);
+        this.discordManager = new DiscordManager();
+        this.languageManager = new LanguageManager(this);
 
         // Disable this to disable the API
         Synergy.setSpigotAPI(new SpigotAPI());

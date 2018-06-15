@@ -13,6 +13,15 @@ public class Pair<L, R> {
         this.right = right;
     }
 
+    public void put(L key, R value){
+        this.left = key;
+        this.right = value;
+    }
+
+    public boolean isEmpty(){
+        return this.left == null && this.right == null;
+    }
+
     public L getLeft() {
         return left;
     }

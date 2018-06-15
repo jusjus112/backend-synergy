@@ -2,6 +2,7 @@ package usa.devrocoding.synergy.spigot.assets;
 
 import lombok.Getter;
 import org.bukkit.ChatColor;
+import usa.devrocoding.synergy.spigot.Core;
 
 public enum C {
 
@@ -17,6 +18,17 @@ public enum C {
     SUBTITLE_COLOR(ChatColor.GRAY),
     PLUGIN_COLOR(ChatColor.YELLOW);
 
+    public enum Symbol{
+        HEARTH("❤");
+
+        @Getter
+        private String symbol;
+
+        Symbol(String symbol){
+            this.symbol = symbol;
+        }
+    }
+
     private ChatColor color;
 
     C(ChatColor chatColor){
@@ -29,6 +41,18 @@ public enum C {
 
     public static String translateColors(String text){
         return ChatColor.translateAlternateColorCodes('&', text);
+    }
+
+    public static String getLine(){
+        return "«&m-------------------------------&r»";
+    }
+
+    public static String getLineWithName(){
+        return "«&m----------- "+ Core.getPlugin().getManifest().backend_name() +" ------------&r»";
+    }
+
+    public static String getLineWithName(String name){
+        return "«&m----------- "+name+" ----------&r»";
     }
 
 }

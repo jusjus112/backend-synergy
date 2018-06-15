@@ -39,7 +39,7 @@ public abstract class RedisModule extends JedisPubSub {
         new Thread(() -> {
             Jedis jedis = repository.getMasterConnection();
 
-            jedis.hset("metromc", key, value);
+            jedis.hset("synergy", key, value);
             jedis.close();
         }).start();
     }
@@ -47,7 +47,7 @@ public abstract class RedisModule extends JedisPubSub {
     public Supplier<String> getData(String key) {
         Jedis jedis = this.repository.getMasterConnection();
 
-        Supplier<String> supplier = () -> jedis.hget("metromc", key) == null ? null : new String(jedis.hget("metromc", key));
+        Supplier<String> supplier = () -> jedis.hget("synergy", key) == null ? null : new String(jedis.hget("synergy", key));
 
         jedis.close();
 

@@ -12,16 +12,15 @@ public class SQLService {
     @Getter
     private boolean iniatialized;
 
-    public SQLService(String host, String database, String username, String password){
+    public SQLService(String host, String database, String username, String password, Integer port){
         this.host = host;
         this.database = database;
         this.username = username;
         this.password = password;
+        this.port = port;
 
         if (host != null && database != null && username != null)
             this.iniatialized = true;
-
-//        new DatabaseManager(this).connect();
     }
 
 }

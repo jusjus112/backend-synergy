@@ -3,9 +3,9 @@ package usa.devrocoding.synergy.spigot.api;
 import lombok.Getter;
 import usa.devrocoding.synergy.spigot.Core;
 
-public class SpigotAPI extends Core {
+public class SpigotAPI {
 
     @Getter
-    private SynergyPlugin pluginManifest;
+    private SynergyPluginMani pluginManifest;
 
 }

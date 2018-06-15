@@ -2,9 +2,11 @@ package usa.devrocoding.synergy.spigot.files.yml;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import usa.devrocoding.synergy.spigot.assets.Pair;
 
 /**
  * @Author JusJusOneOneTwo
@@ -44,10 +46,13 @@ public class YMLFile {
 		data = YamlConfiguration.loadConfiguration(file);
 	}
 
-	public void setup(Object... things) {
-		if (!(things.length <=0)||things!=null){
-			for (int i=0;i<things.length;i+=2)
-				get().set(things[i].toString(), things[i+1]);
+	public void setup(HashMap<String, Object> data) {
+		if (!data.isEmpty()){
+			for(String key : data.keySet()){
+				if (!get().contains(key)){
+					get().set(key, data.get(key));
+				}
+			}
 		}
 		save();
 	}
