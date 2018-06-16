@@ -62,6 +62,7 @@ public class Core extends JavaPlugin {
         setPlugin(this);
 
         // Load Files and other important things
+        this.languageManager = new LanguageManager(this);
         this.pluginManager = new PluginManager(this);
 
         // Print our logo into the console
@@ -108,7 +109,6 @@ public class Core extends JavaPlugin {
         this.economyManager = new EconomyManager(this);
         this.hologramManager = new HologramManager(this);
         this.discordManager = new DiscordManager();
-        this.languageManager = new LanguageManager(this);
 
         // Disable this to disable the API
         Synergy.setSpigotAPI(new SpigotAPI());

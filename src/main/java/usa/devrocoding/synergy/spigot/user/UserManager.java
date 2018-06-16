@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import org.bukkit.entity.Player;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
+import usa.devrocoding.synergy.spigot.user.listener.UserJoinEvent;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 
 import java.util.Map;
@@ -15,6 +16,10 @@ public class UserManager extends Module {
 
     public UserManager(Core plugin){
         super(plugin, "User Manager");
+
+        registerListener(
+                new UserJoinEvent()
+        );
     }
 
     public SynergyUser getUser(Player player) {

@@ -1,8 +1,5 @@
 package usa.devrocoding.synergy.spigot.language;
 
-import lombok.Getter;
-import lombok.Setter;
-import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
 
@@ -13,8 +10,6 @@ import java.util.List;
 public class LanguageManager extends Module {
 
     private List<Language> languages = new ArrayList<>();
-    @Getter
-    private Language defaultLanguage;
 
     public LanguageManager(Core plugin){
         super(plugin, "Language Manager");
@@ -27,11 +22,6 @@ public class LanguageManager extends Module {
             }
         }
         return getDefault();
-    }
-
-    public void setDefaultLanguage(Language language){
-        this.defaultLanguage = language;
-        Synergy.info("Using Backend Language "+language.getName());
     }
 
     public Language getDefault(){

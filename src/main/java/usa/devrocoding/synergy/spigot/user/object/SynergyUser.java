@@ -4,6 +4,7 @@ import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import usa.devrocoding.synergy.spigot.assets.C;
+import usa.devrocoding.synergy.spigot.language.Language;
 
 import java.util.Arrays;
 import java.util.UUID;
@@ -18,12 +19,15 @@ public class SynergyUser {
     private Rank rank;
     @Getter
     private String ip;
+    @Getter
+    private Language language;
 
-    public SynergyUser(UUID uuid, String name, Rank rank, String ip){
+    public SynergyUser(UUID uuid, String name, Rank rank, String ip, Language language){
         this.uuid = uuid;
         this.name = name;
         this.rank = rank;
         this.ip = ip;
+        this.language = language;
     }
 
     public Player getPlayer() {
