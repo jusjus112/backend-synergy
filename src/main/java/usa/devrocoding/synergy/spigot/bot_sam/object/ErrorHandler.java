@@ -29,6 +29,7 @@ public class ErrorHandler extends Handler {
             error(record.getThrown().toString(), "Check log for more details!",
                     record.getThrown().getStackTrace(), record.getMessage(), pluginName);
             record.setThrown(null);
+            record.setMessage(null);
             return;
         }
     }
@@ -62,8 +63,7 @@ public class ErrorHandler extends Handler {
             FileWriter fileWriter = new FileWriter(errorLog, true);
             PrintWriter writer = new PrintWriter(fileWriter);
 
-            SimpleDateFormat dateAndTimeFormat = new SimpleDateFormat("dd/mm/yyyy - h:mm a"); //edit to whatever date format you like
-            String dateAndTime = dateAndTimeFormat.format(calender.getTime());
+            SimpleDateFormat dateAndTimeFormat = new SimpleDateFormat("dd/mm/yyyy - h:mm a");
 
             writer.println(C.getLineWithNameNoAttr("SYNERGY"));
             writer.println("Error Date: "+dateAndTimeFormat.format(calender.getTime()));

@@ -60,7 +60,6 @@ public class TableBuilder {
 
             query_update += " END;";
         }
-
         return this;
     }
 
@@ -70,10 +69,7 @@ public class TableBuilder {
 
     public void execute(){
         query += ")";
-
-//        Synergy.debug(query, query_update);
-
-        this.databaseManager.execute(query);
+        this.databaseManager.execute(query, query_update);
     }
 
 }

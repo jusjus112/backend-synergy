@@ -1,13 +1,16 @@
 package usa.devrocoding.synergy.spigot.files.yml;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import usa.devrocoding.synergy.assets.Synergy;
-import usa.devrocoding.synergy.spigot.assets.Pair;
+import usa.devrocoding.synergy.spigot.assets.C;
 
 /**
  * @Author JusJusOneOneTwo
@@ -47,9 +50,17 @@ public class YMLFile {
 		data = YamlConfiguration.loadConfiguration(file);
 	}
 
+	public YMLFile setHeader(String header){
+		get().options().header(header);
+		return this;
+	}
+
 	public void setup(HashMap<String, Object> data) {
 		if (!data.isEmpty()){
 			for(String key : data.keySet()){
+				if (key.startsWith("#")){
+					continue;
+				}
 				if (!get().contains(key)){
 					get().set(key, data.get(key));
 				}

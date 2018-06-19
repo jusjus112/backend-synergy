@@ -2,10 +2,8 @@ package usa.devrocoding.synergy.spigot;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import usa.devrocoding.synergy.services.SQLService;
 import usa.devrocoding.synergy.services.sql.DatabaseManager;
 import usa.devrocoding.synergy.assets.Synergy;
@@ -34,8 +32,7 @@ import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
+import java.util.Set;
 
 @SynergyMani(backend_name = "Synergy", main_color = ChatColor.AQUA, permission_prefix = "synergy.")
 public class Core extends JavaPlugin {
@@ -65,7 +62,6 @@ public class Core extends JavaPlugin {
     private DiscordManager discordManager;
     @Getter
     private LanguageManager languageManager;
-    private List<String> aa = null;
 
     @Getter
     private SynergyMani manifest;
@@ -84,6 +80,7 @@ public class Core extends JavaPlugin {
         this.pluginManager = new PluginManager(this);
 
         // Print our logo into the console
+        getServer().getConsoleSender().sendMessage(ChatColor.YELLOW+"__________________________________________________________________");
         Arrays.stream(Synergy.getLogos().logo_colossal).forEach(s -> getServer().getConsoleSender().sendMessage(C.PLUGIN_COLOR.color()+s));
         System.out.println("  ");
 
@@ -137,17 +134,10 @@ public class Core extends JavaPlugin {
         this.hologramManager = new HologramManager(this);
         this.discordManager = new DiscordManager();
 
-        new BukkitRunnable(){
-            @Override
-            public void run() {
-                if (aa.size() > 0){
-
-                }
-            }
-        }.runTaskLater(this, 20 * 5);
-
         // Disable this to disable the API
         Synergy.setSpigotAPI(new SpigotAPI());
+
+        Synergy.debug();
     }
 
     public void onDisable(){

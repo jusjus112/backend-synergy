@@ -16,6 +16,8 @@ public abstract class Module implements Listener {
     private final String name;
     @Getter
     private final Sam sam;
+    @Getter
+    private boolean disabled = false;
 
     public Module(Core plugin, String name) {
         this.plugin = plugin;
@@ -33,6 +35,10 @@ public abstract class Module implements Listener {
         for (SynergyCommand command : commands) {
             plugin.getCommandManager().getCommands().add(command);
         }
+    }
+
+    public void disable(){
+        this.disabled = true;
     }
 
     public void runTaskAsync(Runnable runnable) {
