@@ -1,6 +1,7 @@
 package usa.devrocoding.synergy.spigot.files.json;
 
 import org.json.simple.JSONObject;
+import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 
 import java.io.File;
@@ -18,7 +19,7 @@ public class JSONFile {
                 this.file.createNewFile();
             }
         }catch(Exception e){
-            e.printStackTrace();
+            Synergy.error(e.getMessage());
         }
     }
 
@@ -39,7 +40,7 @@ public class JSONFile {
             fileWriter.close();
             this.main.clear();
         }catch(Exception e){
-            e.printStackTrace();
+            Synergy.error(e.getMessage());
         }
     }
 
@@ -48,7 +49,7 @@ public class JSONFile {
         try {
             
         } catch (Exception e) {
-            e.printStackTrace();
+            Synergy.error(e.getMessage());
         }
     }
 

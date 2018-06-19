@@ -1,6 +1,7 @@
 package usa.devrocoding.synergy.spigot.user;
 
 import com.google.common.collect.Maps;
+import lombok.Getter;
 import org.bukkit.entity.Player;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
@@ -12,6 +13,7 @@ import java.util.UUID;
 
 public class UserManager extends Module {
 
+    @Getter
     private final Map<UUID, SynergyUser> users = Maps.newHashMap();
 
     public UserManager(Core plugin){

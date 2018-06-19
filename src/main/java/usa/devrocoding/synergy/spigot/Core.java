@@ -2,15 +2,22 @@ package usa.devrocoding.synergy.spigot;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import usa.devrocoding.synergy.services.SQLService;
 import usa.devrocoding.synergy.services.sql.DatabaseManager;
 import usa.devrocoding.synergy.assets.Synergy;
+import usa.devrocoding.synergy.services.sql.SQLDataType;
+import usa.devrocoding.synergy.services.sql.SQLDefaultType;
+import usa.devrocoding.synergy.services.sql.TableBuilder;
 import usa.devrocoding.synergy.spigot.api.SpigotAPI;
 import usa.devrocoding.synergy.spigot.assets.C;
 import usa.devrocoding.synergy.spigot.assets.PluginManager;
 import usa.devrocoding.synergy.spigot.assets.SynergyMani;
+import usa.devrocoding.synergy.spigot.bot_sam.Sam;
+import usa.devrocoding.synergy.spigot.bot_sam.object.ErrorHandler;
 import usa.devrocoding.synergy.spigot.command.CommandManager;
 import usa.devrocoding.synergy.spigot.discord.DiscordManager;
 import usa.devrocoding.synergy.spigot.economy.EconomyManager;
@@ -21,10 +28,14 @@ import usa.devrocoding.synergy.spigot.language.LanguageManager;
 import usa.devrocoding.synergy.spigot.runnable.RunnableManager;
 import usa.devrocoding.synergy.spigot.scoreboard.ScoreboardManager;
 import usa.devrocoding.synergy.spigot.user.UserManager;
+import usa.devrocoding.synergy.spigot.user.object.UserExperience;
 
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.List;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 @SynergyMani(backend_name = "Synergy", main_color = ChatColor.AQUA, permission_prefix = "synergy.")
 public class Core extends JavaPlugin {
@@ -54,6 +65,7 @@ public class Core extends JavaPlugin {
     private DiscordManager discordManager;
     @Getter
     private LanguageManager languageManager;
+    private List<String> aa = null;
 
     @Getter
     private SynergyMani manifest;
@@ -62,6 +74,12 @@ public class Core extends JavaPlugin {
         setPlugin(this);
 
         // Load Files and other important things
+        new Sam();
+        getLogger().addHandler(new ErrorHandler(Sam.getRobot()));
+
+        this.commandManager = new CommandManager(this);
+        this.runnableManager = new RunnableManager(this);
+
         this.languageManager = new LanguageManager(this);
         this.pluginManager = new PluginManager(this);
 
@@ -87,12 +105,23 @@ public class Core extends JavaPlugin {
 
             // Connect to SQL
             this.databaseManager.connect();
+
+            new TableBuilder("synergy_users")
+                    .addColumn("uuid", SQLDataType.VARCHAR, 300,false, SQLDefaultType.NO_DEFAULT, true)
+                    .addColumn("name", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
+                    .addColumn("userexperience", SQLDataType.VARCHAR, 100,false, SQLDefaultType.CUSTOM.setCustom(UserExperience.NOOB), false)
+                    .execute();
+
         }catch (FileNotFoundException e){
-            Synergy.error("Can't seem to find the file 'settings.yml'");
+            Sam.getRobot().error("File 'settings.yml' doesn't exists", "Did you touched the file? If not, ask a developer", e);
             getPluginLoader().disablePlugin(this);
             return;
         }catch (SQLException e){
-            Synergy.error("Can't connect to your SQL service provider", e.getMessage());
+            Sam.getRobot().error("I can't connect to your SQL Service provider", "Check your SQL settings in the 'settings.yml'", e);
+            getPluginLoader().disablePlugin(this);
+            return;
+        }catch (ClassNotFoundException e){
+            Sam.getRobot().error("OMG, there is no SQL Server here... HELUPP", "Install a SQL Server bb", e);
             getPluginLoader().disablePlugin(this);
             return;
         }
@@ -101,14 +130,21 @@ public class Core extends JavaPlugin {
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 
         // Load the modules
-        this.commandManager = new CommandManager(this);
-        this.runnableManager = new RunnableManager(this);
         this.GUIManager = new GuiManager(this);
         this.scoreboardManager = new ScoreboardManager(this);
         this.userManager = new UserManager(this);
         this.economyManager = new EconomyManager(this);
         this.hologramManager = new HologramManager(this);
         this.discordManager = new DiscordManager();
+
+        new BukkitRunnable(){
+            @Override
+            public void run() {
+                if (aa.size() > 0){
+
+                }
+            }
+        }.runTaskLater(this, 20 * 5);
 
         // Disable this to disable the API
         Synergy.setSpigotAPI(new SpigotAPI());

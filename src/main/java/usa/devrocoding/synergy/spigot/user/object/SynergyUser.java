@@ -1,8 +1,10 @@
 package usa.devrocoding.synergy.spigot.user.object;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.assets.C;
 import usa.devrocoding.synergy.spigot.language.Language;
 
@@ -21,6 +23,8 @@ public class SynergyUser {
     private String ip;
     @Getter
     private Language language;
+    @Getter @Setter
+    private UserExperience userExperience;
 
     public SynergyUser(UUID uuid, String name, Rank rank, String ip, Language language){
         this.uuid = uuid;
@@ -28,6 +32,8 @@ public class SynergyUser {
         this.rank = rank;
         this.ip = ip;
         this.language = language;
+
+        Core.getPlugin().getUserManager().getUsers().put(uuid, this);
     }
 
     public Player getPlayer() {

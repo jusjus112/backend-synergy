@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.assets.Pair;
 
 /**
@@ -37,7 +38,7 @@ public class YMLFile {
 		try {
 			data.save(file);
 		} catch (IOException e) {
-			e.printStackTrace();
+			Synergy.error(e.getMessage());
 		}
 	}
 

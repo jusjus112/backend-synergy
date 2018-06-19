@@ -4,6 +4,8 @@ import lombok.Getter;
 import org.bukkit.ChatColor;
 import usa.devrocoding.synergy.spigot.Core;
 
+import java.util.Arrays;
+
 public enum C {
 
     CHAT_COLOUR(ChatColor.GRAY),
@@ -44,15 +46,31 @@ public enum C {
     }
 
     public static String getLine(){
-        return "«&m-------------------------------&r»";
+        return "«&m----------------------------------&r»";
+    }
+
+    public static String getLineWithoutSymbols(){
+        return "---------------------------------------";
     }
 
     public static String getLineWithName(){
-        return "«&m----------- "+ Core.getPlugin().getManifest().backend_name() +" ------------&r»";
+        return "«"+ChatColor.STRIKETHROUGH+"-------------- "+ Core.getPlugin().getManifest().backend_name() +" -----------------"+ChatColor.RESET+"»";
     }
 
     public static String getLineWithName(String name){
-        return "«&m----------- "+name+" ----------&r»";
+        return "«"+ChatColor.STRIKETHROUGH+"-------------- "+ChatColor.AQUA+name+" ----------------"+ChatColor.RESET+"»";
+    }
+
+    public static String getLineWithNameNoAttr(String name){
+        return "-------------- "+name+" ------------------";
+    }
+
+    public static String getLineWithNameWithoutSymbols(String name){
+        return ChatColor.STRIKETHROUGH+"-------------- "+ChatColor.AQUA+name+" ---------------"+ChatColor.RESET;
+    }
+
+    public static void sendConsoleColors(String... messages){
+        Arrays.stream(messages).forEach(s -> Core.getPlugin().getServer().getConsoleSender().sendMessage(s));
     }
 
 }

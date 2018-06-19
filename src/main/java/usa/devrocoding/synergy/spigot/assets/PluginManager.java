@@ -5,6 +5,7 @@ import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
 import usa.devrocoding.synergy.spigot.api.commands.CommandSynergy;
+import usa.devrocoding.synergy.spigot.bot_sam.Sam;
 
 import java.io.FileNotFoundException;
 import java.util.HashMap;
@@ -36,7 +37,6 @@ public class PluginManager extends Module {
                 .add("buddy", null, "Buddy", FileStructure.FileType.YML)
                 .add("settings", null, "Settings", FileStructure.FileType.YML)
                 .save();
-
         try{
             this.fileStructure.getYMLFile("settings").setup(
                     new HashMap<String, Object>(){{
@@ -54,7 +54,7 @@ public class PluginManager extends Module {
                     }}
             );
         }catch (FileNotFoundException e){
-            Synergy.error(e.getMessage());
+            Sam.getRobot().error("No file found error", e.getMessage(), e);
         }
     }
 
