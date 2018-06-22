@@ -2,6 +2,7 @@ package usa.devrocoding.synergy.spigot.bot_sam.object;
 
 import org.bukkit.ChatColor;
 import usa.devrocoding.synergy.spigot.Core;
+import usa.devrocoding.synergy.spigot.Module;
 import usa.devrocoding.synergy.spigot.assets.C;
 import usa.devrocoding.synergy.spigot.bot_sam.Sam;
 
@@ -26,7 +27,7 @@ public class ErrorHandler extends Handler {
     public void publish(LogRecord record) {
         if (record.getLevel() == Level.WARNING){
             String pluginName = record.getMessage().split("]")[0].replace("[", "");
-            error(record.getThrown().toString(), "Check log for more details!",
+            error(null, record.getThrown().toString(), "Check log for more details!",
                     record.getThrown().getStackTrace(), record.getMessage(), pluginName);
             record.setThrown(null);
             record.setMessage(null);
@@ -44,7 +45,7 @@ public class ErrorHandler extends Handler {
 
     }
 
-    private void save(String cause, String solution, StackTraceElement[] stackTraceElements, String message, String creator){
+    private void save(Module module, String cause, String solution, StackTraceElement[] stackTraceElements, String message, String creator){
         try {
             Calendar calender = Calendar.getInstance();
             SimpleDateFormat fileName = new SimpleDateFormat("dd-mm-yyyy_hh-mm");
@@ -53,12 +54,6 @@ public class ErrorHandler extends Handler {
             if (!errorLog.exists()) {
                 errorLog.getParentFile().mkdirs();
                 errorLog.createNewFile();
-            }else{
-                File errorLog2 = new File(Core.getPlugin().getDataFolder() + "\\logs\\errors", "ERROR_2_"+(fileName.format(calender.getTime()))+".txt");
-                if (!errorLog2.exists()) {
-                    errorLog2.getParentFile().mkdirs();
-                    errorLog2.createNewFile();
-                }
             }
             FileWriter fileWriter = new FileWriter(errorLog, true);
             PrintWriter writer = new PrintWriter(fileWriter);
@@ -70,6 +65,9 @@ public class ErrorHandler extends Handler {
             writer.println("Created By: "+creator);
             writer.println("Cause: "+cause);
             writer.println("Description: "+solution);
+            if (module != null){
+                writer.println("System: "+module.getName());
+            }
             writer.println("Exception Message: "+message);
             writer.println("  ");
 
@@ -78,15 +76,16 @@ public class ErrorHandler extends Handler {
                     writer.println("    "+st.toString());
                 }
             }
-
+            writer.println("  ");
+            writer.println("  ");
             writer.flush();
             writer.close();
         }catch (Exception eb){
-            error("Error in my error system! Can't create the error file", "Errorception. Contact my OWNER NOW", null);
+            error(null, "Error in my error system! Can't create the error file", "Errorception. Contact my OWNER NOW", null);
         }
     }
 
-    public void error(String cause, String solution, StackTraceElement[] stackTraceElements, String message, String creator){
+    public void error(Module module, String cause, String solution, StackTraceElement[] stackTraceElements, String message, String creator){
         Calendar calender = Calendar.getInstance();
         SimpleDateFormat dateAndTimeFormat = new SimpleDateFormat("dd MMM, yyyy | h:mm a");
         SimpleDateFormat fileName = new SimpleDateFormat("dd-mm-yyyy_hh-mm");
@@ -102,7 +101,7 @@ public class ErrorHandler extends Handler {
         };
 
         if (stackTraceElements != null){
-            save(cause, solution, stackTraceElements, message, creator);
+            save(module, cause, solution, stackTraceElements, message, creator);
         }
 
         C.sendConsoleColors(consoleMessage);
@@ -110,8 +109,8 @@ public class ErrorHandler extends Handler {
         C.sendConsoleColors(ChatColor.YELLOW+C.getLineWithoutSymbols());
     }
 
-    public void error(String cause, String solution, Exception e){
-        error(cause, solution, e.getStackTrace(), e.getMessage(), "Sam the robot (Synergy)");
+    public void error(Module module, String cause, String solution, Exception e){
+        error(module, cause, solution, e.getStackTrace(), e.getMessage(), "Sam the robot (Synergy)");
     }
 
 }

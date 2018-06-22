@@ -1,9 +1,9 @@
 package usa.devrocoding.synergy.services.sql;
 
 import lombok.Getter;
+
 import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.services.SQLService;
-import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.bot_sam.Sam;
 
 import java.sql.*;
@@ -26,49 +26,37 @@ public class DatabaseManager {
         if (this.connection != null && !connection.isClosed()){
             return;
         }
-        System.out.println("[Synergy] Connecting to SQL....");
+        Synergy.info("Connecting to SQL....");
         if (getSqlService().isIniatialized()) {
 
             Class.forName("com.mysql.jdbc.Driver");
 
             connection = DriverManager.getConnection("jdbc:mysql://" + getSqlService().getHost() + ":" + getSqlService().getPort()
                     + "/" + getSqlService().getDatabase(), getSqlService().getUsername(), getSqlService().getPassword());
-            System.out.println("[Synergy] Connected to your SQL Service Provider");
+            Synergy.info("Connected to your SQL Service Provider");
         }else{
             throw new SQLException("SQL Information is wrong or empty! Check 'Settings.yml'");
         }
     }
 
-    public void disconnect(){
-        try{
+    public void disconnect() throws SQLException {
             if (!this.connection.isClosed()) {
                 this.connection.close();
             }
-        }catch(SQLException e){
-            Sam.getRobot().error("Connection cannot be closed", "Contact the server developer ASAP", e);
-        }
     }
 
-    public List<ResultSet> getResults(String query){
-        List<ResultSet> results = new ArrayList<>();
-        try {
-            Statement statement = getConnection().createStatement();
-            ResultSet resultSet = statement.executeQuery(query);
-            while(resultSet.next()){
-                results.add(resultSet);
-            }
-        }catch(SQLException e){
-            Sam.getRobot().error("Statement cannot get result of query", "Contact the server developer ASAP", e);
-        }
-        return results;
+    public ResultSet getResults(String query) throws SQLException {
+        Statement statement = getConnection().createStatement();
+        ResultSet resultSet = statement.executeQuery(query);
+        return resultSet;
     }
 
-    public void execute(String... queries){
+    public void execute(String... queries) {
         Arrays.stream(queries).forEach(s -> {
             try {
                 getConnection().createStatement().executeUpdate(s);
             }catch (SQLException e){
-                Sam.getRobot().error("Statement cannot be executed", "Contact the server developer ASAP", e);
+                Synergy.error("Can't execute statement. Skipped Sam the robot.", e.getMessage());
             }
         });
     }

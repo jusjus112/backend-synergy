@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 
+import lombok.Getter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import usa.devrocoding.synergy.assets.Synergy;
@@ -19,7 +20,8 @@ import usa.devrocoding.synergy.spigot.assets.C;
  */
 
 public class YMLFile {
-	
+
+	@Getter
 	private File file;
 	private FileConfiguration data;
 	private String dataFolder;
@@ -55,7 +57,7 @@ public class YMLFile {
 		return this;
 	}
 
-	public void setup(HashMap<String, Object> data) {
+	public void set(HashMap<String, Object> data) {
 		if (!data.isEmpty()){
 			for(String key : data.keySet()){
 				if (key.startsWith("#")){

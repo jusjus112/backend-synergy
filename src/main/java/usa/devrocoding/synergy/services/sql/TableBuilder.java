@@ -4,6 +4,8 @@ import lombok.Getter;
 import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 
+import java.sql.SQLException;
+
 public class TableBuilder {
 
     private String tableName, query, query_update = "", specs;
@@ -54,11 +56,15 @@ public class TableBuilder {
         }
 
         {
-            query_update += "IF COL_LENGTH('"+this.databaseManager.getSqlService().getDatabase()+"."+tableName+"', '"+name+"') IS NULL " +
-                    "BEGIN " +
-                    "ALTER TABLE " + tableName + " ADD " + specs;
 
-            query_update += " END;";
+            try {
+                if (!this.databaseManager.getResults("SELECT * FROM information_schema.COLUMNS WHERE COLUMN_NAME = '" + name + "' AND TABLE_NAME = '" +
+                        this.tableName + "' AND TABLE_SCHEMA = '" + this.databaseManager.getSqlService().getDatabase() + "'").next()) {
+                    query_update += "ALTER TABLE "+this.tableName+" ADD "+specs+";";
+                }
+            }catch(SQLException e){
+                Synergy.error(e.getMessage());
+            }
         }
         return this;
     }
@@ -69,7 +75,15 @@ public class TableBuilder {
 
     public void execute(){
         query += ")";
-        this.databaseManager.execute(query, query_update);
+        this.databaseManager.execute(query);
+        if (!(query_update.equals(""))){
+            String[] queries = query_update.split(";");
+            for(String query_u : queries) {
+                if (!query_u.equals("")) {
+                    this.databaseManager.execute(query_u);
+                }
+            }
+        }
     }
 
 }

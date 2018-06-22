@@ -22,7 +22,9 @@ import usa.devrocoding.synergy.spigot.economy.EconomyManager;
 import usa.devrocoding.synergy.spigot.files.yml.YMLFile;
 import usa.devrocoding.synergy.spigot.gui.GuiManager;
 import usa.devrocoding.synergy.spigot.hologram.HologramManager;
+import usa.devrocoding.synergy.spigot.language.Language;
 import usa.devrocoding.synergy.spigot.language.LanguageManager;
+import usa.devrocoding.synergy.spigot.language.LanguageStrings;
 import usa.devrocoding.synergy.spigot.runnable.RunnableManager;
 import usa.devrocoding.synergy.spigot.scoreboard.ScoreboardManager;
 import usa.devrocoding.synergy.spigot.user.UserManager;
@@ -31,8 +33,6 @@ import usa.devrocoding.synergy.spigot.user.object.UserExperience;
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
 
 @SynergyMani(backend_name = "Synergy", main_color = ChatColor.AQUA, permission_prefix = "synergy.")
 public class Core extends JavaPlugin {
@@ -77,10 +77,14 @@ public class Core extends JavaPlugin {
         this.runnableManager = new RunnableManager(this);
 
         this.languageManager = new LanguageManager(this);
+
+        // Register Language Keys
+        this.languageManager.registerLanguages(LanguageStrings.values());
+
         this.pluginManager = new PluginManager(this);
 
         // Print our logo into the console
-        getServer().getConsoleSender().sendMessage(ChatColor.YELLOW+"__________________________________________________________________");
+//        getServer().getConsoleSender().sendMessage(ChatColor.YELLOW+"__________________________________________________________________");
         Arrays.stream(Synergy.getLogos().logo_colossal).forEach(s -> getServer().getConsoleSender().sendMessage(C.PLUGIN_COLOR.color()+s));
         System.out.println("  ");
 
@@ -103,22 +107,24 @@ public class Core extends JavaPlugin {
             // Connect to SQL
             this.databaseManager.connect();
 
+             // Generate Tables
             new TableBuilder("synergy_users")
                     .addColumn("uuid", SQLDataType.VARCHAR, 300,false, SQLDefaultType.NO_DEFAULT, true)
                     .addColumn("name", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
+                    .addColumn("rank", SQLDataType.VARCHAR, 100,false, SQLDefaultType.CUSTOM.setCustom("NONE"), false)
                     .addColumn("userexperience", SQLDataType.VARCHAR, 100,false, SQLDefaultType.CUSTOM.setCustom(UserExperience.NOOB), false)
                     .execute();
 
         }catch (FileNotFoundException e){
-            Sam.getRobot().error("File 'settings.yml' doesn't exists", "Did you touched the file? If not, ask a developer", e);
+            Sam.getRobot().error(null, "File 'settings.yml' doesn't exists", "Did you touched the file? If not, ask a developer", e);
             getPluginLoader().disablePlugin(this);
             return;
         }catch (SQLException e){
-            Sam.getRobot().error("I can't connect to your SQL Service provider", "Check your SQL settings in the 'settings.yml'", e);
+            Sam.getRobot().error(null, "I can't connect to your SQL Service provider", "Check your SQL settings in the 'settings.yml'", e);
             getPluginLoader().disablePlugin(this);
             return;
         }catch (ClassNotFoundException e){
-            Sam.getRobot().error("OMG, there is no SQL Server here... HELUPP", "Install a SQL Server bb", e);
+            Sam.getRobot().error(null, "OMG, there is no SQL Server here... HELUPP", "Install a SQL Server bb", e);
             getPluginLoader().disablePlugin(this);
             return;
         }
@@ -136,8 +142,6 @@ public class Core extends JavaPlugin {
 
         // Disable this to disable the API
         Synergy.setSpigotAPI(new SpigotAPI());
-
-        Synergy.debug();
     }
 
     public void onDisable(){

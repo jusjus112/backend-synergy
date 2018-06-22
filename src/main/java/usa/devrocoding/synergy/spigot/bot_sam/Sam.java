@@ -1,7 +1,7 @@
 package usa.devrocoding.synergy.spigot.bot_sam;
 
 import org.bukkit.ChatColor;
-import usa.devrocoding.synergy.spigot.Core;
+import usa.devrocoding.synergy.spigot.Module;
 import usa.devrocoding.synergy.spigot.bot_sam.object.ErrorHandler;
 
 public class Sam {
@@ -14,8 +14,8 @@ public class Sam {
         return ChatColor.LIGHT_PURPLE+""+ChatColor.BOLD+"SAM";
     }
 
-    public void error(String cause, String solution, Exception exception){
-        new ErrorHandler(this).error(cause, solution, exception);
+    public void error(Module module, String cause, String solution, Exception exception){
+        new ErrorHandler(this).error(module, cause, solution, exception);
     }
 
 }
