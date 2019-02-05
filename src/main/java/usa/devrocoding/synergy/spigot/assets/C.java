@@ -3,6 +3,7 @@ package usa.devrocoding.synergy.spigot.assets;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.ChatColor;
+import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.assets.object.Message;
 
@@ -45,7 +46,17 @@ public enum C {
 
     public static void initColors(){
         for(C color : values()){
-            color.setColor(ChatColor.getByChar(Message.format(color.messageKey+"."+color.toString().toLowerCase(),"&"+color.getColor().getChar())));
+            Synergy.debug(color.messageKey+" - "+color.toString().toLowerCase());
+            color.setColor(
+                    ChatColor.getByChar
+                            (
+                                    Message.format(
+                                    color.messageKey+"."+color.toString().toLowerCase(),
+                                    "&"+color.getColor().getChar()
+                                    ).replace("&",""
+                            )
+                    )
+            );
         }
     }
 

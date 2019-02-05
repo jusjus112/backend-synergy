@@ -40,4 +40,8 @@ public class Synergy {
         Arrays.stream(messages).forEach(s -> System.out.println("[Synergy ERROR] "+s));
     }
 
+    public static void warn(String... messages){
+        Arrays.stream(messages).forEach(s -> System.out.println("[Synergy WARN] "+s));
+    }
+
 }

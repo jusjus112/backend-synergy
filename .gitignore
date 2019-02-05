@@ -4,3 +4,10 @@
 build/
 
 \.gradle/
+\gradle/
+
+synergy-backend\.iml
+
+gradle/
+
+gradlew

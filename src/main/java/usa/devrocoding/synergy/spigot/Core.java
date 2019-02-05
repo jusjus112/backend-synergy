@@ -74,14 +74,7 @@ public class Core extends JavaPlugin {
     public void onEnable(){
         setPlugin(this);
 
-        // Load Files and other important things
-        C.initColors();
-        try{
-            // Initialize all the messages that are being sent..
-            Message.init(getPluginManager().getFileStructure().getYMLFile("messages"));
-        }catch (Exception e){
-            Sam.getRobot().error(null, e.getMessage(), "Try to contact the server developer", e);
-        }
+        // Load Files and other important thing
 
         // Init sam the robot
         new Sam();
@@ -144,11 +137,12 @@ public class Core extends JavaPlugin {
         // Load the BungeeCord or Redis channels
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 
+        // Initialize all the messages that are being sent..
         try{
-            // Initialize all the messages that are being sent..
-            Message.checkForUpdates(getPluginManager().getFileStructure().getYMLFile("messages"));
+            Message.init(getPluginManager().getFileStructure().getYMLFile("messages"));
+            C.initColors();
         }catch (Exception e){
-            Sam.getRobot().error(null, e.getMessage(), "Try to contact the server developer", e);
+            Sam.getRobot().error(null, e.getCause().getMessage(), "Try to contact the server developer", e);
         }
 
         // Load the modules
@@ -161,6 +155,13 @@ public class Core extends JavaPlugin {
 
         // Disable this to disable the API
         Synergy.setSpigotAPI(new SpigotAPI());
+
+        try{
+            // Initialize all the messages that are being sent..
+            Message.checkForUpdates(getPluginManager().getFileStructure().getYMLFile("messages"));
+        }catch (Exception e){
+            Sam.getRobot().error(null, e.getCause().getMessage(), "Try to contact the server developer", e);
+        }
 
         //TODO: Load all the used systems and commands for the server to being used.
         Synergy.info("All systems are loaded!");

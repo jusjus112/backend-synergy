@@ -56,7 +56,7 @@ public class DatabaseManager {
             try {
                 getConnection().createStatement().executeUpdate(s);
             }catch (SQLException e){
-                Synergy.error("Can't execute statement. Skipped Sam the robot.", e.getMessage());
+                Synergy.warn("Can't execute statement. " + e.getMessage());
             }
         });
     }
