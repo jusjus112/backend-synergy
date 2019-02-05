@@ -36,14 +36,10 @@ public class ErrorHandler extends Handler {
     }
 
     @Override
-    public void flush() {
-
-    }
+    public void flush() {}
 
     @Override
-    public void close() throws SecurityException {
-
-    }
+    public void close() throws SecurityException {}
 
     private void save(Module module, String cause, String solution, StackTraceElement[] stackTraceElements, String message, String creator){
         try {
@@ -81,7 +77,7 @@ public class ErrorHandler extends Handler {
             writer.flush();
             writer.close();
         }catch (Exception eb){
-            error(null, "Error in my error system! Can't create the error file", "Errorception. Contact my OWNER NOW", null);
+            error(null, "Error in my error system! Can't create the error file", "Errorception. Contact my developer", null);
         }
     }
 

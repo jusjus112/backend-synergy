@@ -39,9 +39,11 @@ public class PluginManager extends Module {
         /* LOAD DEFAULT FILE STRUCTURE */
         this.fileStructure
 //                .add("modules", null, "Modules", FileStructure.FileType.YML)
-                .add("bot_sam", null, "Sam", FileStructure.FileType.YML)
+                .add("sam", null, "Sam", FileStructure.FileType.YML)
                 .add("buddy", null, "Buddy", FileStructure.FileType.YML)
                 .add("settings", null, "Settings", FileStructure.FileType.YML)
+//                .add("modules", null, "Modules", FileStructure.FileType.YML)
+                .add("messages", null, "Messages", FileStructure.FileType.YML)
                 .save();
         try{
             this.fileStructure.getYMLFile("settings").set(
@@ -53,7 +55,7 @@ public class PluginManager extends Module {
                         put("sql.port", 3306);
                     }}
             );
-            this.fileStructure.getYMLFile("bot_sam").set(
+            this.fileStructure.getYMLFile("sam").set(
                     new HashMap<String, Object>(){{
                         put("messages.prefix_color", "&9");
                         put("messages.message_color", "&7");
@@ -62,13 +64,13 @@ public class PluginManager extends Module {
                         put("global.logging.cleanUpErrorLogging", "3d");
                     }}
             );
-            this.fileStructure.getYMLFile("modules").setHeader("Disable your modules here. List of modules here: 'https://bitbucket.org/devrocoding/synergy-backend/wiki/list-modules'").set(
-                    new HashMap<String, Object>(){{
-                        put("modules.disabled", new ArrayList<String>());
-                    }}
-            );
+//            this.fileStructure.getYMLFile("modules").setHeader("Disable your modules here. List of modules here: 'https://bitbucket.org/devrocoding/synergy-backend/wiki/list-modules'").set(
+//                    new HashMap<String, Object>(){{
+//                        put("modules.disabled", new ArrayList<String>());
+//                    }}
+//            );
         }catch (FileNotFoundException e){
-            Sam.getRobot().error(this, e.getMessage(), "Try to contact your server developer", e);
+            Sam.getRobot().error(this, e.getMessage(), "Try to contact the server developer", e);
         }
     }
 

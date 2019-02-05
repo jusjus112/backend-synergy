@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.entity.Player;
 import usa.devrocoding.synergy.spigot.Core;
+import usa.devrocoding.synergy.spigot.assets.object.Message;
 import usa.devrocoding.synergy.spigot.user.object.Rank;
 import usa.devrocoding.synergy.spigot.assets.C;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
@@ -48,7 +49,10 @@ public abstract class SynergyCommand {
     }
 
     public void couldNotFind(Player p, String thing, String attempt) {
-        p.sendMessage(C.PRIMARY_MESSAGE + "Could not find " + thing + " " + C.MESSAGE_HIGHLIGHT + attempt + C.PRIMARY_MESSAGE + ".");
+        p.sendMessage(
+                     Message.format("command.player.not_found", "Could not find %thing% %color_primary% %attempt%")
+        );
+//        p.sendMessage(C.PRIMARY + "Could not find " + thing + " " + C.MESSAGE_HIGHLIGHT + attempt + C.PRIMARY_MESSAGE + ".");
     }
 
     public abstract void execute(SynergyUser synergyUser, Player player, String[] args);
@@ -75,6 +79,6 @@ public abstract class SynergyCommand {
                 usageString+=s + " ";
         }
 
-        player.sendMessage(C.PRIMARY_MESSAGE + "Usage: /" + aliases[0] + (usage.length != 0 ? " " + usageString.trim() : ""));
+//        player.sendMessage(C.PRIMARY_MESSAGE + "Usage: /" + aliases[0] + (usage.length != 0 ? " " + usageString.trim() : ""));
     }
 }

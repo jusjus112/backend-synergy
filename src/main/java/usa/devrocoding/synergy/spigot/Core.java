@@ -14,6 +14,7 @@ import usa.devrocoding.synergy.spigot.api.SpigotAPI;
 import usa.devrocoding.synergy.spigot.assets.C;
 import usa.devrocoding.synergy.spigot.assets.PluginManager;
 import usa.devrocoding.synergy.spigot.assets.SynergyMani;
+import usa.devrocoding.synergy.spigot.assets.object.Message;
 import usa.devrocoding.synergy.spigot.bot_sam.Sam;
 import usa.devrocoding.synergy.spigot.bot_sam.object.ErrorHandler;
 import usa.devrocoding.synergy.spigot.command.CommandManager;
@@ -39,6 +40,10 @@ public class Core extends JavaPlugin {
 
     @Getter @Setter
     private static Core plugin;
+
+    @Getter
+    private boolean loaded = false,
+                    disabled = false;
 
     @Getter
     private PluginManager pluginManager;
@@ -70,6 +75,15 @@ public class Core extends JavaPlugin {
         setPlugin(this);
 
         // Load Files and other important things
+        C.initColors();
+        try{
+            // Initialize all the messages that are being sent..
+            Message.init(getPluginManager().getFileStructure().getYMLFile("messages"));
+        }catch (Exception e){
+            Sam.getRobot().error(null, e.getMessage(), "Try to contact the server developer", e);
+        }
+
+        // Init sam the robot
         new Sam();
         getLogger().addHandler(new ErrorHandler(Sam.getRobot()));
 
@@ -83,9 +97,7 @@ public class Core extends JavaPlugin {
 
         this.pluginManager = new PluginManager(this);
 
-        // Print our logo into the console
-//        getServer().getConsoleSender().sendMessage(ChatColor.YELLOW+"__________________________________________________________________");
-        Arrays.stream(Synergy.getLogos().logo_colossal).forEach(s -> getServer().getConsoleSender().sendMessage(C.PLUGIN_COLOR.color()+s));
+        Arrays.stream(Synergy.getLogos().logo_colossal).forEach(s -> getServer().getConsoleSender().sendMessage(C.PLUGIN.getColor()+s));
         System.out.println("  ");
 
         this.pluginManager.load();
@@ -116,7 +128,7 @@ public class Core extends JavaPlugin {
                     .execute();
 
         }catch (FileNotFoundException e){
-            Sam.getRobot().error(null, "File 'settings.yml' doesn't exists", "Did you touched the file? If not, ask a developer", e);
+            Sam.getRobot().error(null, "File 'settings.yml' doesn't exists", "Did you touched the file? If not, ask my creator", e);
             getPluginLoader().disablePlugin(this);
             return;
         }catch (SQLException e){
@@ -124,13 +136,20 @@ public class Core extends JavaPlugin {
             getPluginLoader().disablePlugin(this);
             return;
         }catch (ClassNotFoundException e){
-            Sam.getRobot().error(null, "OMG, there is no SQL Server here... HELUPP", "Install a SQL Server bb", e);
+            Sam.getRobot().error(null, "OMG, there is no SQL Server here... MAYDAY", "Install a SQL Server bb", e);
             getPluginLoader().disablePlugin(this);
             return;
         }
 
         // Load the BungeeCord or Redis channels
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+
+        try{
+            // Initialize all the messages that are being sent..
+            Message.checkForUpdates(getPluginManager().getFileStructure().getYMLFile("messages"));
+        }catch (Exception e){
+            Sam.getRobot().error(null, e.getMessage(), "Try to contact the server developer", e);
+        }
 
         // Load the modules
         this.GUIManager = new GuiManager(this);
@@ -142,10 +161,29 @@ public class Core extends JavaPlugin {
 
         // Disable this to disable the API
         Synergy.setSpigotAPI(new SpigotAPI());
+
+        //TODO: Load all the used systems and commands for the server to being used.
+        Synergy.info("All systems are loaded!");
+        this.loaded = true;
+        this.disabled = false;
     }
 
     public void onDisable(){
+        this.loaded = false;
+        try{
+            // Initialize all the messages that are being sent..
+            Message.deint(getPluginManager().getFileStructure().getYMLFile("messages"));
+        }catch (Exception e){
+            Sam.getRobot().error(null, e.getMessage(), "Try to contact the server developer", e);
+        }
+        this.disabled = true;
+    }
 
+    // Called when typed /synergy restart/reload
+    public void onRestart(){
+        this.loaded = false;
+        onDisable();
+        onEnable();
     }
 
 }

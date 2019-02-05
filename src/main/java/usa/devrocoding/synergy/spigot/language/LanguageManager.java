@@ -46,7 +46,7 @@ public class LanguageManager extends Module {
                 LanguageFile language = new LanguageFile(key, file);
                 this.language_files.add(language);
             }catch (FileNotFoundException e){
-                Sam.getRobot().error(this, e.getMessage(), "Contact your server developer!", e);
+                Sam.getRobot().error(this, e.getMessage(), "Contact the server developer!", e);
             }
         }
 
@@ -74,7 +74,7 @@ public class LanguageManager extends Module {
             this.language_files.add(language);
             return language;
         }catch (FileNotFoundException e){
-            Sam.getRobot().error(this, e.getMessage(), "Contact your server developer!", e);
+            Sam.getRobot().error(this, e.getMessage(), "Contact the server developer!", e);
         }
         return getDefault();
     }

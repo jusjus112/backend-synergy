@@ -27,7 +27,7 @@ public class UserJoinEvent implements Listener {
 
         if (user == null) {
             // TODO, If failed return to hub or kick if in hub
-            e.getPlayer().kickPlayer(C.ERROR_COLOUR.color() + "Something went wrong while loading your profile!");
+            e.getPlayer().kickPlayer(C.ERROR.getColor() + "Something went wrong while loading your profile!");
         }
     }
 
