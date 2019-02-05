@@ -23,6 +23,11 @@ public class ItemBuilder {
         this.itemMeta = this.itemStack.getItemMeta();
     }
 
+    public ItemBuilder(ItemStack stack){
+        this.itemStack = stack;
+        this.itemMeta = this.itemStack.getItemMeta();
+    }
+
     public ItemBuilder(Material material, int amount){
         this.itemStack = new ItemStack(material, amount);
         this.itemMeta = this.itemStack.getItemMeta();

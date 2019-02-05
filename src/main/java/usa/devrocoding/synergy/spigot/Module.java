@@ -3,6 +3,7 @@ package usa.devrocoding.synergy.spigot;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
+import usa.devrocoding.synergy.spigot.bot_sam.Sam;
 import usa.devrocoding.synergy.spigot.command.SynergyCommand;
 
 import java.util.Arrays;
@@ -13,10 +14,15 @@ public abstract class Module implements Listener {
     private final Core plugin;
     @Getter
     private final String name;
+    @Getter
+    private final Sam sam;
+    @Getter
+    private boolean disabled = false;
 
     public Module(Core plugin, String name) {
         this.plugin = plugin;
         this.name = name;
+        this.sam = new Sam();
 
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
@@ -29,6 +35,10 @@ public abstract class Module implements Listener {
         for (SynergyCommand command : commands) {
             plugin.getCommandManager().getCommands().add(command);
         }
+    }
+
+    public void disable(){
+        this.disabled = true;
     }
 
     public void runTaskAsync(Runnable runnable) {

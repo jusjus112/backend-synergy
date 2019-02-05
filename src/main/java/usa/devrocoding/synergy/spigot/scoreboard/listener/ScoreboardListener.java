@@ -57,7 +57,7 @@ public class ScoreboardListener implements Listener {
 	}
 
 	@EventHandler
-	public void onPlayerJoin(UserLoadEvent e) {
+	public void onPlayerLoadBoard(UserLoadEvent e) {
 		if (scoreboardManager.getScoreboardPolicy() == null) {
 			return;
 		}

@@ -70,6 +70,10 @@ repositories {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 
+    // https://mvnrepository.com/artifact/com.google.zxing/core
+    compile group: 'com.google.zxing', name: 'core', version: '3.2.1'
+    compile group: 'com.warrenstrange', name: 'googleauth', version: '0.5.0'
+
     compile fileTree(dir: 'libs', include: '*.jar')
 
     compileOnly "org.projectlombok:lombok:1.16.16"

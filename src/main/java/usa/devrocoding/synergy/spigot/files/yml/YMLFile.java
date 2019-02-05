@@ -1,12 +1,17 @@
 package usa.devrocoding.synergy.spigot.files.yml;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 
+import lombok.Getter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import usa.devrocoding.synergy.spigot.assets.Pair;
+import usa.devrocoding.synergy.assets.Synergy;
+import usa.devrocoding.synergy.spigot.assets.C;
 
 /**
  * @Author JusJusOneOneTwo
@@ -15,7 +20,8 @@ import usa.devrocoding.synergy.spigot.assets.Pair;
  */
 
 public class YMLFile {
-	
+
+	@Getter
 	private File file;
 	private FileConfiguration data;
 	private String dataFolder;
@@ -37,7 +43,7 @@ public class YMLFile {
 		try {
 			data.save(file);
 		} catch (IOException e) {
-			e.printStackTrace();
+			Synergy.error(e.getMessage());
 		}
 	}
 
@@ -46,9 +52,17 @@ public class YMLFile {
 		data = YamlConfiguration.loadConfiguration(file);
 	}
 
-	public void setup(HashMap<String, Object> data) {
+	public YMLFile setHeader(String header){
+		get().options().header(header);
+		return this;
+	}
+
+	public void set(HashMap<String, Object> data) {
 		if (!data.isEmpty()){
 			for(String key : data.keySet()){
+				if (key.startsWith("#")){
+					continue;
+				}
 				if (!get().contains(key)){
 					get().set(key, data.get(key));
 				}

@@ -1,8 +1,10 @@
 package usa.devrocoding.synergy.services.sql;
 
 import lombok.Getter;
+
 import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.services.SQLService;
+import usa.devrocoding.synergy.spigot.bot_sam.Sam;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -20,46 +22,41 @@ public class DatabaseManager {
         this.sqlService = service;
     }
 
-    public void connect() throws SQLException{
-        System.out.println("[Synergy] Connecting to SQL....");
+    public void connect() throws SQLException, ClassNotFoundException{
+        if (this.connection != null && !connection.isClosed()){
+            return;
+        }
+        Synergy.info("Connecting to SQL....");
         if (getSqlService().isIniatialized()) {
+
+            Class.forName("com.mysql.jdbc.Driver");
+
             connection = DriverManager.getConnection("jdbc:mysql://" + getSqlService().getHost() + ":" + getSqlService().getPort()
                     + "/" + getSqlService().getDatabase(), getSqlService().getUsername(), getSqlService().getPassword());
-            System.out.println("[Synergy] Connected to your SQL Service Provider");
+            Synergy.info("Connected to your SQL Service Provider");
         }else{
             throw new SQLException("SQL Information is wrong or empty! Check 'Settings.yml'");
         }
     }
 
-    public void disconnect(){
-        try{
+    public void disconnect() throws SQLException {
             if (!this.connection.isClosed()) {
                 this.connection.close();
             }
-        }catch(SQLException e){
-            e.printStackTrace();
-        }
     }
 
-    public List<ResultSet> getResults(String query){
-        List<ResultSet> results = new ArrayList<>();
-        try {
-            ResultSet resultSet = getConnection().prepareStatement(query).getResultSet();
-            while(resultSet.next()){
-                results.add(resultSet);
-            }
-        }catch(SQLException e){
-            e.printStackTrace();
-        }
-        return results;
+    public ResultSet getResults(String query) throws SQLException {
+        Statement statement = getConnection().createStatement();
+        ResultSet resultSet = statement.executeQuery(query);
+        return resultSet;
     }
 
-    public void updateStatement(String... queries){
+    public void execute(String... queries) {
         Arrays.stream(queries).forEach(s -> {
             try {
-                getConnection().prepareStatement(s);
+                getConnection().createStatement().executeUpdate(s);
             }catch (SQLException e){
-                e.printStackTrace();
+                Synergy.error("Can't execute statement. Skipped Sam the robot.", e.getMessage());
             }
         });
     }

@@ -1,6 +1,7 @@
-package usa.devrocoding.synergy.spigot.scoreboard;
+package usa.devrocoding.synergy.spigot.test;
 
 import org.bukkit.ChatColor;
+import usa.devrocoding.synergy.spigot.scoreboard.ScoreboardPolicy;
 import usa.devrocoding.synergy.spigot.user.object.Rank;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 

@@ -1,7 +1,6 @@
 package usa.devrocoding.synergy.spigot.assets;
 
 import usa.devrocoding.synergy.spigot.Core;
-import usa.devrocoding.synergy.spigot.Module;
 import usa.devrocoding.synergy.spigot.files.json.JSONFile;
 import usa.devrocoding.synergy.spigot.files.yml.YMLFile;
 
@@ -10,31 +9,28 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FileStructure extends Module {
+public class FileStructure {
 
-    private Map<String, YMLFile> ymlFiles = new HashMap<>();
-    private Map<String, JSONFile> jsonFiles = new HashMap<>();
+    private static Map<String, YMLFile> ymlFiles = new HashMap<>();
+    private static Map<String, JSONFile> jsonFiles = new HashMap<>();
 
     public enum FileType{
         JSON, YML
     }
 
-    public FileStructure(Core plugin){
-        super(plugin, "FileStructure Manager");
-    }
 
     public YMLFile getYMLFile(String key)throws FileNotFoundException {
         if (ymlFiles.containsKey(key)){
             return ymlFiles.get(key);
         }
-        throw new FileNotFoundException("Cam't find the file with key '"+key+"'");
+        throw new FileNotFoundException("Can't find the file with key '"+key+"'");
     }
 
     public JSONFile getJSONFile(String key)throws FileNotFoundException{
         if (jsonFiles.containsKey(key)){
             return jsonFiles.get(key);
         }
-        throw new FileNotFoundException("Cam't find the file with key '"+key+"'");
+        throw new FileNotFoundException("Can't find the file with key '"+key+"'");
     }
 
     public FileStructure add(String key, String folder, String file, FileType type){
@@ -45,9 +41,9 @@ public class FileStructure extends Module {
                     return this;
                 }
                 if (folder == null){
-                    query = getPlugin().getDataFolder()+"";
+                    query = Core.getPlugin().getDataFolder()+"";
                 }else{
-                    query = getPlugin().getDataFolder()+File.separator+folder;
+                    query = Core.getPlugin().getDataFolder()+File.separator+folder;
                 }
                 ymlFiles.put(key, new YMLFile(query, file));
                 break;

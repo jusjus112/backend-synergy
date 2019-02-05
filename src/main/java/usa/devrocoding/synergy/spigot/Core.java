@@ -7,20 +7,29 @@ import org.bukkit.plugin.java.JavaPlugin;
 import usa.devrocoding.synergy.services.SQLService;
 import usa.devrocoding.synergy.services.sql.DatabaseManager;
 import usa.devrocoding.synergy.assets.Synergy;
+import usa.devrocoding.synergy.services.sql.SQLDataType;
+import usa.devrocoding.synergy.services.sql.SQLDefaultType;
+import usa.devrocoding.synergy.services.sql.TableBuilder;
 import usa.devrocoding.synergy.spigot.api.SpigotAPI;
 import usa.devrocoding.synergy.spigot.assets.C;
 import usa.devrocoding.synergy.spigot.assets.PluginManager;
 import usa.devrocoding.synergy.spigot.assets.SynergyMani;
+import usa.devrocoding.synergy.spigot.assets.object.Message;
+import usa.devrocoding.synergy.spigot.bot_sam.Sam;
+import usa.devrocoding.synergy.spigot.bot_sam.object.ErrorHandler;
 import usa.devrocoding.synergy.spigot.command.CommandManager;
 import usa.devrocoding.synergy.spigot.discord.DiscordManager;
 import usa.devrocoding.synergy.spigot.economy.EconomyManager;
 import usa.devrocoding.synergy.spigot.files.yml.YMLFile;
 import usa.devrocoding.synergy.spigot.gui.GuiManager;
 import usa.devrocoding.synergy.spigot.hologram.HologramManager;
+import usa.devrocoding.synergy.spigot.language.Language;
 import usa.devrocoding.synergy.spigot.language.LanguageManager;
+import usa.devrocoding.synergy.spigot.language.LanguageStrings;
 import usa.devrocoding.synergy.spigot.runnable.RunnableManager;
 import usa.devrocoding.synergy.spigot.scoreboard.ScoreboardManager;
 import usa.devrocoding.synergy.spigot.user.UserManager;
+import usa.devrocoding.synergy.spigot.user.object.UserExperience;
 
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
@@ -31,6 +40,10 @@ public class Core extends JavaPlugin {
 
     @Getter @Setter
     private static Core plugin;
+
+    @Getter
+    private boolean loaded = false,
+                    disabled = false;
 
     @Getter
     private PluginManager pluginManager;
@@ -62,10 +75,29 @@ public class Core extends JavaPlugin {
         setPlugin(this);
 
         // Load Files and other important things
+        C.initColors();
+        try{
+            // Initialize all the messages that are being sent..
+            Message.init(getPluginManager().getFileStructure().getYMLFile("messages"));
+        }catch (Exception e){
+            Sam.getRobot().error(null, e.getMessage(), "Try to contact the server developer", e);
+        }
+
+        // Init sam the robot
+        new Sam();
+        getLogger().addHandler(new ErrorHandler(Sam.getRobot()));
+
+        this.commandManager = new CommandManager(this);
+        this.runnableManager = new RunnableManager(this);
+
+        this.languageManager = new LanguageManager(this);
+
+        // Register Language Keys
+        this.languageManager.registerLanguages(LanguageStrings.values());
+
         this.pluginManager = new PluginManager(this);
 
-        // Print our logo into the console
-        Arrays.stream(Synergy.getLogos().logo_colossal).forEach(s -> getServer().getConsoleSender().sendMessage(C.PLUGIN_COLOR.color()+s));
+        Arrays.stream(Synergy.getLogos().logo_colossal).forEach(s -> getServer().getConsoleSender().sendMessage(C.PLUGIN.getColor()+s));
         System.out.println("  ");
 
         this.pluginManager.load();
@@ -86,12 +118,25 @@ public class Core extends JavaPlugin {
 
             // Connect to SQL
             this.databaseManager.connect();
+
+             // Generate Tables
+            new TableBuilder("synergy_users")
+                    .addColumn("uuid", SQLDataType.VARCHAR, 300,false, SQLDefaultType.NO_DEFAULT, true)
+                    .addColumn("name", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
+                    .addColumn("rank", SQLDataType.VARCHAR, 100,false, SQLDefaultType.CUSTOM.setCustom("NONE"), false)
+                    .addColumn("userexperience", SQLDataType.VARCHAR, 100,false, SQLDefaultType.CUSTOM.setCustom(UserExperience.NOOB), false)
+                    .execute();
+
         }catch (FileNotFoundException e){
-            Synergy.error("Can't seem to find the file 'settings.yml'");
+            Sam.getRobot().error(null, "File 'settings.yml' doesn't exists", "Did you touched the file? If not, ask my creator", e);
             getPluginLoader().disablePlugin(this);
             return;
         }catch (SQLException e){
-            Synergy.error("Can't connect to your SQL service provider", e.getMessage());
+            Sam.getRobot().error(null, "I can't connect to your SQL Service provider", "Check your SQL settings in the 'settings.yml'", e);
+            getPluginLoader().disablePlugin(this);
+            return;
+        }catch (ClassNotFoundException e){
+            Sam.getRobot().error(null, "OMG, there is no SQL Server here... MAYDAY", "Install a SQL Server bb", e);
             getPluginLoader().disablePlugin(this);
             return;
         }
@@ -99,23 +144,46 @@ public class Core extends JavaPlugin {
         // Load the BungeeCord or Redis channels
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 
+        try{
+            // Initialize all the messages that are being sent..
+            Message.checkForUpdates(getPluginManager().getFileStructure().getYMLFile("messages"));
+        }catch (Exception e){
+            Sam.getRobot().error(null, e.getMessage(), "Try to contact the server developer", e);
+        }
+
         // Load the modules
-        this.commandManager = new CommandManager(this);
-        this.runnableManager = new RunnableManager(this);
         this.GUIManager = new GuiManager(this);
         this.scoreboardManager = new ScoreboardManager(this);
         this.userManager = new UserManager(this);
         this.economyManager = new EconomyManager(this);
         this.hologramManager = new HologramManager(this);
         this.discordManager = new DiscordManager();
-        this.languageManager = new LanguageManager(this);
 
         // Disable this to disable the API
         Synergy.setSpigotAPI(new SpigotAPI());
+
+        //TODO: Load all the used systems and commands for the server to being used.
+        Synergy.info("All systems are loaded!");
+        this.loaded = true;
+        this.disabled = false;
     }
 
     public void onDisable(){
+        this.loaded = false;
+        try{
+            // Initialize all the messages that are being sent..
+            Message.deint(getPluginManager().getFileStructure().getYMLFile("messages"));
+        }catch (Exception e){
+            Sam.getRobot().error(null, e.getMessage(), "Try to contact the server developer", e);
+        }
+        this.disabled = true;
+    }
 
+    // Called when typed /synergy restart/reload
+    public void onRestart(){
+        this.loaded = false;
+        onDisable();
+        onEnable();
     }
 
 }

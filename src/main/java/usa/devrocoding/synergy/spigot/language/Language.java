@@ -1,4 +1,9 @@
 package usa.devrocoding.synergy.spigot.language;
 
-public class Language {
+public interface Language {
+
+    Language[] register();
+    String getKey();
+    Object getDefault();
+
 }

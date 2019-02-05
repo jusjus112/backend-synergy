@@ -1,6 +1,7 @@
 package usa.devrocoding.synergy.spigot.gui;
 
 import com.google.common.collect.Maps;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -11,8 +12,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 
-public class Gui {
+public abstract class Gui {
 
+	@Getter
 	private final Core plugin;
 	private final String name;
 	private final GuiSize guiSize;
@@ -27,7 +29,11 @@ public class Gui {
 		this.currentSessions = Maps.newHashMap();
 		
 		plugin.getGUIManager().getMenus().add(this);
+
+		setup();
 	}
+
+	public abstract void setup();
 	
 	public Inventory open(Player player) {
 		Inventory inventory = Bukkit.createInventory(null, guiSize.getSlots(), name);
@@ -62,7 +68,12 @@ public class Gui {
 				return;
 			}
 		}
+	}
 
+	public void line(int first, int last, GuiElement element){
+		for (int i=first;i<=last;i++){
+			addElement(i, element);
+		}
 	}
 	
 	public boolean isFull() {

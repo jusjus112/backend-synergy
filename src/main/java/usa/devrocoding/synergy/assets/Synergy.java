@@ -32,6 +32,10 @@ public class Synergy {
         Arrays.stream(messages).forEach(s -> System.out.println("[Synergy] "+s));
     }
 
+    public static void normal(String prefix, String... messages){
+        Arrays.stream(messages).forEach(s -> System.out.println("[Synergy "+prefix+"] "+s));
+    }
+
     public static void error(String... messages){
         Arrays.stream(messages).forEach(s -> System.out.println("[Synergy ERROR] "+s));
     }

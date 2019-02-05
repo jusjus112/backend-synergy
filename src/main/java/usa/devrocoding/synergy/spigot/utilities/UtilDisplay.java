@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import usa.devrocoding.synergy.assets.Synergy;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -70,7 +71,7 @@ public class UtilDisplay implements Listener {
                             Integer.valueOf(fadeOut)});
             getMethod(h.getClass(), "sendPacket", new Class[0]).invoke(c, new Object[]{packet});
         } catch (Exception e) {
-            e.printStackTrace();
+            Synergy.error(e.getMessage());
         }
     }
 
@@ -105,7 +106,7 @@ public class UtilDisplay implements Listener {
             f.setAccessible(true);
             return f;
         } catch (Exception e) {
-            e.printStackTrace();
+            Synergy.error(e.getMessage());
         }
         return null;
     }
@@ -124,7 +125,7 @@ public class UtilDisplay implements Listener {
         try {
             return getMethod(obj.getClass(), "getHandle", new Class[0]).invoke(obj, new Object[0]);
         } catch (Exception e) {
-            e.printStackTrace();
+            Synergy.error(e.getMessage());
         }
         return null;
     }

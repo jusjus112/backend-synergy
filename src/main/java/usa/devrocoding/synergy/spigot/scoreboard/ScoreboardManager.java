@@ -2,10 +2,10 @@ package usa.devrocoding.synergy.spigot.scoreboard;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
 import usa.devrocoding.synergy.spigot.scoreboard.listener.ScoreboardListener;
+import usa.devrocoding.synergy.spigot.test.DefaultScoreboard;
 
 import java.util.HashMap;
 import java.util.List;
