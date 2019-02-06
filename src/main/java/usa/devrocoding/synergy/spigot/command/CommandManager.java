@@ -8,10 +8,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
+import usa.devrocoding.synergy.spigot.assets.object.Message;
 import usa.devrocoding.synergy.spigot.utilities.UtilString;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +34,10 @@ public class CommandManager extends Module {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+
+        Message.add(new HashMap<String, Object>(){{
+            put("player.not_found", "Could not find %player% %color_chat% %attempt%");
+        }});
 
         unregisterMinecraftCommand("me");
         unregisterMinecraftCommand("plugins");

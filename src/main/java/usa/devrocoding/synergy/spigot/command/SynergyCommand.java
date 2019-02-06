@@ -50,7 +50,7 @@ public abstract class SynergyCommand {
 
     public void couldNotFind(Player p, String thing, String attempt) {
         p.sendMessage(
-                     Message.format("command.player.not_found", "Could not find %thing% %color_primary% %attempt%")
+                     Message.format("command.player.not_found", null)
         );
 //        p.sendMessage(C.PRIMARY + "Could not find " + thing + " " + C.MESSAGE_HIGHLIGHT + attempt + C.PRIMARY_MESSAGE + ".");
     }

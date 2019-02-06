@@ -26,10 +26,6 @@ public class PluginManager extends Module {
         registerListener(
                 new EventHandlers()
         );
-
-        registerCommand(
-                new CommandSynergy(plugin)
-        );
     }
 
     // This will be called on a startup and on a reloads
@@ -40,10 +36,13 @@ public class PluginManager extends Module {
         this.fileStructure
 //                .add("modules", null, "Modules", FileStructure.FileType.YML)
                 .add("sam", null, "Sam", FileStructure.FileType.YML)
-                .add("buddy", null, "Buddy", FileStructure.FileType.YML)
+//                .add("buddy", null, "Buddy", FileStructure.FileType.YML)
                 .add("settings", null, "Settings", FileStructure.FileType.YML)
+                .add("en", "lang", "en_EN", FileStructure.FileType.YML)
+                .add("nl", "lang", "nl_NL", FileStructure.FileType.YML)
+                .add("33asdfAS23", "changelogs/synergy", "stuff", FileStructure.FileType.YML)
+                .add("example_changelog", "changelogs/server", "example_changelog", FileStructure.FileType.YML)
 //                .add("modules", null, "Modules", FileStructure.FileType.YML)
-                .add("messages", null, "Messages", FileStructure.FileType.YML)
                 .save();
         try{
             this.fileStructure.getYMLFile("settings").set(

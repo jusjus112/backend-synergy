@@ -2,6 +2,7 @@ package usa.devrocoding.synergy.spigot.assets;
 
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.files.json.JSONFile;
+import usa.devrocoding.synergy.spigot.files.txt.TXTFile;
 import usa.devrocoding.synergy.spigot.files.yml.YMLFile;
 
 import java.io.File;
@@ -13,9 +14,10 @@ public class FileStructure {
 
     private static Map<String, YMLFile> ymlFiles = new HashMap<>();
     private static Map<String, JSONFile> jsonFiles = new HashMap<>();
+    private static Map<String, TXTFile> txtFiles = new HashMap<>();
 
     public enum FileType{
-        JSON, YML
+        JSON, YML, TXT
     }
 
 
@@ -23,14 +25,21 @@ public class FileStructure {
         if (ymlFiles.containsKey(key)){
             return ymlFiles.get(key);
         }
-        throw new FileNotFoundException("Can't find the file with key '"+key+"'");
+        throw new FileNotFoundException("Can't find the YAML file with key '"+key+"'");
     }
 
     public JSONFile getJSONFile(String key)throws FileNotFoundException{
         if (jsonFiles.containsKey(key)){
             return jsonFiles.get(key);
         }
-        throw new FileNotFoundException("Can't find the file with key '"+key+"'");
+        throw new FileNotFoundException("Can't find the JSON file with key '"+key+"'");
+    }
+
+    public TXTFile getTXTFile(String key)throws FileNotFoundException{
+        if (txtFiles.containsKey(key)){
+            return txtFiles.get(key);
+        }
+        throw new FileNotFoundException("Can't find the TXT file with key '"+key+"'");
     }
 
     public FileStructure add(String key, String folder, String file, FileType type){
@@ -49,6 +58,12 @@ public class FileStructure {
                 break;
             case JSON:
                 if (jsonFiles.containsKey(key)){
+                    return this;
+                }
+                jsonFiles.put(key, new JSONFile((folder==null?"":folder+File.separator)+file));
+                break;
+            case TXT:
+                if (txtFiles.containsKey(key)){
                     return this;
                 }
                 jsonFiles.put(key, new JSONFile((folder==null?"":folder+File.separator)+file));

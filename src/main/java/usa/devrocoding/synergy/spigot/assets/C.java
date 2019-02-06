@@ -46,7 +46,7 @@ public enum C {
 
     public static void initColors(){
         for(C color : values()){
-            Synergy.debug(color.messageKey+" - "+color.toString().toLowerCase());
+//            Synergy.debug(color.messageKey+" - "+color.toString().toLowerCase());
             color.setColor(
                     ChatColor.getByChar
                             (

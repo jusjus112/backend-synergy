@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import usa.devrocoding.synergy.services.SQLService;
 import usa.devrocoding.synergy.services.sql.DatabaseManager;
 import usa.devrocoding.synergy.assets.Synergy;
@@ -12,11 +13,13 @@ import usa.devrocoding.synergy.services.sql.SQLDefaultType;
 import usa.devrocoding.synergy.services.sql.TableBuilder;
 import usa.devrocoding.synergy.spigot.api.SpigotAPI;
 import usa.devrocoding.synergy.spigot.assets.C;
+import usa.devrocoding.synergy.spigot.assets.GlobalManager;
 import usa.devrocoding.synergy.spigot.assets.PluginManager;
 import usa.devrocoding.synergy.spigot.assets.SynergyMani;
 import usa.devrocoding.synergy.spigot.assets.object.Message;
 import usa.devrocoding.synergy.spigot.bot_sam.Sam;
 import usa.devrocoding.synergy.spigot.bot_sam.object.ErrorHandler;
+import usa.devrocoding.synergy.spigot.changelog.ChangelogManager;
 import usa.devrocoding.synergy.spigot.command.CommandManager;
 import usa.devrocoding.synergy.spigot.discord.DiscordManager;
 import usa.devrocoding.synergy.spigot.economy.EconomyManager;
@@ -28,6 +31,7 @@ import usa.devrocoding.synergy.spigot.language.LanguageManager;
 import usa.devrocoding.synergy.spigot.language.LanguageStrings;
 import usa.devrocoding.synergy.spigot.runnable.RunnableManager;
 import usa.devrocoding.synergy.spigot.scoreboard.ScoreboardManager;
+import usa.devrocoding.synergy.spigot.two_factor_authentication.GoogleAuthManager;
 import usa.devrocoding.synergy.spigot.user.UserManager;
 import usa.devrocoding.synergy.spigot.user.object.UserExperience;
 
@@ -67,6 +71,14 @@ public class Core extends JavaPlugin {
     private DiscordManager discordManager;
     @Getter
     private LanguageManager languageManager;
+    @Getter
+    private GlobalManager globalManager;
+    @Getter
+    private Message message;
+    @Getter
+    private GoogleAuthManager googleAuthManager;
+    @Getter
+    private ChangelogManager changelogManager;
 
     @Getter
     private SynergyMani manifest;
@@ -74,13 +86,13 @@ public class Core extends JavaPlugin {
     public void onEnable(){
         setPlugin(this);
 
-        // Load Files and other important thing
+        Arrays.stream(Synergy.getLogos().logo_colossal).forEach(s -> getServer().getConsoleSender().sendMessage(C.PLUGIN.getColor()+s));
+        System.out.println("  ");
 
         // Init sam the robot
         new Sam();
         getLogger().addHandler(new ErrorHandler(Sam.getRobot()));
 
-        this.commandManager = new CommandManager(this);
         this.runnableManager = new RunnableManager(this);
 
         this.languageManager = new LanguageManager(this);
@@ -89,9 +101,6 @@ public class Core extends JavaPlugin {
         this.languageManager.registerLanguages(LanguageStrings.values());
 
         this.pluginManager = new PluginManager(this);
-
-        Arrays.stream(Synergy.getLogos().logo_colossal).forEach(s -> getServer().getConsoleSender().sendMessage(C.PLUGIN.getColor()+s));
-        System.out.println("  ");
 
         this.pluginManager.load();
 
@@ -120,6 +129,13 @@ public class Core extends JavaPlugin {
                     .addColumn("userexperience", SQLDataType.VARCHAR, 100,false, SQLDefaultType.CUSTOM.setCustom(UserExperience.NOOB), false)
                     .execute();
 
+//            new TableBuilder("two_factor_authentication")
+//                    .addColumn("uuid", SQLDataType.VARCHAR, 300,false, SQLDefaultType.NO_DEFAULT, true)
+//                    .addColumn("name", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
+//                    .addColumn("rank", SQLDataType.VARCHAR, 100,false, SQLDefaultType.CUSTOM.setCustom("NONE"), false)
+//                    .addColumn("userexperience", SQLDataType.VARCHAR, 100,false, SQLDefaultType.CUSTOM.setCustom(UserExperience.NOOB), false)
+//                    .execute();
+
         }catch (FileNotFoundException e){
             Sam.getRobot().error(null, "File 'settings.yml' doesn't exists", "Did you touched the file? If not, ask my creator", e);
             getPluginLoader().disablePlugin(this);
@@ -137,34 +153,41 @@ public class Core extends JavaPlugin {
         // Load the BungeeCord or Redis channels
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 
+        this.message = new Message(this);
+
         // Initialize all the messages that are being sent..
         try{
-            Message.init(getPluginManager().getFileStructure().getYMLFile("messages"));
+            this.message.init(getPluginManager().getFileStructure().getYMLFile("en"));
             C.initColors();
         }catch (Exception e){
-            Sam.getRobot().error(null, e.getCause().getMessage(), "Try to contact the server developer", e);
+            Sam.getRobot().error(null, e.getMessage(), "Try to contact the server developer", e);
         }
 
         // Load the modules
+        this.commandManager = new CommandManager(this);
+        this.globalManager = new GlobalManager(this);
         this.GUIManager = new GuiManager(this);
         this.scoreboardManager = new ScoreboardManager(this);
         this.userManager = new UserManager(this);
         this.economyManager = new EconomyManager(this);
         this.hologramManager = new HologramManager(this);
         this.discordManager = new DiscordManager();
+        this.googleAuthManager = new GoogleAuthManager();
+        this.changelogManager = new ChangelogManager(this);
 
         // Disable this to disable the API
         Synergy.setSpigotAPI(new SpigotAPI());
 
-        try{
-            // Initialize all the messages that are being sent..
-            Message.checkForUpdates(getPluginManager().getFileStructure().getYMLFile("messages"));
-        }catch (Exception e){
-            Sam.getRobot().error(null, e.getCause().getMessage(), "Try to contact the server developer", e);
-        }
+        // Update all the messages that are being sent..
+        Message.update();
 
         //TODO: Load all the used systems and commands for the server to being used.
         Synergy.info("All systems are loaded!");
+        Synergy.info("Enabling Google AUTH");
+
+//        getGoogleAuthManager().getTwoFactorKey();
+//        getGoogleAuthManager().isCorrect();
+
         this.loaded = true;
         this.disabled = false;
     }
@@ -173,7 +196,7 @@ public class Core extends JavaPlugin {
         this.loaded = false;
         try{
             // Initialize all the messages that are being sent..
-            Message.deint(getPluginManager().getFileStructure().getYMLFile("messages"));
+            this.message.deint(getPluginManager().getFileStructure().getYMLFile("en"));
         }catch (Exception e){
             Sam.getRobot().error(null, e.getMessage(), "Try to contact the server developer", e);
         }
