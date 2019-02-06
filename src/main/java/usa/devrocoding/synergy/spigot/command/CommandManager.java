@@ -5,10 +5,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.craftbukkit.v1_12_R1.CraftServer;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
 import usa.devrocoding.synergy.spigot.assets.object.Message;
+import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 import usa.devrocoding.synergy.spigot.utilities.UtilString;
 
 import java.lang.reflect.Field;
@@ -17,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CommandManager extends Module {
+public class CommandManager extends Module implements Listener {
 
     private final List<SynergyCommand> commands = Lists.newArrayList();
     private Map<String, SynergyCommand> knownCommands;
@@ -39,6 +41,18 @@ public class CommandManager extends Module {
             put("player.not_found", "Could not find %player% %color_chat% %attempt%");
         }});
 
+        String[] disabled_cmds = new String[]{
+                "me","pl","plugins","ver","version","about","help","whisper","gamerule","tell","msg",
+                "seed","give","xp","tp","kill","playsound","title","say","testfor","spreadplayers",
+                "advancement","scoreboard","tellraw","toggledownfall","worldborder","trigger",
+                "fill","particle","setidletimeout","setworldspawn","time","locate","recipe","?",
+                "summon","function","pardon","ban","kick","testforblock","spawnpoint","clone","enchant","w"
+        };
+
+        for (String cmd : disabled_cmds){
+            unregisterMinecraftCommand(cmd);
+        }
+
         unregisterMinecraftCommand("me");
         unregisterMinecraftCommand("plugins");
         unregisterMinecraftCommand("pl");
@@ -46,11 +60,15 @@ public class CommandManager extends Module {
         unregisterMinecraftCommand("ver");
         unregisterMinecraftCommand("about");
         unregisterMinecraftCommand("help");
-        unregisterMinecraftCommand("?");
         unregisterMinecraftCommand("whisper");
+        unregisterMinecraftCommand("gamerule");
         unregisterMinecraftCommand("tell");
         unregisterMinecraftCommand("msg");
 //        commands.add(new CommandHelp(plugin));
+
+        registerListener(
+                this
+        );
     }
 
     @EventHandler
@@ -63,11 +81,11 @@ public class CommandManager extends Module {
                 e.setCancelled(true);
                 args.remove(0);
 
-//                User user = getPlugin().getUserManager().getUser(e.getPlayer());
+                SynergyUser user = getPlugin().getUserManager().getUser(e.getPlayer());
 
 //                if(Permission.allowed(user, command.getRank(), false)) {
 //                    if(Recharge.recharge(getPlugin(), e.getPlayer(), "Command " + command.getAliases()[0], command.getCooldown())) {
-//                        command.execute(e.getPlayer(), args.toArray(new String[args.size()]));
+                        command.execute(user, e.getPlayer(), args.toArray(new String[args.size()]));
 //                    }
 //                }
             }

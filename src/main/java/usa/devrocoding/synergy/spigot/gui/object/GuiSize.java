@@ -3,6 +3,7 @@ package usa.devrocoding.synergy.spigot.gui.object;
 import lombok.Getter;
 
 public enum GuiSize {
+
     ONE_ROW(9),
     TWO_ROWS(18),
     THREE_ROWS(27),
