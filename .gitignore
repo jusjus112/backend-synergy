@@ -11,3 +11,5 @@ synergy-backend\.iml
 gradle/
 
 gradlew
+
+out/

@@ -16,7 +16,6 @@ plugins {
 
 compileJava.options.encoding = 'UTF-8'
 group 'backend-synergy'
-//mainClassName = 'usa.devrocoding.synergy.Synergy'
 version '1.0-SNAPSHOT'
 sourceCompatibility = 1.8
 defaultTasks 'clean', 'build'
@@ -46,41 +45,25 @@ repositories {
     }
 }
 
-//configurations {
-//    provided
-//    compile.extendsFrom provided
-//}
-
-//shadowJar {
-//    baseName = 'Synergy'
-//    classifier = null
-//    version = '1.0.0'
-//
-//    mergeServiceFiles()
-//    dependencies {
-//        include(dependency('redis.clients:.*'))
-//        include(dependency('org.apache.commons:.*'))
-//        include(dependency('com.google.code.gson:.*'))
-//        include(dependency('jline:.*'))
-//    }
-//}
-
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
-
-    // https://mvnrepository.com/artifact/com.google.zxing/core
-    compile group: 'com.google.zxing', name: 'core', version: '3.2.1'
-    compile group: 'com.warrenstrange', name: 'googleauth', version: '1.1.2'
-
     compile fileTree(dir: 'libs', include: '*.jar')
 
+    // SPIGOT Dependencies
+    compile group: 'com.google.zxing', name: 'core', version: '3.2.1'
+    compile group: 'com.warrenstrange', name: 'googleauth', version: '1.1.2' // GoogleAuth
     compileOnly "org.projectlombok:lombok:1.16.16"
 
-    compile group: 'redis.clients', name: 'jedis', version: '2.9.0'
-    compile group: 'com.google.code.gson', name: 'gson', version: '2.3.1'
-    compile group: 'com.google.guava', name: 'guava', version: 'r05'
-}
+    // GLOBAL Dependencies
+    compile group: 'redis.clients', name: 'jedis', version: '2.9.0' // Redis
+    compile group: 'com.google.code.gson', name: 'gson', version: '2.3.1' // GSON
+    compile group: 'com.google.guava', name: 'guava', version: 'r05' // Guava
+    compile 'org.apache.httpcomponents:httpclient:4.5.6' // Http requests
+    compile 'com.taskadapter:trello-java-wrapper:0.8' // Trello API
 
-//processResources {
-//    expand project.properties
-//}
+    // DISCORD Dependencies
+    compile 'net.dv8tion:JDA:3.8.1_448' // Discord API
+
+    // BUNGEE Dependencies
+
+}
