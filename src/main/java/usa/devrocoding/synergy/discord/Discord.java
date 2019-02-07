@@ -4,6 +4,7 @@ import lombok.Getter;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
+import usa.devrocoding.synergy.discord.assets.DiscordManager;
 import usa.devrocoding.synergy.discord.command.CommandManager;
 
 public class Discord {
@@ -13,6 +14,8 @@ public class Discord {
 
     @Getter
     public static CommandManager commandManager;
+    @Getter
+    public static DiscordManager discordManager;
 
     public static void main(String[] args) {
         try{
@@ -21,6 +24,11 @@ public class Discord {
             getJda().setAutoReconnect(true);
 
             commandManager = new CommandManager();
+            discordManager = new DiscordManager();
+
+            getJda().addEventListener(
+                    discordManager.getListeners()
+            );
         }catch (Exception e){
             e.printStackTrace();
         }

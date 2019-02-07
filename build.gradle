@@ -14,10 +14,18 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '2.0.4'
 }
 
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'usa.devrocoding.synergy.discord.Discord' // Discord psvm
+        )
+    }
+}
+
 compileJava.options.encoding = 'UTF-8'
 group 'backend-synergy'
 version '1.0-SNAPSHOT'
-sourceCompatibility = 1.8
+sourceCompatibility = 1.8 // Java version
 defaultTasks 'clean', 'build'
 
 jar.enabled = true

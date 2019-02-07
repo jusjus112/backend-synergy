@@ -20,10 +20,6 @@ public class CommandManager extends DiscordModule {
         registerEventListeners(
                 new CommandListener()
         );
-
-        registerCommands(
-                new CommandSynergy()
-        );
     }
 
     public void addCommand(DiscordCommand discordCommand){
