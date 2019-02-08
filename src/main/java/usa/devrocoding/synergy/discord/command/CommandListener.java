@@ -20,7 +20,7 @@ public class CommandListener extends ListenerAdapter {
         Member member = event.getMember();
 
         for(DiscordCommand command : Discord.getCommandManager().getCommands()){
-            if (Arrays.asList(command.getAliases()).contains(content.toLowerCase())){
+            if (command.getAliases().contains(content.toLowerCase())){
                 if (member.hasPermission(command.getRank().getHighestPermission())) {
                     command.execute(member, channel, message);
                 }

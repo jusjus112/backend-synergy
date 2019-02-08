@@ -29,6 +29,7 @@ import usa.devrocoding.synergy.spigot.hologram.HologramManager;
 import usa.devrocoding.synergy.spigot.language.Language;
 import usa.devrocoding.synergy.spigot.language.LanguageManager;
 import usa.devrocoding.synergy.spigot.language.LanguageStrings;
+import usa.devrocoding.synergy.spigot.plugin_messaging.PluginMessagingManager;
 import usa.devrocoding.synergy.spigot.runnable.RunnableManager;
 import usa.devrocoding.synergy.spigot.scoreboard.ScoreboardManager;
 import usa.devrocoding.synergy.spigot.two_factor_authentication.GoogleAuthManager;
@@ -79,6 +80,8 @@ public class Core extends JavaPlugin {
     private GoogleAuthManager googleAuthManager;
     @Getter
     private ChangelogManager changelogManager;
+    @Getter
+    private PluginMessagingManager pluginMessagingManager;
 
     @Getter
     private SynergyMani manifest;
@@ -98,7 +101,7 @@ public class Core extends JavaPlugin {
         this.languageManager = new LanguageManager(this);
 
         // Register Language Keys
-        this.languageManager.registerLanguages(LanguageStrings.values());
+//        this.languageManager.registerLanguages(LanguageStrings.values());
 
         this.pluginManager = new PluginManager(this);
 
@@ -128,13 +131,6 @@ public class Core extends JavaPlugin {
                     .addColumn("rank", SQLDataType.VARCHAR, 100,false, SQLDefaultType.CUSTOM.setCustom("NONE"), false)
                     .addColumn("userexperience", SQLDataType.VARCHAR, 100,false, SQLDefaultType.CUSTOM.setCustom(UserExperience.NOOB), false)
                     .execute();
-
-//            new TableBuilder("two_factor_authentication")
-//                    .addColumn("uuid", SQLDataType.VARCHAR, 300,false, SQLDefaultType.NO_DEFAULT, true)
-//                    .addColumn("name", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
-//                    .addColumn("rank", SQLDataType.VARCHAR, 100,false, SQLDefaultType.CUSTOM.setCustom("NONE"), false)
-//                    .addColumn("userexperience", SQLDataType.VARCHAR, 100,false, SQLDefaultType.CUSTOM.setCustom(UserExperience.NOOB), false)
-//                    .execute();
 
         }catch (FileNotFoundException e){
             Sam.getRobot().error(null, "File 'settings.yml' doesn't exists", "Did you touched the file? If not, ask my creator", e);
@@ -174,6 +170,7 @@ public class Core extends JavaPlugin {
         this.discordManager = new DiscordManager();
         this.googleAuthManager = new GoogleAuthManager();
         this.changelogManager = new ChangelogManager(this);
+        this.pluginMessagingManager = new PluginMessagingManager(this);
 
         // Disable this to disable the API
         Synergy.setSpigotAPI(new SpigotAPI());
