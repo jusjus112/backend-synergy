@@ -22,7 +22,7 @@ public class Synergy {
     private static Logo logos = new Logo();
 
     public static void debug(String... messages){
-        Arrays.stream(messages).forEach(s -> System.out.println("[Synergy DEBUG] "+s));
+        Arrays.stream(messages).forEach(s -> System.out.println(LinuxColorCodes.ANSI_PURPLE+"[Synergy DEBUG] "+s+LinuxColorCodes.ANSI_RESET));
     }
 
     public static void info(String... messages){

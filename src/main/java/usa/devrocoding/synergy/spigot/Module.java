@@ -3,6 +3,7 @@ package usa.devrocoding.synergy.spigot;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
+import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.bot_sam.Sam;
 import usa.devrocoding.synergy.spigot.command.SynergyCommand;
 
@@ -19,10 +20,19 @@ public abstract class Module implements Listener {
     @Getter
     private boolean disabled = false;
 
+    @Getter
+    public static String loaded_msg = "";
+
     public Module(Core plugin, String name) {
         this.plugin = plugin;
         this.name = name;
         this.sam = new Sam();
+
+//        Synergy.info(name + " loaded....");
+        if (loaded_msg.length() > 0){
+            loaded_msg += ", ";
+        }
+        loaded_msg += name;
 
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }

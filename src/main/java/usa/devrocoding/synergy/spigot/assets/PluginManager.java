@@ -1,15 +1,12 @@
 package usa.devrocoding.synergy.spigot.assets;
 
 import lombok.Getter;
-import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
-import usa.devrocoding.synergy.spigot.api.commands.CommandSynergy;
 import usa.devrocoding.synergy.spigot.bot_sam.Sam;
 import usa.devrocoding.synergy.spigot.events.EventHandlers;
 
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class PluginManager extends Module {

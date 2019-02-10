@@ -12,19 +12,22 @@ import java.util.Arrays;
 public enum C {
 
     CHAT(ChatColor.GRAY, "colors"),
+    INFO(ChatColor.YELLOW, "colors"),
     PREFIX(ChatColor.GOLD, "colors"),
     ITEM_TITLE(ChatColor.YELLOW, "colors"),
     PRIMARY(ChatColor.GRAY, "colors"),
     MESSAGE_HIGHLIGHT(ChatColor.GREEN, "colors"),
     ERROR(ChatColor.RED, "colors"),
     SUCCESS(ChatColor.RED, "colors"),
+    SAM(ChatColor.LIGHT_PURPLE, "colors"),
     CHAT_HIGHLIGHT(ChatColor.AQUA, "colors"),
     SCOREBOARD_TITLE(ChatColor.GREEN, "scoreboard.colors"),
     SCOREBOARD_SUBTITLE(ChatColor.GRAY, "scoreboard.colors"),
     PLUGIN(ChatColor.YELLOW, "colors");
 
     public enum Symbol{
-        HEARTH("❤");
+        HEARTH("❤"),
+        KLAVER("♠");
 
         @Getter
         private String symbol;
@@ -81,7 +84,7 @@ public enum C {
     }
 
     public static String getLineWithNameNoAttr(String name){
-        return "-------------- "+name+" ------------------";
+        return "----------- "+C.INFO.getColor()+name+ChatColor.RESET+" -----------";
     }
 
     public static String getLineWithNameWithoutSymbols(String name){

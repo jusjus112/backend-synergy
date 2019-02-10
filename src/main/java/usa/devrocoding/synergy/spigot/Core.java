@@ -133,15 +133,16 @@ public class Core extends JavaPlugin {
                     .execute();
 
         }catch (FileNotFoundException e){
+            //TODO: Create one instead
             Sam.getRobot().error(null, "File 'settings.yml' doesn't exists", "Did you touched the file? If not, ask my creator", e);
             getPluginLoader().disablePlugin(this);
             return;
         }catch (SQLException e){
-            Sam.getRobot().error(null, "I can't connect to your SQL Service provider", "Check your SQL settings in the 'settings.yml'", e);
+            Synergy.error("I can't connect to your SQL Service provider", "Check your SQL settings in the 'settings.yml'");
             getPluginLoader().disablePlugin(this);
             return;
         }catch (ClassNotFoundException e){
-            Sam.getRobot().error(null, "OMG, there is no SQL Server here... MAYDAY", "Install a SQL Server bb", e);
+            Synergy.error("OMG, there is no SQL Server here... MAYDAY", "Install a SQL Server bb");
             getPluginLoader().disablePlugin(this);
             return;
         }
@@ -185,19 +186,21 @@ public class Core extends JavaPlugin {
 //        getGoogleAuthManager().getTwoFactorKey();
 //        getGoogleAuthManager().isCorrect();
 
+        Synergy.normal(Module.getLoaded_msg()+" Loaded....");
+
         this.loaded = true;
         this.disabled = false;
     }
 
     public void onDisable(){
-        this.loaded = false;
-        try{
-            // Initialize all the messages that are being sent..
-            this.message.deint(getPluginManager().getFileStructure().getYMLFile("en"));
-        }catch (Exception e){
-            Sam.getRobot().error(null, e.getMessage(), "Try to contact the server developer", e);
-        }
-        this.disabled = true;
+//        this.loaded = false;
+//        try{
+//            // Initialize all the messages that are being sent..
+//            this.message.deint(getPluginManager().getFileStructure().getYMLFile("en"));
+//        }catch (Exception e){
+//            Sam.getRobot().error(null, e.getMessage(), "Try to contact the server developer", e);
+//        }
+//        this.disabled = true;
     }
 
     // Called when typed /synergy restart/reload

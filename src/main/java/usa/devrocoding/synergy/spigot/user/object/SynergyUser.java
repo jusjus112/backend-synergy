@@ -6,6 +6,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.assets.C;
+import usa.devrocoding.synergy.spigot.bot_sam.Sam;
+import usa.devrocoding.synergy.spigot.bot_sam.object.SamMessage;
 import usa.devrocoding.synergy.spigot.language.LanguageFile;
 
 import java.util.Arrays;
@@ -44,4 +46,23 @@ public class SynergyUser {
         Arrays.stream(messages).forEach(s -> getPlayer().sendMessage(C.translateColors(s)));
     }
 
+    public void teleport(SynergyUser target){
+        getPlayer().teleport(target.getPlayer());
+    }
+
+    public void info(String... messages){
+        Sam.getRobot().info(getPlayer(), messages);
+    }
+
+    public void sam(SamMessage samMessage){
+        Sam.getRobot().sam(getPlayer());
+    }
+
+    public void error(String... messages){
+        Sam.getRobot().warning(getPlayer(), messages);
+    }
+
+    public void warning(String... messages){
+        Sam.getRobot().warning(getPlayer(), messages);
+    }
 }
