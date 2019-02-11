@@ -4,6 +4,7 @@ import lombok.Getter;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
+import net.dv8tion.jda.core.entities.Game;
 import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.assets.object.LinuxColorCodes;
 import usa.devrocoding.synergy.discord.assets.DiscordManager;
@@ -44,6 +45,25 @@ public class Discord {
             Synergy.info("Synergy loaded..");
         }catch (Exception e){
             e.printStackTrace();
+        }
+    }
+
+    public void initTerminal(){
+        Synergy.discord("Loading JDA Api....");
+
+        try{
+            jda = new JDABuilder(AccountType.BOT).setToken("NTQ0NjAxNTA2ODcyMDMzMjkx.D0NfOA.J4fn34LTsrHe9Ms7OI2pX4oj5bw").build();
+            Synergy.discord("Bot Token installed.");
+            // Bot properties
+            getJda().setAutoReconnect(true);
+            getJda().getPresence().setGame(Game.streaming("arcadewars.net", "arcadewars.net"));
+
+            Synergy.discord("Loading Modules");
+            commandManager = new CommandManager();
+            discordManager = new DiscordManager();
+            Synergy.discord("Bot loaded..");
+        }catch (Exception e){
+            Synergy.error("Discord failed to load!");
         }
     }
 

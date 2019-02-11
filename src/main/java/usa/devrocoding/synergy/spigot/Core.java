@@ -2,9 +2,14 @@ package usa.devrocoding.synergy.spigot;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.dv8tion.jda.core.AccountType;
+import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.core.JDABuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import usa.devrocoding.synergy.assets.object.LinuxColorCodes;
+import usa.devrocoding.synergy.discord.DiscordSpigot;
 import usa.devrocoding.synergy.services.SQLService;
 import usa.devrocoding.synergy.services.sql.DatabaseManager;
 import usa.devrocoding.synergy.assets.Synergy;
@@ -82,6 +87,8 @@ public class Core extends JavaPlugin {
     private ChangelogManager changelogManager;
     @Getter
     private PluginMessagingManager pluginMessagingManager;
+    @Getter
+    private DiscordSpigot discordBot;
 
     @Getter
     private SynergyMani manifest;
@@ -193,6 +200,7 @@ public class Core extends JavaPlugin {
     }
 
     public void onDisable(){
+
 //        this.loaded = false;
 //        try{
 //            // Initialize all the messages that are being sent..

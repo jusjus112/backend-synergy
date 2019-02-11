@@ -58,9 +58,9 @@ public class CommandManager extends Module implements Listener {
                 "nuke","motd","more","kickall","msgtoggle","banip","backup","compass","condense","kittycannon",
                 "pt","powertool","powertooltoggle","realname","nick","setjail","setworth","tpall","worth","ul","unjail",
                 "uptime","v","tptoggle","tnt","tp2p","tele","whereami","ping","pong","ptt","list","plist","shout","rmjail",
-                "remjail","pttoggle","mem","broadcast","pardonip","memory","rules","essentials","smite",
+                "remjail","pttoggle","mem","broadcast","pardonip","memory","essentials","smite",
                 "survivalmode","creativemode","spectatormode","adventuremode","shoutworld","bcw","godmode","news","grenade","vanish",
-                "gamemode", "gm", "gmc","gma","gmc","gms","gmsp","gmt", "r","heal","feed","exp","afk","fly","hat",
+                "gamemode", "gm", "gmc","gma","gmc","gms","gmsp","gmt", "r","feed","exp","afk","fly","hat",
                 "info","fireball","strike","lightning","mail","me","jail","book","tree","firework","gc","god","helpop"
         };
 

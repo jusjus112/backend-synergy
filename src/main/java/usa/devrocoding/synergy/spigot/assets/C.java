@@ -84,7 +84,7 @@ public enum C {
     }
 
     public static String getLineWithNameNoAttr(String name){
-        return "----------- "+C.INFO.getColor()+name+ChatColor.RESET+" -----------";
+        return "«"+ChatColor.STRIKETHROUGH+"----------- "+C.INFO.getColor()+name+ChatColor.RESET+" -----------"+ChatColor.RESET+"»";
     }
 
     public static String getLineWithNameWithoutSymbols(String name){

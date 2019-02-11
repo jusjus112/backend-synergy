@@ -29,6 +29,10 @@ public class Synergy {
         Arrays.stream(messages).forEach(s -> System.out.println(LinuxColorCodes.ANSI_YELLOW+"[Synergy INFO] "+s+LinuxColorCodes.ANSI_RESET));
     }
 
+    public static void discord(String... messages){
+        Arrays.stream(messages).forEach(s -> System.out.println(LinuxColorCodes.ANSI_PURPLE+"[Synergy DISCORD] "+s+LinuxColorCodes.ANSI_RESET));
+    }
+
     public static void normal(String... messages){
         Arrays.stream(messages).forEach(s -> System.out.println("[Synergy] "+s));
     }

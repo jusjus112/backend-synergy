@@ -6,7 +6,7 @@ public class Core extends Plugin {
 
     @Override
     public void onLoad() {
-
+        
     }
 
     @Override

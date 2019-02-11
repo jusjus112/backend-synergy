@@ -7,7 +7,9 @@ import java.util.Random;
 public enum SamMessage {
 
     CANNOT_DO_THAT(
-            "There are reasons why I am not doing that..."
+            "There are reasons why I am not doing that...",
+            "Can't do that. Always look twice before executing this command.",
+            "Cannot do that "
     );
 
     @Getter

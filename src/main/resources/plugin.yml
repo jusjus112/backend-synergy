@@ -1,5 +1,5 @@
 name: Synergy
-main: usa.devrocoding.synergy.spigot.Core
+main: usa.devrocoding.synergy.server.Core
 version: 1.0
 author: JusJus
 website: https://minecraft.devrocoding.com/
