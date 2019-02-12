@@ -2,13 +2,8 @@ package usa.devrocoding.synergy.spigot;
 
 import lombok.Getter;
 import lombok.Setter;
-import net.dv8tion.jda.core.AccountType;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.JDABuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
-import usa.devrocoding.synergy.assets.object.LinuxColorCodes;
 import usa.devrocoding.synergy.discord.DiscordSpigot;
 import usa.devrocoding.synergy.services.SQLService;
 import usa.devrocoding.synergy.services.sql.DatabaseManager;
@@ -31,13 +26,11 @@ import usa.devrocoding.synergy.spigot.economy.EconomyManager;
 import usa.devrocoding.synergy.spigot.files.yml.YMLFile;
 import usa.devrocoding.synergy.spigot.gui.GuiManager;
 import usa.devrocoding.synergy.spigot.hologram.HologramManager;
-import usa.devrocoding.synergy.spigot.language.Language;
 import usa.devrocoding.synergy.spigot.language.LanguageManager;
-import usa.devrocoding.synergy.spigot.language.LanguageStrings;
 import usa.devrocoding.synergy.spigot.plugin_messaging.PluginMessagingManager;
 import usa.devrocoding.synergy.spigot.runnable.RunnableManager;
 import usa.devrocoding.synergy.spigot.scoreboard.ScoreboardManager;
-import usa.devrocoding.synergy.spigot.two_factor_authentication.GoogleAuthManager;
+import usa.devrocoding.synergy.assets.two_factor_authentication.GoogleAuthManager;
 import usa.devrocoding.synergy.spigot.user.UserManager;
 import usa.devrocoding.synergy.spigot.user.object.UserExperience;
 

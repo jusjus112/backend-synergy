@@ -44,8 +44,8 @@ public class CommandManager extends Module implements Listener {
         }});
 
         String[] disabled_cmds = new String[]{
-                "me","pl","plugins","ver","version","about","help","whisper","gamerule","tell","msg",
-                "seed","give","xp","tp","kill","playsound","title","say","testfor","spreadplayers",
+                "me","pl","plugins","ver","version","about","whisper","tell","msg",
+                "seed","xp","tp","kill","playsound","title","say","testfor","spreadplayers",
                 "advancement","scoreboard","tellraw","toggledownfall","worldborder","trigger",
                 "fill","particle","setidletimeout","setworldspawn","time","locate","recipe","?",
                 "summon","function","pardon","ban","kick","testforblock","spawnpoint","clone","enchant","w",
@@ -55,13 +55,13 @@ public class CommandManager extends Module implements Listener {
                 "debug","reload",
 
                 // Essentials Commands
-                "nuke","motd","more","kickall","msgtoggle","banip","backup","compass","condense","kittycannon",
-                "pt","powertool","powertooltoggle","realname","nick","setjail","setworth","tpall","worth","ul","unjail",
-                "uptime","v","tptoggle","tnt","tp2p","tele","whereami","ping","pong","ptt","list","plist","shout","rmjail",
-                "remjail","pttoggle","mem","broadcast","pardonip","memory","essentials","smite",
+                "nuke","more","banip","backup","compass","kittycannon",
+                "pt","powertool","powertooltoggle","setworth","worth","ul",
+                "uptime","v","tptoggle","tnt","tp2p","tele","whereami","ping","pong","ptt","list","plist","rmjail",
+                "remjail","pttoggle","mem","pardonip","memory","essentials","smite",
                 "survivalmode","creativemode","spectatormode","adventuremode","shoutworld","bcw","godmode","news","grenade","vanish",
-                "gamemode", "gm", "gmc","gma","gmc","gms","gmsp","gmt", "r","feed","exp","afk","fly","hat",
-                "info","fireball","strike","lightning","mail","me","jail","book","tree","firework","gc","god","helpop"
+                "gamemode", "gm", "gmc","gma","gmc","gms","gmsp","gmt","info","fireball","strike","lightning",
+                "me","tree","firework","gc","god"
         };
 
         for (String cmd : disabled_cmds){

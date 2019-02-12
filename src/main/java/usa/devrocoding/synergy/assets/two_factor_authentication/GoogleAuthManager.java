@@ -1,10 +1,8 @@
-package usa.devrocoding.synergy.spigot.two_factor_authentication;
+package usa.devrocoding.synergy.assets.two_factor_authentication;
 
-import com.mojang.authlib.yggdrasil.response.User;
 import com.warrenstrange.googleauth.GoogleAuthenticator;
 import com.warrenstrange.googleauth.GoogleAuthenticatorKey;
 import com.warrenstrange.googleauth.ICredentialRepository;
-import usa.devrocoding.synergy.assets.Synergy;
 
 import java.util.List;
 import java.util.Scanner;
