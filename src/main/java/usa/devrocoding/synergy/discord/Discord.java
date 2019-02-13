@@ -9,6 +9,7 @@ import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.assets.object.LinuxColorCodes;
 import usa.devrocoding.synergy.discord.assets.DiscordManager;
 import usa.devrocoding.synergy.discord.command.CommandManager;
+import usa.devrocoding.synergy.discord.file.FileManager;
 import usa.devrocoding.synergy.spigot.assets.C;
 
 import java.util.Arrays;
@@ -27,22 +28,24 @@ public class Discord {
         try{
             Arrays.stream(Synergy.getLogos().logo_colossal).forEach(s -> System.out.println(LinuxColorCodes.ANSI_YELLOW +s));
             System.out.println(" "+LinuxColorCodes.ANSI_RESET);
-            Synergy.info("Loading JDA Api....");
+            Synergy.discord("Loading JDA Api....");
 
             jda = new JDABuilder(AccountType.BOT).setToken("NTQzMDYwMjM1OTU5NjY0Njgx.Dz3ELQ.dV8_8Datmbn0X-OzAqCFVoNpB1c").build();
-            Synergy.info("Discord Bot Token installed.");
+
+            Synergy.discord("Discord Bot Token installed. Loading settings..");
+            new FileManager().setup();
 
             // Bot properties
             getJda().setAutoReconnect(true);
 
-            Synergy.info("Loading Modules");
+            Synergy.discord("Loading Modules");
             commandManager = new CommandManager();
             discordManager = new DiscordManager();
 
 //            getJda().addEventListener(
 //                    discordManager.getListeners()
 //            );
-            Synergy.info("Synergy loaded..");
+            Synergy.discord("Synergy loaded..");
         }catch (Exception e){
             e.printStackTrace();
         }

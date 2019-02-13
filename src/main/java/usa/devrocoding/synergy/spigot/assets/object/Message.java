@@ -2,13 +2,11 @@ package usa.devrocoding.synergy.spigot.assets.object;
 
 import lombok.Getter;
 import org.bukkit.configuration.file.FileConfiguration;
-import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
 import usa.devrocoding.synergy.spigot.assets.C;
-import usa.devrocoding.synergy.spigot.assets.Pair;
+import usa.devrocoding.synergy.assets.Pair;
 import usa.devrocoding.synergy.spigot.files.yml.YMLFile;
-import usa.devrocoding.synergy.spigot.user.listener.UserJoinEvent;
 
 import java.util.ArrayList;
 import java.util.Arrays;

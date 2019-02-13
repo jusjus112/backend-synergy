@@ -1,5 +1,6 @@
 package usa.devrocoding.synergy.spigot.assets;
 
+import org.bukkit.Bukkit;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
 import usa.devrocoding.synergy.spigot.assets.commands.CommandGamemode;
@@ -18,6 +19,16 @@ public class GlobalManager extends Module {
             new CommandGamemode(plugin),
             new CommandTeleport(plugin)
         );
+    }
+
+    public Class<?> getServerClass(String afterPackage){
+        String servPack = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
+        try {
+            return Class.forName("net.minecraft.server." + servPack + "." + afterPackage);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 }

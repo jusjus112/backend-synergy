@@ -4,6 +4,8 @@ import usa.devrocoding.synergy.discord.DiscordModule;
 
 public class MessageManager extends DiscordModule {
 
-
+    public MessageManager(){
+        super("");
+    }
 
 }

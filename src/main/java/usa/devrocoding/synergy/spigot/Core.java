@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
-import usa.devrocoding.synergy.discord.DiscordSpigot;
 import usa.devrocoding.synergy.services.SQLService;
 import usa.devrocoding.synergy.services.sql.DatabaseManager;
 import usa.devrocoding.synergy.assets.Synergy;
@@ -80,8 +79,6 @@ public class Core extends JavaPlugin {
     private ChangelogManager changelogManager;
     @Getter
     private PluginMessagingManager pluginMessagingManager;
-    @Getter
-    private DiscordSpigot discordBot;
 
     @Getter
     private SynergyMani manifest;
@@ -180,7 +177,6 @@ public class Core extends JavaPlugin {
         Message.update();
 
         //TODO: Load all the used systems and commands for the server to being used.
-        Synergy.info("All systems are loaded!");
         Synergy.info("Enabling Google AUTH");
 
 //        getGoogleAuthManager().getTwoFactorKey();
@@ -190,6 +186,8 @@ public class Core extends JavaPlugin {
 
         this.loaded = true;
         this.disabled = false;
+
+        Synergy.info("All systems are loaded!");
     }
 
     public void onDisable(){
