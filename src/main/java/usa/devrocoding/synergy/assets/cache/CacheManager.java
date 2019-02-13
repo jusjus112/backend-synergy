@@ -1,20 +1,20 @@
-package usa.devrocoding.synergy.spigot.assets;
+package usa.devrocoding.synergy.assets.cache;
 
 import lombok.Getter;
+import usa.devrocoding.synergy.assets.cache.sql.SQLCache;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class CacheManager extends Module {
 
     @Getter
-    //          table       player      key     data
-    private static Map<String, Map<Object, Map<String, Object>>> sqlCache = new HashMap<>();
+    private SQLCache sqlCache;
 
     public CacheManager(Core plugin){
         super(plugin,"Cache Manager");
+
+        // Load cache modules
+        this.sqlCache = new SQLCache();
     }
 
 }
