@@ -27,48 +27,48 @@ public class SettingsGUI extends Gui{
     public void setup(){
         line(0, 8, new GuiElement() {
             @Override
-            public ItemStack getIcon(Player player) {
+            public ItemStack getIcon(SynergyUser synergyUser) {
                 return new ItemBuilder(Material.STAINED_GLASS_PANE).setName(" ").setMaterialData(new MaterialData((byte)7)).build();
             }
 
-            @Override public void click(Player player, ClickType clickType) {}
+            @Override public void click(SynergyUser synergyUser, ClickType clickType) {}
         });
 
         addElement(25, new GuiElement() {
             @Override
-            public ItemStack getIcon(Player player) {
+            public ItemStack getIcon(SynergyUser synergyUser) {
                 return new ItemBuilder(UtilItem.getPlayerSkull("§e"+synergyUser.getLanguage().getList(LanguageStrings.SETTINGS_ITEM_LANGUAGE_NAME), "0qt")).setLore(
                         synergyUser.getLanguage().getList(LanguageStrings.SETTINGS_ITEM_LANGUAGE_LORE)
                 ).build();
             }
 
             @Override
-            public void click(Player player, ClickType clickType) {
+            public void click(SynergyUser synergyUser, ClickType clickType) {
 
             }
         });
 
         addElement(25, new GuiElement() {
             @Override
-            public ItemStack getIcon(Player player) {
+            public ItemStack getIcon(SynergyUser synergyUser) {
                 return new ItemBuilder(UtilItem.getPlayerSkull("§e"+synergyUser.getLanguage().getList(LanguageStrings.SETTINGS_ITEM_FRIENDS_NAME), "0qt")).setLore(
                         synergyUser.getLanguage().getList(LanguageStrings.SETTINGS_ITEM_FRIENDS_LORE)
                 ).build();
             }
 
             @Override
-            public void click(Player player, ClickType clickType) {
+            public void click(SynergyUser synergyUser, ClickType clickType) {
 
             }
         });
 
         line(45, 53, new GuiElement() {
             @Override
-            public ItemStack getIcon(Player player) {
+            public ItemStack getIcon(SynergyUser synergyUser) {
                 return new ItemBuilder(Material.STAINED_GLASS_PANE).setName(" ").setMaterialData(new MaterialData((byte)7)).build();
             }
 
-            @Override public void click(Player player, ClickType clickType) {}
+            @Override public void click(SynergyUser synergyUser, ClickType clickType) {}
         });
     }
 

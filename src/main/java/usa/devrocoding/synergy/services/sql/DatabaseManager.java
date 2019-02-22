@@ -40,9 +40,9 @@ public class DatabaseManager {
     }
 
     public void disconnect() throws SQLException {
-            if (!this.connection.isClosed()) {
-                this.connection.close();
-            }
+        if (!this.connection.isClosed()) {
+            this.connection.close();
+        }
     }
 
     public ResultSet getResults(String query) throws SQLException {

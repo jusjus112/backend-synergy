@@ -16,8 +16,9 @@ public class UserJoinEvent implements Listener {
         SynergyUser user = Core.getPlugin().getUserManager().getUser(e.getUniqueId(), true);
 
         if (user == null) {
-            user = new SynergyUser(e.getUniqueId(), e.getName(), Rank.NONE, e.getAddress().getHostAddress(),
+            user = new SynergyUser(e.getUniqueId(), e.getName(), Rank.NONE,
                     Core.getPlugin().getLanguageManager().getLanguage("en"));
+            Core.getPlugin().getUserManager().addUserToDatabase(user);
         }
     }
 

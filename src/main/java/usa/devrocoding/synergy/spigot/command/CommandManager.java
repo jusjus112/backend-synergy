@@ -44,24 +44,31 @@ public class CommandManager extends Module implements Listener {
         }});
 
         String[] disabled_cmds = new String[]{
-                "me","pl","plugins","ver","version","about","whisper","tell","msg",
-                "seed","xp","tp","kill","playsound","title","say","testfor","spreadplayers",
-                "advancement","scoreboard","tellraw","toggledownfall","worldborder","trigger",
-                "fill","particle","setidletimeout","setworldspawn","time","locate","recipe","?",
-                "summon","function","pardon","ban","kick","testforblock","spawnpoint","clone","enchant","w",
-                "weather","teleport","blockdata","entitydata","difficulty","stopsound","stats",
-                "banlist","op","deop","list","clear","execute","replaceitem","testforblocks",
-                "ban-ip","defaultgamemode","effect","pardon-ip","save-off","save-on","setblock",
-                "debug","reload",
+                "pl","plugins","ver","version","op","deop","testforblocks","setblock",
+                "me","testfor","scoreboard","tellraw","summon","teleport","defaultgamemode",
+
+//                "about","whisper","tell","msg",
+//                "seed","xp","tp","kill","playsound","title","say","spreadplayers",
+//                "advancement","toggledownfall","worldborder","trigger",
+//                "fill","particle","setidletimeout","setworldspawn","time","locate","recipe",
+//                "function","pardon","ban","kick","testforblock","spawnpoint","clone","enchant","w",
+//                "weather","blockdata","entitydata","difficulty","stopsound","stats",
+//                "banlist","list","clear","execute","replaceitem",
+//                "ban-ip","effect","pardon-ip","save-off","save-on",
+//                "debug","reload","rl",
 
                 // Essentials Commands
-                "nuke","more","banip","backup","compass","kittycannon",
-                "pt","powertool","powertooltoggle","setworth","worth","ul",
-                "uptime","v","tptoggle","tnt","tp2p","tele","whereami","ping","pong","ptt","list","plist","rmjail",
-                "remjail","pttoggle","mem","pardonip","memory","essentials","smite",
-                "survivalmode","creativemode","spectatormode","adventuremode","shoutworld","bcw","godmode","news","grenade","vanish",
-                "gamemode", "gm", "gmc","gma","gmc","gms","gmsp","gmt","info","fireball","strike","lightning",
-                "me","tree","firework","gc","god"
+
+                "powertool","powertooltoggle","tp2p","tele","tp","gm", "gmc","gma","gmc","gms","gmsp","gmt",
+                "creativemode","spectatormode","adventuremode","gamemode"
+
+//                "nuke","more","banip","backup","compass","kittycannon",
+//                "pt","setworth","worth","ul",
+//                "uptime","v","tptoggle","tnt","whereami","ping","pong","ptt","list","plist",
+//                "remjail","pttoggle","mem","pardonip","memory","smite",
+//                "survivalmode","shoutworld","bcw","godmode","news","grenade","vanish",
+//                 "info","fireball","strike","lightning",
+//                "me","tree","firework","gc","god"
         };
 
         for (String cmd : disabled_cmds){

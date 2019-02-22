@@ -2,12 +2,17 @@ package usa.devrocoding.synergy.spigot.user;
 
 import com.google.common.collect.Maps;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
 import usa.devrocoding.synergy.spigot.user.listener.UserJoinEvent;
+import usa.devrocoding.synergy.spigot.user.object.Rank;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Map;
 import java.util.UUID;
 
@@ -20,7 +25,7 @@ public class UserManager extends Module {
         super(plugin, "User Manager");
 
         registerListener(
-                new UserJoinEvent()
+            new UserJoinEvent()
         );
     }
 
@@ -45,7 +50,45 @@ public class UserManager extends Module {
         if (users.containsKey(uuid)) {
             return users.get(uuid);
         }
+        if (database){
+            return getFromDB(uuid);
+        }
         return null;
+    }
+
+    private SynergyUser getFromDB(UUID uuid){
+        try{
+            ResultSet resultSet = Core.getPlugin().getDatabaseManager().getResults(
+                    "SELECT * FROM synergy_users WHERE uuid='"+uuid+"'"
+            );
+            final boolean next = resultSet.next();
+            Synergy.debug(next+" RESULT");
+            if (next){
+                return new SynergyUser(
+                    UUID.fromString(resultSet.getString("uuid"))      ,
+                    resultSet.getString("name"),
+                    Rank.NONE,
+                    Core.getPlugin().getLanguageManager().getLanguage("en")
+                );
+            }
+        }catch (SQLException e){
+            Synergy.error(e.getMessage());
+        }
+        return null;
+    }
+
+    public void cacheExisitingPlayers(){
+        for(Player p : Bukkit.getServer().getOnlinePlayers()){
+            new SynergyUser(p.getUniqueId(), p.getName(), Rank.NONE,
+                    Core.getPlugin().getLanguageManager().getLanguage("en"));
+        }
+    }
+
+    public void addUserToDatabase(SynergyUser synergyUser){
+        Core.getPlugin().getDatabaseManager().execute(
+                "INSERT synergy_users (uuid, name, userexperience) " +
+                        "VALUES('"+synergyUser.getUuid()+"','"+synergyUser.getName()+"','"+synergyUser.getUserExperience().toString().toUpperCase()+"')"
+        );
     }
 
 }

@@ -37,7 +37,6 @@ public class PluginManager extends Module {
                 .add("settings", null, "Settings", FileStructure.FileType.YML)
                 .add("en", "lang", "en_EN", FileStructure.FileType.YML)
                 .add("nl", "lang", "nl_NL", FileStructure.FileType.YML)
-                .add("33asdfAS23", "changelogs/synergy", "stuff", FileStructure.FileType.YML)
                 .add("example_changelog", "changelogs/server", "example_changelog", FileStructure.FileType.YML)
 //                .add("modules", null, "Modules", FileStructure.FileType.YML)
                 .save();
@@ -49,6 +48,8 @@ public class PluginManager extends Module {
                         put("sql.username", "username");
                         put("sql.password", "password");
                         put("sql.port", 3306);
+                        put("network.name", "Synergy Network");
+                        put("network.serverName", "hub");
                     }}
             );
             this.fileStructure.getYMLFile("sam").set(

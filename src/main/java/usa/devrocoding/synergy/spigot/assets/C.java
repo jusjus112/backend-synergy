@@ -3,6 +3,7 @@ package usa.devrocoding.synergy.spigot.assets;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.ChatColor;
+import org.jetbrains.annotations.NotNull;
 import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.assets.object.Message;
@@ -68,7 +69,7 @@ public enum C {
     }
 
     public static String getLine(){
-        return "«&m----------------------------------&r»";
+        return "«§m----------------------------------§r»";
     }
 
     public static String getLineWithoutSymbols(){
@@ -80,15 +81,23 @@ public enum C {
     }
 
     public static String getLineWithName(String name){
-        return "«"+ChatColor.STRIKETHROUGH+"-------------- "+ChatColor.AQUA+name+" ----------------"+ChatColor.RESET+"»";
+        return "«"+ChatColor.STRIKETHROUGH+"--------------- "+ChatColor.AQUA+name+ChatColor.RESET+ChatColor.STRIKETHROUGH+" ----------------"+ChatColor.RESET+"»";
+    }
+
+    public static String getShortLineWithName(String name){
+        return "«"+ChatColor.STRIKETHROUGH+"-------- "+ChatColor.AQUA+name+ChatColor.RESET+ChatColor.STRIKETHROUGH+" --------"+ChatColor.RESET+"»";
     }
 
     public static String getLineWithNameNoAttr(String name){
-        return "«"+ChatColor.STRIKETHROUGH+"----------- "+C.INFO.getColor()+name+ChatColor.RESET+" -----------"+ChatColor.RESET+"»";
+        return "«"+ChatColor.STRIKETHROUGH+"--------- "+C.INFO.getColor()+name+ChatColor.RESET+ChatColor.STRIKETHROUGH+" ---------"+ChatColor.RESET+"»";
     }
 
     public static String getLineWithNameWithoutSymbols(String name){
-        return ChatColor.STRIKETHROUGH+"-------------- "+ChatColor.AQUA+name+" ---------------"+ChatColor.RESET;
+        return ChatColor.STRIKETHROUGH+"-------------- "+ChatColor.AQUA+name+ChatColor.RESET+ChatColor.STRIKETHROUGH+" ---------------"+ChatColor.RESET;
+    }
+
+    public static String getShortLineWithNameWithoutSymbols(String name){
+        return ChatColor.STRIKETHROUGH+"-------- "+ChatColor.AQUA+name+ChatColor.RESET+ChatColor.STRIKETHROUGH+" --------"+ChatColor.RESET;
     }
 
     public static void sendConsoleColors(String... messages) {

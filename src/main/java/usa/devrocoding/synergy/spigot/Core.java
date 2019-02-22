@@ -11,10 +11,7 @@ import usa.devrocoding.synergy.services.sql.SQLDataType;
 import usa.devrocoding.synergy.services.sql.SQLDefaultType;
 import usa.devrocoding.synergy.services.sql.TableBuilder;
 import usa.devrocoding.synergy.spigot.api.SpigotAPI;
-import usa.devrocoding.synergy.spigot.assets.C;
-import usa.devrocoding.synergy.spigot.assets.GlobalManager;
-import usa.devrocoding.synergy.spigot.assets.PluginManager;
-import usa.devrocoding.synergy.spigot.assets.SynergyMani;
+import usa.devrocoding.synergy.spigot.assets.*;
 import usa.devrocoding.synergy.spigot.assets.object.Message;
 import usa.devrocoding.synergy.spigot.bot_sam.Sam;
 import usa.devrocoding.synergy.spigot.bot_sam.object.ErrorHandler;
@@ -79,6 +76,8 @@ public class Core extends JavaPlugin {
     private ChangelogManager changelogManager;
     @Getter
     private PluginMessagingManager pluginMessagingManager;
+    @Getter
+    private CacheManager cacheManager;
 
     @Getter
     private SynergyMani manifest;
@@ -125,8 +124,12 @@ public class Core extends JavaPlugin {
             new TableBuilder("synergy_users")
                     .addColumn("uuid", SQLDataType.VARCHAR, 300,false, SQLDefaultType.NO_DEFAULT, true)
                     .addColumn("name", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
-                    .addColumn("rank", SQLDataType.VARCHAR, 100,false, SQLDefaultType.CUSTOM.setCustom("NONE"), false)
-                    .addColumn("userexperience", SQLDataType.VARCHAR, 100,false, SQLDefaultType.CUSTOM.setCustom(UserExperience.NOOB), false)
+                    .addColumn("userexperience", SQLDataType.VARCHAR, 100,false, SQLDefaultType.CUSTOM.setCustom(UserExperience.NOOB.toString().toUpperCase()), false)
+                    .addColumn("xp", SQLDataType.BIGINT, 200,true, SQLDefaultType.CUSTOM.setCustom(0), false)
+                    .execute();
+            new TableBuilder("achievement")
+                    .addColumn("uuid", SQLDataType.VARCHAR, 300,false, SQLDefaultType.NO_DEFAULT, true)
+                    .addColumn("achievements", SQLDataType.TEXT, -1,true, SQLDefaultType.NO_DEFAULT, false)
                     .execute();
 
         }catch (FileNotFoundException e){
@@ -169,6 +172,10 @@ public class Core extends JavaPlugin {
         this.googleAuthManager = new GoogleAuthManager();
         this.changelogManager = new ChangelogManager(this);
         this.pluginMessagingManager = new PluginMessagingManager(this);
+        this.cacheManager = new CacheManager(this);
+
+        // Init the cache
+        this.cacheManager.loadCache();
 
         // Disable this to disable the API
         Synergy.setSpigotAPI(new SpigotAPI());

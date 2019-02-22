@@ -21,7 +21,7 @@ public class CommandSynergy extends SynergyCommand {
                 "§eA §6Fully Custom §eNetwork system for this awesome network named \"ArcadeWars\"",
                 "§eAuthor: §3JusJus§e",
                 "§eVersion: " + Core.getPlugin().getDescription().getVersion(),
-                "§7This system has their first release written on §eAugust 24, 2018 §7made with §c"+ C.Symbol.HEARTH.getSymbol(),
+                "§eThis system has their first release written on §eAugust 24, 2018 §7made with §c"+ C.Symbol.HEARTH.getSymbol(),
                 C.getLine()
         );
     }
