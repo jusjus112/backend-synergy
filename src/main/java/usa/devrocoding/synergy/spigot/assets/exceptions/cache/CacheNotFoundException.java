@@ -1,4 +1,4 @@
-package usa.devrocoding.synergy.spigot.assets.exceptions;
+package usa.devrocoding.synergy.spigot.assets.exceptions.cache;
 
 public class CacheNotFoundException extends Exception{
 
