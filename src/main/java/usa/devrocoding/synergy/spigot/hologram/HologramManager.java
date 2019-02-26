@@ -19,11 +19,16 @@ public class HologramManager extends Module {
     private final List<Hologram> holograms = Lists.newArrayList();
 
     public HologramManager(Core plugin) {
-        super(plugin, "Hologram Manager");
+        super(plugin, "Hologram Manager", false);
 
         plugin.getRunnableManager().runTaskTimer("Hologram Update", (echo) -> {
             Lists.newArrayList(holograms).forEach(hologram -> hologram.send());
         }, 0, 20 * 2);
+    }
+
+    @Override
+    public void reload(String response) {
+
     }
 
     public Hologram createHologram(Location location, Predicate<Player> predicate, String... lines) {

@@ -9,6 +9,7 @@ import usa.devrocoding.synergy.spigot.Module;
 import usa.devrocoding.synergy.spigot.assets.C;
 import usa.devrocoding.synergy.spigot.bot_sam.Sam;
 import usa.devrocoding.synergy.spigot.changelog.commands.CommandChangelog;
+import usa.devrocoding.synergy.spigot.changelog.listeners.ChangelogJoinListener;
 import usa.devrocoding.synergy.spigot.changelog.object.Changelog;
 
 import java.io.File;
@@ -24,10 +25,14 @@ public class ChangelogManager extends Module {
     private List<Changelog> changelogs = new ArrayList<>();
 
     public ChangelogManager(Core plugin){
-        super(plugin, "Changelog Manager");
+        super(plugin, "Changelog Manager", true);
 
         registerCommand(
                 new CommandChangelog(plugin)
+        );
+
+        registerListener(
+                new ChangelogJoinListener()
         );
 
         try{
@@ -53,8 +58,26 @@ public class ChangelogManager extends Module {
         }
     }
 
+    @Override
+    public void reload(String response) {
+        cacheChangelogs();
+    }
+
     public void addChangelog(Changelog changelog){
         this.changelogs.add(changelog);
+    }
+
+    public Changelog getLatestChangelog(){
+        int low = Integer.MIN_VALUE;
+        Changelog cl = null;
+
+        for(Changelog changelog : getChangelogs()){
+            if (changelog.getOrder() > low){
+                low = changelog.getOrder();
+                cl = changelog;
+            }
+        }
+        return cl;
     }
 
     public void cacheChangelogs(){

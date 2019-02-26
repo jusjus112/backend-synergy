@@ -22,11 +22,16 @@ public class UserManager extends Module {
     private final Map<UUID, SynergyUser> users = Maps.newHashMap();
 
     public UserManager(Core plugin){
-        super(plugin, "User Manager");
+        super(plugin, "User Manager", false);
 
         registerListener(
             new UserJoinEvent()
         );
+    }
+
+    @Override
+    public void reload(String response) {
+
     }
 
     public SynergyUser getUser(Player player) {
@@ -62,7 +67,6 @@ public class UserManager extends Module {
                     "SELECT * FROM synergy_users WHERE uuid='"+uuid+"'"
             );
             final boolean next = resultSet.next();
-            Synergy.debug(next+" RESULT");
             if (next){
                 return new SynergyUser(
                     UUID.fromString(resultSet.getString("uuid"))      ,

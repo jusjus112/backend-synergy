@@ -26,4 +26,6 @@ public @interface SynergyMani {
      */
     ChatColor main_color() default ChatColor.AQUA;
 
+    String proxy() default "BungeeCord";
+
 }

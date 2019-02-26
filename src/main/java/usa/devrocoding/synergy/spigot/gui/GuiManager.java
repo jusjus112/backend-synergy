@@ -15,7 +15,7 @@ public class GuiManager extends Module {
 	private final List<Gui> menus = Lists.newArrayList();
 	
 	public GuiManager(Core plugin) {
-		super(plugin, "GuiManager");
+		super(plugin, "GuiManager", false);
 	}
 	
 	@EventHandler
@@ -37,6 +37,11 @@ public class GuiManager extends Module {
 				}
 			}
 		}
+	}
+
+	@Override
+	public void reload(String response) {
+
 	}
 
 	public List<Gui> getMenus() {

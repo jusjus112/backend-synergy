@@ -12,6 +12,7 @@ import usa.devrocoding.synergy.services.sql.SQLDefaultType;
 import usa.devrocoding.synergy.services.sql.TableBuilder;
 import usa.devrocoding.synergy.spigot.api.SpigotAPI;
 import usa.devrocoding.synergy.spigot.assets.*;
+import usa.devrocoding.synergy.spigot.assets.lobby.LobbyManager;
 import usa.devrocoding.synergy.spigot.assets.object.Message;
 import usa.devrocoding.synergy.spigot.bot_sam.Sam;
 import usa.devrocoding.synergy.spigot.bot_sam.object.ErrorHandler;
@@ -26,15 +27,17 @@ import usa.devrocoding.synergy.spigot.language.LanguageManager;
 import usa.devrocoding.synergy.spigot.plugin_messaging.PluginMessagingManager;
 import usa.devrocoding.synergy.spigot.runnable.RunnableManager;
 import usa.devrocoding.synergy.spigot.scoreboard.ScoreboardManager;
-import usa.devrocoding.synergy.assets.two_factor_authentication.GoogleAuthManager;
+import usa.devrocoding.synergy.proxy.two_factor_authentication.GoogleAuthManager;
 import usa.devrocoding.synergy.spigot.user.UserManager;
 import usa.devrocoding.synergy.spigot.user.object.UserExperience;
 
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
-@SynergyMani(backend_name = "Synergy", main_color = ChatColor.AQUA, permission_prefix = "synergy.")
+@SynergyMani(backend_name = "Synergy", main_color = ChatColor.AQUA, permission_prefix = "synergy.", proxy = "BungeeCord")
 public class Core extends JavaPlugin {
 
     @Getter @Setter
@@ -43,6 +46,9 @@ public class Core extends JavaPlugin {
     @Getter
     private boolean loaded = false,
                     disabled = false;
+
+    @Getter
+    public List<Module> modules = new ArrayList<>();
 
     @Getter
     private PluginManager pluginManager;
@@ -71,13 +77,13 @@ public class Core extends JavaPlugin {
     @Getter
     private Message message;
     @Getter
-    private GoogleAuthManager googleAuthManager;
-    @Getter
     private ChangelogManager changelogManager;
     @Getter
     private PluginMessagingManager pluginMessagingManager;
     @Getter
     private CacheManager cacheManager;
+    @Getter
+    private LobbyManager lobbyManager = null;
 
     @Getter
     private SynergyMani manifest;
@@ -121,13 +127,13 @@ public class Core extends JavaPlugin {
             this.databaseManager.connect();
 
              // Generate Tables
-            new TableBuilder("synergy_users")
+            new TableBuilder("synergy_users", this.databaseManager)
                     .addColumn("uuid", SQLDataType.VARCHAR, 300,false, SQLDefaultType.NO_DEFAULT, true)
                     .addColumn("name", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
                     .addColumn("userexperience", SQLDataType.VARCHAR, 100,false, SQLDefaultType.CUSTOM.setCustom(UserExperience.NOOB.toString().toUpperCase()), false)
                     .addColumn("xp", SQLDataType.BIGINT, 200,true, SQLDefaultType.CUSTOM.setCustom(0), false)
                     .execute();
-            new TableBuilder("achievement")
+            new TableBuilder("achievement", this.databaseManager)
                     .addColumn("uuid", SQLDataType.VARCHAR, 300,false, SQLDefaultType.NO_DEFAULT, true)
                     .addColumn("achievements", SQLDataType.TEXT, -1,true, SQLDefaultType.NO_DEFAULT, false)
                     .execute();
@@ -147,9 +153,6 @@ public class Core extends JavaPlugin {
             return;
         }
 
-        // Load the BungeeCord or Redis channels
-        this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
-
         this.message = new Message(this);
 
         // Initialize all the messages that are being sent..
@@ -165,14 +168,21 @@ public class Core extends JavaPlugin {
         this.globalManager = new GlobalManager(this);
         this.GUIManager = new GuiManager(this);
         this.scoreboardManager = new ScoreboardManager(this);
+        this.pluginMessagingManager = new PluginMessagingManager(this);
         this.userManager = new UserManager(this);
         this.economyManager = new EconomyManager(this);
         this.hologramManager = new HologramManager(this);
         this.discordManager = new DiscordManager();
-        this.googleAuthManager = new GoogleAuthManager();
         this.changelogManager = new ChangelogManager(this);
-        this.pluginMessagingManager = new PluginMessagingManager(this);
         this.cacheManager = new CacheManager(this);
+
+        try{
+            if (getPluginManager().getFileStructure().getYMLFile("settings").get().getBoolean("network.isLobby")){
+                this.lobbyManager = new LobbyManager(this);
+            }
+        }catch (FileNotFoundException e){
+            Synergy.error(e.getMessage());
+        }
 
         // Init the cache
         this.cacheManager.loadCache();

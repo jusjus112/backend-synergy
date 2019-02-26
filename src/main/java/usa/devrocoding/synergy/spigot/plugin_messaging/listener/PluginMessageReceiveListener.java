@@ -4,12 +4,13 @@ import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
+import usa.devrocoding.synergy.spigot.Core;
 
 public class PluginMessageReceiveListener implements PluginMessageListener {
 
     @Override
     public void onPluginMessageReceived(String channel, Player player, byte[] bytes) {
-        if (!channel.equals("BungeeCord")) {
+        if (!channel.equals(Core.getPlugin().getManifest().proxy())) {
             return;
         }
         ByteArrayDataInput in = ByteStreams.newDataInput(bytes);

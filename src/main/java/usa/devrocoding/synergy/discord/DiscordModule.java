@@ -1,7 +1,11 @@
 package usa.devrocoding.synergy.discord;
 
 import lombok.Getter;
+import net.md_5.bungee.api.plugin.Plugin;
 import usa.devrocoding.synergy.discord.command.object.DiscordCommand;
+import usa.devrocoding.synergy.proxy.Core;
+
+import java.util.concurrent.TimeUnit;
 
 public abstract class DiscordModule {
 
@@ -21,6 +25,10 @@ public abstract class DiscordModule {
         for (DiscordCommand command : discordCommands){
             Discord.getCommandManager().addCommand(command);
         }
+    }
+
+    public void thread(Runnable runnable, long delay, long period, TimeUnit timeUnit){
+        Core.getCore().getProxy().getScheduler().schedule(Core.getCore(), runnable, delay, period, timeUnit);
     }
 
 }

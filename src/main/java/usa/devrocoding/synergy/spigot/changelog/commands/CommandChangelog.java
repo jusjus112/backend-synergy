@@ -17,7 +17,6 @@ public class CommandChangelog extends SynergyCommand {
     @Override
     public void execute(SynergyUser synergyUser, Player player, String command, String[] args) {
         new ChangelogMainGUI(getPlugin()).open(player);
-        player.sendMessage("Opening the changelog GUI!");
     }
 
     @Override

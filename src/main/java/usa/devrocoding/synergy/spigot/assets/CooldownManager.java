@@ -15,12 +15,17 @@ import java.util.Iterator;
 public class CooldownManager extends Module {
 
     public CooldownManager(Core plugin){
-        super(plugin, "Cooldown Manager");
+        super(plugin, "Cooldown Manager", false);
 
         run();
     }
-	
-	private final static HashMap<Object, HashMap<Integer, Boolean>> cd = new HashMap<Object, HashMap<Integer, Boolean>>();
+
+    @Override
+    public void reload(String response) {
+
+    }
+
+    private final static HashMap<Object, HashMap<Integer, Boolean>> cd = new HashMap<Object, HashMap<Integer, Boolean>>();
 
     public void run() {
         getPlugin().getServer().getScheduler().scheduleSyncRepeatingTask(getPlugin(), new BukkitRunnable() {

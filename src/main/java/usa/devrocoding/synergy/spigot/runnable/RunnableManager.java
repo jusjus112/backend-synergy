@@ -13,7 +13,12 @@ public class RunnableManager extends Module {
     private static final Map<String, SynergyRunnable> RUNNABLES = Maps.newConcurrentMap();
 
     public RunnableManager(Core plugin) {
-        super(plugin, "RunnableManager");
+        super(plugin, "RunnableManager", false);
+    }
+
+    @Override
+    public void reload(String response) {
+
     }
 
     public void runTask(String name, Consumer<Core> run) {

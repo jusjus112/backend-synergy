@@ -17,12 +17,17 @@ public class PluginManager extends Module {
     private FileStructure fileStructure;
 
     public PluginManager(Core plugin){
-        super(plugin, "Plugin Manager");
+        super(plugin, "Plugin Manager", false);
         this.plugin = plugin;
 
         registerListener(
                 new EventHandlers()
         );
+    }
+
+    @Override
+    public void reload(String response) {
+
     }
 
     // This will be called on a startup and on a reloads
@@ -38,7 +43,6 @@ public class PluginManager extends Module {
                 .add("en", "lang", "en_EN", FileStructure.FileType.YML)
                 .add("nl", "lang", "nl_NL", FileStructure.FileType.YML)
                 .add("example_changelog", "changelogs/server", "example_changelog", FileStructure.FileType.YML)
-//                .add("modules", null, "Modules", FileStructure.FileType.YML)
                 .save();
         try{
             this.fileStructure.getYMLFile("settings").set(
@@ -49,6 +53,7 @@ public class PluginManager extends Module {
                         put("sql.password", "password");
                         put("sql.port", 3306);
                         put("network.name", "Synergy Network");
+                        put("network.isLobby", "false");
                         put("network.serverName", "hub");
                     }}
             );

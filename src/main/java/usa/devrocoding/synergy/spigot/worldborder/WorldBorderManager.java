@@ -16,7 +16,12 @@ import java.lang.reflect.Method;
 public class WorldBorderManager extends Module {
 
     public WorldBorderManager(Core plugin){
-        super(plugin, "WorldBorder Manager");
+        super(plugin, "WorldBorder Manager", false);
+    }
+
+    @Override
+    public void reload(String response) {
+
     }
 
     public void send(SynergyUser user, Location l1, Location l2){

@@ -10,6 +10,7 @@ import usa.devrocoding.synergy.assets.object.LinuxColorCodes;
 import usa.devrocoding.synergy.discord.assets.DiscordManager;
 import usa.devrocoding.synergy.discord.command.CommandManager;
 import usa.devrocoding.synergy.discord.file.FileManager;
+import usa.devrocoding.synergy.discord.terminal.playercount.PlayercountManager;
 import usa.devrocoding.synergy.spigot.assets.C;
 
 import java.util.Arrays;
@@ -51,7 +52,7 @@ public class Discord {
         }
     }
 
-    public void initTerminal(){
+    public static void initTerminal(){
         Synergy.discord("Loading JDA Api....");
 
         try{
@@ -59,11 +60,13 @@ public class Discord {
             Synergy.discord("Bot Token installed.");
             // Bot properties
             getJda().setAutoReconnect(true);
-            getJda().getPresence().setGame(Game.streaming("arcadewars.net", "arcadewars.net"));
+            getJda().getPresence().setGame(Game.playing("arcadewars.net"));
 
             Synergy.discord("Loading Modules");
             commandManager = new CommandManager();
             discordManager = new DiscordManager();
+
+            new PlayercountManager();
             Synergy.discord("Bot loaded..");
         }catch (Exception e){
             Synergy.error("Discord failed to load!");

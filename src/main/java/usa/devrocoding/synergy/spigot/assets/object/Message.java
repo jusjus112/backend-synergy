@@ -21,7 +21,12 @@ public class Message extends Module {
     private static YMLFile messageFile;
 
     public Message(Core plugin){
-        super(plugin, "Message Manager");
+        super(plugin, "Message Manager", false);
+    }
+
+    @Override
+    public void reload(String response) {
+
     }
 
     public static String format(String key, String defaultMessage, Pair<String, String>... replaceList){

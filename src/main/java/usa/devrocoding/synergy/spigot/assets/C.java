@@ -3,8 +3,6 @@ package usa.devrocoding.synergy.spigot.assets;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.ChatColor;
-import org.jetbrains.annotations.NotNull;
-import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.assets.object.Message;
 

@@ -27,7 +27,7 @@ public class CommandManager extends Module implements Listener {
     private Map<String, SynergyCommand> knownCommands;
 
     public CommandManager(Core plugin) {
-        super(plugin, "Command Manager");
+        super(plugin, "Command Manager", false);
 
         try {
             SimpleCommandMap commandMap = ((CraftServer) Bukkit.getServer()).getCommandMap();
@@ -44,7 +44,7 @@ public class CommandManager extends Module implements Listener {
         }});
 
         String[] disabled_cmds = new String[]{
-                "pl","plugins","ver","version","op","deop","testforblocks","setblock",
+                "pl","plugins","ver","version","deop","testforblocks","setblock",
                 "me","testfor","scoreboard","tellraw","summon","teleport","defaultgamemode",
 
 //                "about","whisper","tell","msg",
@@ -74,6 +74,11 @@ public class CommandManager extends Module implements Listener {
         for (String cmd : disabled_cmds){
             unregisterMinecraftCommand(cmd);
         }
+    }
+
+    @Override
+    public void reload(String response) {
+
     }
 
     @EventHandler(priority = EventPriority.LOWEST)

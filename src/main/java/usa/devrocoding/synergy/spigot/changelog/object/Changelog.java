@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import usa.devrocoding.synergy.spigot.Core;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -30,6 +31,10 @@ public class Changelog {
         this.order = order;
 
         Core.getPlugin().getChangelogManager().addChangelog(this);
+    }
+
+    public String getNiceDate(){
+        return new SimpleDateFormat("MMM dd, yyyy - HH:mm aa").format(date);
     }
 
 }

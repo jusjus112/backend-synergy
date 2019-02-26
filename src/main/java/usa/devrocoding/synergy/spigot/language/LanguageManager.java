@@ -16,7 +16,12 @@ public class LanguageManager extends Module {
     private List<LanguageFile> language_files = new ArrayList<>();
 
     public LanguageManager(Core plugin){
-        super(plugin, "Language Manager");
+        super(plugin, "Language Manager", false);
+    }
+
+    @Override
+    public void reload(String response) {
+
     }
 
     public LanguageFile getLanguage(String key){

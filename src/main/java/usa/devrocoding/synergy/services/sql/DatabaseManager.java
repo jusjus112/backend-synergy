@@ -4,12 +4,9 @@ import lombok.Getter;
 
 import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.services.SQLService;
-import usa.devrocoding.synergy.spigot.bot_sam.Sam;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class DatabaseManager {
 

@@ -48,6 +48,10 @@ public class SynergyUser {
         Arrays.stream(messages).forEach(s -> getPlayer().sendMessage(C.translateColors(s)));
     }
 
+    public void sendToServer(String server){
+        Core.getPlugin().getPluginMessagingManager().sendPlayerToServer(getPlayer(), server);
+    }
+
     public void teleport(SynergyUser target){
         getPlayer().teleport(target.getPlayer());
     }

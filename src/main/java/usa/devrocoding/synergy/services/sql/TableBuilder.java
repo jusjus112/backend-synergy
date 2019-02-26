@@ -1,8 +1,6 @@
 package usa.devrocoding.synergy.services.sql;
 
-import lombok.Getter;
 import usa.devrocoding.synergy.assets.Synergy;
-import usa.devrocoding.synergy.spigot.Core;
 
 import java.sql.SQLException;
 
@@ -12,9 +10,9 @@ public class TableBuilder {
     private int columns;
     private DatabaseManager databaseManager;
 
-    public TableBuilder(String tableName){
+    public TableBuilder(String tableName, DatabaseManager databaseManager){
         this.tableName = tableName;
-        this.databaseManager = Core.getPlugin().getDatabaseManager();
+        this.databaseManager = databaseManager;
 
         this.query = "CREATE TABLE IF NOT EXISTS "+tableName+" (";
     }
@@ -22,7 +20,7 @@ public class TableBuilder {
     public TableBuilder addColumn(String name, SQLDataType type, int amount, boolean allowNull, SQLDefaultType defaultType, boolean primary){
 
         {
-            specs = name + " " + type;
+            specs = "`" + name + "` " + type;
             if (!(amount <= 0)) {
                 specs += "(" + amount + ")";
             }

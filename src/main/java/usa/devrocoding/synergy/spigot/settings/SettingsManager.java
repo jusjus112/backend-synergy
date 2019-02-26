@@ -6,7 +6,11 @@ import usa.devrocoding.synergy.spigot.Module;
 public class SettingsManager extends Module {
 
     public SettingsManager(Core plugin){
-        super(plugin, "Settings Manager");
+        super(plugin, "Settings Manager", false);
     }
 
+    @Override
+    public void reload(String response) {
+
+    }
 }

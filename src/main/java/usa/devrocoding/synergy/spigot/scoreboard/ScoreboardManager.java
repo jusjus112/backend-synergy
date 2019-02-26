@@ -23,7 +23,7 @@ public class ScoreboardManager extends Module {
 	private long lastUpdate = System.currentTimeMillis();
 
 	public ScoreboardManager(Core backend) {
-		super(backend, "Scoreboard Manager");
+		super(backend, "Scoreboard Manager", false);
 		this.title = "  " + Core.getPlugin().getManifest().main_color() + ChatColor.BOLD.toString() + Core.getPlugin().getManifest().backend_name() + "  ";
 
 		this.scoreboardListener = new ScoreboardListener(backend, this);
@@ -36,6 +36,11 @@ public class ScoreboardManager extends Module {
 			update();
 		}, 0, 20 * 10);
 		
+	}
+
+	@Override
+	public void reload(String response) {
+
 	}
 
 	public void setUpdateTime(long time) {

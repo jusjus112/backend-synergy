@@ -6,7 +6,11 @@ import usa.devrocoding.synergy.spigot.Module;
 public class EconomyManager extends Module {
 
     public EconomyManager(Core plugin){
-        super(plugin, "Economy Manager");
+        super(plugin, "Economy Manager", false);
     }
 
+    @Override
+    public void reload(String response) {
+
+    }
 }

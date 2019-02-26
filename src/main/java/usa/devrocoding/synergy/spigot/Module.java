@@ -19,14 +19,17 @@ public abstract class Module implements Listener {
     private final Sam sam;
     @Getter
     private boolean disabled = false;
+    @Getter
+    private boolean reloadable;
 
     @Getter
     public static String loaded_msg = "";
 
-    public Module(Core plugin, String name) {
+    public Module(Core plugin, String name, boolean reloadable) {
         this.plugin = plugin;
         this.name = name;
         this.sam = new Sam();
+        this.reloadable = reloadable;
 
 //        Synergy.info(name + " loaded....");
         if (loaded_msg.length() > 0){
@@ -35,6 +38,8 @@ public abstract class Module implements Listener {
         loaded_msg += name;
 
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
+
+        getPlugin().getModules().add(this);
     }
 
     public void registerListener(Listener... listeners) {
@@ -46,6 +51,12 @@ public abstract class Module implements Listener {
             plugin.getCommandManager().getCommands().add(command);
         }
     }
+
+    public String getShortname(){
+        return getName().split(" ")[0];
+    }
+
+    public abstract void reload(String response);
 
     public void disable(){
         this.disabled = true;

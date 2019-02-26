@@ -42,6 +42,10 @@ public class UtilTime {
 			return UtilMath.trim(years) + " Years";
 	}
 
+	public static int daysBetween(Date d1, Date d2){
+		return (int)( (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
+	}
+
 	public static double getTimeSinceLastResponseInSeconds(long lastResponse) {
 		return (System.currentTimeMillis() - lastResponse) / 1000D;
 	}

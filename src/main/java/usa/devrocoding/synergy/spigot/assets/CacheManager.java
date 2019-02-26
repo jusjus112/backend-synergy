@@ -16,7 +16,7 @@ public class CacheManager extends Module {
     private List<Cache<Object, Object>> cache = new ArrayList<>();
 
     public CacheManager(Core plugin){
-        super(plugin,"Cache Manager");
+        super(plugin,"Cache Manager", false);
     }
 
     public void loadCache(){
@@ -49,4 +49,8 @@ public class CacheManager extends Module {
         }});
     }
 
+    @Override
+    public void reload(String response) {
+
+    }
 }

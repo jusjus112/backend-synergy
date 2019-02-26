@@ -2,6 +2,7 @@ package usa.devrocoding.synergy.assets;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.md_5.bungee.api.ChatColor;
 import usa.devrocoding.synergy.assets.letters.LetterGenerator;
 import usa.devrocoding.synergy.assets.letters.Logo;
 import usa.devrocoding.synergy.assets.object.LinuxColorCodes;
@@ -11,6 +12,69 @@ import usa.devrocoding.synergy.spigot.api.SpigotAPI;
 import java.util.Arrays;
 
 public class Synergy {
+
+    public enum SynergyColor{
+        CHAT(ChatColor.GRAY),
+                INFO(ChatColor.YELLOW),
+                PREFIX(ChatColor.GOLD),
+                ITEM_TITLE(ChatColor.YELLOW),
+                PRIMARY(ChatColor.GRAY),
+                MESSAGE_HIGHLIGHT(ChatColor.GREEN),
+                ERROR(ChatColor.RED),
+                SUCCESS(ChatColor.GREEN),
+                SAM(ChatColor.LIGHT_PURPLE),
+                CHAT_HIGHLIGHT(ChatColor.AQUA),
+                SCOREBOARD_TITLE(ChatColor.GREEN),
+                SCOREBOARD_SUBTITLE(ChatColor.GRAY),
+                PLUGIN(ChatColor.YELLOW);
+
+        @Override
+        public String toString() {
+            return getColor().toString();
+        }
+
+        @Getter
+        private ChatColor color;
+
+        SynergyColor(ChatColor color){
+            this.color = color;
+        }
+
+        public static String getLine(){
+            return "«§e§m----------------------------------§r»";
+        }
+
+        public static String getLineWithoutSymbols(){
+            return "---------------------------------------";
+        }
+
+        public static String getLineWithName(){
+            return "«§e"+ChatColor.STRIKETHROUGH+"------------- "+ ChatColor.RESET+"§6Synergy" +"§e§m -------------"+ChatColor.RESET+"»";
+        }
+        public static String getLineWithName(ChatColor color){
+            return "«"+color+ChatColor.STRIKETHROUGH+"------------- "+ ChatColor.RESET+"§6Synergy" +color+"§m -------------"+ChatColor.RESET+"»";
+        }
+
+        public static String getLineWithName(String name){
+            return "«"+ChatColor.STRIKETHROUGH+"--------------- "+ChatColor.AQUA+name+ChatColor.RESET+ChatColor.STRIKETHROUGH+" ----------------"+ChatColor.RESET+"»";
+        }
+
+        public static String getShortLineWithName(String name){
+            return "«"+ChatColor.STRIKETHROUGH+"-------- "+ChatColor.AQUA+name+ChatColor.RESET+ChatColor.STRIKETHROUGH+" --------"+ChatColor.RESET+"»";
+        }
+
+        public static String getLineWithNameNoAttr(String name){
+            return "«"+ChatColor.STRIKETHROUGH+"--------- "+SynergyColor.INFO.getColor()+name+ChatColor.RESET+ChatColor.STRIKETHROUGH+" ---------"+ChatColor.RESET+"»";
+        }
+
+        public static String getLineWithNameWithoutSymbols(String name){
+            return ChatColor.STRIKETHROUGH+"-------------- "+ChatColor.AQUA+name+ChatColor.RESET+ChatColor.STRIKETHROUGH+" ---------------"+ChatColor.RESET;
+        }
+
+        public static String getShortLineWithNameWithoutSymbols(String name){
+            return ChatColor.STRIKETHROUGH+"-------- "+ChatColor.AQUA+name+ChatColor.RESET+ChatColor.STRIKETHROUGH+" --------"+ChatColor.RESET;
+        }
+    }
 
     @Setter @Getter
     private static SpigotAPI spigotAPI;

@@ -8,14 +8,15 @@ import usa.devrocoding.synergy.spigot.assets.commands.*;
 public class GlobalManager extends Module {
 
     public GlobalManager(Core plugin){
-        super(plugin, "Global Manager");
+        super(plugin, "Global Manager", true);
 
         registerCommand(
             new CommandSynergy(plugin),
             new CommandPlugins(plugin),
             new CommandGamemode(plugin),
             new CommandTeleport(plugin),
-            new CommandDeveloper(plugin)
+            new CommandDeveloper(plugin),
+            new CommandSynergyReload(plugin)
         );
     }
 
@@ -29,4 +30,8 @@ public class GlobalManager extends Module {
         }
     }
 
+    @Override
+    public void reload(String response) {
+
+    }
 }
