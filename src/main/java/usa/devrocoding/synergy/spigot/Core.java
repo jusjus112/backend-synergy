@@ -30,6 +30,7 @@ import usa.devrocoding.synergy.spigot.scoreboard.ScoreboardManager;
 import usa.devrocoding.synergy.proxy.two_factor_authentication.GoogleAuthManager;
 import usa.devrocoding.synergy.spigot.user.UserManager;
 import usa.devrocoding.synergy.spigot.user.object.UserExperience;
+import usa.devrocoding.synergy.spigot.version.VersionManager;
 
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
@@ -52,6 +53,8 @@ public class Core extends JavaPlugin {
 
     @Getter
     private PluginManager pluginManager;
+    @Getter
+    private VersionManager versionManager;
     @Getter
     private CommandManager commandManager;
     @Getter
@@ -90,6 +93,8 @@ public class Core extends JavaPlugin {
 
     public void onEnable(){
         setPlugin(this);
+
+        this.versionManager = new VersionManager(this);
 
         Arrays.stream(Synergy.getLogos().logo_colossal).forEach(s -> getServer().getConsoleSender().sendMessage(C.PLUGIN.getColor()+s));
         System.out.println("  ");

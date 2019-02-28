@@ -20,16 +20,6 @@ public class GlobalManager extends Module {
         );
     }
 
-    public Class<?> getServerClass(String afterPackage){
-        String servPack = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
-        try {
-            return Class.forName("net.minecraft.server." + servPack + "." + afterPackage);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
     @Override
     public void reload(String response) {
 

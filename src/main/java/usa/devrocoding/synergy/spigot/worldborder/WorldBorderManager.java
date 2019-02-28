@@ -41,7 +41,7 @@ public class WorldBorderManager extends Module {
         try {
             Object playerHandle = player.getClass().getMethod("getHandle").invoke(player);
             Object connection = playerHandle.getClass().getField("playerConnection").get(playerHandle);
-            Method sendPacket = connection.getClass().getMethod("sendPacket", Core.getPlugin().getGlobalManager().getServerClass("packet"));
+            Method sendPacket = connection.getClass().getMethod("sendPacket", Core.getPlugin().getVersionManager().getServerClass("packet"));
             sendPacket.invoke(connection, packet);
         } catch (Exception e) {
             e.printStackTrace();

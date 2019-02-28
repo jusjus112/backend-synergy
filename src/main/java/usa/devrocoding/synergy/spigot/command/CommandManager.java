@@ -3,18 +3,15 @@ package usa.devrocoding.synergy.spigot.command;
 import com.google.common.collect.Lists;
 import org.bukkit.Bukkit;
 import org.bukkit.command.*;
-import org.bukkit.craftbukkit.v1_12_R1.CraftServer;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.server.ServerCommandEvent;
-import org.bukkit.event.server.TabCompleteEvent;
-import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
 import usa.devrocoding.synergy.spigot.assets.object.Message;
+import usa.devrocoding.synergy.spigot.command.listener.TabCompleteListener;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 import usa.devrocoding.synergy.spigot.utilities.UtilString;
 
@@ -29,10 +26,15 @@ public class CommandManager extends Module implements Listener {
     public CommandManager(Core plugin) {
         super(plugin, "Command Manager", false);
 
-        try {
-            SimpleCommandMap commandMap = ((CraftServer) Bukkit.getServer()).getCommandMap();
-            Field field = commandMap.getClass().getDeclaredField("knownCommands");
+        if (!getPlugin().getVersionManager().checkVersion(1.8)) {
+            registerListener(
+                new TabCompleteListener()
+            );
+        }
 
+        try {
+            Object commandMap = getPlugin().getServer().getClass().getMethod("getCommandMap").invoke(getPlugin().getServer());
+            Field field = commandMap.getClass().getDeclaredField("knownCommands");
             field.setAccessible(true);
             this.knownCommands = (Map<String, SynergyCommand>) field.get(commandMap);
         } catch (Exception ex) {
@@ -120,7 +122,7 @@ public class CommandManager extends Module implements Listener {
         }
     }
 
-    private boolean isCommand(String command){
+    public boolean isCommand(String command){
         for(SynergyCommand cmd : commands){
             for(String alias : cmd.getAliases()){
                 if (alias.equalsIgnoreCase(command)){
@@ -131,24 +133,7 @@ public class CommandManager extends Module implements Listener {
         return false;
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onCommand(TabCompleteEvent e) {
-        List<String> list = new ArrayList<>();
 
-        if (e.getBuffer().contains("/")) {
-            String[] splitter = e.getBuffer().split(" ");
-            if (splitter.length > 1) {
-                if (isCommand(splitter[0].replace("/",""))) {
-                    for (Player p : Bukkit.getOnlinePlayers()) {
-                        if (p.getName().toLowerCase().startsWith(splitter[splitter.length-1].toLowerCase())){
-                            list.add(p.getName());
-                        }
-                    }
-                    e.setCompletions(list);
-                }
-            }
-        }
-    }
 
     public void unregisterMinecraftCommand(String command) {
         Bukkit.getScheduler().runTaskLater(getPlugin(), () -> {

@@ -3,6 +3,7 @@ package usa.devrocoding.synergy.proxy.two_factor_authentication;
 import com.warrenstrange.googleauth.GoogleAuthenticator;
 import com.warrenstrange.googleauth.GoogleAuthenticatorKey;
 import com.warrenstrange.googleauth.ICredentialRepository;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.proxy.Core;
@@ -23,8 +24,8 @@ public class GoogleAuthManager extends ProxyModule implements ICredentialReposit
         super(plugin, "GoogleAuth Manager", false);
 
         registerListeners(
-                new LoginListener(),
-                new ServerConnectListener()
+                new LoginListener()
+//                new ServerConnectListener()
         );
 
         registerCommands(
@@ -76,6 +77,32 @@ public class GoogleAuthManager extends ProxyModule implements ICredentialReposit
 
     public void enable2faMode(ProxiedPlayer player, String key){
         this.notFilledInPlayers.put(player, key);
+
+        GoogleAuthManager gam = Core.getCore().getGoogleAuthManager();
+
+        if (gam.has2fa(player)){
+            if (key != null) {
+                if (player.isConnected()) {
+                    player.sendMessage(new TextComponent(Synergy.SynergyColor.getLineWithName("2FA")));
+                    player.sendMessage(new TextComponent(
+                            Synergy.SynergyColor.INFO.getColor() + "Because of your rank you have")
+                    );
+                    player.sendMessage(new TextComponent(
+                            Synergy.SynergyColor.INFO.getColor() + "to fill in a 2FA verification code!")
+                    );
+                    player.sendMessage(new TextComponent(
+                            Synergy.SynergyColor.PREFIX.getColor() + "Google Auth Code: §b§l" + key)
+                    );
+                    player.sendMessage(new TextComponent(
+                            Synergy.SynergyColor.INFO.getColor() + "Fill in this code in the google auth app.")
+                    );
+                    player.sendMessage(new TextComponent(
+                            Synergy.SynergyColor.INFO.getColor() + "And use " + Synergy.SynergyColor.PREFIX.getColor() + "/2fa <code>")
+                    );
+                    player.sendMessage(new TextComponent(Synergy.SynergyColor.getLine()));
+                }
+            }
+        }
     }
 
     public void disable2faMode(ProxiedPlayer player){

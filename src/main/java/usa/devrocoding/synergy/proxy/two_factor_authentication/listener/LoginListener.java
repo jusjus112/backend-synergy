@@ -24,8 +24,8 @@ public class LoginListener implements Listener {
                 gam.enable2faMode(e.getPlayer(), key);
             }else{
                 String key = gam.getTwoFactorKey(e.getPlayer().getUniqueId());
-                Synergy.debug("CONNECTION PLAYER= "+e.getPlayer().getName());
-                Synergy.debug("KEY= "+key);
+//                Synergy.debug("CONNECTION PLAYER= "+e.getPlayer().getName());
+//                Synergy.debug("KEY= "+key);
                 gam.addToDatabase(e.getPlayer(), key);
                 gam.enable2faMode(e.getPlayer(), key);
             }
