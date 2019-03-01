@@ -8,6 +8,8 @@ import net.md_5.bungee.event.EventHandler;
 import usa.devrocoding.synergy.proxy.Core;
 import usa.devrocoding.synergy.proxy.maintenance.MaintenanceManager;
 
+import java.util.concurrent.TimeUnit;
+
 public class LoginListener implements Listener {
 
     @EventHandler
@@ -20,7 +22,12 @@ public class LoginListener implements Listener {
             }
 
             if (!e.getPlayer().hasPermission("synergy.maintenance.override")) {
-                e.getPlayer().disconnect(new TextComponent(ChatColor.translateAlternateColorCodes('&', maintenanceManager.getMotd().get("kick_message"))));
+                Core.getCore().getProxy().getScheduler().schedule(Core.getCore(), new Runnable() {
+                    @Override
+                    public void run() {
+                        e.getPlayer().disconnect(new TextComponent(ChatColor.translateAlternateColorCodes('&', maintenanceManager.getMotd().get("kick_message"))));
+                    }
+                }, 1, TimeUnit.SECONDS);
             }
         }
     }

@@ -53,7 +53,7 @@ public class PluginManager extends Module {
                         put("sql.password", "password");
                         put("sql.port", 3306);
                         put("network.name", "Synergy Network");
-                        put("network.isLobby", "false");
+                        put("network.isLobby", false);
                         put("network.serverName", "hub");
                     }}
             );
