@@ -59,7 +59,7 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
-//    compile fileTree(dir: 'libs', include: '*.jar')
+    // compile fileTree(dir: 'libs', include: '*.jar')
 
     // SPIGOT Dependencies
     compile group: 'com.google.zxing', name: 'core', version: '3.2.1'
@@ -78,7 +78,7 @@ dependencies {
     compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1'
 
     // DISCORD Dependencies
-    compile 'net.dv8tion:JDA:3.8.1_448' // Discord API
+    compile 'net.dv8tion:JDA:4.ALPHA.0_56' // Discord API
 
     // PROXY Dependencies
     compileOnly group: 'net.md-5', name: 'bungeecord-api', version: '1.12-SNAPSHOT'
