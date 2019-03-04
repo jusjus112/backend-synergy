@@ -74,7 +74,9 @@ public class Core extends Plugin {
                     f.getConfiguration().getInt("sql.port")));
 
             // Connect to SQL
+            Synergy.info("Connecting to SQL....");
             this.databaseManager.connect();
+            Synergy.info("Connected to your SQL Service Provider");
 
             // Generate Tables
             new TableBuilder("two_factor_authentication", this.databaseManager)
@@ -88,12 +90,13 @@ public class Core extends Plugin {
             Synergy.error("Can't enable proxy without Synergy!");
             getProxy().stop();
             return;
-        }catch (ClassNotFoundException e){
-            Synergy.error("OMG, there is no SQL server installed on this proxy..... -_-");
-            Synergy.error("Can't enable proxy without Synergy!");
-            getProxy().stop();
-            return;
         }
+//        catch (ClassNotFoundException e){
+//            Synergy.error("OMG, there is no SQL server installed on this proxy..... -_-");
+//            Synergy.error("Can't enable proxy without Synergy!");
+//            getProxy().stop();
+//            return;
+//        }
 
         this.googleAuthManager = new GoogleAuthManager(this);
 

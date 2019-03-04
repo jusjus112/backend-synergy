@@ -1,8 +1,7 @@
 package usa.devrocoding.synergy.discord.terminal.playercount;
 
-import net.dv8tion.jda.core.entities.VoiceChannel;
+import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.md_5.bungee.api.config.ServerInfo;
-import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.discord.Discord;
 import usa.devrocoding.synergy.proxy.Core;
 

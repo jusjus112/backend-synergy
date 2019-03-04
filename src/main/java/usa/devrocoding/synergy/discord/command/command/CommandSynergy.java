@@ -1,8 +1,8 @@
 package usa.devrocoding.synergy.discord.command.command;
 
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
 import usa.devrocoding.synergy.discord.command.object.DiscordCommand;
 import usa.devrocoding.synergy.discord.object.DiscordRank;
 import usa.devrocoding.synergy.discord.utilities.MessageBuilder;

@@ -129,10 +129,12 @@ public class Core extends JavaPlugin {
                     f.get().getInt("sql.port")));
 
             // Connect to SQL
+            Synergy.info("Connecting to SQL....");
             this.databaseManager.connect();
+            Synergy.info("Connected to your SQL Service Provider");
 
              // Generate Tables
-            new TableBuilder("synergy_users", this.databaseManager)
+            new TableBuilder("users", this.databaseManager)
                     .addColumn("uuid", SQLDataType.VARCHAR, 300,false, SQLDefaultType.NO_DEFAULT, true)
                     .addColumn("name", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
                     .addColumn("userexperience", SQLDataType.VARCHAR, 100,false, SQLDefaultType.CUSTOM.setCustom(UserExperience.NOOB.toString().toUpperCase()), false)
@@ -152,11 +154,12 @@ public class Core extends JavaPlugin {
             Synergy.error("I can't connect to your SQL Service provider", "Check your SQL settings in the 'settings.yml'");
             getPluginLoader().disablePlugin(this);
             return;
-        }catch (ClassNotFoundException e){
-            Synergy.error("OMG, there is no SQL Server here... MAYDAY", "Install a SQL Server bb");
-            getPluginLoader().disablePlugin(this);
-            return;
         }
+//        catch (ClassNotFoundException e){
+//            Synergy.error("OMG, there is no SQL Server here... MAYDAY", "Install a SQL Server bb");
+//            getPluginLoader().disablePlugin(this);
+//            return;
+//        }
 
         this.message = new Message(this);
 

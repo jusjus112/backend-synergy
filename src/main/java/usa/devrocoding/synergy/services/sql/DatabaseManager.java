@@ -19,18 +19,16 @@ public class DatabaseManager {
         this.sqlService = service;
     }
 
-    public void connect() throws SQLException, ClassNotFoundException{
+    public void connect() throws SQLException{
         if (this.connection != null && !connection.isClosed()){
             return;
         }
-        Synergy.info("Connecting to SQL....");
         if (getSqlService().isIniatialized()) {
 
-            Class.forName("com.mysql.jdbc.Driver");
+//            Class.forName("com.mysql.jdbc.Driver");
 
-            connection = DriverManager.getConnection("jdbc:mysql://" + getSqlService().getHost() + ":" + getSqlService().getPort()
+            this.connection = DriverManager.getConnection("jdbc:mysql://" + getSqlService().getHost() + ":" + getSqlService().getPort()
                     + "/" + getSqlService().getDatabase(), getSqlService().getUsername(), getSqlService().getPassword());
-            Synergy.info("Connected to your SQL Service Provider");
         }else{
             throw new SQLException("SQL Information is wrong or empty! Check 'Settings.yml'");
         }
@@ -43,12 +41,18 @@ public class DatabaseManager {
     }
 
     public ResultSet getResults(String query) throws SQLException {
+        connect();
         Statement statement = getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery(query);
         return resultSet;
     }
 
     public void execute(String... queries) {
+        try {
+            connect();
+        }catch (SQLException e){
+            Synergy.warn("Can't connect again... " + e.getMessage());
+        }
         Arrays.stream(queries).forEach(s -> {
             try {
                 getConnection().createStatement().executeUpdate(s);

@@ -1,7 +1,7 @@
 package usa.devrocoding.synergy.discord.object;
 
 import lombok.Getter;
-import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.api.Permission;
 
 public enum DiscordRank {
 

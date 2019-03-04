@@ -14,7 +14,7 @@ public class TableBuilder {
         this.tableName = tableName;
         this.databaseManager = databaseManager;
 
-        this.query = "CREATE TABLE IF NOT EXISTS "+tableName+" (";
+        this.query = "CREATE TABLE IF NOT EXISTS synergy_"+tableName+" (";
     }
 
     public TableBuilder addColumn(String name, SQLDataType type, int amount, boolean allowNull, SQLDefaultType defaultType, boolean primary){
