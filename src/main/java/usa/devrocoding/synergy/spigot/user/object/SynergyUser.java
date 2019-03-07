@@ -27,6 +27,8 @@ public class SynergyUser {
     @Getter
     private LanguageFile language;
     @Getter @Setter
+    private double networkXP = 0D;
+    @Getter @Setter
     private UserExperience userExperience = UserExperience.NOOB;
     @Getter @Setter
     private List<Achievement> achievements = new ArrayList<>();
@@ -38,6 +40,10 @@ public class SynergyUser {
         this.language = language;
 
         Core.getPlugin().getUserManager().getUsers().put(uuid, this);
+    }
+
+    public void addNetworkXP(double xp){
+        this.networkXP += xp;
     }
 
     public Player getPlayer() {

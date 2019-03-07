@@ -131,14 +131,14 @@ public class Core extends JavaPlugin {
             // Connect to SQL
             Synergy.info("Connecting to SQL....");
             this.databaseManager.connect();
-            Synergy.info("Connected to your SQL Service Provider");
+            Synergy.success("Connected to your SQL Service Provider");
 
              // Generate Tables
             new TableBuilder("users", this.databaseManager)
                     .addColumn("uuid", SQLDataType.VARCHAR, 300,false, SQLDefaultType.NO_DEFAULT, true)
                     .addColumn("name", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
                     .addColumn("userexperience", SQLDataType.VARCHAR, 100,false, SQLDefaultType.CUSTOM.setCustom(UserExperience.NOOB.toString().toUpperCase()), false)
-                    .addColumn("xp", SQLDataType.BIGINT, 200,true, SQLDefaultType.CUSTOM.setCustom(0), false)
+                    .addColumn("xp", SQLDataType.DOUBLE, -1,true, SQLDefaultType.CUSTOM.setCustom(0), false)
                     .execute();
             new TableBuilder("achievement", this.databaseManager)
                     .addColumn("uuid", SQLDataType.VARCHAR, 300,false, SQLDefaultType.NO_DEFAULT, true)
@@ -147,7 +147,7 @@ public class Core extends JavaPlugin {
 
         }catch (FileNotFoundException e){
             //TODO: Create one instead
-            Sam.getRobot().error(null, "File 'settings.yml' doesn't exists", "Did you touched the file? If not, ask my creator", e);
+            Sam.getRobot().error(null, "File 'settings.yml' doesn't exists", "I can't fix it myself so it has to be done by a developer!", e);
             getPluginLoader().disablePlugin(this);
             return;
         }catch (SQLException e){
@@ -192,6 +192,8 @@ public class Core extends JavaPlugin {
             Synergy.error(e.getMessage());
         }
 
+        Synergy.info("Using version adapter "+this.versionManager.getServerVersion());
+
         // Init the cache
         this.cacheManager.loadCache();
 
@@ -201,22 +203,14 @@ public class Core extends JavaPlugin {
         // Update all the messages that are being sent..
         Message.update();
 
-        //TODO: Load all the used systems and commands for the server to being used.
-        Synergy.info("Enabling Google AUTH");
-
-//        getGoogleAuthManager().getTwoFactorKey();
-//        getGoogleAuthManager().isCorrect();
-
-        Synergy.normal(Module.getLoaded_msg()+" Loaded....");
-
+        Synergy.info("Loaded a total of "+Module.getTotal()+" modules!");
         this.loaded = true;
         this.disabled = false;
 
-        Synergy.info("All systems are loaded!");
+        Synergy.success("Synergy is up and running!");
     }
 
     public void onDisable(){
-
 //        this.loaded = false;
 //        try{
 //            // Initialize all the messages that are being sent..

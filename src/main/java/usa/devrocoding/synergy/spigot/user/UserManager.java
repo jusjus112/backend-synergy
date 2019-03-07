@@ -8,11 +8,13 @@ import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
 import usa.devrocoding.synergy.spigot.user.listener.UserJoinEvent;
+import usa.devrocoding.synergy.spigot.user.listener.UserQuitEvent;
 import usa.devrocoding.synergy.spigot.user.object.Rank;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -25,7 +27,8 @@ public class UserManager extends Module {
         super(plugin, "User Manager", false);
 
         registerListener(
-            new UserJoinEvent()
+            new UserJoinEvent(),
+            new UserQuitEvent()
         );
     }
 
@@ -68,12 +71,14 @@ public class UserManager extends Module {
             );
             final boolean next = resultSet.next();
             if (next){
-                return new SynergyUser(
+                SynergyUser synergyUser = new SynergyUser(
                     UUID.fromString(resultSet.getString("uuid"))      ,
                     resultSet.getString("name"),
                     Rank.NONE,
                     Core.getPlugin().getLanguageManager().getLanguage("en")
                 );
+                synergyUser.setNetworkXP(resultSet.getDouble("xp"));
+                return synergyUser;
             }
         }catch (SQLException e){
             Synergy.error(e.getMessage());
@@ -88,11 +93,19 @@ public class UserManager extends Module {
         }
     }
 
+    public boolean updateUser(SynergyUser user){
+        return Core.getPlugin().getDatabaseManager().update("users", new HashMap<String, Object>(){{
+            put("userexperience", user.getUserExperience().toString().toUpperCase());
+            put("xp", user.getNetworkXP());
+        }}, "uuid = '"+user.getUuid().toString()+"'");
+    }
+
     public void addUserToDatabase(SynergyUser synergyUser){
-        Core.getPlugin().getDatabaseManager().execute(
-                "INSERT synergy_users (uuid, name, userexperience) " +
-                        "VALUES('"+synergyUser.getUuid()+"','"+synergyUser.getName()+"','"+synergyUser.getUserExperience().toString().toUpperCase()+"')"
-        );
+        Core.getPlugin().getDatabaseManager().execute("users", new HashMap<String, Object>(){{
+            put("uuid", synergyUser.getUuid().toString());
+            put("name", synergyUser.getName());
+            put("userexperience", synergyUser.getUserExperience().toString().toUpperCase());
+        }});
     }
 
 }

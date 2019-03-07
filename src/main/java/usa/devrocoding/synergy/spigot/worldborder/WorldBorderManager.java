@@ -45,7 +45,6 @@ public class WorldBorderManager extends Module {
             sendPacket.invoke(connection, packet);
         } catch (Exception e) {
             e.printStackTrace();
-            Synergy.debug("WB Error");
         }
     }
 

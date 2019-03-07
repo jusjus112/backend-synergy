@@ -49,18 +49,18 @@ public class Synergy {
         }
 
         public static String getLineWithName(){
-            return "«§e"+ChatColor.STRIKETHROUGH+"------------- "+ ChatColor.RESET+"§6Synergy" +"§e§m -------------"+ChatColor.RESET+"»";
+            return "«§e"+ChatColor.STRIKETHROUGH+"-------------"+ ChatColor.RESET+" §6Synergy " +"§e§m-------------"+ChatColor.RESET+"»";
         }
         public static String getLineWithName(ChatColor color){
-            return "«"+color+ChatColor.STRIKETHROUGH+"------------- "+ ChatColor.RESET+"§6Synergy" +color+"§m -------------"+ChatColor.RESET+"»";
+            return "«"+color+ChatColor.STRIKETHROUGH+"-------------"+ ChatColor.RESET+" §6Synergy " +color+"§m-------------"+ChatColor.RESET+"»";
         }
 
         public static String getLineWithName(String name){
-            return "«"+ChatColor.STRIKETHROUGH+"--------------- "+ChatColor.AQUA+name+ChatColor.RESET+ChatColor.STRIKETHROUGH+" ----------------"+ChatColor.RESET+"»";
+            return "«"+ChatColor.STRIKETHROUGH+"---------------"+ChatColor.AQUA+" "+name+" "+ChatColor.RESET+ChatColor.STRIKETHROUGH+"----------------"+ChatColor.RESET+"»";
         }
 
         public static String getShortLineWithName(String name){
-            return "«"+ChatColor.STRIKETHROUGH+"-------- "+ChatColor.AQUA+name+ChatColor.RESET+ChatColor.STRIKETHROUGH+" --------"+ChatColor.RESET+"»";
+            return "«"+ChatColor.STRIKETHROUGH+"--------"+ChatColor.AQUA+" "+name+""+ChatColor.RESET+ChatColor.STRIKETHROUGH+" --------"+ChatColor.RESET+"»";
         }
 
         public static String getLineWithNameNoAttr(String name){
@@ -90,27 +90,31 @@ public class Synergy {
     }
 
     public static void info(String... messages){
-        Arrays.stream(messages).forEach(s -> System.out.println(LinuxColorCodes.ANSI_YELLOW+"[Synergy INFO] "+s+LinuxColorCodes.ANSI_RESET));
+        Arrays.stream(messages).forEach(s -> System.out.println(format("info", LinuxColorCodes.ANSI_YELLOW, s)));
     }
 
     public static void discord(String... messages){
-        Arrays.stream(messages).forEach(s -> System.out.println(LinuxColorCodes.ANSI_PURPLE+"[Synergy DISCORD] "+s+LinuxColorCodes.ANSI_RESET));
+        Arrays.stream(messages).forEach(s -> System.out.println(format("", LinuxColorCodes.ANSI_YELLOW, s)));
+    }
+
+    public static void success(String... messages){
+        Arrays.stream(messages).forEach(s -> System.out.println(format("success", LinuxColorCodes.ANSI_GREEN, s)));
     }
 
     public static void normal(String... messages){
-        Arrays.stream(messages).forEach(s -> System.out.println("[Synergy] "+s));
-    }
-
-    public static void withPrefix(String prefix, String... messages){
-        Arrays.stream(messages).forEach(s -> System.out.println("[Synergy "+prefix+"] "+s));
+        Arrays.stream(messages).forEach(s -> System.out.println(format("", LinuxColorCodes.ANSI_RESET, s)));
     }
 
     public static void error(String... messages){
-        Arrays.stream(messages).forEach(s -> System.out.println(LinuxColorCodes.ANSI_RED+"[Synergy ERROR] "+s+LinuxColorCodes.ANSI_RESET));
+        Arrays.stream(messages).forEach(s -> System.out.println(format("error", LinuxColorCodes.ANSI_RED, s)));
     }
 
     public static void warn(String... messages){
-        Arrays.stream(messages).forEach(s -> System.out.println(LinuxColorCodes.ANSI_YELLOW+"[Synergy WARN] "+s+LinuxColorCodes.ANSI_RESET));
+        Arrays.stream(messages).forEach(s -> System.out.println(format("warn", LinuxColorCodes.ANSI_RED, s)));
+    }
+
+    private static String format(String prefix, String color, String message){
+        return LinuxColorCodes.ANSI_YELLOW+"Synergy"+color+(prefix.length()>0?" "+prefix.toUpperCase():"")+LinuxColorCodes.ANSI_CYAN+" </> "+color+message+LinuxColorCodes.ANSI_RESET;
     }
 
 }

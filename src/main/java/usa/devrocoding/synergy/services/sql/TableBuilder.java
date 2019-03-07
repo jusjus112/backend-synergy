@@ -18,7 +18,6 @@ public class TableBuilder {
     }
 
     public TableBuilder addColumn(String name, SQLDataType type, int amount, boolean allowNull, SQLDefaultType defaultType, boolean primary){
-
         {
             specs = "`" + name + "` " + type;
             if (!(amount <= 0)) {
@@ -56,9 +55,9 @@ public class TableBuilder {
         {
 
             try {
-                if (!this.databaseManager.getResults("SELECT * FROM information_schema.COLUMNS WHERE COLUMN_NAME = '" + name + "' AND TABLE_NAME = '" +
+                if (!this.databaseManager.getResults("SELECT * FROM information_schema.COLUMNS WHERE COLUMN_NAME = '" + name + "' AND TABLE_NAME = 'synergy_" +
                         this.tableName + "' AND TABLE_SCHEMA = '" + this.databaseManager.getSqlService().getDatabase() + "'").next()) {
-                    query_update += "ALTER TABLE "+this.tableName+" ADD "+specs+";";
+                    query_update += "ALTER TABLE synergy_"+this.tableName+" ADD "+specs+";";
                 }
             }catch(SQLException e){
                 Synergy.error(e.getMessage());
@@ -73,12 +72,12 @@ public class TableBuilder {
 
     public void execute(){
         query += ")";
-        this.databaseManager.execute(query);
+        this.databaseManager.executeQuery(query);
         if (!(query_update.equals(""))){
             String[] queries = query_update.split(";");
             for(String query_u : queries) {
                 if (!query_u.equals("")) {
-                    this.databaseManager.execute(query_u);
+                    this.databaseManager.executeQuery(query_u);
                 }
             }
         }

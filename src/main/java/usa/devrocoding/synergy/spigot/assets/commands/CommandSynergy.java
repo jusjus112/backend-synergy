@@ -2,6 +2,7 @@ package usa.devrocoding.synergy.spigot.assets.commands;
 
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.proxy.two_factor_authentication.GoogleAuthManager;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.assets.C;
@@ -26,6 +27,8 @@ public class CommandSynergy extends SynergyCommand {
         );
 
 //        Core.getPlugin().getPluginMessagingManager().send("BungeeCord", "TesterDeTest");
+        synergyUser.addNetworkXP(2D);
+        Synergy.debug(synergyUser.getNetworkXP()+" =XP");
     }
 
     @Override

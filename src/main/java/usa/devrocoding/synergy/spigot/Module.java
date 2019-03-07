@@ -23,19 +23,14 @@ public abstract class Module implements Listener {
     private boolean reloadable;
 
     @Getter
-    public static String loaded_msg = "";
+    public static int total = 0;
 
     public Module(Core plugin, String name, boolean reloadable) {
         this.plugin = plugin;
         this.name = name;
         this.sam = new Sam();
         this.reloadable = reloadable;
-
-//        Synergy.info(name + " loaded....");
-        if (loaded_msg.length() > 0){
-            loaded_msg += ", ";
-        }
-        loaded_msg += name;
+        total++;
 
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
 
