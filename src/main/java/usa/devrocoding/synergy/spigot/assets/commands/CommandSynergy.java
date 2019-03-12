@@ -19,7 +19,7 @@ public class CommandSynergy extends SynergyCommand {
     public void execute(SynergyUser synergyUser, Player player, String command, String[] args) {
         synergyUser.message(
                 C.getLine(),
-                "§eA §6Fully Custom §eNetwork system for this awesome network named \"ArcadeWars\"",
+                "§eA §6Fully Custom §eNetwork system for this awesome network named \""+getPlugin().getManifest().server_name()+"\"",
                 "§eAuthor: §3JusJus§e",
                 "§eVersion: " + Core.getPlugin().getDescription().getVersion(),
                 "§eThis system has their first release written on §eAugust 24, 2018 made with §c"+ C.Symbol.HEARTH.getSymbol(),

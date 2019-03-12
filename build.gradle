@@ -70,12 +70,15 @@ dependencies {
 
     // GLOBAL Dependencies
     compile group: 'redis.clients', name: 'jedis', version: '2.9.0' // Redis
-    compile group: 'com.google.code.gson', name: 'gson', version: '2.3.1' // GSON
-    compile group: 'com.google.guava', name: 'guava', version: 'r05' // Guava
     compile 'com.sun.xml.security:xml-security-impl:1.0'
     compile 'org.apache.httpcomponents:httpclient:4.5.6' // HTTP requests
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.8.1' // Apache utils
+    
+    // GOOGLE
     compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1'
+    compile group: 'com.google.inject', name: 'guice', version: '4.0' // INJECTION
+    compile group: 'com.google.code.gson', name: 'gson', version: '2.3.1' // GSON
+    compile group: 'com.google.guava', name: 'guava', version: 'r05' // Guava
 
     // DISCORD Dependencies
     compile 'net.dv8tion:JDA:4.ALPHA.0_56' // Discord API

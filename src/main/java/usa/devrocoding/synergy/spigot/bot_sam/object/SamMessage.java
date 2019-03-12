@@ -10,6 +10,11 @@ public enum SamMessage {
             "There are reasons why I am not doing that...",
             "Can't do that. Always look twice before executing this command.",
             "Cannot do that "
+    ),
+    NO_PERMISSIONS(
+            "Sorry, but I see that you don't have permissions..",
+            "I'm not letting you use this...",
+            "Annnndddd.. No permissions for you!"
     );
 
     @Getter

@@ -1,5 +1,6 @@
 package usa.devrocoding.synergy.spigot;
 
+import com.google.inject.Injector;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.ChatColor;
@@ -38,7 +39,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@SynergyMani(backend_name = "Synergy", main_color = ChatColor.AQUA, permission_prefix = "synergy.", proxy = "BungeeCord")
+@SynergyMani(backend_name = "Synergy", main_color = ChatColor.AQUA, permission_prefix = "synergy", proxy = "BungeeCord", server_name = "NoblesseMC")
 public class Core extends JavaPlugin {
 
     @Getter @Setter
@@ -91,8 +92,13 @@ public class Core extends JavaPlugin {
     @Getter
     private SynergyMani manifest;
 
+    @Override
     public void onEnable(){
         setPlugin(this);
+
+        SynergyBinder binder = new SynergyBinder(this);
+        Injector injector = binder.createInjector();
+        injector.injectMembers(this);
 
         this.versionManager = new VersionManager(this);
 

@@ -13,13 +13,13 @@ public @interface SynergyMani {
     /**
      * The name of this backend system
      */
-    String backend_name() default "Backend";
+    String backend_name() default "Synergy";
 
     /**
      * The prefix for all of our permissions.
      * @IMPORTANT: Don't forget the . at the end!
      */
-    String[] permission_prefix() default "backend.";
+    String permission_prefix() default "synergy";
 
     /**
      * The Main color of this backend system
@@ -27,5 +27,7 @@ public @interface SynergyMani {
     ChatColor main_color() default ChatColor.AQUA;
 
     String proxy() default "BungeeCord";
+
+    String server_name() default "SynergyMC";
 
 }

@@ -4,6 +4,8 @@ import lombok.Getter;
 import org.bukkit.ChatColor;
 import usa.devrocoding.synergy.spigot.Core;
 
+import java.util.List;
+
 public enum Rank {
 
     NONE(0, "NONE", "", ChatColor.GRAY, "rank.admin"),
@@ -17,18 +19,19 @@ public enum Rank {
     private final String prefix;
     @Getter
     private final ChatColor color;
-    private final String permission;
+    private final String node;
+    private List<String> permissions;
 
-    Rank(Integer id, String codeName, String prefix, ChatColor color, String permission) {
+    Rank(Integer id, String codeName, String prefix, ChatColor color, String node) {
         this.id = id;
         this.codeName = codeName;
         this.prefix = prefix;
         this.color = color;
-        this.permission = permission;
+        this.node = node;
     }
 
-    public String getPermissions(){
-        return Core.getPlugin().getManifest().permission_prefix()+permission;
+    public String getPermission(){
+        return Core.getPlugin().getManifest().permission_prefix()+"."+this.node;
     }
 
     public static Rank fromName(String codeName) {

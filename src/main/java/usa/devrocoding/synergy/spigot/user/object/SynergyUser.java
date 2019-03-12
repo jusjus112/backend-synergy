@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.PermissionAttachment;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.achievement.object.Achievement;
 import usa.devrocoding.synergy.spigot.assets.C;
@@ -11,10 +12,7 @@ import usa.devrocoding.synergy.spigot.bot_sam.Sam;
 import usa.devrocoding.synergy.spigot.bot_sam.object.SamMessage;
 import usa.devrocoding.synergy.spigot.language.LanguageFile;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class SynergyUser {
 
@@ -26,6 +24,8 @@ public class SynergyUser {
     private Rank rank;
     @Getter
     private LanguageFile language;
+    @Setter
+    private PermissionAttachment permissions;
     @Getter @Setter
     private double networkXP = 0D;
     @Getter @Setter
@@ -33,11 +33,15 @@ public class SynergyUser {
     @Getter @Setter
     private List<Achievement> achievements = new ArrayList<>();
 
-    public SynergyUser(UUID uuid, String name, Rank rank, LanguageFile language){
+    public SynergyUser(UUID uuid, String name, Rank rank, LanguageFile language, PermissionAttachment permissions){
         this.uuid = uuid;
         this.name = name;
         this.rank = rank;
         this.language = language;
+
+        if (permissions != null){
+            this.permissions = permissions;
+        }
 
         Core.getPlugin().getUserManager().getUsers().put(uuid, this);
     }
@@ -76,5 +80,27 @@ public class SynergyUser {
 
     public void warning(String... messages){
         Sam.getRobot().warning(getPlayer(), messages);
+    }
+
+    public boolean hasPermission(String node){
+        String p = Core.getPlugin().getManifest().permission_prefix()+"."+node;
+        if (getPlayer().hasPermission(p)){
+            return true;
+        }else{
+            error(SamMessage.NO_PERMISSIONS.getRandom());
+            return false;
+        }
+    }
+
+    public void addPermissionNode(String node){
+        this.permissions.setPermission(node, true);
+    }
+
+    public void removePermissionNode(String node){
+        this.permissions.unsetPermission(node);
+    }
+
+    public Map<String, Boolean> getPermissions(){
+        return this.permissions.getPermissions();
     }
 }

@@ -1,6 +1,7 @@
 package usa.devrocoding.synergy.spigot.bot_sam.object;
 
 import org.bukkit.ChatColor;
+import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
 import usa.devrocoding.synergy.spigot.assets.C;
@@ -25,6 +26,7 @@ public class ErrorHandler extends Handler {
 
     @Override
     public void publish(LogRecord record) {
+        Synergy.debug(record.getLevel()+" =LEVEL");
         if (record.getLevel() == Level.WARNING){
             String pluginName = record.getMessage().split("]")[0].replace("[", "");
             error(null, record.getThrown().toString(), "Check log for more details!",

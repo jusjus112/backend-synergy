@@ -105,5 +105,10 @@ public enum C {
     public static String colorize(String value){
         return ChatColor.translateAlternateColorCodes('&',value);
     }
+
+    @Override
+    public String toString() {
+        return getColor()+"";
+    }
 }
  

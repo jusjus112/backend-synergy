@@ -1,6 +1,5 @@
 package usa.devrocoding.synergy.spigot.assets;
 
-import org.bukkit.Bukkit;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
 import usa.devrocoding.synergy.spigot.assets.commands.*;
@@ -16,7 +15,11 @@ public class GlobalManager extends Module {
             new CommandGamemode(plugin),
             new CommandTeleport(plugin),
             new CommandDeveloper(plugin),
-            new CommandSynergyReload(plugin)
+            new CommandSynergyReload(plugin),
+            new CommandClearInventory(plugin),
+            new CommandFly(plugin),
+            new CommandHeal(plugin),
+            new CommandTop(plugin)
         );
     }
 

@@ -29,6 +29,8 @@ public class CommandDeveloper extends SynergyCommand {
                 "§eCurrent Total Memory: §b"+MemoryUtils.getTotalMemory()+"M",
                 C.getLine()
         );
+
+        synergyUser.addPermissionNode("essentials.fly");
     }
 
     @Override
