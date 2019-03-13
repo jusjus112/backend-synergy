@@ -35,6 +35,19 @@ public abstract class Gui {
 		setup();
 	}
 
+	public Gui(Core plugin, String name, GuiSize guiSize, boolean setup) {
+		this.plugin = plugin;
+		this.name = name;
+		this.guiSize = guiSize;
+		this.elements = Maps.newHashMap();
+		this.currentSessions = Maps.newHashMap();
+
+		plugin.getGUIManager().getMenus().add(this);
+
+		if (setup)
+			setup();
+	}
+
 	public abstract void setup();
 	
 	public Inventory open(Player player) {

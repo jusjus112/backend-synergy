@@ -1,20 +1,28 @@
 package usa.devrocoding.synergy.spigot.files.json;
 
-import org.json.simple.JSONObject;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 
 public class JSONFile {
 
-    private JSONObject main = new JSONObject();
+    private JsonObject main = new JsonObject();
     private File file;
 
-    public JSONFile(String fileName){
+    public JSONFile(String folder, String fileName){
         try {
-            this.file = new File(Core.getPlugin().getDataFolder() + File.separator + fileName + ".json");
+            File f = new File(Core.getPlugin().getDataFolder()+File.separator+folder);
+            if (!f.exists()){
+                f.mkdir();
+            }
+
+            this.file = new File(f.getAbsolutePath() + File.separator + fileName + ".json");
             if (!exists()) {
                 this.file.createNewFile();
             }
@@ -27,30 +35,37 @@ public class JSONFile {
         return this.file.exists();
     }
 
-    public JSONFile write(String path, String object){
-        main.put(path, object);
+    public JSONFile write(String path, JsonElement object, boolean override){
+        if (override || !exists(path)){
+            main.add(path, object);
+        }
         return this;
     }
 
     public void finish(){
         try {
             FileWriter fileWriter = new FileWriter(this.file);
-            fileWriter.write(this.main.toJSONString());
+            fileWriter.write(this.main.toString());
             fileWriter.flush();
             fileWriter.close();
-            this.main.clear();
+            this.main = new JsonObject();
         }catch(Exception e){
             Synergy.error(e.getMessage());
         }
     }
 
-    public void read(String path){
-        String var = null;
+    public JsonObject get(){
         try {
-            
+            Gson gson = new Gson();
+            return gson.fromJson(new FileReader(this.file), JsonObject.class);
         } catch (Exception e) {
             Synergy.error(e.getMessage());
         }
+        return null;
+    }
+
+    public boolean exists(String path){
+        return get() != null && get().has(path);
     }
 
 }

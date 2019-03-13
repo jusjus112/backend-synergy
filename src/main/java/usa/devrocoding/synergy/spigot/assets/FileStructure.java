@@ -60,13 +60,7 @@ public class FileStructure {
                 if (jsonFiles.containsKey(key)){
                     return this;
                 }
-                jsonFiles.put(key, new JSONFile((folder==null?"":folder+File.separator)+file));
-                break;
-            case TXT:
-                if (txtFiles.containsKey(key)){
-                    return this;
-                }
-                jsonFiles.put(key, new JSONFile((folder==null?"":folder+File.separator)+file));
+                jsonFiles.put(key, new JSONFile((folder==null?"":folder),file));
                 break;
         }
         return this;

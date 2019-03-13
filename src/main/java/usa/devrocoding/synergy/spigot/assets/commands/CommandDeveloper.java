@@ -20,15 +20,17 @@ public class CommandDeveloper extends SynergyCommand {
 
     @Override
     public void execute(SynergyUser synergyUser, Player player, String command, String[] args) {
-        synergyUser.message(
-                C.getShortLineWithName("Technical Information"),
-                "§eServer Version: §c" + getServer().getBukkitVersion(),
-                "§eServer App: §6"+getServer().getVersion(),
-                "§eSynergy Version: §6"+getPlugin().getDescription().getVersion(),
-                "§eServer Port: §6"+getServer().getPort(),
-                "§eCurrent Total Memory: §b"+MemoryUtils.getTotalMemory()+"M",
-                C.getLine()
-        );
+        if (synergyUser.hasPermission("developer.info")) {
+            synergyUser.message(
+                    C.getShortLineWithName("Technical Information"),
+                    "§eServer Version: §c" + getServer().getBukkitVersion(),
+                    "§eServer App: §6" + getServer().getVersion(),
+                    "§eSynergy Version: §6" + getPlugin().getDescription().getVersion(),
+                    "§eServer Port: §6" + getServer().getPort(),
+                    "§eCurrent Total Memory: §b" + MemoryUtils.getTotalMemory() + "M",
+                    C.getLine()
+            );
+        }
 
         synergyUser.addPermissionNode("essentials.fly");
     }

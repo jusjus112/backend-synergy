@@ -40,9 +40,10 @@ public class PluginManager extends Module {
                 .add("sam", null, "Sam", FileStructure.FileType.YML)
 //                .add("buddy", null, "Buddy", FileStructure.FileType.YML)
                 .add("settings", null, "Settings", FileStructure.FileType.YML)
+                .add("storage", null, "storage", FileStructure.FileType.JSON)
+                .add("example_changelog", "changelogs/server", "example_changelog", FileStructure.FileType.YML)
                 .add("en", "lang", "en_EN", FileStructure.FileType.YML)
                 .add("nl", "lang", "nl_NL", FileStructure.FileType.YML)
-                .add("example_changelog", "changelogs/server", "example_changelog", FileStructure.FileType.YML)
                 .save();
         try{
             this.fileStructure.getYMLFile("settings").set(

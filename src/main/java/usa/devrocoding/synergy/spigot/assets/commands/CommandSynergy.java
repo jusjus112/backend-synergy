@@ -25,10 +25,6 @@ public class CommandSynergy extends SynergyCommand {
                 "§eThis system has their first release written on §eAugust 24, 2018 made with §c"+ C.Symbol.HEARTH.getSymbol(),
                 C.getLine()
         );
-
-//        Core.getPlugin().getPluginMessagingManager().send("BungeeCord", "TesterDeTest");
-        synergyUser.addNetworkXP(2D);
-        Synergy.debug(synergyUser.getNetworkXP()+" =XP");
     }
 
     @Override

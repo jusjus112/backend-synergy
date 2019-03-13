@@ -1,6 +1,8 @@
 package usa.devrocoding.synergy.spigot.utilities;
 
 import com.google.common.collect.Lists;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -16,10 +18,15 @@ import java.util.Map;
 public class ItemBuilder {
 
     private ItemStack itemStack;
+    @Getter @Setter
     private ItemMeta itemMeta;
 
     public ItemBuilder(Material material){
-        this.itemStack = new ItemStack(material, 1);
+        if (material == Material.SKULL_ITEM){
+            this.itemStack = new ItemStack(material, 1, (short) 3);
+        }else {
+            this.itemStack = new ItemStack(material, 1);
+        }
         this.itemMeta = this.itemStack.getItemMeta();
     }
 
@@ -62,7 +69,7 @@ public class ItemBuilder {
     public ItemBuilder setLore(String... lore){
         List<String> modifiedLore = new ArrayList<>();
 
-        for(String line : lore) modifiedLore.add(ChatColor.translateAlternateColorCodes('&', line));
+        for(String line : lore) modifiedLore.add("§7"+ChatColor.translateAlternateColorCodes('&', line));
 
         this.itemMeta.setLore(modifiedLore);
 
@@ -72,7 +79,7 @@ public class ItemBuilder {
     public ItemBuilder setLore(List<String> lore){
         List<String> modifiedLore = new ArrayList<>();
 
-        for(String line : lore) modifiedLore.add(ChatColor.translateAlternateColorCodes('&', line));
+        for(String line : lore) modifiedLore.add("§7"+ChatColor.translateAlternateColorCodes('&', line));
 
         this.itemMeta.setLore(modifiedLore);
 

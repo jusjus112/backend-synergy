@@ -20,7 +20,7 @@ public class CommandFly extends SynergyCommand {
 
     @Override
     public void execute(SynergyUser synergyUser, Player player, String command, String[] args) {
-        if (synergyUser.hasPermission("fly.toggle")) {
+        if (synergyUser.hasPermission("fly")) {
             player.setAllowFlight(!player.getAllowFlight());
             synergyUser.info("I "+(player.getAllowFlight()? "enabled":"disabled")+" your fly for you");
         }

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import usa.devrocoding.synergy.services.SQLService;
 import usa.devrocoding.synergy.services.sql.DatabaseManager;
 import usa.devrocoding.synergy.assets.Synergy;
@@ -32,6 +33,7 @@ import usa.devrocoding.synergy.proxy.two_factor_authentication.GoogleAuthManager
 import usa.devrocoding.synergy.spigot.user.UserManager;
 import usa.devrocoding.synergy.spigot.user.object.UserExperience;
 import usa.devrocoding.synergy.spigot.version.VersionManager;
+import usa.devrocoding.synergy.spigot.warp.WarpManager;
 
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
@@ -86,6 +88,8 @@ public class Core extends JavaPlugin {
     private PluginMessagingManager pluginMessagingManager;
     @Getter
     private CacheManager cacheManager;
+    @Getter
+    private WarpManager warpManager;
     @Getter
     private LobbyManager lobbyManager = null;
 
@@ -189,6 +193,7 @@ public class Core extends JavaPlugin {
         this.discordManager = new DiscordManager();
         this.changelogManager = new ChangelogManager(this);
         this.cacheManager = new CacheManager(this);
+        this.warpManager = new WarpManager(this);
 
         try{
             if (getPluginManager().getFileStructure().getYMLFile("settings").get().getBoolean("network.isLobby")){
@@ -214,17 +219,26 @@ public class Core extends JavaPlugin {
         this.disabled = false;
 
         Synergy.success("Synergy is up and running!");
+
+        getServer().getScheduler().scheduleSyncDelayedTask(this, new BukkitRunnable() {
+            @Override
+            public void run() {
+                onServerEnabled();
+            }
+        });
     }
 
     public void onDisable(){
-//        this.loaded = false;
-//        try{
-//            // Initialize all the messages that are being sent..
-//            this.message.deint(getPluginManager().getFileStructure().getYMLFile("en"));
-//        }catch (Exception e){
-//            Sam.getRobot().error(null, e.getMessage(), "Try to contact the server developer", e);
-//        }
-//        this.disabled = true;
+        this.warpManager.saveAllWarps();
+    }
+
+    /*
+     * This method is being executed after the server is
+     * completely enabled and all the plugin are loaded!
+     */
+    public void onServerEnabled(){
+        // Init all the warps because of a world manager problem
+        this.warpManager.cacheSavedWarps();
     }
 
     // Called when typed /synergy restart/reload

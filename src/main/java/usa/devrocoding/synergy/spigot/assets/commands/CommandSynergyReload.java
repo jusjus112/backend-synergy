@@ -53,6 +53,7 @@ public class CommandSynergyReload extends SynergyCommand {
                         return;
                     }else{
                         Synergy.error("This module cannot be reloaded!");
+                        return;
                     }
                 }
             }

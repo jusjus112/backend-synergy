@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
+import usa.devrocoding.synergy.spigot.user.command.CommandHome;
 import usa.devrocoding.synergy.spigot.user.listener.UserJoinEvent;
 import usa.devrocoding.synergy.spigot.user.listener.UserQuitEvent;
 import usa.devrocoding.synergy.spigot.user.object.Rank;
@@ -29,6 +30,10 @@ public class UserManager extends Module {
         registerListener(
             new UserJoinEvent(),
             new UserQuitEvent()
+        );
+
+        registerCommand(
+            new CommandHome(getPlugin())
         );
     }
 

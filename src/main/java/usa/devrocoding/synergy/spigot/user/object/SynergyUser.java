@@ -92,6 +92,18 @@ public class SynergyUser {
         }
     }
 
+    public boolean hasPermission(String node, boolean message){
+        String p = Core.getPlugin().getManifest().permission_prefix()+"."+node;
+        if (getPlayer().hasPermission(p)){
+            return true;
+        }else{
+            if (message) {
+                error(SamMessage.NO_PERMISSIONS.getRandom());
+            }
+            return false;
+        }
+    }
+
     public void addPermissionNode(String node){
         this.permissions.setPermission(node, true);
     }

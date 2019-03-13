@@ -9,12 +9,19 @@ public enum SamMessage {
     CANNOT_DO_THAT(
             "There are reasons why I am not doing that...",
             "Can't do that. Always look twice before executing this command.",
-            "Cannot do that "
+            "Oops. I'm sorry, I cannot perform your request."
+    ),
+    ERROR(
+            "OH no... Something went wrong",
+            "My code just broke, good job player!",
+            "My code tells me something went wrong."
     ),
     NO_PERMISSIONS(
             "Sorry, but I see that you don't have permissions..",
             "I'm not letting you use this...",
-            "Annnndddd.. No permissions for you!"
+            "Annnndddd.. No permissions for you!",
+            "Cannot let you through",
+            "HALT, you're not allowed to use this"
     );
 
     @Getter

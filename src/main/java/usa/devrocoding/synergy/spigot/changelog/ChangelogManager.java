@@ -83,6 +83,7 @@ public class ChangelogManager extends Module {
     public void cacheChangelogs(){
         File dataFolder = new File(getPlugin().getDataFolder()+File.separator+"changelogs"+File.separator+"server");
         File[] files = dataFolder.listFiles();
+        this.changelogs.clear();
 
         if (files != null && files.length > 0) {
             try {

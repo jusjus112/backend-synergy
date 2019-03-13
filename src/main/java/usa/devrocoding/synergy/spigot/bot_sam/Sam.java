@@ -36,7 +36,7 @@ public class Sam {
     }
 
     public void warning(Player player, String... messages){
-        Arrays.stream(messages).forEach(s -> player.sendMessage(prefix+C.ERROR.getColor()+C.translateColors(s)));
+        Arrays.stream(messages).forEach(s -> player.sendMessage(prefix+C.ERROR+(s==null?SamMessage.ERROR.getRandom():s)));
     }
 
 }
