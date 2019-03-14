@@ -3,11 +3,14 @@ package usa.devrocoding.synergy.spigot.assets;
 import lombok.Getter;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
+import usa.devrocoding.synergy.spigot.api.SynergyPlugin;
 import usa.devrocoding.synergy.spigot.bot_sam.Sam;
 import usa.devrocoding.synergy.spigot.events.EventHandlers;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class PluginManager extends Module {
 
@@ -15,6 +18,8 @@ public class PluginManager extends Module {
 
     @Getter
     private FileStructure fileStructure;
+    @Getter
+    private List<SynergyPlugin> plugins = new ArrayList<>();
 
     public PluginManager(Core plugin){
         super(plugin, "Plugin Manager", false);
@@ -77,9 +82,10 @@ public class PluginManager extends Module {
         }
     }
 
-    // This will be called on a disable and a reload
-    public void unload(){
-
+    public void registerPlugin(SynergyPlugin plugin){
+        if (!this.getPlugins().contains(plugin)){
+            this.getPlugins().add(plugin);
+        }
     }
 
 }

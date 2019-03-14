@@ -13,6 +13,7 @@ import usa.devrocoding.synergy.services.sql.SQLDataType;
 import usa.devrocoding.synergy.services.sql.SQLDefaultType;
 import usa.devrocoding.synergy.services.sql.TableBuilder;
 import usa.devrocoding.synergy.spigot.api.SpigotAPI;
+import usa.devrocoding.synergy.spigot.api.SynergyPlugin;
 import usa.devrocoding.synergy.spigot.assets.*;
 import usa.devrocoding.synergy.spigot.assets.lobby.LobbyManager;
 import usa.devrocoding.synergy.spigot.assets.object.Message;
@@ -92,7 +93,6 @@ public class Core extends JavaPlugin {
     private WarpManager warpManager;
     @Getter
     private LobbyManager lobbyManager = null;
-
     @Getter
     private SynergyMani manifest;
 
@@ -209,7 +209,7 @@ public class Core extends JavaPlugin {
         this.cacheManager.loadCache();
 
         // Disable this to disable the API
-        Synergy.setSpigotAPI(new SpigotAPI());
+        Synergy.setSpigotAPI(this);
 
         // Update all the messages that are being sent..
         Message.update();
@@ -217,6 +217,14 @@ public class Core extends JavaPlugin {
         Synergy.info("Loaded a total of "+Module.getTotal()+" modules!");
         this.loaded = true;
         this.disabled = false;
+
+        int plugins = getPluginManager().getPlugins().size();
+        if (plugins > 0){
+            for(SynergyPlugin plugin : getPluginManager().getPlugins()){
+                plugin.init();
+            }
+            Synergy.info(plugins+" registered plugins initialized");
+        }
 
         Synergy.success("Synergy is up and running!");
 
@@ -230,6 +238,11 @@ public class Core extends JavaPlugin {
 
     public void onDisable(){
         this.warpManager.saveAllWarps();
+
+        for(SynergyPlugin plugin : getPluginManager().getPlugins()){
+            plugin.deinit();
+        }
+
     }
 
     /*

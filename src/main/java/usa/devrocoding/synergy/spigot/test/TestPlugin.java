@@ -16,14 +16,4 @@ public class TestPlugin extends SynergyPlugin {
     public void deinit() {
         // Same as onDisable
     }
-
-    @Override
-    public void onPreReload() {
-        // Called as very first when the plugin loads
-    }
-
-    @Override
-    public void onReload() {
-        // Called when the plugin is being reloaded and comes after all the files and important things
-    }
 }

@@ -77,7 +77,7 @@ public class Synergy {
     }
 
     @Setter @Getter
-    private static SpigotAPI spigotAPI;
+    private static usa.devrocoding.synergy.spigot.Core spigotAPI;
     @Setter @Getter
     private static BungeeAPI bungeeAPI;
     @Getter

@@ -63,7 +63,6 @@ dependencies {
 
     // SPIGOT Dependencies
     compile group: 'com.google.zxing', name: 'core', version: '3.2.1'
-    compile group: 'com.warrenstrange', name: 'googleauth', version: '1.1.2' // GoogleAuth
     compileOnly "org.projectlombok:lombok:1.16.16"
     compileOnly 'org.spigotmc:spigot:1.12-R0.1-SNAPSHOT'
     compileOnly 'org.bukkit:bukkit:1.12-R0.1-SNAPSHOT' // NMS
@@ -71,6 +70,7 @@ dependencies {
     // GLOBAL Dependencies
     compile group: 'redis.clients', name: 'jedis', version: '2.9.0' // Redis
     compile 'com.sun.xml.security:xml-security-impl:1.0'
+    compile group: 'com.warrenstrange', name: 'googleauth', version: '1.1.2' // GoogleAuth
     compile 'org.apache.httpcomponents:httpclient:4.5.6' // HTTP requests
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.8.1' // Apache utils
     
