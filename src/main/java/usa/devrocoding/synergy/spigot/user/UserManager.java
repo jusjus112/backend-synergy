@@ -41,8 +41,11 @@ public class UserManager extends Module {
     }
 
     public Collection<SynergyUser> getOnlineUsers(){
-        if (this.users != null && !this.users.isEmpty())
+        Synergy.debug("2");
+        if (this.users != null && !this.users.isEmpty()) {
+            Synergy.debug("3");
             return this.users.values();
+        }
         return Collections.EMPTY_LIST;
     }
 
@@ -69,7 +72,7 @@ public class UserManager extends Module {
     public void cacheExisitingPlayers(){
         for(Player p : Bukkit.getServer().getOnlinePlayers()){
             new SynergyUser(p.getUniqueId(), p.getName(), Rank.NONE,
-                    Core.getPlugin().getLanguageManager().getLanguage("en"), null);
+                    Core.getPlugin().getLanguageManager().getLanguage("en"));
         }
     }
 

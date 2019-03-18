@@ -100,7 +100,7 @@ public class DatabaseManager {
                 query.append(", ");
             }
             Object value = data.get(key);
-            query.append(key);
+            query.append("`"+key+"`");
             if (value instanceof String){
                 values.append("'"+value+"'");
             }else{

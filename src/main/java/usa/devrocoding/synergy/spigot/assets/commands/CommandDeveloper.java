@@ -31,8 +31,6 @@ public class CommandDeveloper extends SynergyCommand {
                     C.getLine()
             );
         }
-
-        synergyUser.addPermissionNode("essentials.fly");
     }
 
     @Override

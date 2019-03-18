@@ -13,7 +13,9 @@ public class UserQuitEvent implements Listener {
     public void onUserQuit(PlayerQuitEvent e){
         SynergyUser user = Core.getPlugin().getUserManager().getUser(e.getPlayer());
 
-        Core.getPlugin().getUserManager().updateUser(user);
+        if (user != null && user.isLoaded())
+            Core.getPlugin().getUserManager().updateUser(user);
+        Core.getPlugin().getUserManager().getUsers().remove(user.getUuid());
     }
 
 }

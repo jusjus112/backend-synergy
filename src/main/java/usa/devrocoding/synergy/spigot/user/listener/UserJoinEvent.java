@@ -32,14 +32,16 @@ public class UserJoinEvent implements Listener {
                     UUID uuid = e.getUniqueId(); String name = e.getName(); Rank rank = Rank.NONE;
                     LanguageFile language = Core.getPlugin().getLanguageManager().getLanguage("en");
                     double experience = 0D;
+                    boolean first_time = true;
 
                     if (resultSet.next()){
+                        first_time = false;
                         experience = resultSet.getDouble("xp");
                         if (Rank.fromName(resultSet.getString("rank")) != null){
                             rank = Rank.fromName(resultSet.getString("rank"));
                         }
                     }
-                    SynergyUser user = new SynergyUser(uuid, name, rank, language, null);
+                    SynergyUser user = new SynergyUser(uuid, name, rank, language, first_time);
                     user.setNetworkXP(experience);
 
                     Core.getPlugin().getServer().getPluginManager().callEvent(new UserLoadEvent(user));
@@ -51,16 +53,14 @@ public class UserJoinEvent implements Listener {
     }
 
     @EventHandler
-    public void onUserJoin(PlayerJoinEvent e){
+    public void onUserJoin(UserLoadEvent e){
         try{
-            SynergyUser user = Core.getPlugin().getUserManager().getUser(e.getPlayer());
-
-            if (user == null) {
-                // TODO, If failed return to hub or kick if in hub
-                e.getPlayer().kickPlayer(C.ERROR.getColor() + "Something went wrong while loading your profile!\n"+C.INFO+"Paste this error code on the forums: "+C.CHAT_HIGHLIGHT+"#2332");
-            }else{
-                user.setPermissions(e.getPlayer().addAttachment(Core.getPlugin()));
-            }
+//            if (e.getUser() == null) {
+//                // TODO, If failed return to hub or kick if in hub
+//                e.getUser().getPlayer().kickPlayer(C.ERROR.getColor() + "Something went wrong while loading your profile!\n"+C.INFO+"Paste this error code on the forums: "+C.CHAT_HIGHLIGHT+"#2332");
+//            }else{
+//                e.getUser().setPermissions(e.getUser().getPlayer().addAttachment(Core.getPlugin()));
+//            }
         }catch (Exception ex){
             Sam.getRobot().error(null, ex.getMessage(), "Contact the server developer!", ex);
         }

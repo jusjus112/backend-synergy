@@ -25,25 +25,22 @@ public class UtilDisplay implements Listener {
     }
 
 
-    public void sendTitle(String title) {
-        sendTitleAndSubTitle(title, "");
+    public void sendTitle(String title, int fadeIn, int stay, int fadeOut) {
+        this.player.sendTitle(title, null, fadeIn, stay, fadeOut);
     }
 
-    public void sendTitleAndSubTitle(String title, String subtitle) {
-        IChatBaseComponent message = ChatSerializer.a("{\"text\":\"\"}").a(title);
-        PacketPlayOutTitle packet = new PacketPlayOutTitle(EnumTitleAction.TITLE, message);
-        ((CraftPlayer) this.player).getHandle().playerConnection.sendPacket(packet);
-        IChatBaseComponent message2 = ChatSerializer.a("{\"text\":\"\"}").a(subtitle);
-        PacketPlayOutTitle packet2 = new PacketPlayOutTitle(EnumTitleAction.SUBTITLE, message2);
-        ((CraftPlayer) this.player).getHandle().playerConnection.sendPacket(packet2);
+    public void sendTitleAndSubTitle(String title, String subtitle, int fadeIn, int stay, int fadeOut) {
+//        IChatBaseComponent message = ChatSerializer.a("{\"text\":\"\"}").a(title);
+//        PacketPlayOutTitle packet = new PacketPlayOutTitle(EnumTitleAction.TITLE, message);
+//        ((CraftPlayer) this.player).getHandle().playerConnection.sendPacket(packet);
+//        IChatBaseComponent message2 = ChatSerializer.a("{\"text\":\"\"}").a(subtitle);
+//        PacketPlayOutTitle packet2 = new PacketPlayOutTitle(EnumTitleAction.SUBTITLE, message2);
+//        ((CraftPlayer) this.player).getHandle().playerConnection.sendPacket(packet2);
+        this.player.sendTitle(title, subtitle, fadeIn, stay, fadeOut);
     }
 
-    public void sendSubTitle(String subtitle) {
-        sendTitle("");
-        IChatBaseComponent message = ChatSerializer.a("{\"text\":\"\"}").a(subtitle);
-        PacketPlayOutTitle packet = new PacketPlayOutTitle(EnumTitleAction.SUBTITLE, message);
-
-        ((CraftPlayer) this.player).getHandle().playerConnection.sendPacket(packet);
+    public void sendSubtitle(String subTitle, int fadeIn, int stay, int fadeOut) {
+        this.player.sendTitle(null, subTitle, fadeIn, stay, fadeOut);
     }
 
     public void sendTiming(int fadeIn, int stay, int fadeOut) {

@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
+import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.achievement.object.Achievement;
 import usa.devrocoding.synergy.spigot.assets.C;
@@ -25,8 +26,8 @@ public class SynergyUser {
     private Rank rank;
     @Getter
     private LanguageFile language;
-    @Setter
-    private PermissionAttachment permissions;
+//    @Setter
+//    private PermissionAttachment permissions;
     @Getter @Setter
     private double networkXP = 0D;
     @Getter @Setter
@@ -35,22 +36,25 @@ public class SynergyUser {
     private List<Achievement> achievements = new ArrayList<>();
     @Getter
     private boolean newUser = false;
+    @Getter
+    private boolean loaded = false;
 
-    public SynergyUser(UUID uuid, String name, Rank rank, LanguageFile language, PermissionAttachment permissions, boolean first_joined){
+    public SynergyUser(UUID uuid, String name, Rank rank, LanguageFile language, boolean first_joined){
         this.uuid = uuid;
         this.name = name;
         this.rank = rank;
         this.language = language;
         this.newUser = first_joined;
+        this.loaded = true;
 
-        if (permissions != null){
-            this.permissions = permissions;
-        }
+//        if (permissions != null){
+//            this.permissions = permissions;
+//        }
         Core.getPlugin().getUserManager().getUsers().put(uuid, this);
     }
 
-    public SynergyUser(UUID uuid, String name, Rank rank, LanguageFile language, PermissionAttachment permissions){
-        new SynergyUser(uuid, name, rank, language, permissions);
+    public SynergyUser(UUID uuid, String name, Rank rank, LanguageFile language){
+        this(uuid, name, rank, language, false);
     }
 
     public void addNetworkXP(double xp){
@@ -58,11 +62,20 @@ public class SynergyUser {
     }
 
     public Player getPlayer() {
-        return Bukkit.getPlayer(getUuid());
+//        Synergy.debug(getUuid().toString(),
+//                Bukkit.getServer().getName(),
+//                Bukkit.getServer().getOnlinePlayers()+"");
+        return Bukkit.getServer().getPlayer(getUuid());
     }
 
     public void message(String... messages){
-        Arrays.stream(messages).forEach(s -> getPlayer().sendMessage(C.translateColors(s)));
+        Arrays
+                .stream(messages)
+                .forEach(s ->
+                        getPlayer()
+                                .sendMessage(
+                                        C.translateColors(
+                                                s)));
     }
 
     public void sendToServer(String server){
@@ -115,15 +128,15 @@ public class SynergyUser {
         }
     }
 
-    public void addPermissionNode(String node){
-        this.permissions.setPermission(node, true);
-    }
-
-    public void removePermissionNode(String node){
-        this.permissions.unsetPermission(node);
-    }
-
-    public Map<String, Boolean> getPermissions(){
-        return this.permissions.getPermissions();
-    }
+//    public void addPermissionNode(String node){
+//        this.permissions.setPermission(node, true);
+//    }
+//
+//    public void removePermissionNode(String node){
+//        this.permissions.unsetPermission(node);
+//    }
+//
+//    public Map<String, Boolean> getPermissions(){
+//        return this.permissions.getPermissions();
+//    }
 }

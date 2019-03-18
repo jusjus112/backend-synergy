@@ -121,7 +121,7 @@ public class GoogleAuthManager extends ProxyModule implements ICredentialReposit
     public ResultSet getUserData(String uuid){
         try {
             ResultSet resultSet = Core.getCore().getDatabaseManager().getResults(
-                    "SELECT * FROM two_factor_authentication WHERE uuid = '"+uuid+"'"
+                    "SELECT * FROM synergy_two_factor_authentication WHERE uuid = '"+uuid+"'"
             );
             return resultSet;
         }catch (SQLException e){
@@ -133,7 +133,7 @@ public class GoogleAuthManager extends ProxyModule implements ICredentialReposit
     public void addToDatabase(ProxiedPlayer player, String key){
         Core.getCore().getDatabaseManager().execute("two_factor_authentication", new HashMap<String, Object>() {{
             put("uuid", player.getUniqueId().toString());
-            put("name", player.getName());
+            put("account_name", player.getName());
             put("key", key);
         }});
     }

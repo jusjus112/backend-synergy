@@ -4,7 +4,8 @@ import lombok.Getter;
 
 public enum SynergyPeriod {
 
-    SECOND(20),
+    TICK(1),
+    SECOND(TICK.getPeriod()*20),
     MINUTE(SECOND.getPeriod() * 60),
     QUARTER(MINUTE.getPeriod() * 15),
     HALF_AN_HOUR(QUARTER.getPeriod() * 2),

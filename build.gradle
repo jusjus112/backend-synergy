@@ -55,6 +55,10 @@ repositories {
     maven {
         url "https://mvnrepository.com/artifact/redis.clients/jedis"
     }
+
+    maven {
+        url "https://repo.destroystokyo.com/repository/maven-public/"
+    }
 }
 
 dependencies {
@@ -64,8 +68,9 @@ dependencies {
     // SPIGOT Dependencies
     compile group: 'com.google.zxing', name: 'core', version: '3.2.1'
     compileOnly "org.projectlombok:lombok:1.16.16"
-    compileOnly 'org.spigotmc:spigot:1.12-R0.1-SNAPSHOT'
-    compileOnly 'org.bukkit:bukkit:1.12-R0.1-SNAPSHOT' // NMS
+    compileOnly 'org.spigotmc:spigot:1.12.2-R0.1-SNAPSHOT'
+    compile group: 'com.destroystokyo.paper', name: 'paper-api', version: '1.12.2-R0.1-SNAPSHOT' // GSON
+    compileOnly 'org.bukkit:bukkit:1.12.2-R0.1-SNAPSHOT' // NMS
 
     // GLOBAL Dependencies
     compile group: 'redis.clients', name: 'jedis', version: '2.9.0' // Redis
