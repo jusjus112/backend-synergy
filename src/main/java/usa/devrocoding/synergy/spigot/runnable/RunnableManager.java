@@ -13,7 +13,7 @@ public class RunnableManager extends Module {
     private static final Map<String, SynergyRunnable> RUNNABLES = Maps.newConcurrentMap();
 
     public RunnableManager(Core plugin) {
-        super(plugin, "RunnableManager", false);
+        super(plugin, "Runnable Manager", false);
     }
 
     @Override
@@ -61,7 +61,7 @@ public class RunnableManager extends Module {
         return;
     }
 
-    public SynergyRunnable createRunnable(String name, Consumer<Core> run) {
+    private SynergyRunnable createRunnable(String name, Consumer<Core> run) {
         SynergyRunnable runnable = new SynergyRunnable(getPlugin(), this, name, run);
 
         RUNNABLES.put(name, runnable);

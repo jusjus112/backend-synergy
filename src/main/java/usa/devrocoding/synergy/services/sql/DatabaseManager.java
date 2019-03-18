@@ -90,27 +90,27 @@ public class DatabaseManager {
     }
 
     public boolean execute(String table, Map<String, Object> data) {
-        StringBuilder query = new StringBuilder("INSERT INTO synergy_"+table);
-        StringBuilder values = new StringBuilder(" (");
+        StringBuilder query = new StringBuilder("INSERT INTO synergy_"+table+" (");
+        StringBuilder values = new StringBuilder(") VALUES(");
 
         int a=0;
         for(String key : data.keySet()){
             if (a>0) {
-                values.append(" ,");
-                query.append(" ,");
+                values.append(", ");
+                query.append(", ");
             }
             Object value = data.get(key);
-            values.append("`"+key+"`");
+            query.append(key);
             if (value instanceof String){
-                query.append("'"+value+"'");
+                values.append("'"+value+"'");
             }else{
-                query.append(value.toString());
+                values.append(value);
             }
 
             a++;
         }
 
-        query.append(values.append(")").toString()+")");
+        query.append(values.append(")").toString());
 
         try {
             connect();
@@ -122,6 +122,7 @@ public class DatabaseManager {
             getConnection().createStatement().execute(query.toString());
             return true;
         }catch (SQLException e){
+            Synergy.debug(query.toString());
             Synergy.warn("Can't execute statement. " + e.getMessage());
         }
         return false;

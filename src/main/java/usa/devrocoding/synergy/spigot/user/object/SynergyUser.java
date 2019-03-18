@@ -11,6 +11,7 @@ import usa.devrocoding.synergy.spigot.assets.C;
 import usa.devrocoding.synergy.spigot.bot_sam.Sam;
 import usa.devrocoding.synergy.spigot.bot_sam.object.SamMessage;
 import usa.devrocoding.synergy.spigot.language.LanguageFile;
+import usa.devrocoding.synergy.spigot.utilities.UtilDisplay;
 
 import java.util.*;
 
@@ -32,18 +33,24 @@ public class SynergyUser {
     private UserExperience userExperience = UserExperience.NOOB;
     @Getter @Setter
     private List<Achievement> achievements = new ArrayList<>();
+    @Getter
+    private boolean newUser = false;
 
-    public SynergyUser(UUID uuid, String name, Rank rank, LanguageFile language, PermissionAttachment permissions){
+    public SynergyUser(UUID uuid, String name, Rank rank, LanguageFile language, PermissionAttachment permissions, boolean first_joined){
         this.uuid = uuid;
         this.name = name;
         this.rank = rank;
         this.language = language;
+        this.newUser = first_joined;
 
         if (permissions != null){
             this.permissions = permissions;
         }
-
         Core.getPlugin().getUserManager().getUsers().put(uuid, this);
+    }
+
+    public SynergyUser(UUID uuid, String name, Rank rank, LanguageFile language, PermissionAttachment permissions){
+        new SynergyUser(uuid, name, rank, language, permissions);
     }
 
     public void addNetworkXP(double xp){
@@ -90,6 +97,10 @@ public class SynergyUser {
             error(SamMessage.NO_PERMISSIONS.getRandom());
             return false;
         }
+    }
+
+    public UtilDisplay getDisplay(){
+        return Core.getPlugin().getGlobalManager().getUtilDisplay(getPlayer());
     }
 
     public boolean hasPermission(String node, boolean message){

@@ -56,12 +56,4 @@ public abstract class Module implements Listener {
     public void disable(){
         this.disabled = true;
     }
-
-    public void runTaskAsync(Runnable runnable) {
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, runnable);
-    }
-
-    public void runTaskSync(Runnable runnable) {
-        Bukkit.getScheduler().runTask(plugin, runnable);
-    }
 }

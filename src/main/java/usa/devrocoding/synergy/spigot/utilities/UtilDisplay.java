@@ -17,52 +17,38 @@ import java.lang.reflect.Method;
 
 public class UtilDisplay implements Listener {
 
-    public static void sendSubtitle(String title, String subtitle) {
-        for (Player pl : Bukkit.getOnlinePlayers()) {
-            sendTitleAndSubTitle(pl, title, subtitle);
-        }
+    private Player player;
+
+    public UtilDisplay setPlayer(Player player){
+        this.player = player;
+        return this;
     }
 
-    public static void sendSubtitle(String subtitle) {
-        for (Player pl : Bukkit.getOnlinePlayers()) {
-            sendSubtitle(pl, subtitle);
-        }
+
+    public void sendTitle(String title) {
+        sendTitleAndSubTitle(title, "");
     }
 
-    public static void sendSubtitle(Player p, String subtitle) {
-        sendTitleAndSubTitle(p, "", subtitle);
-    }
-
-    public static void sendTitle(Player p, String title) {
-        sendTitleAndSubTitle(p, title, "");
-    }
-
-    public static void sendTitleAndSubTitle(String title, String subtitle) {
-        for (Player pl : Bukkit.getOnlinePlayers()) {
-            sendTitleAndSubTitle(pl, title, subtitle);
-        }
-    }
-
-    public static void sendTitleAndSubTitle(Player p, String title, String subtitle) {
+    public void sendTitleAndSubTitle(String title, String subtitle) {
         IChatBaseComponent message = ChatSerializer.a("{\"text\":\"\"}").a(title);
         PacketPlayOutTitle packet = new PacketPlayOutTitle(EnumTitleAction.TITLE, message);
-        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);
+        ((CraftPlayer) this.player).getHandle().playerConnection.sendPacket(packet);
         IChatBaseComponent message2 = ChatSerializer.a("{\"text\":\"\"}").a(subtitle);
         PacketPlayOutTitle packet2 = new PacketPlayOutTitle(EnumTitleAction.SUBTITLE, message2);
-        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet2);
+        ((CraftPlayer) this.player).getHandle().playerConnection.sendPacket(packet2);
     }
 
-    public static void sendSubTitle(Player p, String subtitle) {
-        sendTitle(p, "");
+    public void sendSubTitle(String subtitle) {
+        sendTitle("");
         IChatBaseComponent message = ChatSerializer.a("{\"text\":\"\"}").a(subtitle);
         PacketPlayOutTitle packet = new PacketPlayOutTitle(EnumTitleAction.SUBTITLE, message);
 
-        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);
+        ((CraftPlayer) this.player).getHandle().playerConnection.sendPacket(packet);
     }
 
-    public static void sendTiming(Player p, int fadeIn, int stay, int fadeOut) {
+    public void sendTiming(int fadeIn, int stay, int fadeOut) {
         try {
-            Object h = getHandle(p);
+            Object h = getHandle(this.player);
             Object c = getField(h.getClass(), "playerConnection").get(h);
 
             Object packet = PacketPlayOutTitle.class
@@ -75,17 +61,17 @@ public class UtilDisplay implements Listener {
         }
     }
 
-    public static void reset(Player p) {
+    public void reset() {
         PacketPlayOutTitle packet = new PacketPlayOutTitle(EnumTitleAction.RESET, null);
-        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);
+        ((CraftPlayer) this.player).getHandle().playerConnection.sendPacket(packet);
     }
 
-    public static void clear(Player p) {
+    public void clear() {
         PacketPlayOutTitle packet = new PacketPlayOutTitle(EnumTitleAction.CLEAR, null);
-        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);
+        ((CraftPlayer) this.player).getHandle().playerConnection.sendPacket(packet);
     }
 
-    private static boolean ClassListEqual(Class<?>[] l1, Class<?>[] l2) {
+    private boolean ClassListEqual(Class<?>[] l1, Class<?>[] l2) {
         boolean equal = true;
 
         if (l1.length != l2.length)
@@ -100,7 +86,7 @@ public class UtilDisplay implements Listener {
         return equal;
     }
 
-    private static Field getField(Class<?> clazz, String name) {
+    private Field getField(Class<?> clazz, String name) {
         try {
             Field f = clazz.getDeclaredField(name);
             f.setAccessible(true);
@@ -111,7 +97,7 @@ public class UtilDisplay implements Listener {
         return null;
     }
 
-    private static Method getMethod(Class<?> clazz, String name, Class<?>[] args) {
+    private Method getMethod(Class<?> clazz, String name, Class<?>[] args) {
         for (Method m : clazz.getMethods()) {
             if ((m.getName().equals(name)) && ((args.length == 0) || (ClassListEqual(args, m.getParameterTypes())))) {
                 m.setAccessible(true);
@@ -121,7 +107,7 @@ public class UtilDisplay implements Listener {
         return null;
     }
 
-    private static Object getHandle(Object obj) {
+    private Object getHandle(Object obj) {
         try {
             return getMethod(obj.getClass(), "getHandle", new Class[0]).invoke(obj, new Object[0]);
         } catch (Exception e) {
@@ -130,8 +116,8 @@ public class UtilDisplay implements Listener {
         return null;
     }
 
-    public static void sendTablist(Player p, String header, String footer) {
-        PlayerConnection con = ((CraftPlayer) p).getHandle().playerConnection;
+    public void sendTablist(String header, String footer) {
+        PlayerConnection con = ((CraftPlayer) this.player).getHandle().playerConnection;
         IChatBaseComponent headerComponent = ChatSerializer.a("{\"text\": \"" + header + "\"}");
         IChatBaseComponent footerComponent = ChatSerializer.a("{\"text\": \"" + footer + "\"}");
         PacketPlayOutPlayerListHeaderFooter packet = new PacketPlayOutPlayerListHeaderFooter();

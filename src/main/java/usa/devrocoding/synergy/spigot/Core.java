@@ -17,6 +17,7 @@ import usa.devrocoding.synergy.spigot.api.SynergyPlugin;
 import usa.devrocoding.synergy.spigot.assets.*;
 import usa.devrocoding.synergy.spigot.assets.lobby.LobbyManager;
 import usa.devrocoding.synergy.spigot.assets.object.Message;
+import usa.devrocoding.synergy.spigot.auto_reboot.AutoRebootManager;
 import usa.devrocoding.synergy.spigot.bot_sam.Sam;
 import usa.devrocoding.synergy.spigot.bot_sam.object.ErrorHandler;
 import usa.devrocoding.synergy.spigot.changelog.ChangelogManager;
@@ -33,6 +34,7 @@ import usa.devrocoding.synergy.spigot.scoreboard.ScoreboardManager;
 import usa.devrocoding.synergy.proxy.two_factor_authentication.GoogleAuthManager;
 import usa.devrocoding.synergy.spigot.user.UserManager;
 import usa.devrocoding.synergy.spigot.user.object.UserExperience;
+import usa.devrocoding.synergy.spigot.utilities.UtilDisplay;
 import usa.devrocoding.synergy.spigot.version.VersionManager;
 import usa.devrocoding.synergy.spigot.warp.WarpManager;
 
@@ -59,6 +61,8 @@ public class Core extends JavaPlugin {
     private PluginManager pluginManager;
     @Getter
     private VersionManager versionManager;
+    @Getter
+    private AutoRebootManager autoRebootManager;
     @Getter
     private CommandManager commandManager;
     @Getter
@@ -114,6 +118,7 @@ public class Core extends JavaPlugin {
         getLogger().addHandler(new ErrorHandler(Sam.getRobot()));
 
         this.runnableManager = new RunnableManager(this);
+        this.autoRebootManager = new AutoRebootManager(this);
 
         this.languageManager = new LanguageManager(this);
 
@@ -147,6 +152,7 @@ public class Core extends JavaPlugin {
             new TableBuilder("users", this.databaseManager)
                     .addColumn("uuid", SQLDataType.VARCHAR, 300,false, SQLDefaultType.NO_DEFAULT, true)
                     .addColumn("name", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
+                    .addColumn("rank", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
                     .addColumn("userexperience", SQLDataType.VARCHAR, 100,false, SQLDefaultType.CUSTOM.setCustom(UserExperience.NOOB.toString().toUpperCase()), false)
                     .addColumn("xp", SQLDataType.DOUBLE, -1,true, SQLDefaultType.CUSTOM.setCustom(0), false)
                     .execute();
@@ -194,6 +200,9 @@ public class Core extends JavaPlugin {
         this.changelogManager = new ChangelogManager(this);
         this.cacheManager = new CacheManager(this);
         this.warpManager = new WarpManager(this);
+
+        // Init the utilities
+        this.globalManager.setUtilDisplay(new UtilDisplay());
 
         try{
             if (getPluginManager().getFileStructure().getYMLFile("settings").get().getBoolean("network.isLobby")){

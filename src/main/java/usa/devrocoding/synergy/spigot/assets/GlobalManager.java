@@ -1,10 +1,17 @@
 package usa.devrocoding.synergy.spigot.assets;
 
+import lombok.Getter;
+import lombok.Setter;
+import org.bukkit.entity.Player;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
 import usa.devrocoding.synergy.spigot.assets.commands.*;
+import usa.devrocoding.synergy.spigot.utilities.UtilDisplay;
 
 public class GlobalManager extends Module {
+
+    @Setter
+    private UtilDisplay utilDisplay;
 
     public GlobalManager(Core plugin){
         super(plugin, "Global Manager", true);
@@ -26,5 +33,9 @@ public class GlobalManager extends Module {
     @Override
     public void reload(String response) {
 
+    }
+
+    public UtilDisplay getUtilDisplay(Player player){
+        return this.utilDisplay.setPlayer(player);
     }
 }

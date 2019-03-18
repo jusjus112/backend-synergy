@@ -36,7 +36,7 @@ public enum Rank {
 
     public static Rank fromName(String codeName) {
         for (Rank rank : values()) {
-            if (rank.getCodeName().equals(codeName)) {
+            if (rank.getCodeName().equals(codeName.toUpperCase())) {
                 return rank;
             }
         }

@@ -4,26 +4,50 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.assets.C;
 import usa.devrocoding.synergy.spigot.bot_sam.Sam;
+import usa.devrocoding.synergy.spigot.language.Language;
+import usa.devrocoding.synergy.spigot.language.LanguageFile;
 import usa.devrocoding.synergy.spigot.user.event.UserLoadEvent;
 import usa.devrocoding.synergy.spigot.user.object.Rank;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.UUID;
 
 public class UserJoinEvent implements Listener {
 
     @EventHandler
     public void preUserJoin(AsyncPlayerPreLoginEvent e){
-        SynergyUser user = Core.getPlugin().getUserManager().getUser(e.getUniqueId(), true);
+        Core.getPlugin().getRunnableManager().runTaskAsynchronously(
+            "Load User",
+            core -> {
+                try{
+                    ResultSet resultSet = Core.getPlugin().getDatabaseManager().getResults(
+                            "SELECT * FROM synergy_users WHERE uuid='"+e.getUniqueId()+"'"
+                    );
+                    UUID uuid = e.getUniqueId(); String name = e.getName(); Rank rank = Rank.NONE;
+                    LanguageFile language = Core.getPlugin().getLanguageManager().getLanguage("en");
+                    double experience = 0D;
 
-        if (user == null) {
-            user = new SynergyUser(e.getUniqueId(), e.getName(), Rank.NONE,
-                    Core.getPlugin().getLanguageManager().getLanguage("en"), null);
-            Core.getPlugin().getUserManager().addUserToDatabase(user);
-        }
+                    if (resultSet.next()){
+                        experience = resultSet.getDouble("xp");
+                        if (Rank.fromName(resultSet.getString("rank")) != null){
+                            rank = Rank.fromName(resultSet.getString("rank"));
+                        }
+                    }
+                    SynergyUser user = new SynergyUser(uuid, name, rank, language, null);
+                    user.setNetworkXP(experience);
 
-        Core.getPlugin().getServer().getPluginManager().callEvent(new UserLoadEvent(user));
+                    Core.getPlugin().getServer().getPluginManager().callEvent(new UserLoadEvent(user));
+                }catch (SQLException ex){
+                    Synergy.error(ex.getMessage());
+                }
+            }
+        );
     }
 
     @EventHandler

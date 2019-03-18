@@ -15,9 +15,7 @@ import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class UserManager extends Module {
 
@@ -42,8 +40,10 @@ public class UserManager extends Module {
 
     }
 
-    public SynergyUser getUser(Player player) {
-        return getUser(player.getUniqueId(), false);
+    public Collection<SynergyUser> getOnlineUsers(){
+        if (this.users != null && !this.users.isEmpty())
+            return this.users.values();
+        return Collections.EMPTY_LIST;
     }
 
     public SynergyUser getUser(String name, Boolean database) {
@@ -55,39 +55,13 @@ public class UserManager extends Module {
         return null;
     }
 
-    public SynergyUser getUser(Player player, Boolean database) {
-        return getUser(player.getUniqueId(), database);
+    public SynergyUser getUser(Player player) {
+        return getUser(player.getUniqueId());
     }
 
-    public SynergyUser getUser(UUID uuid, Boolean database) {
+    public SynergyUser getUser(UUID uuid) {
         if (users.containsKey(uuid)) {
             return users.get(uuid);
-        }
-        if (database){
-            return getFromDB(uuid);
-        }
-        return null;
-    }
-
-    private SynergyUser getFromDB(UUID uuid){
-        try{
-            ResultSet resultSet = Core.getPlugin().getDatabaseManager().getResults(
-                    "SELECT * FROM synergy_users WHERE uuid='"+uuid+"'"
-            );
-            final boolean next = resultSet.next();
-            if (next){
-                SynergyUser synergyUser = new SynergyUser(
-                    UUID.fromString(resultSet.getString("uuid"))      ,
-                    resultSet.getString("name"),
-                    Rank.NONE,
-                    Core.getPlugin().getLanguageManager().getLanguage("en"),
-                        null
-                );
-                synergyUser.setNetworkXP(resultSet.getDouble("xp"));
-                return synergyUser;
-            }
-        }catch (SQLException e){
-            Synergy.error(e.getMessage());
         }
         return null;
     }
@@ -99,19 +73,25 @@ public class UserManager extends Module {
         }
     }
 
-    public boolean updateUser(SynergyUser user){
-        return Core.getPlugin().getDatabaseManager().update("users", new HashMap<String, Object>(){{
-            put("userexperience", user.getUserExperience().toString().toUpperCase());
-            put("xp", user.getNetworkXP());
-        }}, "uuid = '"+user.getUuid().toString()+"'");
-    }
+    public void updateUser(SynergyUser synergyUser){
+        Core.getPlugin().getRunnableManager().runTaskAsynchronously(
+            "Add User",
+            core -> {
+                HashMap<String, Object> data = new HashMap<String, Object>() {{
+                    put("uuid", synergyUser.getUuid().toString());
+                    put("name", synergyUser.getName());
+                    put("rank", synergyUser.getRank().toString());
+                    put("userexperience", synergyUser.getUserExperience().toString().toUpperCase());
+                }};
 
-    public void addUserToDatabase(SynergyUser synergyUser){
-        Core.getPlugin().getDatabaseManager().execute("users", new HashMap<String, Object>(){{
-            put("uuid", synergyUser.getUuid().toString());
-            put("name", synergyUser.getName());
-            put("userexperience", synergyUser.getUserExperience().toString().toUpperCase());
-        }});
+                if (synergyUser.isNewUser()) {
+                    getPlugin().getDatabaseManager().execute("users", data);
+                }else{
+                    Core.getPlugin().getDatabaseManager().update("users", data, "uuid = '"+synergyUser.getUuid().toString()+"'");
+                }
+                this.users.remove(synergyUser);
+            }
+        );
     }
 
 }
