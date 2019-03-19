@@ -2,8 +2,8 @@ package usa.devrocoding.synergy.spigot.achievement.object;
 
 import org.bukkit.inventory.ItemStack;
 import usa.devrocoding.synergy.spigot.achievement.event.PlayerFinishedAchievementEvent;
-import usa.devrocoding.synergy.spigot.events.EventListener;
-import usa.devrocoding.synergy.spigot.events.Events;
+import usa.devrocoding.synergy.spigot.listeners.EventListener;
+import usa.devrocoding.synergy.spigot.listeners.Listeners;
 
 public abstract class Achievement {
 
@@ -23,7 +23,7 @@ public abstract class Achievement {
     }
 
     public void addListener(EventListener<?> listener) {
-        Events.addListener(listener);
+        Listeners.addListener(listener);
     }
 
 }

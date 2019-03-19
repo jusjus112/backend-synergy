@@ -69,7 +69,7 @@ dependencies {
     compile group: 'com.google.zxing', name: 'core', version: '3.2.1'
     compileOnly "org.projectlombok:lombok:1.16.16"
     compileOnly 'org.spigotmc:spigot:1.12.2-R0.1-SNAPSHOT'
-    compile group: 'com.destroystokyo.paper', name: 'paper-api', version: '1.12.2-R0.1-SNAPSHOT' // GSON
+    compileOnly group: 'com.destroystokyo.paper', name: 'paper-api', version: '1.12.2-R0.1-SNAPSHOT' // GSON
     compileOnly 'org.bukkit:bukkit:1.12.2-R0.1-SNAPSHOT' // NMS
 
     // GLOBAL Dependencies

@@ -84,11 +84,11 @@ public class UserManager extends Module {
                     put("uuid", synergyUser.getUuid().toString());
                     put("name", synergyUser.getName());
                     put("rank", synergyUser.getRank().toString());
-                    put("userexperience", synergyUser.getUserExperience().toString().toUpperCase());
+                    put("user_experience", synergyUser.getUserExperience().toString().toUpperCase());
                 }};
 
                 if (synergyUser.isNewUser()) {
-                    getPlugin().getDatabaseManager().execute("users", data);
+                    getPlugin().getDatabaseManager().insert("users", data);
                 }else{
                     Core.getPlugin().getDatabaseManager().update("users", data, "uuid = '"+synergyUser.getUuid().toString()+"'");
                 }

@@ -69,6 +69,7 @@ public class TableBuilder {
                     query_update += "ALTER TABLE synergy_"+this.tableName+" ADD "+specs+";";
                 }
             }catch(SQLException e){
+                e.printStackTrace();
                 Synergy.error(e.getMessage());
             }
         }

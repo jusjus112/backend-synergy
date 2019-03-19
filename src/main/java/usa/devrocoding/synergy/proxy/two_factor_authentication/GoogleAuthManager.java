@@ -133,7 +133,7 @@ public class GoogleAuthManager extends ProxyModule implements ICredentialReposit
     }
 
     public void addToDatabase(ProxiedPlayer player, String key){
-        Core.getCore().getDatabaseManager().execute("two_factor_authentication", new HashMap<String, Object>() {{
+        Core.getCore().getDatabaseManager().insert("two_factor_authentication", new HashMap<String, Object>() {{
             put("uuid", player.getUniqueId().toString());
             put("account_name", player.getName());
             put("key", key);

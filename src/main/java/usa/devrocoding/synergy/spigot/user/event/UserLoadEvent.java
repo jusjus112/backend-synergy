@@ -1,8 +1,7 @@
 package usa.devrocoding.synergy.spigot.user.event;
 
 import lombok.Getter;
-import org.bukkit.entity.Player;
-import usa.devrocoding.synergy.spigot.events.SynergyEvent;
+import usa.devrocoding.synergy.spigot.listeners.SynergyEvent;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 
 public class UserLoadEvent extends SynergyEvent {

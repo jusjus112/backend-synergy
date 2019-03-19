@@ -1,4 +1,4 @@
-package usa.devrocoding.synergy.spigot.events;
+package usa.devrocoding.synergy.spigot.listeners;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.block.*;
@@ -19,10 +19,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unchecked")
-public enum Events {
+public enum Listeners {
 
     /**
-     * World Entity Events
+     * World Entity Listeners
      */
     CONS_ITEM(PlayerItemConsumeEvent.class),
     ENTITY_DAMAGE_BY_ENTITY(EntityDamageByEntityEvent.class),
@@ -38,7 +38,7 @@ public enum Events {
     ITEM_SPAWN(ItemSpawnEvent.class),
 
     /**
-     * Player Events
+     * Player Listeners
      */
 
     ASYNC_PLAYER_CHAT(AsyncPlayerChatEvent.class),
@@ -66,7 +66,7 @@ public enum Events {
     MAP_INIT(MapInitializeEvent.class),
 
     /**
-     * Inventory Events
+     * Inventory Listeners
      */
 
     CRAFT_ITEM(CraftItemEvent.class),
@@ -87,7 +87,7 @@ public enum Events {
     PREPARE_ITEM_ENCHANT(PrepareItemEnchantEvent.class),
 
     /**
-     * Weather Events
+     * Weather Listeners
      */
 
     LIGHTNING_STRIKE(LightningStrikeEvent.class),
@@ -95,7 +95,7 @@ public enum Events {
     WEATHER_CHANGE(WeatherChangeEvent.class),
 
     /**
-     * 	Block Events
+     * 	Block Listeners
      */
 
     NOTE_PLAY(NotePlayEvent.class),
@@ -128,7 +128,7 @@ public enum Events {
     private List<EventListener<?>> listeners = new ArrayList<>();
     private Class<?> myClass;
 
-    Events(Class<?> myClass){
+    Listeners(Class<?> myClass){
         this.myClass = myClass;
     }
 
@@ -143,7 +143,7 @@ public enum Events {
     }
 
     public static void addListener(EventListener<?> listener){
-        for (Events e : values()){
+        for (Listeners e : values()){
             if (listener.isType(e.myClass)){
                 e.listeners.add(0,listener);
                 return;

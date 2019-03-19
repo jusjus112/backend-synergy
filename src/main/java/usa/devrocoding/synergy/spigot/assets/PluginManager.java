@@ -5,7 +5,7 @@ import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
 import usa.devrocoding.synergy.spigot.api.SynergyPlugin;
 import usa.devrocoding.synergy.spigot.bot_sam.Sam;
-import usa.devrocoding.synergy.spigot.events.EventHandlers;
+import usa.devrocoding.synergy.spigot.listeners.EventHandlers;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;

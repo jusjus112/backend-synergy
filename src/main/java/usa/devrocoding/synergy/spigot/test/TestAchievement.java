@@ -4,7 +4,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import usa.devrocoding.synergy.spigot.achievement.event.PlayerFinishedAchievementEvent;
 import usa.devrocoding.synergy.spigot.achievement.object.Achievement;
-import usa.devrocoding.synergy.spigot.events.EventListener;
+import usa.devrocoding.synergy.spigot.listeners.EventListener;
 
 public class TestAchievement extends Achievement {
 

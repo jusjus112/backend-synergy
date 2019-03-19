@@ -1,4 +1,4 @@
-package usa.devrocoding.synergy.spigot.events;
+package usa.devrocoding.synergy.spigot.listeners;
 
 import java.lang.reflect.ParameterizedType;
 

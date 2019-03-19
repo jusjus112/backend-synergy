@@ -16,16 +16,16 @@ import java.util.Date;
 public class ChangelogJoinListener implements Listener {
 
     @EventHandler
-    public void onChangelogJoin(UserLoadEvent e){
+    public void onChangelogJoin(PlayerJoinEvent e){
         Changelog changelog = Core.getPlugin().getChangelogManager().getLatestChangelog();
         if (changelog != null) {
             if (UtilTime.daysBetween(changelog.getDate(), new Date()) <= 5){
-                e.getUser().message(
+                e.getPlayer().sendMessage(new String[]{
                     C.getLineWithName("Updates"),
                     "Did you already checked the new updates?",
                     "Changelog for §b" + changelog.getNiceDate(),
                     "Check out this changelog with §6§l/changelog",
-                    C.getLine()
+                    C.getLine()}
                 );
             }
         }
