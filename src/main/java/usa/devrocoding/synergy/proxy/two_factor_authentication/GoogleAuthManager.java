@@ -121,7 +121,9 @@ public class GoogleAuthManager extends ProxyModule implements ICredentialReposit
     public ResultSet getUserData(String uuid){
         try {
             ResultSet resultSet = Core.getCore().getDatabaseManager().getResults(
-                    "SELECT * FROM synergy_two_factor_authentication WHERE uuid = '"+uuid+"'"
+                "two_factor_authentication","uuid=?", new HashMap<Integer, Object>(){{
+                    put(1, uuid);
+                }}
             );
             return resultSet;
         }catch (SQLException e){

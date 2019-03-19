@@ -110,7 +110,7 @@ public class Core extends JavaPlugin {
 
         this.versionManager = new VersionManager(this);
 
-        Arrays.stream(Synergy.getLogos().logo_colossal).forEach(s -> getServer().getConsoleSender().sendMessage(C.PLUGIN.getColor()+s));
+        Arrays.stream(Synergy.getLogos().logo_colossal).forEach(s -> getServer().getConsoleSender().sendMessage(C.PLUGIN+s));
         System.out.println("  ");
 
         // Init sam the robot
@@ -151,14 +151,16 @@ public class Core extends JavaPlugin {
              // Generate Tables
             new TableBuilder("users", this.databaseManager)
                     .addColumn("uuid", SQLDataType.VARCHAR, 300,false, SQLDefaultType.NO_DEFAULT, true)
+                    .addColumn("id", SQLDataType.BIGINT, -1, false, SQLDefaultType.AUTO_INCREMENT, false)
                     .addColumn("name", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
                     .addColumn("rank", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
-                    .addColumn("userexperience", SQLDataType.VARCHAR, 100,false, SQLDefaultType.CUSTOM.setCustom(UserExperience.NOOB.toString().toUpperCase()), false)
+                    .addColumn("user_experience", SQLDataType.VARCHAR, 100,false, SQLDefaultType.CUSTOM.setCustom(UserExperience.NOOB.toString().toUpperCase()), false)
                     .addColumn("xp", SQLDataType.DOUBLE, -1,true, SQLDefaultType.CUSTOM.setCustom(0), false)
                     .execute();
             new TableBuilder("achievement", this.databaseManager)
                     .addColumn("uuid", SQLDataType.VARCHAR, 300,false, SQLDefaultType.NO_DEFAULT, true)
-                    .addColumn("achievements", SQLDataType.TEXT, -1,true, SQLDefaultType.NO_DEFAULT, false)
+                    .addColumn("achievement", SQLDataType.TEXT, -1,false, SQLDefaultType.NO_DEFAULT, false)
+                    .addColumn("achieved_on", SQLDataType.DATE, -1, false, SQLDefaultType.NO_DEFAULT, false)
                     .execute();
 
         }catch (FileNotFoundException e){
@@ -172,7 +174,7 @@ public class Core extends JavaPlugin {
             return;
         }
 //        catch (ClassNotFoundException e){
-//            Synergy.error("OMG, there is no SQL Server here... MAYDAY", "Install a SQL Server bb");
+//            Synergy.error("OMG, there is no SQL Server here...", "Install a SQL Server");
 //            getPluginLoader().disablePlugin(this);
 //            return;
 //        }
@@ -223,7 +225,7 @@ public class Core extends JavaPlugin {
         // Update all the messages that are being sent..
         Message.update();
 
-        Synergy.info("Loaded a total of "+Module.getTotal()+" modules!");
+        Synergy.info("Loaded a total of "+Module.getTotal()+" Modules & Systems!");
         this.loaded = true;
         this.disabled = false;
 
@@ -237,6 +239,7 @@ public class Core extends JavaPlugin {
 
         Synergy.success("Synergy is up and running!");
 
+        // Calling the method once the main thread finished
         getServer().getScheduler().scheduleSyncDelayedTask(this, new BukkitRunnable() {
             @Override
             public void run() {

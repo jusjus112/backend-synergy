@@ -3,6 +3,7 @@ package usa.devrocoding.synergy.services.sql;
 import usa.devrocoding.synergy.assets.Synergy;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 
 public class TableBuilder {
 
@@ -55,8 +56,16 @@ public class TableBuilder {
         {
 
             try {
-                if (!this.databaseManager.getResults("SELECT * FROM information_schema.COLUMNS WHERE COLUMN_NAME = '" + name + "' AND TABLE_NAME = 'synergy_" +
-                        this.tableName + "' AND TABLE_SCHEMA = '" + this.databaseManager.getSqlService().getDatabase() + "'").next()) {
+                if (!
+                    this.databaseManager.getResults(null,
+                            "information_schema.COLUMNS",
+                            "COLUMN_NAME=? AND TABLE_NAME=? AND TABLE_SCHEMA=?",
+                            new HashMap<Integer, Object>(){{
+                                put(1, name);
+                                put(2, "synergy_"+tableName);
+                                put(3, databaseManager.getSqlService().getDatabase());
+                            }}
+                    ).next()) {
                     query_update += "ALTER TABLE synergy_"+this.tableName+" ADD "+specs+";";
                 }
             }catch(SQLException e){

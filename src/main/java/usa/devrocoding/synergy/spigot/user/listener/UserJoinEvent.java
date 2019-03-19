@@ -16,6 +16,7 @@ import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.UUID;
 
 public class UserJoinEvent implements Listener {
@@ -27,7 +28,9 @@ public class UserJoinEvent implements Listener {
             core -> {
                 try{
                     ResultSet resultSet = Core.getPlugin().getDatabaseManager().getResults(
-                            "SELECT * FROM synergy_users WHERE uuid='"+e.getUniqueId()+"'"
+                            "users ", "uuid=?", new HashMap<Integer, Object>(){{
+                                put(1, e.getUniqueId());
+                            }}
                     );
                     UUID uuid = e.getUniqueId(); String name = e.getName(); Rank rank = Rank.NONE;
                     LanguageFile language = Core.getPlugin().getLanguageManager().getLanguage("en");

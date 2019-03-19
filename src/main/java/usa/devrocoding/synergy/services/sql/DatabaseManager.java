@@ -8,6 +8,7 @@ import usa.devrocoding.synergy.services.SQLService;
 
 import java.sql.*;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
 public class DatabaseManager {
@@ -69,10 +70,26 @@ public class DatabaseManager {
         }
     }
 
-    public ResultSet getResults(String query) throws SQLException {
+    public ResultSet getResults(String table, String where, Map<Integer, Object> data) throws SQLException {
+        ResultSet resultSet = getResults("synergy", table, where, data);
+        return resultSet;
+    }
+
+    public ResultSet getResults(String tablePrefix, String table, String where, Map<Integer, Object> data) throws SQLException {
         connect();
-        Statement statement = getConnection().createStatement();
-        ResultSet resultSet = statement.executeQuery(query);
+
+        PreparedStatement statement = getConnection().prepareStatement(
+            "SELECT * FROM "+(tablePrefix==null?"":tablePrefix+"_")+table+(where == null ? (" WHERE "+where) : "")
+        );
+
+        if (where != null) {
+            for (int a : data.keySet()) {
+                Object object = data.get(a);
+                statement.setObject(a, object);
+            }
+        }
+
+        ResultSet resultSet = statement.executeQuery();
         return resultSet;
     }
 
@@ -83,16 +100,13 @@ public class DatabaseManager {
             Synergy.warn("Can't connect again... " + e.getMessage());
         }
         try {
-            getConnection().createStatement().execute(query);
+            getConnection().prepareStatement(query).executeQuery();
         }catch (SQLException e){
             Synergy.warn("Can't execute statement. " + e.getMessage());
         }
     }
 
-    public boolean execute(String table, Map<String, Object> data) {
-        StringBuilder query = new StringBuilder("INSERT INTO synergy_"+table+" (");
-        StringBuilder values = new StringBuilder(") VALUES(");
-
+    /*
         int a=0;
         for(String key : data.keySet()){
             if (a>0) {
@@ -109,20 +123,44 @@ public class DatabaseManager {
 
             a++;
         }
+     */
 
-        query.append(values.append(")").toString());
+    public boolean insert(){
+        return true;
+    }
 
+    public boolean execute(String prefix, String table, Map<String, Object> data, boolean insert) {
+        HashMap<Integer, Object> indexed = new HashMap<>();
         try {
             connect();
-        }catch (SQLException e){
-            Synergy.warn("Can't connect again... " + e.getMessage());
-            return false;
-        }
-        try {
-            getConnection().createStatement().execute(query.toString());
+            StringBuilder query = new StringBuilder(String.format(prefix, table)),
+            values = new StringBuilder(") VALUES(");
+
+            int a=0;
+            for(String key : data.keySet()){
+                if (a>0) {
+                    query.append(", ");
+                    values.append(", ");
+                }
+                query.append("`"+key+"`");
+                values.append('?');
+
+                indexed.put(++a, data.get(key));
+                a++;
+            }
+            values.append(")");
+
+            PreparedStatement preparedStatement = getConnection().prepareStatement(query.toString());
+
+            for(Integer index : indexed.keySet()){
+                Object value = indexed.get(index);
+
+                preparedStatement.setObject(index, value);
+            }
+
+            preparedStatement.executeQuery();
             return true;
         }catch (SQLException e){
-            Synergy.debug(query.toString());
             Synergy.warn("Can't execute statement. " + e.getMessage());
         }
         return false;
