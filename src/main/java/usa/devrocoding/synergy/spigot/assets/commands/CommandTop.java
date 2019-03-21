@@ -1,5 +1,6 @@
 package usa.devrocoding.synergy.spigot.assets.commands;
 
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -7,6 +8,7 @@ import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.command.SynergyCommand;
 import usa.devrocoding.synergy.spigot.user.object.Rank;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
+import usa.devrocoding.synergy.spigot.utilities.UtilLoc;
 
 public class CommandTop extends SynergyCommand {
 
@@ -17,7 +19,7 @@ public class CommandTop extends SynergyCommand {
     @Override
     public void execute(SynergyUser synergyUser, Player player, String command, String[] args) {
         if (synergyUser.hasPermission("top")) {
-            player.teleport(player.getLocation().getBlock().getWorld().getHighestBlockAt(player.getLocation()).getLocation());
+            player.teleport(UtilLoc.getHighestBlockLocation(player.getLocation()));
             synergyUser.info("I've teleported you to the highest block");
         }
     }
@@ -26,4 +28,5 @@ public class CommandTop extends SynergyCommand {
     public void execute(ConsoleCommandSender sender, String command, String[] args) {
 
     }
+
 }

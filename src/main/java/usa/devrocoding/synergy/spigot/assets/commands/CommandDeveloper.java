@@ -27,7 +27,7 @@ public class CommandDeveloper extends SynergyCommand {
                     "§eServer App: §6" + getServer().getVersion(),
                     "§eSynergy Version: §6" + getPlugin().getDescription().getVersion(),
                     "§eServer Port: §6" + getServer().getPort(),
-                    "§eCurrent Total Memory: §b" + MemoryUtils.getTotalMemory() + "M",
+                    "§eServer Total Memory: §b" + MemoryUtils.getTotalMemory() + "M",
                     C.getLine()
             );
         }
@@ -40,7 +40,7 @@ public class CommandDeveloper extends SynergyCommand {
         sender.sendMessage("Server App: "+getServer().getVersion());
         sender.sendMessage("Synergy Version: "+getPlugin().getDescription().getVersion());
         sender.sendMessage("Server Port: "+getServer().getPort());
-        sender.sendMessage("Current Total Memory: "+MemoryUtils.getTotalMemory()+"M");
+        sender.sendMessage("Server Total Memory: "+MemoryUtils.getTotalMemory()+"M");
         sender.sendMessage(LinuxColorCodes.ANSI_YELLOW+"-------------------------------------");
     }
 }

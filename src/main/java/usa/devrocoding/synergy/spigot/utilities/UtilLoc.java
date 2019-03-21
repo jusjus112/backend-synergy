@@ -3,6 +3,7 @@ package usa.devrocoding.synergy.spigot.utilities;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -25,6 +26,12 @@ public class UtilLoc {
 				p.setVelocity(velocity);
 			}
 		}.runTaskLater(Core.getPlugin(), 1);
+	}
+
+
+	public static Location getHighestBlockLocation(Location location){
+		Block b = location.getWorld().getHighestBlockAt(location.getBlockX(), location.getBlockZ());
+		return new Location(b.getLocation().getWorld(), b.getLocation().getBlockX(), b.getLocation().getBlockY() + 1, b.getLocation().getBlockZ());
 	}
 
 	public static Location add(Location l, double x, double y, double z) {

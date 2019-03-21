@@ -22,7 +22,7 @@ public class CommandHeal extends SynergyCommand {
             for (PotionEffect potionEffect : player.getActivePotionEffects()){
                 player.removePotionEffect(potionEffect.getType());
             }
-            synergyUser.info("Healed you <3");
+            synergyUser.info("I've healed you!");
         }
     }
 
