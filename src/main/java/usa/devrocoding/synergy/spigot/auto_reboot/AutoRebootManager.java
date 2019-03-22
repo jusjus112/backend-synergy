@@ -29,10 +29,10 @@ public class AutoRebootManager extends Module {
 
     public void rebootServer(){
         getPlugin().getRunnableManager().runTaskTimerAsynchronously(
-                "Rebooter",
-                new Rebooter(
-                        SynergyPeriod.MINUTE.getPeriod()*5
-                ), SynergyPeriod.SECOND.getPeriod(), SynergyPeriod.TICK.getPeriod()
+            "Rebooter",
+            new Rebooter(
+                    SynergyPeriod.MINUTE.getPeriod()*5
+            ), SynergyPeriod.SECOND.getPeriod(), SynergyPeriod.TICK.getPeriod()
         );
     }
 }

@@ -34,9 +34,9 @@ public class TestAchievement extends Achievement {
         this.addListener(new EventListener<PlayerJoinEvent>(){
             @Override
             public void process(PlayerJoinEvent event) {
-                if (!event.getPlayer().hasPlayedBefore()){
-                    unlock();
-                }
+            if (!event.getPlayer().hasPlayedBefore()){
+//                unlock();
+            }
             }
         });
     }

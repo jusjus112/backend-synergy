@@ -21,7 +21,9 @@ public enum SamMessage {
             "I'm not letting you use this...",
             "Annnndddd.. No permissions for you!",
             "Cannot let you through",
-            "HALT, you're not allowed to use this"
+            "Sorry, I can't allow you to use this",
+            "Try again, but with permissions please!",
+            "Hahahahaha.. Nice try, no permissions"
     );
 
     @Getter

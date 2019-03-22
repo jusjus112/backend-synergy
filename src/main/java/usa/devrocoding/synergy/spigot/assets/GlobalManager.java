@@ -17,16 +17,21 @@ public class GlobalManager extends Module {
         super(plugin, "Global Manager", true);
 
         registerCommand(
-            new CommandSynergy(plugin),
-            new CommandPlugins(plugin),
-            new CommandGamemode(plugin),
-            new CommandTeleport(plugin),
-            new CommandDeveloper(plugin),
-            new CommandSynergyReload(plugin),
             new CommandClearInventory(plugin),
+            new CommandDeveloper(plugin),
+            new CommandEnderchest(plugin),
             new CommandFly(plugin),
+            new CommandGamemode(plugin),
             new CommandHeal(plugin),
-            new CommandTop(plugin)
+            new CommandHelp(plugin),
+            new CommandKill(plugin),
+            new CommandPlugins(plugin),
+            new CommandSpeed(plugin),
+            new CommandSynergy(plugin),
+            new CommandSynergyReload(plugin),
+            new CommandTeleport(plugin),
+            new CommandTop(plugin),
+            new CommandWorkbench(plugin)
         );
     }
 

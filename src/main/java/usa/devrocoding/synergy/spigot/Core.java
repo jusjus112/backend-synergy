@@ -156,9 +156,14 @@ public class Core extends JavaPlugin {
                     .addColumn("user_experience", SQLDataType.VARCHAR, 100,false, SQLDefaultType.CUSTOM.setCustom(UserExperience.NOOB.toString().toUpperCase()), false)
                     .addColumn("xp", SQLDataType.DOUBLE, -1,true, SQLDefaultType.CUSTOM.setCustom(0), false)
                     .execute();
-            new TableBuilder("achievement", this.databaseManager)
+            new TableBuilder("user_achievement", this.databaseManager)
                     .addColumn("uuid", SQLDataType.VARCHAR, 300,false, SQLDefaultType.NO_DEFAULT, true)
                     .addColumn("achievement", SQLDataType.TEXT, -1,false, SQLDefaultType.NO_DEFAULT, false)
+                    .addColumn("achieved_on", SQLDataType.DATE, -1, false, SQLDefaultType.NO_DEFAULT, false)
+                    .execute();
+            new TableBuilder("achievement", this.databaseManager)
+                    .addColumn("id", SQLDataType.VARCHAR, 300,false, SQLDefaultType.NO_DEFAULT, true)
+                    .addColumn("name", SQLDataType.TEXT, -1,false, SQLDefaultType.NO_DEFAULT, false)
                     .addColumn("achieved_on", SQLDataType.DATE, -1, false, SQLDefaultType.NO_DEFAULT, false)
                     .execute();
 
@@ -189,12 +194,13 @@ public class Core extends JavaPlugin {
         }
 
         // Load the modules
+
+        this.userManager = new UserManager(this);
         this.commandManager = new CommandManager(this);
         this.globalManager = new GlobalManager(this);
         this.GUIManager = new GuiManager(this);
         this.scoreboardManager = new ScoreboardManager(this);
         this.pluginMessagingManager = new PluginMessagingManager(this);
-        this.userManager = new UserManager(this);
         this.economyManager = new EconomyManager(this);
         this.hologramManager = new HologramManager(this);
         this.discordManager = new DiscordManager();
