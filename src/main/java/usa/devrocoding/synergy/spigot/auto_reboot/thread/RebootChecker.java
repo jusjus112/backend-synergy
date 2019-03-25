@@ -20,9 +20,10 @@ public class RebootChecker implements Consumer<Core> {
     @Override
     public void accept(Core core) {
         if (LocalTime.now().getHour()==getManager().getRestartHour()){
-            getManager().rebootServer();
+            if (!getManager().isRestarting()) {
+                getManager().rebootServer();
+            }
             core.getRunnableManager().getRunnables().get("Reboot Check").cancel();
-            return;
         }
     }
 

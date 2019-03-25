@@ -14,12 +14,18 @@ import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.spigotmc.event.entity.EntityDismountEvent;
+import usa.devrocoding.synergy.spigot.user.event.UserLoadEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unchecked")
 public enum Listeners {
+
+    /**
+     * World Entity Listeners
+     */
+    SYNERGY_LOAD(UserLoadEvent.class),
 
     /**
      * World Entity Listeners

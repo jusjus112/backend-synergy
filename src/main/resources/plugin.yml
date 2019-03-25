@@ -3,3 +3,4 @@ main: usa.devrocoding.synergy.spigot.Core
 version: 1.0
 author: JusJus
 website: https://minecraft.devrocoding.com/
+softdepend: [PlaceHolderAPI]

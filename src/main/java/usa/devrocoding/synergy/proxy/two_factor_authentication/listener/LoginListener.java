@@ -11,27 +11,33 @@ import usa.devrocoding.synergy.proxy.two_factor_authentication.GoogleAuthManager
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 public class LoginListener implements Listener {
 
     @EventHandler
     public void onLogin(PostLoginEvent e){
-        GoogleAuthManager gam = Core.getCore().getGoogleAuthManager();
-        try{
-            ResultSet result = gam.getUserData(e.getPlayer().getUniqueId().toString());
-            if (result.next()){
-                String key = result.getString("key");
-                gam.enable2faMode(e.getPlayer(), key);
-            }else{
-                String key = gam.getTwoFactorKey(e.getPlayer().getUniqueId());
-//                Synergy.debug("CONNECTION PLAYER= "+e.getPlayer().getName());
-//                Synergy.debug("KEY= "+key);
-                gam.addToDatabase(e.getPlayer(), key);
-                gam.enable2faMode(e.getPlayer(), key);
+        Core.getCore().getProxy().getScheduler().runAsync(Core.getCore(), new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    GoogleAuthManager gam = Core.getCore().getGoogleAuthManager();
+
+                    ResultSet resultSet = gam.getUserData(e.getPlayer().getUniqueId().toString());
+
+                    if (resultSet.next()){
+                        gam.enable2faMode(e.getPlayer(), resultSet.getString("key"));
+                    }else{
+                        String key = gam.getTwoFactorKey(e.getPlayer().getUniqueId());
+                        gam.addToDatabase(e.getPlayer(), key);
+                        gam.enable2faMode(e.getPlayer(), key);
+                    }
+                    Core.getCore().getDatabaseManager().disconnect();
+                }catch (SQLException ex){
+                    Synergy.error("LoginListener - "+ex.getMessage());
+                }
             }
-        }catch (SQLException exc){
-            Synergy.error(exc.getMessage());
-        }
+        });
     }
 
 }

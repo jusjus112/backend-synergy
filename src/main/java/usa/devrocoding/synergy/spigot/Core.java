@@ -12,6 +12,7 @@ import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.services.sql.SQLDataType;
 import usa.devrocoding.synergy.services.sql.SQLDefaultType;
 import usa.devrocoding.synergy.services.sql.TableBuilder;
+import usa.devrocoding.synergy.spigot.achievement.AchievementManager;
 import usa.devrocoding.synergy.spigot.api.SpigotAPI;
 import usa.devrocoding.synergy.spigot.api.SynergyPlugin;
 import usa.devrocoding.synergy.spigot.assets.*;
@@ -28,6 +29,7 @@ import usa.devrocoding.synergy.spigot.files.yml.YMLFile;
 import usa.devrocoding.synergy.spigot.gui.GuiManager;
 import usa.devrocoding.synergy.spigot.hologram.HologramManager;
 import usa.devrocoding.synergy.spigot.language.LanguageManager;
+import usa.devrocoding.synergy.spigot.nick.NickManager;
 import usa.devrocoding.synergy.spigot.plugin_messaging.PluginMessagingManager;
 import usa.devrocoding.synergy.spigot.runnable.RunnableManager;
 import usa.devrocoding.synergy.spigot.scoreboard.ScoreboardManager;
@@ -96,6 +98,15 @@ public class Core extends JavaPlugin {
     @Getter
     private WarpManager warpManager;
     @Getter
+    private CooldownManager cooldownManager;
+    @Getter
+    private AchievementManager achievementManager;
+    @Getter
+    private NickManager nickManager;
+    @Getter
+    private DependencyManager dependencyManager;
+
+    @Getter
     private LobbyManager lobbyManager = null;
     @Getter
     private SynergyMani manifest;
@@ -156,14 +167,9 @@ public class Core extends JavaPlugin {
                     .addColumn("user_experience", SQLDataType.VARCHAR, 100,false, SQLDefaultType.CUSTOM.setCustom(UserExperience.NOOB.toString().toUpperCase()), false)
                     .addColumn("xp", SQLDataType.DOUBLE, -1,true, SQLDefaultType.CUSTOM.setCustom(0), false)
                     .execute();
-            new TableBuilder("user_achievement", this.databaseManager)
+            new TableBuilder("user_achievements", this.databaseManager)
                     .addColumn("uuid", SQLDataType.VARCHAR, 300,false, SQLDefaultType.NO_DEFAULT, true)
-                    .addColumn("achievement", SQLDataType.TEXT, -1,false, SQLDefaultType.NO_DEFAULT, false)
-                    .addColumn("achieved_on", SQLDataType.DATE, -1, false, SQLDefaultType.NO_DEFAULT, false)
-                    .execute();
-            new TableBuilder("achievement", this.databaseManager)
-                    .addColumn("id", SQLDataType.VARCHAR, 300,false, SQLDefaultType.NO_DEFAULT, true)
-                    .addColumn("name", SQLDataType.TEXT, -1,false, SQLDefaultType.NO_DEFAULT, false)
+                    .addColumn("achievement", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
                     .addColumn("achieved_on", SQLDataType.DATE, -1, false, SQLDefaultType.NO_DEFAULT, false)
                     .execute();
 
@@ -195,8 +201,12 @@ public class Core extends JavaPlugin {
 
         // Load the modules
 
-        this.userManager = new UserManager(this);
+        // WARNING !!! WARNING (Do not place any modules with commands above this line)
         this.commandManager = new CommandManager(this);
+        ///////////////
+
+        this.cooldownManager = new CooldownManager(this);
+        this.userManager = new UserManager(this);
         this.globalManager = new GlobalManager(this);
         this.GUIManager = new GuiManager(this);
         this.scoreboardManager = new ScoreboardManager(this);
@@ -207,6 +217,9 @@ public class Core extends JavaPlugin {
         this.changelogManager = new ChangelogManager(this);
         this.cacheManager = new CacheManager(this);
         this.warpManager = new WarpManager(this);
+        this.achievementManager = new AchievementManager(this);
+        this.nickManager = new NickManager(this);
+        this.dependencyManager = new DependencyManager(this);
 
         // Init the utilities
         this.globalManager.setUtilDisplay(new UtilDisplay());

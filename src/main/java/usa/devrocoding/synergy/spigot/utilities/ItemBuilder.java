@@ -20,6 +20,7 @@ public class ItemBuilder {
     private ItemStack itemStack;
     @Getter @Setter
     private ItemMeta itemMeta;
+    private List<String> lore;
 
     public ItemBuilder(Material material){
         if (material == Material.SKULL_ITEM){
@@ -28,6 +29,7 @@ public class ItemBuilder {
             this.itemStack = new ItemStack(material, 1);
         }
         this.itemMeta = this.itemStack.getItemMeta();
+        this.lore = new ArrayList<>();
     }
 
     public ItemBuilder(ItemStack stack){
@@ -50,39 +52,21 @@ public class ItemBuilder {
         return this;
     }
 
-    public ItemBuilder addLore(String... lore) {
-        List<String> cur = this.itemMeta.getLore();
-
-        if (cur == null) {
-            cur = Lists.newArrayList();
-        }
-
-        for (String line : lore) {
-            cur.add(line);
-        }
-
-        this.itemMeta.setLore(cur);
-
+    public ItemBuilder setLore(String... lore){
+        addLore(lore);
         return this;
     }
 
-    public ItemBuilder setLore(String... lore){
+    public ItemBuilder addLore(String... lore){
         List<String> modifiedLore = new ArrayList<>();
-
         for(String line : lore) modifiedLore.add("§7"+ChatColor.translateAlternateColorCodes('&', line));
 
-        this.itemMeta.setLore(modifiedLore);
-
+        this.lore.addAll(modifiedLore);
         return this;
     }
 
     public ItemBuilder setLore(List<String> lore){
-        List<String> modifiedLore = new ArrayList<>();
-
-        for(String line : lore) modifiedLore.add("§7"+ChatColor.translateAlternateColorCodes('&', line));
-
-        this.itemMeta.setLore(modifiedLore);
-
+        addLore(lore.toArray(new String[lore.size()]));
         return this;
     }
 
@@ -132,6 +116,7 @@ public class ItemBuilder {
     }
 
     public ItemStack build(){
+        this.itemMeta.setLore(this.lore);
         this.itemStack.setItemMeta(this.itemMeta);
         return this.itemStack;
     }

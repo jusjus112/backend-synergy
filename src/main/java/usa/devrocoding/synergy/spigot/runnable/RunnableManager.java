@@ -22,27 +22,27 @@ public class RunnableManager extends Module {
     }
 
     public void runTask(String name, Consumer<Core> run) {
-        Bukkit.getScheduler().runTask(getPlugin(), createRunnable(name, run));
+        createRunnable(name, run).runTask(getPlugin());
     }
 
     public void runTaskAsynchronously(String name, Consumer<Core> run) {
-        Bukkit.getScheduler().runTaskAsynchronously(getPlugin(), createRunnable(name, run));
+        createRunnable(name, run).runTaskAsynchronously(getPlugin());
     }
 
     public void runTaskLater(String name, Consumer<Core> run, long time) {
-        Bukkit.getScheduler().runTaskLater(getPlugin(), createRunnable(name, run), time);
+        createRunnable(name, run).runTaskLater(getPlugin(), time);
     }
 
     public void runTaskLaterAsynchronously(String name, Consumer<Core> run, long time) {
-        Bukkit.getScheduler().runTaskLaterAsynchronously(getPlugin(), createRunnable(name, run), time);
+        createRunnable(name, run).runTaskLaterAsynchronously(getPlugin(), time);
     }
 
     public void runTaskTimer(String name, Consumer<Core> run, long delay, long period) {
-        Bukkit.getScheduler().runTaskTimer(getPlugin(), createRunnable(name, run), delay, period);
+        createRunnable(name, run).runTaskTimer(getPlugin(), delay, period);
     }
 
     public void runTaskTimerAsynchronously(String name, Consumer<Core> run, long delay, long period) {
-        Bukkit.getScheduler().runTaskTimerAsynchronously(getPlugin(), createRunnable(name, run), delay, period);
+        createRunnable(name, run).runTaskTimerAsynchronously(getPlugin(), delay, period);
     }
 
     public void updateTime(String name, long delay, long period) {

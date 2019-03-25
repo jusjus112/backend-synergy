@@ -2,6 +2,7 @@ package usa.devrocoding.synergy.spigot.utilities;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
+import net.md_5.bungee.api.ChatColor;
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;
@@ -17,12 +18,76 @@ public class UtilString {
         return l.toArray(new String[l.size()]);
     }
 
+//    private final static int CENTER_PX = 154;
+    private final static int CENTER_PX = 100;
+
+    public static String centered(String message){
+        if(message == null || message.equals("")) return"";
+        message = ChatColor.translateAlternateColorCodes('&', message);
+
+        int messagePxSize = 0;
+        boolean previousCode = false;
+        boolean isBold = false;
+
+        for(char c : message.toCharArray()){
+            if(c == '§'){
+                previousCode = true;
+                continue;
+            }else if(previousCode == true){
+                previousCode = false;
+                if(c == 'l' || c == 'L'){
+                    isBold = true;
+                    continue;
+                }else isBold = false;
+            }else{
+                DefaultFontInfo dFI = DefaultFontInfo.getDefaultFontInfo(c);
+                messagePxSize += isBold ? dFI.getBoldLength() : dFI.getLength();
+                messagePxSize++;
+            }
+        }
+
+        int halvedMessageSize = messagePxSize / 2;
+        int toCompensate = CENTER_PX - halvedMessageSize;
+        int spaceLength = DefaultFontInfo.SPACE.getLength() + 1;
+        int compensated = 0;
+        StringBuilder sb = new StringBuilder();
+        while(compensated < toCompensate){
+            sb.append(" ");
+            compensated += spaceLength;
+        }
+        return sb.toString() + message;
+    }
+
     public static List<String> convert(String[] array) {
         List<String> l = new ArrayList<>();
         for (String s : array) {
             l.add(s);
         }
         return l;
+    }
+
+    public static String arrayToString(List<String> list){
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for(String s : list){
+            if (list.indexOf(s)>0)
+                stringBuilder.append("\n");
+            stringBuilder.append(s);
+        }
+        return stringBuilder.toString();
+    }
+
+    public static String arrayToString(String[] list){
+        StringBuilder stringBuilder = new StringBuilder();
+
+        int i = 0;
+        for(String s : list){
+            if (i>0)
+                stringBuilder.append("\n");
+            stringBuilder.append(s);
+            i++;
+        }
+        return stringBuilder.toString();
     }
 
     public static List<String> split(String string, int length) {

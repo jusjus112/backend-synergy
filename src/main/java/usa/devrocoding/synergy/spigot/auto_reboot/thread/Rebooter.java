@@ -2,8 +2,13 @@ package usa.devrocoding.synergy.spigot.auto_reboot.thread;
 
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
+import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.assets.object.SynergyPeriod;
 import usa.devrocoding.synergy.spigot.Core;
+import usa.devrocoding.synergy.spigot.assets.C;
+import usa.devrocoding.synergy.spigot.assets.CooldownManager;
+import usa.devrocoding.synergy.spigot.user.object.MessageModification;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 import usa.devrocoding.synergy.spigot.utilities.UtilTime;
 
@@ -21,6 +26,19 @@ public class Rebooter implements Consumer<Core> {
 
     public Rebooter(long timeUntilRestart){
         this.timeUntilRestart = ++timeUntilRestart;
+
+        String time_str = UtilTime.format((timeUntilRestart/20d));
+        for (SynergyUser user : Core.getPlugin().getUserManager().getUsers().values()) {
+            user.sendRawMessage(
+                    MessageModification.RAW,
+                    C.getLine(),
+                    "§eServer restarts in §c§l" + time_str,
+                    "§eMake sure to save your progress and",
+                    "§eyour items. We will be back directly after!",
+                    C.getLine()
+            );
+            user.getSoundControl().play(Sound.BLOCK_NOTE_GUITAR);
+        }
     }
 
     @Override
@@ -34,13 +52,19 @@ public class Rebooter implements Consumer<Core> {
 
         for(long time : times){
             if (getTimeUntilRestart() == time){
-                String time_str = UtilTime.simpleTimeFormat(time);
-                for (SynergyUser user : core.getUserManager().getUsers().values()){
-                    user.getDisplay().sendTitleAndSubTitle("§c§lServer restarts in".toUpperCase(), time_str, 20, 10, 20);
+                if (!Core.getPlugin().getCooldownManager().isOnCooldown(getTimeUntilRestart())) {
+                    String time_str = UtilTime.format((getTimeUntilRestart()/20d));
+                    Synergy.info("Auto Restart in ".toUpperCase()+time_str);
+                    for (SynergyUser user : core.getUserManager().getUsers().values()) {
+                        boolean fade = getTimeUntilRestart() < (SynergyPeriod.SECOND.getPeriod()*10);
+                        user.getDisplay().sendTitleAndSubTitle("§c§lServer restarts in".toUpperCase(), time_str, fade?0:20, 40, fade?0:20);
+                        user.getSoundControl().pling();
+                    }
+                }else{
+                    Core.getPlugin().getCooldownManager().addCooldown(time, 2);
                 }
             }
         }
-        this.timeUntilRestart--;
     }
 
     @Override

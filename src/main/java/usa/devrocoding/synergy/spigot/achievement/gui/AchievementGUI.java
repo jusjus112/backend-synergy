@@ -11,6 +11,9 @@ import usa.devrocoding.synergy.spigot.gui.object.GuiSize;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 import usa.devrocoding.synergy.spigot.utilities.ItemBuilder;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AchievementGUI extends Gui {
 
     private SynergyUser user;
@@ -36,8 +39,12 @@ public class AchievementGUI extends Gui {
             public void click(SynergyUser synergyUser, ClickType clickType) {}
         });
 
-        for(Achievement achievement : this.user.getAchievements()){
+        List<Achievement> achievements = new ArrayList<Achievement>(){{
+            addAll(Core.getPlugin().getAchievementManager().getAvailableAchievements());
+        }};
 
+        for(Achievement achievement : achievements){
+            addElement(Core.getPlugin().getAchievementManager().getElement(this.user, achievement));
         }
     }
 }

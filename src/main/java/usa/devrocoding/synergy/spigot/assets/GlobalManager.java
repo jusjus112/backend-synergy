@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
 import usa.devrocoding.synergy.spigot.assets.commands.*;
+import usa.devrocoding.synergy.spigot.listeners.EventHandlers;
 import usa.devrocoding.synergy.spigot.utilities.UtilDisplay;
 
 public class GlobalManager extends Module {
@@ -31,7 +32,12 @@ public class GlobalManager extends Module {
             new CommandSynergyReload(plugin),
             new CommandTeleport(plugin),
             new CommandTop(plugin),
-            new CommandWorkbench(plugin)
+            new CommandWorkbench(plugin),
+            new CommandSpawn(plugin)
+        );
+
+        registerListener(
+                new EventHandlers()
         );
     }
 

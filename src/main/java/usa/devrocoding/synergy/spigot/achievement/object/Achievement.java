@@ -14,20 +14,30 @@ public abstract class Achievement {
 
     @Getter
     private String name;
+    @Getter
+    private String[] description;
 
-    public Achievement(String name){
+    public Achievement(String name, String[] description){
         this.name = name;
+        this.description = description;
+        mechanics();
     }
 
-    public abstract String[] getDescription();
 //    public abstract ItemStack getIcon();
-    public abstract double rewardExperience();
+    public abstract double getRewardExperience();
     public abstract void reward(SynergyUser synergyUser);
     public abstract void mechanics();
 
     public void unlock(SynergyUser user){
-        reward(user);
-        Core.getPlugin().getServer().getPluginManager().callEvent(new PlayerFinishedAchievementEvent(user, this));
+        if (!user.hasAchievement(this)) {
+            reward(user);
+            Core.getPlugin().getServer().getPluginManager().callEvent(new PlayerFinishedAchievementEvent(user, this));
+            user.unlockAchievement(this);
+        }
+    }
+
+    public void unlock(Player player){
+        unlock(Core.getPlugin().getUserManager().getUser(player));
     }
 
     public void addListener(EventListener<?> listener) {

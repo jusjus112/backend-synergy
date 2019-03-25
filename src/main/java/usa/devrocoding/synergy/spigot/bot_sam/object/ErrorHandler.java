@@ -49,7 +49,7 @@ public class ErrorHandler extends Handler {
             Calendar calender = Calendar.getInstance();
             SimpleDateFormat fileName = new SimpleDateFormat("dd-mm-yyyy_hh-mm");
 
-            File errorLog = new File(Core.getPlugin().getDataFolder() + "\\logs\\errors", "ERROR_"+(fileName.format(calender.getTime()))+".txt");
+            File errorLog = new File(Core.getPlugin().getDataFolder() + File.separator+"logs"+File.separator+"errors", "ERROR_"+(fileName.format(calender.getTime()))+".txt");
             if (!errorLog.exists()) {
                 errorLog.getParentFile().mkdirs();
                 errorLog.createNewFile();

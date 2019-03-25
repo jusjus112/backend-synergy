@@ -18,6 +18,7 @@ public class CooldownManager extends Module {
         super(plugin, "Cooldown Manager", false);
 
         run();
+
     }
 
     @Override
@@ -28,7 +29,7 @@ public class CooldownManager extends Module {
     private final static HashMap<Object, HashMap<Integer, Boolean>> cd = new HashMap<Object, HashMap<Integer, Boolean>>();
 
     public void run() {
-        getPlugin().getServer().getScheduler().scheduleSyncRepeatingTask(getPlugin(), new BukkitRunnable() {
+        getPlugin().getServer().getScheduler().scheduleAsyncRepeatingTask(getPlugin(), new BukkitRunnable() {
             @Override
             public void run() {
                 Iterator<Object> iter = cd.keySet().iterator();
@@ -51,7 +52,7 @@ public class CooldownManager extends Module {
                     }
                 }
             }
-        },100l, 20l);
+        },100L, 20L);
 
     }
   

@@ -1,6 +1,7 @@
 package usa.devrocoding.synergy.spigot;
 
 import lombok.Getter;
+import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import usa.devrocoding.synergy.assets.Synergy;
@@ -44,6 +45,14 @@ public abstract class Module implements Listener {
     public void registerCommand(SynergyCommand... commands) {
         for (SynergyCommand command : commands) {
             plugin.getCommandManager().getCommands().add(command);
+        }
+    }
+
+    public void registerPlaceholder(PlaceholderExpansion... expansions){
+        if (getPlugin().getDependencyManager().isPluginEnabled("PlaceholderAPI")) {
+            Arrays.stream(expansions).forEach(
+                    expansion -> expansion.register()
+            );
         }
     }
 

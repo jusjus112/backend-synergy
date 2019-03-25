@@ -12,7 +12,10 @@ import usa.devrocoding.synergy.spigot.assets.C;
 import usa.devrocoding.synergy.spigot.bot_sam.Sam;
 import usa.devrocoding.synergy.spigot.bot_sam.object.SamMessage;
 import usa.devrocoding.synergy.spigot.language.LanguageFile;
+import usa.devrocoding.synergy.spigot.user.event.UserLoadEvent;
 import usa.devrocoding.synergy.spigot.utilities.UtilDisplay;
+import usa.devrocoding.synergy.spigot.utilities.UtilSound;
+import usa.devrocoding.synergy.spigot.utilities.UtilString;
 
 import java.util.*;
 
@@ -35,17 +38,16 @@ public class SynergyUser {
     @Getter @Setter
     private List<Achievement> achievements = new ArrayList<>();
     @Getter
-    private boolean newUser = false;
+    private UserLoadEvent.UserLoadType loadType;
     @Getter
-    private boolean loaded = false;
+    private boolean nicked = false;
 
-    public SynergyUser(UUID uuid, String name, Rank rank, LanguageFile language, boolean first_joined){
+    public SynergyUser(UUID uuid, String name, Rank rank, LanguageFile language, UserLoadEvent.UserLoadType loadType){
         this.uuid = uuid;
         this.name = name;
         this.rank = rank;
         this.language = language;
-        this.newUser = first_joined;
-        this.loaded = true;
+        this.loadType = loadType;
 
 //        if (permissions != null){
 //            this.permissions = permissions;
@@ -54,7 +56,7 @@ public class SynergyUser {
     }
 
     public SynergyUser(UUID uuid, String name, Rank rank, LanguageFile language){
-        this(uuid, name, rank, language, false);
+        this(uuid, name, rank, language, UserLoadEvent.UserLoadType.NEW_INSTANCE);
     }
 
     public void addNetworkXP(double xp){
@@ -62,9 +64,6 @@ public class SynergyUser {
     }
 
     public Player getPlayer() {
-//        Synergy.debug(getUuid().toString(),
-//                Bukkit.getServer().getName(),
-//                Bukkit.getServer().getOnlinePlayers()+"");
         return Bukkit.getServer().getPlayer(getUuid());
     }
 
@@ -80,6 +79,17 @@ public class SynergyUser {
 
     public void sendToServer(String server){
         Core.getPlugin().getPluginMessagingManager().sendPlayerToServer(getPlayer(), server);
+    }
+
+    public void nick(String name){
+        this.nicked = Core.getPlugin().getNickManager().nickPlayer(getPlayer(), name);
+    }
+
+    public void unNick(){
+        if (this.nicked) {
+            this.nicked = false;
+            Core.getPlugin().getNickManager().nickPlayer(getPlayer(), getName());
+        }
     }
 
     public void teleport(SynergyUser target){
@@ -100,6 +110,22 @@ public class SynergyUser {
 
     public void warning(String... messages){
         Sam.getRobot().warning(getPlayer(), messages);
+    }
+
+    public void sendRawMessage(MessageModification modification, String... messages){
+        switch (modification){
+            case CENTERED:
+                Arrays.stream(messages).forEach(s -> getPlayer().sendMessage(UtilString.centered(s)));
+                break;
+            default:
+                Arrays.stream(messages).forEach(s -> getPlayer().sendMessage(s));
+                break;
+        }
+
+    }
+
+    public UtilSound getSoundControl(){
+        return new UtilSound(this);
     }
 
     public boolean hasPermission(String node){
@@ -126,6 +152,16 @@ public class SynergyUser {
             }
             return false;
         }
+    }
+
+    public void unlockAchievement(Achievement achievement){
+        if (!hasAchievement(achievement)){
+            getAchievements().add(achievement);
+        }
+    }
+
+    public boolean hasAchievement(Achievement achievement){
+        return getAchievements().contains(achievement);
     }
 
 //    public void addPermissionNode(String node){

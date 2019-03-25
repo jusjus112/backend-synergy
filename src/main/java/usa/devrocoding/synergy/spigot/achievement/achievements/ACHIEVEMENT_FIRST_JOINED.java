@@ -1,8 +1,12 @@
 package usa.devrocoding.synergy.spigot.achievement.achievements;
 
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import usa.devrocoding.synergy.spigot.achievement.event.PlayerFinishedAchievementEvent;
 import usa.devrocoding.synergy.spigot.achievement.object.Achievement;
+import usa.devrocoding.synergy.spigot.listeners.EventListener;
+import usa.devrocoding.synergy.spigot.user.event.UserLoadEvent;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 import usa.devrocoding.synergy.spigot.utilities.ItemBuilder;
 
@@ -10,17 +14,12 @@ public class ACHIEVEMENT_FIRST_JOINED extends Achievement {
 
 
     public ACHIEVEMENT_FIRST_JOINED(){
-        super("First Time Joined");
+        super("Looking for something new", new String[]{"Joining this network for","the first time in your life."});
     }
 
     @Override
-    public String[] getDescription() {
-        return new String[0];
-    }
-
-    @Override
-    public double rewardExperience() {
-        return 0;
+    public double getRewardExperience() {
+        return 10D;
     }
 
     @Override
@@ -30,6 +29,11 @@ public class ACHIEVEMENT_FIRST_JOINED extends Achievement {
 
     @Override
     public void mechanics() {
-
+        addListener(new EventListener<BlockBreakEvent>() {
+            @EventHandler
+            public void process(BlockBreakEvent e){
+                unlock(e.getPlayer());
+            }
+        });
     }
 }

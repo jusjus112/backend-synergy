@@ -13,12 +13,14 @@ public class AutoRebootManager extends Module {
     private long period = SynergyPeriod.SECOND.getPeriod() * 10;
     @Getter
     private int restartHour;
+    @Getter
+    private boolean restarting = false;
 
     public AutoRebootManager(Core plugin){
         super(plugin, "Reboot Manager", false);
 
         // Init the async timer
-        this.restartHour = 23;
+        this.restartHour = 0; // 12 AM                                                                       DELAY = 1 hour                  PERIOD = 1 hour
         getPlugin().getRunnableManager().runTaskTimerAsynchronously("Reboot Check", new RebootChecker(this), SynergyPeriod.SECOND.getPeriod()*15, period);
     }
 
@@ -28,10 +30,11 @@ public class AutoRebootManager extends Module {
     }
 
     public void rebootServer(){
+        restarting = true;
         getPlugin().getRunnableManager().runTaskTimerAsynchronously(
             "Rebooter",
             new Rebooter(
-                    SynergyPeriod.MINUTE.getPeriod()*5
+                    SynergyPeriod.MINUTE.getPeriod()
             ), SynergyPeriod.SECOND.getPeriod(), SynergyPeriod.TICK.getPeriod()
         );
     }

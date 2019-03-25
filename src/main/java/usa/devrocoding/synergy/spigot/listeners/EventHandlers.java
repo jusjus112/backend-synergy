@@ -17,6 +17,7 @@ import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
 import org.spigotmc.event.entity.EntityDismountEvent;
+import usa.devrocoding.synergy.spigot.user.event.UserLoadEvent;
 
 public class EventHandlers implements Listener {
 
@@ -420,6 +421,11 @@ public class EventHandlers implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlock(LeavesDecayEvent e) {
         Listeners.LEAVES_DECAY.runEvent(e);
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onUserLoad(UserLoadEvent e) {
+        Listeners.SYNERGY_LOAD.runEvent(e);
     }
 
 }

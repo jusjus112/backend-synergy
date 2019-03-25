@@ -28,7 +28,6 @@ public class DatabaseManager {
             return false;
         }
         if (getSqlService().isIniatialized()) {
-
 //            Class.forName("com.mysql.jdbc.Driver");
             this.connection = DriverManager.getConnection("jdbc:mysql://" + getSqlService().getHost() + ":" + getSqlService().getPort()
                     + "/" + getSqlService().getDatabase(), getSqlService().getUsername(), getSqlService().getPassword());
@@ -45,25 +44,35 @@ public class DatabaseManager {
     }
 
     public boolean update(String table, Map<String, Object> data, String where){
-        StringBuilder query = new StringBuilder("UPDATE synergy_"+table+" SET ");
-        StringBuilder whereQuery = new StringBuilder(" WHERE "+where);
-
-        int a=0;
-        for(String key : data.keySet()){
-            if (a>0) query.append(", ");
-            Object value = data.get(key);
-            if (value instanceof String){
-                query.append(key+" = '"+value+"'");
-            }else{
-                query.append(key+" = "+value.toString());
-            }
-            a++;
-        }
-
-        query.append(whereQuery.toString());
-
+        HashMap<Integer, Object> indexed = new HashMap<>();
         try {
-            getConnection().createStatement().executeUpdate(query.toString());
+            connect();
+            StringBuilder query = new StringBuilder("UPDATE synergy_"+table+" SET ");
+            StringBuilder whereQuery = new StringBuilder(" WHERE "+where);
+
+            int a=1;
+            for(String key : data.keySet()){
+                if (a>1) query.append(", ");
+                Object value = data.get(key);
+                query.append(key+"=?");
+
+                indexed.put(a, value);
+                a++;
+            }
+
+            query.append(whereQuery.toString());
+
+            Synergy.debug(query.toString());
+            PreparedStatement preparedStatement = getConnection().prepareStatement(query.toString());
+
+            for(Integer index : indexed.keySet()){
+                Object value = indexed.get(index);
+
+                preparedStatement.setObject(index, value);
+            }
+
+            preparedStatement.executeUpdate();
+            disconnect();
             return true;
         }catch (SQLException e){
             Synergy.warn("Can't execute update statement. " + e.getMessage());
@@ -108,29 +117,11 @@ public class DatabaseManager {
         }
         try {
             getConnection().prepareStatement(query).execute();
+            disconnect();
         }catch (SQLException e){
             Synergy.warn("Can't executeQuery statement. " + e.getMessage());
         }
     }
-
-    /*
-        int a=0;
-        for(String key : data.keySet()){
-            if (a>0) {
-                values.append(", ");
-                query.append(", ");
-            }
-            Object value = data.get(key);
-            query.append("`"+key+"`");
-            if (value instanceof String){
-                values.append("'"+value+"'");
-            }else{
-                values.append(value);
-            }
-
-            a++;
-        }
-     */
 
     public boolean insert(String table, Map<String, Object> data){
         return execute("INSERT INTO", table, data, true);
@@ -159,7 +150,6 @@ public class DatabaseManager {
             values.append(")");
             query.append(values.toString());
 
-            Synergy.debug(query.toString());
             PreparedStatement preparedStatement = getConnection().prepareStatement(query.toString());
 
             for(Integer index : indexed.keySet()){
@@ -169,6 +159,7 @@ public class DatabaseManager {
             }
 
             preparedStatement.executeUpdate();
+            disconnect();
             return true;
         }catch (SQLException e){
             Synergy.warn("Can't execute statement. " + e.getMessage());

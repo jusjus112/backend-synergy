@@ -8,6 +8,7 @@ import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
 import usa.devrocoding.synergy.spigot.user.command.CommandHome;
+import usa.devrocoding.synergy.spigot.user.event.UserLoadEvent;
 import usa.devrocoding.synergy.spigot.user.listener.UserJoinEvent;
 import usa.devrocoding.synergy.spigot.user.listener.UserQuitEvent;
 import usa.devrocoding.synergy.spigot.user.object.Rank;
@@ -41,9 +42,7 @@ public class UserManager extends Module {
     }
 
     public Collection<SynergyUser> getOnlineUsers(){
-        Synergy.debug("2");
         if (this.users != null && !this.users.isEmpty()) {
-            Synergy.debug("3");
             return this.users.values();
         }
         return Collections.EMPTY_LIST;
@@ -83,16 +82,16 @@ public class UserManager extends Module {
                 HashMap<String, Object> data = new HashMap<String, Object>() {{
                     put("uuid", synergyUser.getUuid().toString());
                     put("name", synergyUser.getName());
+                    put("xp", synergyUser.getNetworkXP());
                     put("rank", synergyUser.getRank().toString());
                     put("user_experience", synergyUser.getUserExperience().toString().toUpperCase());
                 }};
 
-                if (synergyUser.isNewUser()) {
+                if (synergyUser.getLoadType() == UserLoadEvent.UserLoadType.NEW) {
                     getPlugin().getDatabaseManager().insert("users", data);
                 }else{
                     Core.getPlugin().getDatabaseManager().update("users", data, "uuid = '"+synergyUser.getUuid().toString()+"'");
                 }
-                this.users.remove(synergyUser);
             }
         );
     }

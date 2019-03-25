@@ -37,6 +37,7 @@ public class UtilDisplay implements Listener {
 //        PacketPlayOutTitle packet2 = new PacketPlayOutTitle(EnumTitleAction.SUBTITLE, message2);
 //        ((CraftPlayer) this.player).getHandle().playerConnection.sendPacket(packet2);
         this.player.sendTitle(title, subtitle, fadeIn, stay, fadeOut);
+
     }
 
     public void sendSubtitle(String subTitle, int fadeIn, int stay, int fadeOut) {

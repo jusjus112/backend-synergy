@@ -29,25 +29,27 @@ public class UserJoinEvent implements Listener {
                 try{
                     ResultSet resultSet = Core.getPlugin().getDatabaseManager().getResults(
                             "users ", "uuid=?", new HashMap<Integer, Object>(){{
-                                put(1, e.getUniqueId());
+                                put(1, e.getUniqueId().toString());
                             }}
                     );
                     UUID uuid = e.getUniqueId(); String name = e.getName(); Rank rank = Rank.NONE;
                     LanguageFile language = Core.getPlugin().getLanguageManager().getLanguage("en");
                     double experience = 0D;
-                    boolean first_time = true;
+                    UserLoadEvent.UserLoadType loadType = UserLoadEvent.UserLoadType.NEW;
 
-                    if (resultSet.next()){
-                        first_time = false;
+                    if (resultSet.next()) {
+                        loadType = UserLoadEvent.UserLoadType.RETRIEVED_FROM_DATABASE;
                         experience = resultSet.getDouble("xp");
-                        if (Rank.fromName(resultSet.getString("rank")) != null){
+                        if (Rank.fromName(resultSet.getString("rank")) != null) {
                             rank = Rank.fromName(resultSet.getString("rank"));
                         }
                     }
-                    SynergyUser user = new SynergyUser(uuid, name, rank, language, first_time);
+
+                    SynergyUser user = new SynergyUser(uuid, name, rank, language, loadType);
                     user.setNetworkXP(experience);
 
-                    Core.getPlugin().getServer().getPluginManager().callEvent(new UserLoadEvent(user));
+                    Core.getPlugin().getServer().getPluginManager().callEvent(new UserLoadEvent(user, loadType));
+                    Core.getPlugin().getDatabaseManager().disconnect();
                 }catch (SQLException ex){
                     Synergy.error(ex.getMessage());
                 }
