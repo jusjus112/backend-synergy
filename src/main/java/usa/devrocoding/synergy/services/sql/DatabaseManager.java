@@ -62,7 +62,7 @@ public class DatabaseManager {
 
             query.append(whereQuery.toString());
 
-            Synergy.debug(query.toString());
+//            Synergy.debug(query.toString());
             PreparedStatement preparedStatement = getConnection().prepareStatement(query.toString());
 
             for(Integer index : indexed.keySet()){
@@ -92,7 +92,7 @@ public class DatabaseManager {
                 "SELECT * FROM "+(tablePrefix==null?"":tablePrefix+"_")+table+(where != null ? (" WHERE "+where) : "")
         );
 
-        Synergy.debug(query.toString());
+//        Synergy.debug(query.toString());
 
         PreparedStatement statement = getConnection().prepareStatement(
             query.toString()

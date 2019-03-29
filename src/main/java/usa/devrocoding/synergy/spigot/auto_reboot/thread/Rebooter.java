@@ -29,7 +29,7 @@ public class Rebooter implements Consumer<Core> {
 
         String time_str = UtilTime.format((timeUntilRestart/20d));
         for (SynergyUser user : Core.getPlugin().getUserManager().getUsers().values()) {
-            user.sendRawMessage(
+            user.sendModifactionMessage(
                     MessageModification.RAW,
                     C.getLine(),
                     "§eServer restarts in §c§l" + time_str,

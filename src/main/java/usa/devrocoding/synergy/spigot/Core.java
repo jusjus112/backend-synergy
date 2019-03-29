@@ -129,7 +129,6 @@ public class Core extends JavaPlugin {
         getLogger().addHandler(new ErrorHandler(Sam.getRobot()));
 
         this.runnableManager = new RunnableManager(this);
-        this.autoRebootManager = new AutoRebootManager(this);
 
         this.languageManager = new LanguageManager(this);
 
@@ -204,9 +203,12 @@ public class Core extends JavaPlugin {
         // WARNING !!! WARNING (Do not place any modules with commands above this line)
         this.commandManager = new CommandManager(this);
         ///////////////
-
         this.cooldownManager = new CooldownManager(this);
         this.userManager = new UserManager(this);
+
+
+        this.autoRebootManager = new AutoRebootManager(this);
+        this.dependencyManager = new DependencyManager(this);
         this.globalManager = new GlobalManager(this);
         this.GUIManager = new GuiManager(this);
         this.scoreboardManager = new ScoreboardManager(this);
@@ -219,7 +221,6 @@ public class Core extends JavaPlugin {
         this.warpManager = new WarpManager(this);
         this.achievementManager = new AchievementManager(this);
         this.nickManager = new NickManager(this);
-        this.dependencyManager = new DependencyManager(this);
 
         // Init the utilities
         this.globalManager.setUtilDisplay(new UtilDisplay());

@@ -4,13 +4,14 @@ import lombok.Getter;
 import usa.devrocoding.synergy.assets.object.SynergyPeriod;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
+import usa.devrocoding.synergy.spigot.auto_reboot.command.CommandReboot;
 import usa.devrocoding.synergy.spigot.auto_reboot.thread.RebootChecker;
 import usa.devrocoding.synergy.spigot.auto_reboot.thread.Rebooter;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 
 public class AutoRebootManager extends Module {
 
-    private long period = SynergyPeriod.SECOND.getPeriod() * 10;
+    private long period = SynergyPeriod.MINUTE.getPeriod() * 50;
     @Getter
     private int restartHour;
     @Getter
@@ -19,9 +20,13 @@ public class AutoRebootManager extends Module {
     public AutoRebootManager(Core plugin){
         super(plugin, "Reboot Manager", false);
 
+        registerCommand(
+                new CommandReboot(getPlugin())
+        );
+
         // Init the async timer
-        this.restartHour = 0; // 12 AM                                                                       DELAY = 1 hour                  PERIOD = 1 hour
-        getPlugin().getRunnableManager().runTaskTimerAsynchronously("Reboot Check", new RebootChecker(this), SynergyPeriod.SECOND.getPeriod()*15, period);
+        this.restartHour = 0; // 12 AM                                                                                         DELAY = 1 hour        PERIOD = 1 hour
+        getPlugin().getRunnableManager().runTaskTimerAsynchronously("Reboot Check", new RebootChecker(this), SynergyPeriod.HOUR.getPeriod(), period);
     }
 
     @Override

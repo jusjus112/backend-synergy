@@ -112,7 +112,8 @@ public class SynergyUser {
         Sam.getRobot().warning(getPlayer(), messages);
     }
 
-    public void sendRawMessage(MessageModification modification, String... messages){
+    @Deprecated
+    public void sendModifactionMessage(MessageModification modification, String... messages){
         switch (modification){
             case CENTERED:
                 Arrays.stream(messages).forEach(s -> getPlayer().sendMessage(UtilString.centered(s)));

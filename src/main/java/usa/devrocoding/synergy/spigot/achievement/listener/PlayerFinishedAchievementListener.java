@@ -12,7 +12,7 @@ public class PlayerFinishedAchievementListener implements Listener {
     public void onPlayerFinishedAchievement(PlayerFinishedAchievementEvent e){
         e.getSynergyUser().addNetworkXP(e.getAchievement().getRewardExperience());
 
-        e.getSynergyUser().sendRawMessage(
+        e.getSynergyUser().sendModifactionMessage(
                 MessageModification.CENTERED,
                 C.getLine(),
                 " ",
