@@ -9,6 +9,7 @@ import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
 import usa.devrocoding.synergy.spigot.user.command.CommandHome;
 import usa.devrocoding.synergy.spigot.user.event.UserLoadEvent;
+import usa.devrocoding.synergy.spigot.user.listener.UserChatListener;
 import usa.devrocoding.synergy.spigot.user.listener.UserJoinEvent;
 import usa.devrocoding.synergy.spigot.user.listener.UserQuitEvent;
 import usa.devrocoding.synergy.spigot.user.object.Rank;
@@ -28,7 +29,8 @@ public class UserManager extends Module {
 
         registerListener(
             new UserJoinEvent(),
-            new UserQuitEvent()
+            new UserQuitEvent(),
+            new UserChatListener()
         );
 
         registerCommand(

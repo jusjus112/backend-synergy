@@ -2,12 +2,10 @@ package usa.devrocoding.synergy.spigot.hologram;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import net.minecraft.server.v1_12_R1.EntityArmorStand;
-import net.minecraft.server.v1_12_R1.PacketPlayOutEntityDestroy;
-import net.minecraft.server.v1_12_R1.PacketPlayOutSpawnEntityLiving;
+import net.minecraft.server.v1_14_R1.*;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
 import org.bukkit.entity.Player;
 import usa.devrocoding.synergy.spigot.utilities.UtilMath;
 import usa.devrocoding.synergy.spigot.utilities.UtilPlayer;
@@ -50,11 +48,14 @@ public class Hologram {
             EntityArmorStand entityArmorStand = null;
 
             if (i > this.armorStands.size() - 1) {
-                entityArmorStand = new EntityArmorStand(((CraftWorld) this.location.getWorld()).getHandle());
+                entityArmorStand = new EntityArmorStand(EntityTypes.ARMOR_STAND,
+                        ((CraftWorld)
+                                this.location.getWorld())
+                                .getHandle());
                 entityArmorStand.setLocation(this.location.getX(), this.location.getY() - i * HOLOGRAM_DISTANCE, this.location.getZ(), this.location.getYaw(), this.location.getPitch());
                 entityArmorStand.setInvisible(true);
                 entityArmorStand.setCustomNameVisible(true);
-                entityArmorStand.setCustomName(this.lines.get(i));
+                entityArmorStand.setCustomName(new ChatMessage(this.lines.get(i)));
                 entityArmorStand.setNoGravity(true);
                 entityArmorStand.setSilent(true);
                 entityArmorStand.setMarker(true);
@@ -98,10 +99,10 @@ public class Hologram {
     }
 
     public void addLine(String line) {
-        EntityArmorStand armorStand = new EntityArmorStand(((CraftWorld) this.location.getWorld()).getHandle());
+        EntityArmorStand armorStand = new EntityArmorStand(EntityTypes.ARMOR_STAND, ((CraftWorld) this.location.getWorld()).getHandle());
         armorStand.setLocation( this.location.getX(), this.location.getY() - this.lines.size() * HOLOGRAM_DISTANCE, this.location.getZ(), this.location.getYaw(), this.location.getPitch());
         armorStand.setInvisible(true);
-        armorStand.setCustomName(line);
+        armorStand.setCustomName(new ChatMessage(line));
         armorStand.setCustomNameVisible(true);
         armorStand.setNoGravity(true);
         armorStand.setSilent(true);
@@ -113,10 +114,10 @@ public class Hologram {
 
     public void setLine(int index, String line) {
         if(index >= armorStands.size()) {
-            EntityArmorStand armorStand = new EntityArmorStand(((CraftWorld) this.location.getWorld()).getHandle());
+            EntityArmorStand armorStand = new EntityArmorStand(EntityTypes.ARMOR_STAND, ((CraftWorld) this.location.getWorld()).getHandle());
             armorStand.setLocation( this.location.getX(), this.location.getY() - this.lines.size() * HOLOGRAM_DISTANCE, this.location.getZ(), this.location.getYaw(), this.location.getPitch());
             armorStand.setInvisible(true);
-            armorStand.setCustomName(line);
+            armorStand.setCustomName(new ChatMessage(line));
             armorStand.setCustomNameVisible(true);
             armorStand.setNoGravity(true);
             armorStand.setSilent(true);
@@ -126,7 +127,7 @@ public class Hologram {
             this.lines.add(line);
         }
 
-        armorStands.get(index).setCustomName(line);
+        armorStands.get(index).setCustomName(new ChatMessage(line));
     }
 
 

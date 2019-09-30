@@ -2,6 +2,8 @@ name: Synergy
 main: usa.devrocoding.synergy.spigot.Core
 description: Dynamic Backend System
 version: 1.0
+api-version: 1.13
 author: JusJus
-website: https://minecraft.devrocoding.com/
-softdepend: [PlaceHolderAPI]
+
+#We are softdepending Multiverse, because we always need to load the worlds before everything!
+softdepend: [PlaceHolderAPI, Multiverse-Core]

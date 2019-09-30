@@ -13,7 +13,7 @@ import java.util.Collections;
 public class CommandClearInventory extends SynergyCommand {
 
     public CommandClearInventory(Core plugin) {
-        super(plugin, Rank.NONE, "Synergy's Clear Inventory Command", false,"clearinventory", "ci", "clear");
+        super(plugin, Rank.NONE, "Clear's an inventory", false,"clearinventory", "ci", "clear");
     }
 
     @Override

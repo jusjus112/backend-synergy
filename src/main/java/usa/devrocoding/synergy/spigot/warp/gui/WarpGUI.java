@@ -31,8 +31,7 @@ public class WarpGUI extends Gui {
         surroundWith(new GuiElement() {
             @Override
             public ItemStack getIcon(SynergyUser synergyUser) {
-                return new ItemBuilder(Material.STAINED_GLASS_PANE)
-                        .setDamage((short) 15)
+                return new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE)
                         .setName(" ")
                         .build();
             }
@@ -50,7 +49,7 @@ public class WarpGUI extends Gui {
                 addElement(place, new GuiElement() {
                     @Override
                     public ItemStack getIcon(SynergyUser synergyUser) {
-                        return new ItemBuilder(Material.WATER_LILY)
+                        return new ItemBuilder(Material.LILY_PAD)
                                 .setName("&d&l" + warp.getName())
                                 .build();
                     }

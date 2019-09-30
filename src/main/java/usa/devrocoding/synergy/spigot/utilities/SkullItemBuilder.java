@@ -9,10 +9,10 @@ public class SkullItemBuilder extends ItemBuilder{
     private SkullMeta skullMeta;
 
     public SkullItemBuilder(Player player){
-        super(Material.SKULL_ITEM);
+        super(Material.PLAYER_HEAD);
 
         this.skullMeta = (SkullMeta) getItemMeta();
-        this.skullMeta.setOwner(player.getName());
+        this.skullMeta.setOwningPlayer(player);
         this.setItemMeta(this.skullMeta);
     }
 

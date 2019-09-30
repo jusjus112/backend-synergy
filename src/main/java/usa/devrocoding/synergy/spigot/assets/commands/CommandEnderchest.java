@@ -10,7 +10,7 @@ import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 public class CommandEnderchest extends SynergyCommand {
 
     public CommandEnderchest(Core plugin) {
-        super(plugin, Rank.NONE, "Synergy's Enderchest Command", false,"enderchest", "ec", "echest");
+        super(plugin, Rank.NONE, "Opens the enderchest", false,"enderchest", "ec", "echest");
     }
 
     @Override

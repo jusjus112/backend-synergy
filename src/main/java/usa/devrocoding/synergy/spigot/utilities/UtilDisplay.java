@@ -1,13 +1,10 @@
 package usa.devrocoding.synergy.spigot.utilities;
 
-import net.minecraft.server.v1_12_R1.IChatBaseComponent;
-import net.minecraft.server.v1_12_R1.IChatBaseComponent.ChatSerializer;
-import net.minecraft.server.v1_12_R1.PacketPlayOutPlayerListHeaderFooter;
-import net.minecraft.server.v1_12_R1.PacketPlayOutTitle;
-import net.minecraft.server.v1_12_R1.PacketPlayOutTitle.EnumTitleAction;
-import net.minecraft.server.v1_12_R1.PlayerConnection;
-import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
+import net.minecraft.server.v1_14_R1.IChatBaseComponent;
+import net.minecraft.server.v1_14_R1.PacketPlayOutPlayerListHeaderFooter;
+import net.minecraft.server.v1_14_R1.PacketPlayOutTitle;
+import net.minecraft.server.v1_14_R1.PlayerConnection;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import usa.devrocoding.synergy.assets.Synergy;
@@ -51,7 +48,7 @@ public class UtilDisplay implements Listener {
 
             Object packet = PacketPlayOutTitle.class
                     .getConstructor(new Class[]{PacketPlayOutTitle.class, Integer.TYPE, Integer.TYPE, Integer.TYPE})
-                    .newInstance(new Object[]{EnumTitleAction.TIMES, Integer.valueOf(fadeIn), Integer.valueOf(stay),
+                    .newInstance(new Object[]{PacketPlayOutTitle.EnumTitleAction.TIMES, Integer.valueOf(fadeIn), Integer.valueOf(stay),
                             Integer.valueOf(fadeOut)});
             getMethod(h.getClass(), "sendPacket", new Class[0]).invoke(c, new Object[]{packet});
         } catch (Exception e) {
@@ -60,12 +57,12 @@ public class UtilDisplay implements Listener {
     }
 
     public void reset() {
-        PacketPlayOutTitle packet = new PacketPlayOutTitle(EnumTitleAction.RESET, null);
+        PacketPlayOutTitle packet = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.RESET, null);
         ((CraftPlayer) this.player).getHandle().playerConnection.sendPacket(packet);
     }
 
     public void clear() {
-        PacketPlayOutTitle packet = new PacketPlayOutTitle(EnumTitleAction.CLEAR, null);
+        PacketPlayOutTitle packet = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.CLEAR, null);
         ((CraftPlayer) this.player).getHandle().playerConnection.sendPacket(packet);
     }
 
@@ -116,8 +113,8 @@ public class UtilDisplay implements Listener {
 
     public void sendTablist(String header, String footer) {
         PlayerConnection con = ((CraftPlayer) this.player).getHandle().playerConnection;
-        IChatBaseComponent headerComponent = ChatSerializer.a("{\"text\": \"" + header + "\"}");
-        IChatBaseComponent footerComponent = ChatSerializer.a("{\"text\": \"" + footer + "\"}");
+        IChatBaseComponent headerComponent = IChatBaseComponent.ChatSerializer.a("{\"text\": \"" + header + "\"}");
+        IChatBaseComponent footerComponent = IChatBaseComponent.ChatSerializer.a("{\"text\": \"" + footer + "\"}");
         PacketPlayOutPlayerListHeaderFooter packet = new PacketPlayOutPlayerListHeaderFooter();
 
         try {

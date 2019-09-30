@@ -40,7 +40,7 @@ public class CommandTeleport extends SynergyCommand {
                     return;
                 }
                 target.teleport(target2);
-                target.info("I had orders from "+
+                target.info("We had orders from "+
                         C.CHAT_HIGHLIGHT.getColor()+synergyUser.getName()+C.INFO.getColor()+
                         " to teleport you to "+C.CHAT_HIGHLIGHT.getColor()+target2.getName());
             }

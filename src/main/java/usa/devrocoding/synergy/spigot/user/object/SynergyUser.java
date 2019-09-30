@@ -12,6 +12,7 @@ import usa.devrocoding.synergy.spigot.assets.C;
 import usa.devrocoding.synergy.spigot.bot_sam.Sam;
 import usa.devrocoding.synergy.spigot.bot_sam.object.SamMessage;
 import usa.devrocoding.synergy.spigot.language.LanguageFile;
+import usa.devrocoding.synergy.spigot.punish.object.Punishment;
 import usa.devrocoding.synergy.spigot.user.event.UserLoadEvent;
 import usa.devrocoding.synergy.spigot.utilities.UtilDisplay;
 import usa.devrocoding.synergy.spigot.utilities.UtilSound;
@@ -31,6 +32,8 @@ public class SynergyUser {
     private LanguageFile language;
 //    @Setter
 //    private PermissionAttachment permissions;
+    @Getter
+    private List<Punishment> punishments = new ArrayList<>();
     @Getter @Setter
     private double networkXP = 0D;
     @Getter @Setter
@@ -112,7 +115,6 @@ public class SynergyUser {
         Sam.getRobot().warning(getPlayer(), messages);
     }
 
-    @Deprecated
     public void sendModifactionMessage(MessageModification modification, String... messages){
         switch (modification){
             case CENTERED:
@@ -120,6 +122,18 @@ public class SynergyUser {
                 break;
             default:
                 Arrays.stream(messages).forEach(s -> getPlayer().sendMessage(s));
+                break;
+        }
+    }
+
+    @Deprecated
+    public void sendModifactionMessage(MessageModification modification, List<String> messages){
+        switch (modification){
+            case CENTERED:
+                messages.forEach(s -> getPlayer().sendMessage(UtilString.centered(s)));
+                break;
+            default:
+                messages.forEach(s -> getPlayer().sendMessage(s));
                 break;
         }
 

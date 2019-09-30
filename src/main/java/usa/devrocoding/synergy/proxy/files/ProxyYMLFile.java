@@ -1,7 +1,5 @@
 package usa.devrocoding.synergy.proxy.files;
 
-import com.google.common.io.ByteStreams;
-import com.sun.org.apache.bcel.internal.util.SecuritySupport;
 import lombok.Getter;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;

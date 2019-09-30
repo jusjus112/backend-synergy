@@ -1,5 +1,6 @@
 package usa.devrocoding.synergy.spigot.scoreboard;
 
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -10,10 +11,7 @@ import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.user.object.Rank;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ZylemBoard {
 
@@ -23,6 +21,7 @@ public class ZylemBoard {
 	private SynergyUser user;
 
 	private Scoreboard scoreboard;
+	@Getter
 	private Objective sidebarObjective, undernameObjective, tablistObjective;
 	private List<String> sidebar;
 
@@ -151,16 +150,18 @@ public class ZylemBoard {
 			sidebarObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
 		}
 		List<String> set = new ArrayList<>();
-		if (sidebar != null && sidebar.size() > 0) {
-			int score = 15;
-			for (String line : sidebar) {
-				if (score < 1)
+		final List<String> list = sidebar;
+		if (list != null && list.size() > 0) {
+			int score = 1;
+			Collections.reverse(list);
+			for (String line : list) {
+				if (score > 15)
 					break;
 				if (set.contains(line))
 					continue;
 				set.add(line);
 				sidebarObjective.getScore(line).setScore(score);
-				score--;
+				score++;
 			}
 		}
 		for (String last : this.sidebar)

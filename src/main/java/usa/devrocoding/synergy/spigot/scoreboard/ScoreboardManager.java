@@ -32,10 +32,11 @@ public class ScoreboardManager extends Module {
 
 		setScoreboardPolicy(new DefaultScoreboard());
 		
-		backend.getRunnableManager().runTaskTimer("Scoreboard Update", (plugin) -> {
+		backend.getRunnableManager().runTaskTimerAsynchronously("Scoreboard Update", (plugin) -> {
 			update();
-		}, 0, 20 * 10);
-		
+		}, 40, 100L);
+
+		new ScoreboardAnimation();
 	}
 
 	@Override
@@ -48,9 +49,9 @@ public class ScoreboardManager extends Module {
 	}
 
 	public void update() {
-		if (System.currentTimeMillis() - lastUpdate < 1000)
-			return;
-		lastUpdate = System.currentTimeMillis();
+//		if (System.currentTimeMillis() - lastUpdate < 1000)
+//			return;
+//		lastUpdate = System.currentTimeMillis();
 		for (ZylemBoard zylemBoard : scoreboards.values())
 			zylemBoard.update();
 	}

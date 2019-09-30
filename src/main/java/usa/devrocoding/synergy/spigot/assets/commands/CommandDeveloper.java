@@ -15,7 +15,7 @@ import static org.bukkit.Bukkit.getServer;
 public class CommandDeveloper extends SynergyCommand {
 
     public CommandDeveloper(Core plugin) {
-        super(plugin, Rank.ADMIN, "Synergy's Developer Command", true,"synergydev","syndev","version","ver");
+        super(plugin, Rank.ADMIN, "See the information needed for developers", true,"synergydev","syndev","version","ver");
     }
 
     @Override
@@ -41,6 +41,6 @@ public class CommandDeveloper extends SynergyCommand {
         sender.sendMessage("Synergy Version: "+getPlugin().getDescription().getVersion());
         sender.sendMessage("Server Port: "+getServer().getPort());
         sender.sendMessage("Server Total Memory: "+MemoryUtils.getTotalMemory()+"M");
-        sender.sendMessage(LinuxColorCodes.ANSI_YELLOW+"-------------------------------------");
+        sender.sendMessage(LinuxColorCodes.ANSI_YELLOW+"-------------------------------------"+LinuxColorCodes.ANSI_RESET);
     }
 }

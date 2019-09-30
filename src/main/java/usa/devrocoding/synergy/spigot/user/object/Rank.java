@@ -8,8 +8,14 @@ import java.util.List;
 
 public enum Rank {
 
-    NONE(0, "NONE", "", ChatColor.GRAY, "rank.admin"),
-    ADMIN(1, "ADMIN", "ADMIN", ChatColor.RED, "rank.admin");
+    NONE(-1, "NONE", "", ChatColor.GRAY, "rank.none"),
+    HELPER(6, "HELPER", "HELPER", ChatColor.YELLOW, "rank.helper"),
+    MODERATOR(5, "MODERATOR", "MOD", ChatColor.BLUE, "rank.moderator"),
+    ADMIN(4, "ADMIN", "ADMIN", ChatColor.RED, "rank.admin"),
+    MANAGER(3, "MANAGER", "MANAGER", ChatColor.GOLD, "rank.manager"),
+    JRDEVELOPER(2, "JRDEVELOPER", "JR. DEVELOPER", ChatColor.LIGHT_PURPLE, "rank.jrdeveloper"),
+    SRDEVELOPER(1, "SRDEVELOPER", "SR. DEVELOPER", ChatColor.RED, "rank.srdeveloper"),
+    OWNER(0, "ADMIN", "ADMIN", ChatColor.RED, "rank.owner");
 
     @Getter
     private final Integer id;
@@ -43,15 +49,20 @@ public enum Rank {
         return null;
     }
 
-    public static Rank getFirstStaffRank() {
-        return ADMIN;
+    public static Rank getLowestStaffRank() {
+        return HELPER;
+    }
+    public static Rank getHighestStaffRank() {
+        return MANAGER;
+    }
+    public static Rank getHighestRank() {
+        return SRDEVELOPER;
     }
 
     public ChatColor getTextColor() {
-        if (this.getId() < Rank.ADMIN.getId()) {
+        if (this.getId() <= -1) {
             return ChatColor.GRAY;
         }
-
         return ChatColor.WHITE;
     }
 }

@@ -40,7 +40,7 @@ public class CommandGamemode extends SynergyCommand {
 
                 player.setGameMode(gm);
                 synergyUser.info(
-                        "Oke player. I've put you in "+ C.CHAT_HIGHLIGHT.getColor()+gm.name().toLowerCase());
+                        "Your gamemode has been changed to "+ C.CHAT_HIGHLIGHT.getColor()+gm.name().toLowerCase());
             }else{
                 sendUsageMessage(player);
             }
@@ -86,7 +86,7 @@ public class CommandGamemode extends SynergyCommand {
                 arg.equalsIgnoreCase("egmsp")||
                 arg.equalsIgnoreCase("spectator")||
                 arg.equalsIgnoreCase("3")){
-            return GameMode.CREATIVE;
+            return GameMode.SPECTATOR;
         }
         return null;
     }

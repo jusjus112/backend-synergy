@@ -1,5 +1,6 @@
 package usa.devrocoding.synergy.spigot.utilities;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
@@ -178,6 +179,20 @@ public class UtilLoc {
 
 	public static Location newInstance(Location loc) {
 		return new Location(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+	}
+
+	public static String serialize(Location location){
+		return location.getWorld().getName()+"/"+location.getX()+"/"+location.getY()+"/"+location.getZ();
+	}
+
+	public static Location deserialize(String s){
+		String[] strings = s.split("/");
+		return new Location(
+				Bukkit.getWorld(strings[0]),
+				Double.valueOf(strings[1]),
+				Double.valueOf(strings[2]),
+				Double.valueOf(strings[3])
+			);
 	}
 
 }

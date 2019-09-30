@@ -4,7 +4,6 @@ import com.google.inject.Injector;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.ChatColor;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import usa.devrocoding.synergy.services.SQLService;
 import usa.devrocoding.synergy.services.sql.DatabaseManager;
@@ -13,11 +12,11 @@ import usa.devrocoding.synergy.services.sql.SQLDataType;
 import usa.devrocoding.synergy.services.sql.SQLDefaultType;
 import usa.devrocoding.synergy.services.sql.TableBuilder;
 import usa.devrocoding.synergy.spigot.achievement.AchievementManager;
-import usa.devrocoding.synergy.spigot.api.SpigotAPI;
 import usa.devrocoding.synergy.spigot.api.SynergyPlugin;
 import usa.devrocoding.synergy.spigot.assets.*;
 import usa.devrocoding.synergy.spigot.assets.lobby.LobbyManager;
 import usa.devrocoding.synergy.spigot.assets.object.Message;
+import usa.devrocoding.synergy.spigot.assets.wand.WandManager;
 import usa.devrocoding.synergy.spigot.auto_reboot.AutoRebootManager;
 import usa.devrocoding.synergy.spigot.bot_sam.Sam;
 import usa.devrocoding.synergy.spigot.bot_sam.object.ErrorHandler;
@@ -31,9 +30,9 @@ import usa.devrocoding.synergy.spigot.hologram.HologramManager;
 import usa.devrocoding.synergy.spigot.language.LanguageManager;
 import usa.devrocoding.synergy.spigot.nick.NickManager;
 import usa.devrocoding.synergy.spigot.plugin_messaging.PluginMessagingManager;
+import usa.devrocoding.synergy.spigot.punish.PunishManager;
 import usa.devrocoding.synergy.spigot.runnable.RunnableManager;
 import usa.devrocoding.synergy.spigot.scoreboard.ScoreboardManager;
-import usa.devrocoding.synergy.proxy.two_factor_authentication.GoogleAuthManager;
 import usa.devrocoding.synergy.spigot.user.UserManager;
 import usa.devrocoding.synergy.spigot.user.object.UserExperience;
 import usa.devrocoding.synergy.spigot.utilities.UtilDisplay;
@@ -46,8 +45,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@SynergyMani(backend_name = "Synergy", main_color = ChatColor.AQUA, permission_prefix = "synergy", proxy = "BungeeCord", server_name = "NoblesseMC")
-public class Core extends JavaPlugin {
+@SynergyMani(backend_name = "Synergy", main_color = ChatColor.AQUA, permission_prefix = "synergy", proxy = "BungeeCord", server_name = "Zurvive")
+public class Core extends SynergyPlugin {
 
     @Getter @Setter
     private static Core plugin;
@@ -105,6 +104,10 @@ public class Core extends JavaPlugin {
     private NickManager nickManager;
     @Getter
     private DependencyManager dependencyManager;
+    @Getter
+    private WandManager wandManager;
+    @Getter
+    private PunishManager punishManager;
 
     @Getter
     private LobbyManager lobbyManager = null;
@@ -112,7 +115,10 @@ public class Core extends JavaPlugin {
     private SynergyMani manifest;
 
     @Override
-    public void onEnable(){
+    public void init() {}
+
+    @Override
+    public void preInit(){
         setPlugin(this);
 
         SynergyBinder binder = new SynergyBinder(this);
@@ -221,6 +227,8 @@ public class Core extends JavaPlugin {
         this.warpManager = new WarpManager(this);
         this.achievementManager = new AchievementManager(this);
         this.nickManager = new NickManager(this);
+        this.wandManager = new WandManager(this);
+        this.punishManager = new PunishManager(this);
 
         // Init the utilities
         this.globalManager.setUtilDisplay(new UtilDisplay());
@@ -245,42 +253,42 @@ public class Core extends JavaPlugin {
         Message.update();
 
         Synergy.info("Loaded a total of "+Module.getTotal()+" Modules & Systems!");
+        Module.total = 0;
+
         this.loaded = true;
         this.disabled = false;
-
-        int plugins = getPluginManager().getPlugins().size();
-        if (plugins > 0){
-            for(SynergyPlugin plugin : getPluginManager().getPlugins()){
-                plugin.init();
-            }
-            Synergy.info(plugins+" registered plugins initialized");
-        }
 
         Synergy.success("Synergy is up and running!");
 
         // Calling the method once the main thread finished
-        getServer().getScheduler().scheduleSyncDelayedTask(this, new BukkitRunnable() {
+        new BukkitRunnable(){
             @Override
             public void run() {
                 onServerEnabled();
             }
-        });
+        }.runTask(this);
     }
 
-    public void onDisable(){
+    @Override
+    public void deinit() {}
+
+    @Override
+    public void preDeInit(){
         this.warpManager.saveAllWarps();
-
-        for(SynergyPlugin plugin : getPluginManager().getPlugins()){
-            plugin.deinit();
-        }
-
     }
 
     /*
      * This method is being executed after the server is
      * completely enabled and all the plugin are loaded!
      */
-    public void onServerEnabled(){
+    private void onServerEnabled(){
+//        int plugins = getPluginManager().getPlugins().size();
+//        if (plugins > 0){
+//            for(SynergyPlugin plugin : getPluginManager().getPlugins()){
+//
+//            }
+//        }
+
         // Init all the warps because of a world manager problem
         this.warpManager.cacheSavedWarps();
     }

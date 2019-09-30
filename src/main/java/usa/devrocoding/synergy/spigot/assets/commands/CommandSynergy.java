@@ -22,7 +22,7 @@ public class CommandSynergy extends SynergyCommand {
                 "§eA §6Fully Custom §eNetwork system for this awesome network named \""+getPlugin().getManifest().server_name()+"\"",
                 "§eAuthor: §3JusJus§e",
                 "§eVersion: " + Core.getPlugin().getDescription().getVersion(),
-                "§eThis system has their first release written on §eAugust 24, 2018 made with §c"+ C.Symbol.HEARTH.getSymbol(),
+                "§eThis system has their first code written on §eAugust 24, 2017 and released on May 2nd 2018 made with §c"+ C.Symbol.HEARTH.getSymbol(),
                 C.getLine()
         );
     }

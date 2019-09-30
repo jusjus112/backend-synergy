@@ -21,7 +21,7 @@ import java.util.*;
 public class CommandManager extends Module implements Listener {
 
     private final List<SynergyCommand> commands = Lists.newArrayList();
-    private Map<String, SynergyCommand> knownCommands;
+    private Map<String, Command> knownCommands;
 
     public CommandManager(Core plugin) {
         super(plugin, "Command Manager", false);
@@ -33,10 +33,8 @@ public class CommandManager extends Module implements Listener {
         }
 
         try {
-            Object commandMap = getPlugin().getServer().getClass().getMethod("getCommandMap").invoke(getPlugin().getServer());
-            Field field = commandMap.getClass().getDeclaredField("knownCommands");
-            field.setAccessible(true);
-            this.knownCommands = (Map<String, SynergyCommand>) field.get(commandMap);
+            final SimpleCommandMap commandMap = (SimpleCommandMap) getPrivateField(plugin.getServer().getPluginManager(), "commandMap");
+            this.knownCommands = (HashMap<String, Command>) getPrivateField(commandMap, "knownCommands"); // Line 293
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -49,33 +47,49 @@ public class CommandManager extends Module implements Listener {
                 "pl","plugins","ver","version","deop","testforblocks","setblock",
                 "me","testfor","scoreboard","tellraw","summon","teleport","defaultgamemode",
 
-//                "about","whisper","tell","msg",
-//                "seed","xp","tp","kill","playsound","title","say","spreadplayers",
-//                "advancement","toggledownfall","worldborder","trigger",
-//                "fill","particle","setidletimeout","setworldspawn","time","locate","recipe",
-//                "function","pardon","ban","kick","testforblock","spawnpoint","clone","enchant","w",
-//                "weather","blockdata","entitydata","difficulty","stopsound","stats",
-//                "banlist","list","clear","execute","replaceitem",
-//                "ban-ip","effect","pardon-ip","save-off","save-on",
-//                "debug","reload","rl",
+                "about","whisper","tell","msg",
+                "seed","xp","tp","kill","playsound","title","say","spreadplayers",
+                "advancement","toggledownfall","worldborder","trigger",
+                "fill","particle","setidletimeout","setworldspawn","locate","recipe",
+                "function","pardon","ban","kick","testforblock","spawnpoint","clone","enchant","w",
+                "blockdata","entitydata","difficulty","stopsound","stats",
+                "banlist","list","clear","execute","replaceitem",
+                "ban-ip","pardon-ip","save-off","save-on",
+                "debug",
+
+//                "reload","rl","weather","time","effect","gamerule",
 
                 // Essentials Commands
-
                 "powertool","powertooltoggle","tp2p","tele","tp","gm", "gmc","gma","gmc","gms","gmsp","gmt",
-                "creativemode","spectatormode","adventuremode","gamemode"
+                "creativemode","spectatormode","adventuremode","gamemode",
 
-//                "nuke","more","banip","backup","compass","kittycannon",
-//                "pt","setworth","worth","ul",
-//                "uptime","v","tptoggle","tnt","whereami","ping","pong","ptt","list","plist",
-//                "remjail","pttoggle","mem","pardonip","memory","smite",
-//                "survivalmode","shoutworld","bcw","godmode","news","grenade","vanish",
-//                 "info","fireball","strike","lightning",
-//                "me","tree","firework","gc","god"
+                "nuke","more","banip","backup","compass","kittycannon",
+                "pt","setworth","worth","ul",
+                "uptime","v","tptoggle","tnt","whereami","ping","pong","ptt","list","plist",
+                "remjail","pttoggle","mem","pardonip","memory","smite",
+                "survivalmode","shoutworld","bcw","godmode","news","grenade","vanish",
+                 "info","fireball","strike","lightning",
+                "me","tree","firework","gc","god"
         };
 
         for (String cmd : disabled_cmds){
             unregisterMinecraftCommand(cmd);
         }
+    }
+
+    private Object getPrivateField(Object object, String field) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+        Class<?> clazz = object.getClass();
+        Field objectField = field.equals("commandMap") ?
+                clazz.getDeclaredField(field) :
+                field.equals("knownCommands") ?
+                        Bukkit.getVersion().contains("1.14") ?
+                                clazz.getSuperclass().getDeclaredField(field) :
+                                clazz.getDeclaredField(field) :
+                        null;
+        objectField.setAccessible(true);
+        Object result = objectField.get(object);
+        objectField.setAccessible(false);
+        return result;
     }
 
     @Override

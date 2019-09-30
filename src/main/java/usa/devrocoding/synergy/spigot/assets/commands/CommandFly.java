@@ -15,7 +15,7 @@ import static org.bukkit.Bukkit.getServer;
 public class CommandFly extends SynergyCommand {
 
     public CommandFly(Core plugin) {
-        super(plugin, Rank.NONE, "Synergy's Fly Command", false,"fly");
+        super(plugin, Rank.NONE, "Toggles fly", false,"fly");
     }
 
     @Override

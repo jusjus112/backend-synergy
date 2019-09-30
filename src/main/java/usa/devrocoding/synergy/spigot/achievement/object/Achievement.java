@@ -7,7 +7,6 @@ import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.achievement.event.PlayerFinishedAchievementEvent;
 import usa.devrocoding.synergy.spigot.listeners.EventListener;
 import usa.devrocoding.synergy.spigot.listeners.Listeners;
-import usa.devrocoding.synergy.spigot.user.event.UserLoadEvent;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 
 public abstract class Achievement {

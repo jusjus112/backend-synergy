@@ -56,7 +56,7 @@ public class Synergy {
         }
 
         public static String getLineWithName(String name){
-            return "«"+ChatColor.STRIKETHROUGH+"---------------"+ChatColor.AQUA+" "+name+" "+ChatColor.RESET+ChatColor.STRIKETHROUGH+"----------------"+ChatColor.RESET+"»";
+            return "«"+ChatColor.STRIKETHROUGH+"---------------"+ChatColor.RESET+ChatColor.AQUA+" "+name+" "+ChatColor.RESET+ChatColor.STRIKETHROUGH+"----------------"+ChatColor.RESET+"»";
         }
 
         public static String getShortLineWithName(String name){
@@ -64,7 +64,7 @@ public class Synergy {
         }
 
         public static String getLineWithNameNoAttr(String name){
-            return "«"+ChatColor.STRIKETHROUGH+"--------- "+SynergyColor.INFO.getColor()+name+ChatColor.RESET+ChatColor.STRIKETHROUGH+" ---------"+ChatColor.RESET+"»";
+            return "«"+ChatColor.STRIKETHROUGH+"---------"+ChatColor.RESET+" "+SynergyColor.INFO.getColor()+name+ChatColor.RESET+ChatColor.STRIKETHROUGH+" ---------"+ChatColor.RESET+"»";
         }
 
         public static String getLineWithNameWithoutSymbols(String name){
@@ -113,7 +113,7 @@ public class Synergy {
         Arrays.stream(messages).forEach(s -> System.out.println(format("warn", LinuxColorCodes.ANSI_RED, s)));
     }
 
-    private static String format(String prefix, String color, String message){
+    public static String format(String prefix, String color, String message){
         return LinuxColorCodes.ANSI_YELLOW+"Synergy"+color+(prefix.length()>0?" "+prefix.toUpperCase():"")+LinuxColorCodes.ANSI_CYAN+" </> "+color+message+LinuxColorCodes.ANSI_RESET;
     }
 

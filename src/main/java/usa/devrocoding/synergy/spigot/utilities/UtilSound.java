@@ -12,11 +12,11 @@ public class UtilSound {
     }
 
     public void pling(){
-        synergyUser.getPlayer().playSound(synergyUser.getPlayer().getLocation(), Sound.BLOCK_NOTE_PLING, 2, 2);
+        synergyUser.getPlayer().playSound(synergyUser.getPlayer().getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 2, 2);
     }
 
     public void deepPling(){
-        synergyUser.getPlayer().playSound(synergyUser.getPlayer().getLocation(), Sound.BLOCK_NOTE_BASS, 2, 2);
+        synergyUser.getPlayer().playSound(synergyUser.getPlayer().getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 2, 2);
     }
 
     public void play(Sound sound){

@@ -29,7 +29,7 @@ public class CooldownManager extends Module {
     private final static HashMap<Object, HashMap<Integer, Boolean>> cd = new HashMap<Object, HashMap<Integer, Boolean>>();
 
     public void run() {
-        getPlugin().getServer().getScheduler().scheduleAsyncRepeatingTask(getPlugin(), new BukkitRunnable() {
+        new BukkitRunnable(){
             @Override
             public void run() {
                 Iterator<Object> iter = cd.keySet().iterator();
@@ -52,8 +52,7 @@ public class CooldownManager extends Module {
                     }
                 }
             }
-        },100L, 20L);
-
+        }.runTaskTimerAsynchronously(getPlugin(), 100, 20);
     }
   
     public void addCooldown(Object ob, int seconds){

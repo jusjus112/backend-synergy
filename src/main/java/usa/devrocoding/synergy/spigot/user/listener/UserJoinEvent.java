@@ -35,26 +35,37 @@ public class UserJoinEvent implements Listener {
                     UUID uuid = e.getUniqueId(); String name = e.getName(); Rank rank = Rank.NONE;
                     LanguageFile language = Core.getPlugin().getLanguageManager().getLanguage("en");
                     double experience = 0D;
-                    UserLoadEvent.UserLoadType loadType = UserLoadEvent.UserLoadType.NEW;
+                    SynergyUser user;
 
                     if (resultSet.next()) {
-                        loadType = UserLoadEvent.UserLoadType.RETRIEVED_FROM_DATABASE;
                         experience = resultSet.getDouble("xp");
                         if (Rank.fromName(resultSet.getString("rank")) != null) {
                             rank = Rank.fromName(resultSet.getString("rank"));
                         }
+                        user = new SynergyUser(uuid, name, rank, language, UserLoadEvent.UserLoadType.RETRIEVED_FROM_DATABASE);
+                        Core.getPlugin().getRunnableManager().runTask("hack main thread 1", core1 -> {
+                            Core.getPlugin().getServer().getPluginManager().callEvent(new UserLoadEvent(user, UserLoadEvent.UserLoadType.RETRIEVED_FROM_DATABASE));
+                        });
+                    }else{
+                        user = new SynergyUser(uuid, name, rank, language);
+                        Core.getPlugin().getRunnableManager().runTask("hack main thread 2", core1 -> {
+                            Core.getPlugin().getServer().getPluginManager().callEvent(new UserLoadEvent(user, UserLoadEvent.UserLoadType.NEW));
+                        });
                     }
 
-                    SynergyUser user = new SynergyUser(uuid, name, rank, language, loadType);
                     user.setNetworkXP(experience);
 
-                    Core.getPlugin().getServer().getPluginManager().callEvent(new UserLoadEvent(user, loadType));
                     Core.getPlugin().getDatabaseManager().disconnect();
                 }catch (SQLException ex){
                     Synergy.error(ex.getMessage());
                 }
             }
         );
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent e){
+        e.setJoinMessage(null);
     }
 
     @EventHandler

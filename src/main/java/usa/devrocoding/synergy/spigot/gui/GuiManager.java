@@ -25,7 +25,10 @@ public class GuiManager extends Module {
 		int slot = event.getRawSlot();
 		
 		for(Gui menu : Lists.newArrayList(menus)) {
-			if(event.getInventory().getName().equals(menu.getName())) {
+			if (menu.getName().equalsIgnoreCase("Player Inventory")){
+				event.setCancelled(true);
+			}else
+			if(event.getView().getTitle().equals(menu.getName())) {
 				if(menu.getCurrentSessions().containsKey(player.getUniqueId())) {
 					event.setCancelled(true);
 					

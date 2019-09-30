@@ -1,6 +1,8 @@
 package usa.devrocoding.synergy.spigot.assets;
 
 import lombok.Getter;
+import usa.devrocoding.synergy.assets.Synergy;
+import usa.devrocoding.synergy.assets.object.LinuxColorCodes;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
 import usa.devrocoding.synergy.spigot.api.SynergyPlugin;
@@ -82,10 +84,15 @@ public class PluginManager extends Module {
         }
     }
 
-    public void registerPlugin(SynergyPlugin plugin){
-        if (!this.getPlugins().contains(plugin)){
-            this.getPlugins().add(plugin);
-        }
-    }
+//    public void registerPlugin(SynergyPlugin plugin){
+//        if (!this.getPlugins().contains(plugin)){
+//            this.getPlugins().add(plugin);
+//            Synergy.info(Synergy.format("extension", LinuxColorCodes.ANSI_YELLOW, plugin.name()+" detected...."));
+//            Synergy.info(
+//                    Synergy.format("extension", LinuxColorCodes.ANSI_YELLOW, "Loaded a total of "+Module.getTotal()+" Modules for extension '"+plugin.name()+"'!")
+//            );
+//            Module.total = 0;
+//        }
+//    }
 
 }

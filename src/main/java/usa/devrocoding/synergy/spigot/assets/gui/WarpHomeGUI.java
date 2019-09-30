@@ -10,7 +10,6 @@ import usa.devrocoding.synergy.spigot.gui.object.GuiSize;
 import usa.devrocoding.synergy.spigot.user.gui.HomeGUI;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 import usa.devrocoding.synergy.spigot.utilities.ItemBuilder;
-import usa.devrocoding.synergy.spigot.utilities.SkullItemBuilder;
 import usa.devrocoding.synergy.spigot.warp.gui.WarpGUI;
 
 public class WarpHomeGUI extends Gui {
@@ -24,8 +23,7 @@ public class WarpHomeGUI extends Gui {
         surroundWith(new GuiElement() {
             @Override
             public ItemStack getIcon(SynergyUser synergyUser) {
-                return new ItemBuilder(Material.STAINED_GLASS_PANE)
-                        .setDamage((short) 15)
+                return new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE)
                         .setName(" ")
                         .build();
             }
@@ -36,7 +34,7 @@ public class WarpHomeGUI extends Gui {
         addElement(11, new GuiElement() {
             @Override
             public ItemStack getIcon(SynergyUser synergyUser) {
-                return new ItemBuilder(Material.EYE_OF_ENDER)
+                return new ItemBuilder(Material.ENDER_EYE)
                         .setName("§b§lServer Warps")
                         .setLore(" ", "Click to see all the", "&c&lSERVER &7Warps you can", "go to based on permissions.")
                         .build();
@@ -51,9 +49,10 @@ public class WarpHomeGUI extends Gui {
         addElement(13, new GuiElement() {
             @Override
             public ItemStack getIcon(SynergyUser synergyUser) {
-                return new SkullItemBuilder(synergyUser.getPlayer())
-                        .setName("&e&l"+synergyUser.getName())
-                        .build();
+//                return new SkullItemBuilder(synergyUser.getPlayer())
+//                        .setName("&e&l"+synergyUser.getName())
+//                        .build();
+                return new ItemBuilder(Material.ENDER_EYE).build();
             }
 
             @Override
@@ -80,7 +79,7 @@ public class WarpHomeGUI extends Gui {
         addElement(31, new GuiElement() {
             @Override
             public ItemStack getIcon(SynergyUser synergyUser) {
-                return new ItemBuilder(Material.BED)
+                return new ItemBuilder(Material.WHITE_BED)
                         .setName("&e&l"+synergyUser.getName()+"'s &7Homes")
                         .setLore(" ", "Click to see all your", "homes you have set")
                         .build();

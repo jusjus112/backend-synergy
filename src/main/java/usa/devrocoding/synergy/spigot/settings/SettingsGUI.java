@@ -12,7 +12,6 @@ import usa.devrocoding.synergy.spigot.gui.object.GuiSize;
 import usa.devrocoding.synergy.spigot.language.LanguageStrings;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 import usa.devrocoding.synergy.spigot.utilities.ItemBuilder;
-import usa.devrocoding.synergy.spigot.utilities.UtilItem;
 
 public class SettingsGUI extends Gui{
 
@@ -28,7 +27,7 @@ public class SettingsGUI extends Gui{
         line(0, 8, new GuiElement() {
             @Override
             public ItemStack getIcon(SynergyUser synergyUser) {
-                return new ItemBuilder(Material.STAINED_GLASS_PANE).setName(" ").setMaterialData(new MaterialData((byte)7)).build();
+                return new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName(" ").build();
             }
 
             @Override public void click(SynergyUser synergyUser, ClickType clickType) {}
@@ -37,9 +36,10 @@ public class SettingsGUI extends Gui{
         addElement(25, new GuiElement() {
             @Override
             public ItemStack getIcon(SynergyUser synergyUser) {
-                return new ItemBuilder(UtilItem.getPlayerSkull("§e"+synergyUser.getLanguage().getList(LanguageStrings.SETTINGS_ITEM_LANGUAGE_NAME), "0qt")).setLore(
-                        synergyUser.getLanguage().getList(LanguageStrings.SETTINGS_ITEM_LANGUAGE_LORE)
-                ).build();
+//                return new ItemBuilder(UtilItem.getPlayerSkull("§e"+synergyUser.getLanguage().getList(LanguageStrings.SETTINGS_ITEM_LANGUAGE_NAME), "0qt")).setLore(
+//                        synergyUser.getLanguage().getList(LanguageStrings.SETTINGS_ITEM_LANGUAGE_LORE)
+//                ).build();
+                return new ItemBuilder(Material.ENDER_EYE).build();
             }
 
             @Override
@@ -51,9 +51,10 @@ public class SettingsGUI extends Gui{
         addElement(25, new GuiElement() {
             @Override
             public ItemStack getIcon(SynergyUser synergyUser) {
-                return new ItemBuilder(UtilItem.getPlayerSkull("§e"+synergyUser.getLanguage().getList(LanguageStrings.SETTINGS_ITEM_FRIENDS_NAME), "0qt")).setLore(
-                        synergyUser.getLanguage().getList(LanguageStrings.SETTINGS_ITEM_FRIENDS_LORE)
-                ).build();
+//                return new ItemBuilder(UtilItem.getPlayerSkull("§e"+synergyUser.getLanguage().getList(LanguageStrings.SETTINGS_ITEM_FRIENDS_NAME), "0qt")).setLore(
+//                        synergyUser.getLanguage().getList(LanguageStrings.SETTINGS_ITEM_FRIENDS_LORE)
+//                ).build();
+                return new ItemBuilder(Material.ENDER_EYE).build();
             }
 
             @Override
@@ -65,7 +66,7 @@ public class SettingsGUI extends Gui{
         line(45, 53, new GuiElement() {
             @Override
             public ItemStack getIcon(SynergyUser synergyUser) {
-                return new ItemBuilder(Material.STAINED_GLASS_PANE).setName(" ").setMaterialData(new MaterialData((byte)7)).build();
+                return new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName(" ").build();
             }
 
             @Override public void click(SynergyUser synergyUser, ClickType clickType) {}

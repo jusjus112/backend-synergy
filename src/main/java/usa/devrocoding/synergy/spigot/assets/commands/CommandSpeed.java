@@ -30,7 +30,7 @@ public class CommandSpeed extends SynergyCommand {
                         player.setWalkSpeed((float)speed / 11.0f + 0.1F);
                         type = "walk";
                     }
-                    synergyUser.info("I've updated your "+type+"speed to '"+speed+"'");
+                    synergyUser.info("Changed your "+type+"speed to '"+speed+"'");
                 }catch(IllegalArgumentException e) {
                     synergyUser.error("Invalid speed '"+args[0]+"'");
                 }

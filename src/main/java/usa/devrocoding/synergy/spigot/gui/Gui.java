@@ -49,6 +49,12 @@ public abstract class Gui {
 	}
 
 	public abstract void setup();
+
+	public void insert(Inventory inventory, SynergyUser user){
+		for(Entry<Integer, GuiElement> element : elements.entrySet()) {
+			inventory.setItem(element.getKey(), element.getValue().getIcon(user));
+		}
+	}
 	
 	public Inventory open(Player player) {
 		Inventory inventory = Bukkit.createInventory(null, guiSize.getSlots(), name);
@@ -83,6 +89,14 @@ public abstract class Gui {
 				this.addElement(i, element);
 				return;
 			}
+		}
+	}
+
+	public void addUnsafeElement(int slot, GuiElement menuElement) {
+		try{
+			this.elements.put(Integer.valueOf(slot), menuElement);
+		}catch (Exception e){
+			Synergy.error(e.getMessage());
 		}
 	}
 

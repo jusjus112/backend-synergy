@@ -32,8 +32,7 @@ public class ChangelogGUI extends Gui {
         surroundWith(new GuiElement() {
             @Override
             public ItemStack getIcon(SynergyUser synergyUser) {
-                return new ItemBuilder(Material.STAINED_GLASS_PANE)
-                        .setDamage((short) 15)
+                return new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE)
                         .setName(" ")
                         .build();
             }
@@ -53,7 +52,7 @@ public class ChangelogGUI extends Gui {
                         lore.add(C.colorize(line));
                     }
 
-                    return new ItemBuilder(Material.EMPTY_MAP)
+                    return new ItemBuilder(Material.MAP)
                             .setName(C.colorize(changelog.getTitle()))
                             .setLore(lore)
                             .build();

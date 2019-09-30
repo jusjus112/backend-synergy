@@ -29,10 +29,12 @@ public class ACHIEVEMENT_FIRST_JOINED extends Achievement {
 
     @Override
     public void mechanics() {
-        addListener(new EventListener<BlockBreakEvent>() {
+        addListener(new EventListener<UserLoadEvent>() {
             @EventHandler
-            public void process(BlockBreakEvent e){
-                unlock(e.getPlayer());
+            public void process(UserLoadEvent e){
+                if (e.getLoadType() == UserLoadEvent.UserLoadType.NEW) {
+                    unlock(e.getUser());
+                }
             }
         });
     }

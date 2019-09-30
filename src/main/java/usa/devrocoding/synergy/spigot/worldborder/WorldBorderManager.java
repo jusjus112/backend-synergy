@@ -1,8 +1,7 @@
 package usa.devrocoding.synergy.spigot.worldborder;
 
-import net.minecraft.server.v1_12_R1.PacketPlayOutWorldBorder;
-import net.minecraft.server.v1_12_R1.WorldBorder;
-import org.bukkit.Bukkit;
+import net.minecraft.server.v1_14_R1.PacketPlayOutWorldBorder;
+import net.minecraft.server.v1_14_R1.WorldBorder;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import usa.devrocoding.synergy.assets.Synergy;
