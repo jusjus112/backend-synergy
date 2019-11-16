@@ -23,7 +23,7 @@ public class ChangelogJoinListener implements Listener {
                 e.getPlayer().sendMessage(new String[]{
                     C.getLineWithName("Updates"),
                     "Did you already checked the new updates?",
-                    "Changelog for §b" + changelog.getNiceDate(),
+                    "Last Update happened §b" + changelog.getNiceDate(),
                     "Check out this changelog with §6§l/changelog",
                     C.getLine()}
                 );

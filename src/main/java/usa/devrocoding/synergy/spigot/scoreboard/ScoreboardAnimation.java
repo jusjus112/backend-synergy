@@ -16,7 +16,7 @@ public class ScoreboardAnimation {
     public ScoreboardAnimation(){
         Core.getPlugin().getRunnableManager().runTaskTimerAsynchronously("scoreboard animation", core -> {
             update();
-        }, 20, 2);
+        }, 55, 2);
     }
 
     public void update() {
@@ -50,9 +50,16 @@ public class ScoreboardAnimation {
         set(s);
     }
 
-    private static void set(String s) {
-        for (ZylemBoard zylemBoard : Core.getPlugin().getScoreboardManager().getScoreboards().values())
-            zylemBoard.getSidebarObjective().setDisplayName(s);
+    private void set(String s) {
+        for (ZylemBoard zylemBoard : Core.getPlugin().getScoreboardManager().getScoreboards().values()) {
+            if (zylemBoard != null && zylemBoard.getSidebarObjective() != null) {
+                zylemBoard.
+                        getSidebarObjective().
+                        setDisplayName(
+                                s
+                        );
+            }
+        }
     }
 
 }

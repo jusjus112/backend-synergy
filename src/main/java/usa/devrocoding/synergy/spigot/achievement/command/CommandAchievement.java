@@ -11,7 +11,7 @@ import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 public class CommandAchievement extends SynergyCommand {
 
     public CommandAchievement(Core plugin) {
-        super(plugin, Rank.NONE, "Synergy's Achievement Command", false,"achievements", "am");
+        super(plugin, "command.achievement", "Synergy's Achievement Command", false,"achievements", "am");
     }
 
     @Override

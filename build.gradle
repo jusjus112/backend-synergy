@@ -65,14 +65,16 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
-    // compile fileTree(dir: 'libs', include: '*.jar')
+    compileOnly fileTree(dir: 'libs', include: '*.jar')
 
     // SPIGOT Dependencies
     compileOnly "org.projectlombok:lombok:1.16.16"
     compileOnly 'org.spigotmc:spigot:1.14.4-R0.1-SNAPSHOT'
 //    compileOnly group: 'com.destroystokyo.paper', name: 'paper-api', version: '1.12.2-R0.1-SNAPSHOT' // GSON
-    compileOnly 'org.bukkit:bukkit:1.14.4-R0.1-SNAPSHOT' // NMS
+    compileOnly 'org.bukkit:bukkit:1.14.4-R0.1-SNAPSHOT'
     compileOnly 'me.clip:placeholderapi:2.9.2'
+    compileOnly group: "com.comphenix.protocol", name: "ProtocolLib", version: "4.5.0-SNAPSHOT";
+    compile group: "com.comphenix.packetwrapper", name: "PacketWrapper", version: "1.13-R0.1-SNAPSHOT";
 
     // GLOBAL Dependencies
     compile group: 'redis.clients', name: 'jedis', version: '2.9.0' // Redis

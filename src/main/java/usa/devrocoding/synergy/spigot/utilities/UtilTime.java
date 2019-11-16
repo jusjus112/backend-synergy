@@ -105,7 +105,7 @@ public class UtilTime {
 
 	public static String formatMilliSecondsToTime(Long l)
 	{
-		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.FRANCE);
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm z");
 
 		GregorianCalendar calendar = new GregorianCalendar(TimeZone.getTimeZone("Amsterdam"));
 		calendar.setTimeInMillis(l.longValue());
@@ -115,9 +115,9 @@ public class UtilTime {
 
 	public static String formatMilliSecondsToDate(Long l)
 	{
-		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.FRANCE);
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 
-		GregorianCalendar calendar = new GregorianCalendar(TimeZone.getTimeZone("Amsterdam"));
+		GregorianCalendar calendar = new GregorianCalendar();
 		calendar.setTimeInMillis(l.longValue());
 
 		return sdf.format(calendar.getTime());

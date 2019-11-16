@@ -3,13 +3,16 @@ package usa.devrocoding.synergy.spigot.gui;
 import com.google.common.collect.Maps;
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.gui.object.GuiSize;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
+import usa.devrocoding.synergy.spigot.utilities.ItemBuilder;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -20,19 +23,13 @@ public abstract class Gui {
 	private final Core plugin;
 	private final String name;
 	private final GuiSize guiSize;
+	@Getter
+	private Gui backGui = null;
 	private final Map<Integer, GuiElement> elements;
 	private final Map<UUID, Inventory> currentSessions;
 	
 	public Gui(Core plugin, String name, GuiSize guiSize) {
-		this.plugin = plugin;
-		this.name = name;
-		this.guiSize = guiSize;
-		this.elements = Maps.newHashMap();
-		this.currentSessions = Maps.newHashMap();
-		
-		plugin.getGUIManager().getMenus().add(this);
-
-		setup();
+		this(plugin, name, guiSize, true);
 	}
 
 	public Gui(Core plugin, String name, GuiSize guiSize, boolean setup) {
@@ -81,6 +78,46 @@ public abstract class Gui {
 	public void close(Player player) {
 		player.closeInventory();
 		currentSessions.remove(player.getUniqueId());
+	}
+
+	public Gui setBackGui(Gui backGui){
+		this.backGui = backGui;
+		return this;
+	}
+
+	public boolean hasBackGui(){
+		return this.backGui != null;
+	}
+
+	public Gui getOuterClazz(){
+		return this;
+	}
+
+	public GuiElement getBackGuiElement(){
+		return getBackGuiElement("§c§l← Go Back", new ItemBuilder(Material.AIR));
+	}
+
+	public GuiElement getBackGuiElement(ItemBuilder alternative){
+		return getBackGuiElement("§c§l← Go Back", alternative);
+	}
+
+	public GuiElement getBackGuiElement(String itemName, ItemBuilder alternative){
+		return new GuiElement() {
+			@Override
+			public ItemStack getIcon(SynergyUser synergyUser) {
+				if (!hasBackGui()){
+					return alternative.build();
+				}
+				return new ItemBuilder(Material.ARROW)
+						.setName("§7"+itemName)
+						.build();
+			}
+
+			@Override
+			public void click(SynergyUser synergyUser, ClickType clickType) {
+				if (hasBackGui()) backGui.open(synergyUser.getPlayer());
+			}
+		};
 	}
 	
 	public void addElement(GuiElement element) {
@@ -144,6 +181,22 @@ public abstract class Gui {
 				}
 			}
 		}
+	}
+
+	public int getCenter(){
+		switch (this.guiSize){
+			case TWO_ROWS:
+				return 4;
+			case THREE_ROWS:
+				return 13;
+			case FOUR_ROWS:
+				return 13;
+			case FIVE_ROWS:
+				return 22;
+			case SIX_ROWS:
+				return 22;
+		}
+		return 4;
 	}
 
 	public List<Integer> getCenterInput(){

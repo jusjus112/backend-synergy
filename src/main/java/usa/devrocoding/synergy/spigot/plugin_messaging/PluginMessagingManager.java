@@ -10,6 +10,7 @@ import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
 import usa.devrocoding.synergy.spigot.plugin_messaging.event.SynergyReceiveEvent;
 import usa.devrocoding.synergy.spigot.plugin_messaging.listener.PluginMessageReceiveListener;
+import usa.devrocoding.synergy.spigot.plugin_messaging.object.PluginMessageType;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -45,14 +46,14 @@ public class PluginMessagingManager extends Module {
         }
     }
 
-    public void send(String channel, String content) {
+    public void send(PluginMessageType type, String content) {
         if (Bukkit.getOnlinePlayers().size() == 0)
             return;
         Player p = Iterables.getFirst(Bukkit.getOnlinePlayers(), null);
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF("Forward");
         out.writeUTF("ALL");
-        out.writeUTF(channel);
+        out.writeUTF(type.toString());
         ByteArrayOutputStream msgbytes = new ByteArrayOutputStream();
         DataOutputStream msgout = new DataOutputStream(msgbytes);
         try {
@@ -63,7 +64,10 @@ public class PluginMessagingManager extends Module {
         out.writeShort(msgbytes.toByteArray().length);
         out.write(msgbytes.toByteArray());
         p.sendPluginMessage(Core.getPlugin(), this.channels[0], out.toByteArray());
-        getPlugin().getServer().getPluginManager().callEvent(new SynergyReceiveEvent(channel, content));
+        Synergy.debug("SEND OUT -------");
+        Synergy.debug(type.toString());
+        Synergy.debug(content);
+        Synergy.debug("SEND OUT -------");
     }
 
     public void kick(String name, String reason) {

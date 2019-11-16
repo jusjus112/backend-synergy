@@ -10,6 +10,7 @@ import usa.devrocoding.synergy.spigot.api.BungeeAPI;
 import usa.devrocoding.synergy.spigot.api.SpigotAPI;
 
 import java.util.Arrays;
+import java.util.Random;
 
 public class Synergy {
 
@@ -38,6 +39,15 @@ public class Synergy {
 
         SynergyColor(ChatColor color){
             this.color = color;
+        }
+
+        public static String rainbow(String original){
+            StringBuilder builder = new StringBuilder();
+            for(char c : original.toCharArray()){
+                ChatColor color = ChatColor.values()[new Random(ChatColor.values().length).nextInt()];
+                builder.append(color+String.valueOf(c));
+            }
+            return builder.toString();
         }
 
         public static String getLine(){

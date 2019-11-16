@@ -7,7 +7,9 @@ import usa.devrocoding.synergy.discord.Discord;
 import usa.devrocoding.synergy.proxy.assets.AssetManager;
 import usa.devrocoding.synergy.proxy.files.ProxyYMLFile;
 import usa.devrocoding.synergy.proxy.maintenance.MaintenanceManager;
+import usa.devrocoding.synergy.proxy.party.PartyManager;
 import usa.devrocoding.synergy.proxy.plugin_messaging.PluginMessaging;
+import usa.devrocoding.synergy.proxy.punish.PunishManager;
 import usa.devrocoding.synergy.proxy.two_factor_authentication.GoogleAuthManager;
 import usa.devrocoding.synergy.services.SQLService;
 import usa.devrocoding.synergy.services.sql.DatabaseManager;
@@ -42,6 +44,10 @@ public class Core extends Plugin {
     private GoogleAuthManager googleAuthManager;
     @Getter
     private MaintenanceManager maintenanceManager;
+    @Getter
+    private PunishManager punishManager;
+    @Getter
+    private PartyManager partyManager;
 
     @Override
     public void onLoad() {
@@ -54,6 +60,8 @@ public class Core extends Plugin {
         this.assetManager = new AssetManager(this);
         this.pluginMessaging = new PluginMessaging(this);
         this.maintenanceManager = new MaintenanceManager(this);
+        this.punishManager = new PunishManager(this);
+        this.partyManager = new PartyManager(this);
 
         // Load all the settings e.t.c.
         this.assetManager.initDiscordSettings();

@@ -2,6 +2,7 @@ package usa.devrocoding.synergy.spigot.auto_reboot.thread;
 
 import lombok.Getter;
 import usa.devrocoding.synergy.assets.Synergy;
+import usa.devrocoding.synergy.assets.object.SynergyPeriod;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.auto_reboot.AutoRebootManager;
 
@@ -21,7 +22,7 @@ public class RebootChecker implements Consumer<Core> {
     public void accept(Core core) {
         if (LocalTime.now().getHour()==getManager().getRestartHour()){
             if (!getManager().isRestarting()) {
-                getManager().rebootServer();
+                getManager().rebootServer(SynergyPeriod.MINUTE.a(2));
             }
             core.getRunnableManager().getRunnables().get("Reboot Check").cancel();
         }

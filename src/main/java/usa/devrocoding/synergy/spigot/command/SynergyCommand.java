@@ -21,6 +21,8 @@ public abstract class SynergyCommand {
     @Getter
     private final String description;
     @Getter
+    private final String permission;
+    @Getter
     private final String[] aliases;
     private String[] playerUsage, consoleUsage;
     @Getter
@@ -28,14 +30,23 @@ public abstract class SynergyCommand {
     private double cooldown = 1.0;
 
     public SynergyCommand(Core plugin, String description, boolean consoleAllowed, String... aliases) {
-        this(plugin, Rank.NONE, description, consoleAllowed, aliases);
+        this(plugin,null, Rank.NONE, description, consoleAllowed, aliases);
+    }
+
+    public SynergyCommand(Core plugin, String permission, String description, boolean consoleAllowed, String... aliases) {
+        this(plugin, permission, Rank.NONE, description, consoleAllowed, aliases);
     }
 
     public SynergyCommand(Core plugin, Rank rank, String description, boolean consoleAllowed, String... aliases) {
+        this(plugin, null, rank, description, consoleAllowed, aliases);
+    }
+
+    private SynergyCommand(Core plugin, String permission, Rank rank, String description, boolean consoleAllowed, String... aliases) {
         this.plugin = plugin;
         this.rank = rank;
         this.consoleAllowed = consoleAllowed;
         this.description = description;
+        this.permission = permission;
         this.aliases = aliases;
         this.playerUsage = aliases;
         this.consoleUsage = aliases;

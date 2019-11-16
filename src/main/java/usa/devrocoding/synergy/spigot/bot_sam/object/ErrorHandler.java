@@ -27,14 +27,27 @@ public class ErrorHandler extends Handler {
 
     @Override
     public void publish(LogRecord record) {
-        Synergy.debug(record.getLevel()+" =LEVEL");
         if (record.getLevel() == Level.WARNING){
-            String pluginName = record.getMessage().split("]")[0].replace("[", "");
-            error(null, record.getThrown().toString(), "Check log for more details!",
-                    record.getThrown().getStackTrace(), record.getMessage(), pluginName);
-            record.setThrown(null);
-            record.setMessage(null);
-            return;
+            try{
+                error(
+                        null,
+                        record.getThrown()
+                                != null ?
+                                record.getThrown().toString() :
+                                "",
+                        "Check log for more details!",
+                        record.getThrown()
+                                .getStackTrace(),
+                        record.getMessage(),
+                        record.getMessage()
+                                .split("]")
+                                [0]
+                                .replace("[", ""));
+                record.setThrown(null);
+                record.setMessage(null);
+            }catch (Exception disabled){
+//                disabled.printStackTrace();
+            }
         }
     }
 
@@ -61,7 +74,7 @@ public class ErrorHandler extends Handler {
 
             writer.println(C.getLineWithNameNoAttr("SYNERGY"));
             writer.println("Error Date: "+dateAndTimeFormat.format(calender.getTime()));
-            writer.println("Created By: "+creator);
+            writer.println("Created By: "+(creator==null?"Synergy":creator));
             writer.println("Cause: "+cause);
             writer.println("Description: "+solution);
             if (module != null){
@@ -80,7 +93,7 @@ public class ErrorHandler extends Handler {
             writer.flush();
             writer.close();
         }catch (Exception eb){
-            error(null, "Error in my error system! Can't create the error file", "Errorception. Contact my developer", null);
+            error(null, "Error in my error system! Can't create the error file!", "Errorception. Contact my developer", null);
         }
     }
 
@@ -90,13 +103,14 @@ public class ErrorHandler extends Handler {
         SimpleDateFormat fileName = new SimpleDateFormat("dd-mm-yyyy_hh-mm");
 
         String[] consoleMessage = new String[]{
-                ChatColor.YELLOW+C.getLineWithNameWithoutSymbols(Sam.getName()+" "+ChatColor.RED+ChatColor.BOLD+"ERROR"+ChatColor.YELLOW),
-                ChatColor.RED+"I have intercepted an error for you!",
+                C.getLineWithNameWithoutSymbols(ChatColor.YELLOW+"Synergy "+ChatColor.AQUA+"</>"),
+                ChatColor.RED+"We've intercepted an error for you!",
                 ChatColor.RED+(stackTraceElements == null ? "It hurts when something isn't working!" : "I have saved this error for you to 'plugins/Synergy/logs/errors/ERROR_"+fileName.format(calender.getTime())+".txt'"),
                 ChatColor.RED+"Error Date: "+ChatColor.AQUA+dateAndTimeFormat.format(calender.getTime()),
                 ChatColor.RED+"Cause: "+ChatColor.AQUA+cause,
                 ChatColor.RED+"What might help: "+ChatColor.AQUA+solution,
-                stackTraceElements == null ? ChatColor.RED+"I didn't create a file for you ;(" : ChatColor.RED+"Check the error log for my detailed version!"
+                stackTraceElements == null ? ChatColor.RED+"I didn't create a file for you ;(" : ChatColor.RED+"Check the error log for my detailed version!",
+                ChatColor.YELLOW+C.getLineWithoutSymbols()+ChatColor.RESET
         };
 
         if (stackTraceElements != null){
@@ -104,8 +118,6 @@ public class ErrorHandler extends Handler {
         }
 
         C.sendConsoleColors(consoleMessage);
-
-        C.sendConsoleColors(ChatColor.YELLOW+C.getLineWithoutSymbols());
     }
 
     public void error(Module module, String cause, String solution, Exception e){

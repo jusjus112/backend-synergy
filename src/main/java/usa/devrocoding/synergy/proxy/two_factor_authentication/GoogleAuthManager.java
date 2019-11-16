@@ -3,6 +3,7 @@ package usa.devrocoding.synergy.proxy.two_factor_authentication;
 import com.warrenstrange.googleauth.GoogleAuthenticator;
 import com.warrenstrange.googleauth.GoogleAuthenticatorKey;
 import com.warrenstrange.googleauth.ICredentialRepository;
+import lombok.Getter;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import usa.devrocoding.synergy.assets.Synergy;
@@ -19,6 +20,10 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class GoogleAuthManager extends ProxyModule implements ICredentialRepository {
+
+    /*
+    https://www.google.com/chart?chs=128x128&cht=qr&chl=otpauth://totp/JusJusOneOneTwo?secret=KDNHMUX6SJ5TMJCS
+     */
 
     public GoogleAuthManager(Core plugin){
         super(plugin, "GoogleAuth Manager", false);
@@ -57,6 +62,7 @@ public class GoogleAuthManager extends ProxyModule implements ICredentialReposit
     final GoogleAuthenticator gAuth = new GoogleAuthenticator();
     AtomicInteger windowSize = new AtomicInteger(3);
 
+    @Getter
     private Map<ProxiedPlayer, String> notFilledInPlayers = new HashMap<>();
 
     public boolean has2fa(ProxiedPlayer player){

@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import usa.devrocoding.synergy.assets.Synergy;
 
 import java.util.ArrayList;
 import java.util.List;

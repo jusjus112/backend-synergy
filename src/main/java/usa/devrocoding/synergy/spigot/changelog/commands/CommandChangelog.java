@@ -11,7 +11,7 @@ import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 public class CommandChangelog extends SynergyCommand {
 
     public CommandChangelog(Core plugin){
-        super(plugin, Rank.NONE, "Command to see our changelogs.", false, "changelog");
+        super(plugin, "command.changelog", "Command to see our changelogs.", false, "changelog");
     }
 
     @Override

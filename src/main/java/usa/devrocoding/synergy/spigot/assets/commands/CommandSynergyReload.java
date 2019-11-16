@@ -7,6 +7,7 @@ import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
 import usa.devrocoding.synergy.spigot.assets.C;
 import usa.devrocoding.synergy.spigot.command.SynergyCommand;
+import usa.devrocoding.synergy.spigot.user.object.MessageModification;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 
 import java.lang.reflect.Method;
@@ -14,7 +15,7 @@ import java.lang.reflect.Method;
 public class CommandSynergyReload extends SynergyCommand {
 
     public CommandSynergyReload(Core plugin) {
-        super(plugin, "Synergy's official reload command", true,"synergyreload","synreload","synr","synrl");
+        super(plugin, "command.synergyreload", "Synergy's official reload command", true,"synergyreload","synreload","synr","synrl");
 
         setPlayerUsage("<module>");
         setConsoleUsage("<module>");
@@ -38,7 +39,18 @@ public class CommandSynergyReload extends SynergyCommand {
             }
             synergyUser.warning("I cannot find the module "+args[0]+"....");
         }else{
-            sendUsageMessage(synergyUser.getPlayer());
+            synergyUser.sendModifactionMessage(
+                    MessageModification.RAW,
+                    C.getLineWithName("Reloadable Modules")
+            );
+            for(Module module : Core.getPlugin().getModules()){
+                if (module.isReloadable()) {
+                    synergyUser.sendModifactionMessage(
+                            MessageModification.RAW,
+                            "§e/"+command + " " + module.getShortname()+" §7- "+module.getName()
+                        );
+                }
+            }
         }
     }
 

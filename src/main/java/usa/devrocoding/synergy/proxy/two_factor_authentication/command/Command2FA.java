@@ -20,11 +20,13 @@ public class Command2FA extends Command {
             if (args.length > 0 && args.length < 2){
                 try{
                     int code = Integer.valueOf(args[0]);
-                    if (Core.getCore().getGoogleAuthManager().validate(Core.getCore().getGoogleAuthManager().getCachedKey((ProxiedPlayer) sender), code)){
-                        Core.getCore().getGoogleAuthManager().disable2faMode((ProxiedPlayer) sender);
-                        sender.sendMessage(new TextComponent(Synergy.SynergyColor.INFO.getColor()+"Good luck on the server ;)"));
-                    }else{
-                        sender.sendMessage(new TextComponent(Synergy.SynergyColor.ERROR.getColor()+"Your 2FA code is incorrect!"));
+                    if (Core.getCore().getGoogleAuthManager().getNotFilledInPlayers().containsKey(sender)) {
+                        if (Core.getCore().getGoogleAuthManager().validate(Core.getCore().getGoogleAuthManager().getCachedKey((ProxiedPlayer) sender), code)) {
+                            Core.getCore().getGoogleAuthManager().disable2faMode((ProxiedPlayer) sender);
+                            sender.sendMessage(new TextComponent(Synergy.SynergyColor.INFO.getColor() + "Good luck on the server ;)"));
+                        } else {
+                            sender.sendMessage(new TextComponent(Synergy.SynergyColor.ERROR.getColor() + "Your 2FA code is incorrect!"));
+                        }
                     }
                 }catch (NumberFormatException e){
                     sender.sendMessage(new TextComponent(Synergy.SynergyColor.ERROR.getColor()+args[0]+" is not a number!"));

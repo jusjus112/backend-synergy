@@ -42,6 +42,24 @@ public class WarpGUI extends Gui {
         WarpManager warpManager = Core.getPlugin().getWarpManager();
         int index = 0;
 
+        if (warpManager.getWarps().size() <= 0){
+            addElement(21, new GuiElement() {
+                @Override
+                public ItemStack getIcon(SynergyUser synergyUser) {
+                    return new ItemBuilder(Material.BARRIER)
+                            .setName("No warps!")
+                            .addLore("Use /warp create <name> to create a warp!")
+                            .build();
+                }
+
+                @Override
+                public void click(SynergyUser player, ClickType clickType) {
+
+                }
+            });
+            return;
+        }
+
         for(Warp warp : warpManager.getWarps()){
             if (this.getUser().hasPermission(warp.getPermissionNode(), false)) {
                 int place = getCenterInput().get(index);

@@ -49,9 +49,10 @@ public class ScoreboardManager extends Module {
 	}
 
 	public void update() {
-//		if (System.currentTimeMillis() - lastUpdate < 1000)
-//			return;
-//		lastUpdate = System.currentTimeMillis();
+		// Will fix the java.util.ConcurrentModificationException
+		if (System.currentTimeMillis() - lastUpdate < 500)
+			return;
+		lastUpdate = System.currentTimeMillis();
 		for (ZylemBoard zylemBoard : scoreboards.values())
 			zylemBoard.update();
 	}

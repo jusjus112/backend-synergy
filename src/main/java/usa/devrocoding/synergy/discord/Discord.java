@@ -60,7 +60,7 @@ public class Discord {
             Synergy.discord("Bot Token installed.");
             // Bot properties
             getJda().setAutoReconnect(true);
-            getJda().getPresence().setActivity(Activity.playing("noblessemc.net"));
+            getJda().getPresence().setActivity(Activity.playing("play.zurvive.net"));
 
             Synergy.discord("Loading Modules");
             commandManager = new CommandManager();

@@ -24,7 +24,7 @@ public class ServerConnectListener implements Listener {
                 e.setCancelled(true);
                 e.getPlayer().sendMessage(new TextComponent(Synergy.SynergyColor.getLineWithName(ChatColor.GRAY)));
                 e.getPlayer().sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', maintenanceManager.getMotd().get("kick_message"))));
-                e.getPlayer().sendMessage(new TextComponent(Synergy.SynergyColor.getLineWithName(ChatColor.GRAY)));
+                e.getPlayer().sendMessage(new TextComponent(Synergy.SynergyColor.getLine()));
             }
         }
     }

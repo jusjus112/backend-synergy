@@ -1,6 +1,7 @@
 package usa.devrocoding.synergy.spigot.user.listener;
 
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -10,7 +11,11 @@ import usa.devrocoding.synergy.spigot.assets.C;
 import usa.devrocoding.synergy.spigot.bot_sam.Sam;
 import usa.devrocoding.synergy.spigot.language.Language;
 import usa.devrocoding.synergy.spigot.language.LanguageFile;
+import usa.devrocoding.synergy.spigot.punish.PunishType;
+import usa.devrocoding.synergy.spigot.punish.object.Punishment;
+import usa.devrocoding.synergy.spigot.user.UserManager;
 import usa.devrocoding.synergy.spigot.user.event.UserLoadEvent;
+import usa.devrocoding.synergy.spigot.user.event.UserPreLoadEvent;
 import usa.devrocoding.synergy.spigot.user.object.Rank;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 
@@ -26,38 +31,31 @@ public class UserJoinEvent implements Listener {
         Core.getPlugin().getRunnableManager().runTaskAsynchronously(
             "Load User",
             core -> {
-                try{
-                    ResultSet resultSet = Core.getPlugin().getDatabaseManager().getResults(
-                            "users ", "uuid=?", new HashMap<Integer, Object>(){{
-                                put(1, e.getUniqueId().toString());
-                            }}
+                UserManager userManager = Core.getPlugin().getUserManager();
+                final SynergyUser user = userManager.retrievePlayer(userManager.loadFromUUID(e.getUniqueId()));
+                if (user == null){
+                    SynergyUser userNew = new SynergyUser(
+                            e.getUniqueId(),
+                            e.getName(),
+                            Rank.NONE,
+                            Core.getPlugin().getLanguageManager().getLanguage("en"),
+                            UserLoadEvent.UserLoadType.NEW
                     );
-                    UUID uuid = e.getUniqueId(); String name = e.getName(); Rank rank = Rank.NONE;
-                    LanguageFile language = Core.getPlugin().getLanguageManager().getLanguage("en");
-                    double experience = 0D;
-                    SynergyUser user;
-
-                    if (resultSet.next()) {
-                        experience = resultSet.getDouble("xp");
-                        if (Rank.fromName(resultSet.getString("rank")) != null) {
-                            rank = Rank.fromName(resultSet.getString("rank"));
+                    Core.getPlugin().getRunnableManager().runTask("hack main thread", core1 -> {
+                        UserPreLoadEvent userPreLoadEvent = new UserPreLoadEvent(userNew);
+                        Core.getPlugin().getServer().getPluginManager().callEvent(userPreLoadEvent);
+                        if (!userPreLoadEvent.isCancelled()) {
+                            Core.getPlugin().getServer().getPluginManager().callEvent(new UserLoadEvent(userNew, UserLoadEvent.UserLoadType.NEW));
                         }
-                        user = new SynergyUser(uuid, name, rank, language, UserLoadEvent.UserLoadType.RETRIEVED_FROM_DATABASE);
-                        Core.getPlugin().getRunnableManager().runTask("hack main thread 1", core1 -> {
+                    });
+                }else{
+                    Core.getPlugin().getRunnableManager().runTask("hack main thread", core1 -> {
+                        UserPreLoadEvent userPreLoadEvent = new UserPreLoadEvent(user);
+                        Core.getPlugin().getServer().getPluginManager().callEvent(userPreLoadEvent);
+                        if (!userPreLoadEvent.isCancelled()) {
                             Core.getPlugin().getServer().getPluginManager().callEvent(new UserLoadEvent(user, UserLoadEvent.UserLoadType.RETRIEVED_FROM_DATABASE));
-                        });
-                    }else{
-                        user = new SynergyUser(uuid, name, rank, language);
-                        Core.getPlugin().getRunnableManager().runTask("hack main thread 2", core1 -> {
-                            Core.getPlugin().getServer().getPluginManager().callEvent(new UserLoadEvent(user, UserLoadEvent.UserLoadType.NEW));
-                        });
-                    }
-
-                    user.setNetworkXP(experience);
-
-                    Core.getPlugin().getDatabaseManager().disconnect();
-                }catch (SQLException ex){
-                    Synergy.error(ex.getMessage());
+                        }
+                    });
                 }
             }
         );
@@ -68,8 +66,8 @@ public class UserJoinEvent implements Listener {
         e.setJoinMessage(null);
     }
 
-    @EventHandler
-    public void onUserJoin(UserLoadEvent e){
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onUserJoin(UserPreLoadEvent e){
         try{
 //            if (e.getUser() == null) {
 //                // TODO, If failed return to hub or kick if in hub

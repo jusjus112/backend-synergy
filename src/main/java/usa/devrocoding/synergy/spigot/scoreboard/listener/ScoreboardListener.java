@@ -71,7 +71,7 @@ public class ScoreboardListener implements Listener {
 		Bukkit.getScheduler().runTaskLater(plugin, () -> {
 		scoreboardManager.getScoreboards().put(p.getUniqueId(), new ZylemBoard(plugin, p, plugin.getUserManager().getUser(p)));
 		scoreboardManager.update();
-		}, 5);//TODO may cause issues if so change to 15 instead of 5
+		}, 15);//TODO: may cause issues if so change to 15 instead of 5
 	}
 
 	@EventHandler

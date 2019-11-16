@@ -15,15 +15,13 @@ import static org.bukkit.Bukkit.getServer;
 public class CommandFly extends SynergyCommand {
 
     public CommandFly(Core plugin) {
-        super(plugin, Rank.NONE, "Toggles fly", false,"fly");
+        super(plugin, "command.fly", "Toggles fly", false,"fly");
     }
 
     @Override
     public void execute(SynergyUser synergyUser, Player player, String command, String[] args) {
-        if (synergyUser.hasPermission("fly")) {
-            player.setAllowFlight(!player.getAllowFlight());
-            synergyUser.info("I "+(player.getAllowFlight()? "enabled":"disabled")+" your fly for you");
-        }
+        player.setAllowFlight(!player.getAllowFlight());
+        synergyUser.info("I "+(player.getAllowFlight()? "enabled":"disabled")+" your fly for you");
     }
 
     @Override

@@ -3,8 +3,10 @@ package usa.devrocoding.synergy.spigot.user.object;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
+import org.bukkit.potion.PotionEffect;
 import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.achievement.object.Achievement;
@@ -12,6 +14,7 @@ import usa.devrocoding.synergy.spigot.assets.C;
 import usa.devrocoding.synergy.spigot.bot_sam.Sam;
 import usa.devrocoding.synergy.spigot.bot_sam.object.SamMessage;
 import usa.devrocoding.synergy.spigot.language.LanguageFile;
+import usa.devrocoding.synergy.spigot.punish.PunishType;
 import usa.devrocoding.synergy.spigot.punish.object.Punishment;
 import usa.devrocoding.synergy.spigot.user.event.UserLoadEvent;
 import usa.devrocoding.synergy.spigot.utilities.UtilDisplay;
@@ -30,9 +33,7 @@ public class SynergyUser {
     private Rank rank;
     @Getter
     private LanguageFile language;
-//    @Setter
-//    private PermissionAttachment permissions;
-    @Getter
+    @Getter @Setter
     private List<Punishment> punishments = new ArrayList<>();
     @Getter @Setter
     private double networkXP = 0D;
@@ -45,21 +46,31 @@ public class SynergyUser {
     @Getter
     private boolean nicked = false;
 
-    public SynergyUser(UUID uuid, String name, Rank rank, LanguageFile language, UserLoadEvent.UserLoadType loadType){
+    public SynergyUser(UUID uuid, String name, Rank rank, LanguageFile language, UserLoadEvent.UserLoadType loadType, boolean save){
         this.uuid = uuid;
         this.name = name;
         this.rank = rank;
         this.language = language;
         this.loadType = loadType;
 
-//        if (permissions != null){
-//            this.permissions = permissions;
-//        }
-        Core.getPlugin().getUserManager().getUsers().put(uuid, this);
+        if (save) {
+            Core.getPlugin().getUserManager().getUsers().put(uuid, this);
+        }
+    }
+
+    public SynergyUser(UUID uuid, String name, Rank rank, LanguageFile language, UserLoadEvent.UserLoadType loadType){
+        this(uuid, name, rank, language, loadType, true);
     }
 
     public SynergyUser(UUID uuid, String name, Rank rank, LanguageFile language){
-        this(uuid, name, rank, language, UserLoadEvent.UserLoadType.NEW_INSTANCE);
+        this(uuid, name, rank, language, UserLoadEvent.UserLoadType.NEW_INSTANCE, true);
+    }
+
+    public void delete(){
+        if (getPlayer() != null && getPlayer().isOnline()){
+            return;
+        }
+        Core.getPlugin().getUserManager().getUsers().remove(getUuid());
     }
 
     public void addNetworkXP(double xp){
@@ -92,6 +103,25 @@ public class SynergyUser {
         if (this.nicked) {
             this.nicked = false;
             Core.getPlugin().getNickManager().nickPlayer(getPlayer(), getName());
+        }
+    }
+
+    public void clean(){
+        Player player = getPlayer();
+
+        player.getInventory().clear();
+        player.setHealth(player.getMaxHealth());
+        player.setFoodLevel(20);
+        player.closeInventory();
+        player.setGameMode(GameMode.SURVIVAL);
+        player.setFlying(false);
+        player.setAllowFlight(false);
+        player.setExp(0);
+        player.setFlySpeed(1);
+        player.setFireTicks(0);
+
+        for(PotionEffect potionEffect : player.getActivePotionEffects()){
+            player.removePotionEffect(potionEffect.getType());
         }
     }
 
@@ -137,6 +167,26 @@ public class SynergyUser {
                 break;
         }
 
+    }
+
+    public void updatePunishments(){
+        Synergy.debug("3 UPDATE_PUNISHMENTS");
+        Core.getPlugin().getRunnableManager().runTaskAsynchronously("update Punishments", core -> {
+            this.punishments = Core.getPlugin().getPunishManager().retrievePunishments(this.uuid);
+            Synergy.debug("4 UPDATE_PUNISHMENTS");
+            for (Punishment punishment : this.punishments) {
+                Synergy.debug("5 UPDATE_PUNISHMENTS = "+punishment.getType().name());
+                Synergy.debug("5 UPDATE_PUNISHMENTS = "+punishment.isActive());
+                Synergy.debug("5 UPDATE_PUNISHMENTS = "+punishment.getIssued());
+
+                if (punishment.getType() == PunishType.BAN && punishment.isActive()) {
+                    Synergy.debug("6 UPDATE_PUNISHMENTS");
+                    Core.getPlugin().getPluginMessagingManager().kick(getName(), punishment.getBanMessage());
+//                getPlayer().kickPlayer(punishment.getBanMessage());
+                    return;
+                }
+            }
+        });
     }
 
     public UtilSound getSoundControl(){

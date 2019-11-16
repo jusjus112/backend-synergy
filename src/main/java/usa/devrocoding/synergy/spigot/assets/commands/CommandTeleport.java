@@ -11,7 +11,7 @@ import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 public class CommandTeleport extends SynergyCommand {
 
     public CommandTeleport(Core plugin){
-        super(plugin, Rank.ADMIN, "Synergy Teleport Command", true, "tp", "teleport");
+        super(plugin, "command.teleport", "Synergy Teleport Command", true, "tp", "teleport");
 
         setPlayerUsage("<player>","[target]");
         setConsoleUsage("<player>","<target>");

@@ -12,7 +12,8 @@ import java.util.Arrays;
 
 public class Sam {
 
-    private final String prefix = "§d§l</> §7"+ChatColor.BOLD+"Synergy"+C.CHAT.getColor()+ChatColor.BOLD+": "+ChatColor.RESET;
+    @Getter
+    public final String prefix = "§d§l</> §7"+ChatColor.BOLD+"Synergy"+C.CHAT.getColor()+ChatColor.BOLD+": "+ChatColor.RESET;
 
     @Getter
     private static Sam robot;

@@ -91,7 +91,7 @@ public enum C {
     }
 
     public static String getLineWithNameWithoutSymbols(String name){
-        return ChatColor.STRIKETHROUGH+"-------------- "+ChatColor.AQUA+name+ChatColor.RESET+ChatColor.STRIKETHROUGH+" ---------------"+ChatColor.RESET;
+        return ChatColor.STRIKETHROUGH+""+ChatColor.YELLOW+"-------------- "+ChatColor.AQUA+name+ChatColor.RESET+ChatColor.STRIKETHROUGH+" "+ChatColor.YELLOW+"---------------"+ChatColor.RESET;
     }
 
     public static String getShortLineWithNameWithoutSymbols(String name){

@@ -22,9 +22,6 @@ public class CommandGamemode extends SynergyCommand {
 
     @Override
     public void execute(SynergyUser synergyUser, Player player, String command, String[] args) {
-        if (!synergyUser.hasPermission("gamemode")){
-            return;
-        }
         if (command.equalsIgnoreCase("gm")||command.equalsIgnoreCase("gamemode")){
             if (args.length>0&&args.length<2){
                 GameMode gm = getGamemode(args[0].toLowerCase());

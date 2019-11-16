@@ -10,24 +10,22 @@ import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 public class CommandNick extends SynergyCommand {
 
     public CommandNick(Core plugin) {
-        super(plugin, Rank.NONE, "Synergy's Nick Command", false,"nick");
+        super(plugin, "command.nick", "Synergy's Nick Command", false,"nick");
 
         setPlayerUsage("<player|off>");
     }
 
     @Override
     public void execute(SynergyUser synergyUser, Player player, String command, String[] args) {
-        if (synergyUser.hasPermission("command.nick")) {
-            if (args.length > 0 && args.length < 2){
-                if (args[0].equalsIgnoreCase("off")){
-                    synergyUser.unNick();
-                }else{
-                    String name = args[0];
-                    synergyUser.nick(name);
-                }
+        if (args.length > 0 && args.length < 2){
+            if (args[0].equalsIgnoreCase("off")){
+                synergyUser.unNick();
             }else{
-                sendUsageMessage(player);
+                String name = args[0];
+                synergyUser.nick(name);
             }
+        }else{
+            sendUsageMessage(player);
         }
     }
 

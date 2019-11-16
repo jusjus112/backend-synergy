@@ -177,6 +177,16 @@ public class Core extends SynergyPlugin {
                     .addColumn("achievement", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
                     .addColumn("achieved_on", SQLDataType.DATE, -1, false, SQLDefaultType.NO_DEFAULT, false)
                     .execute();
+            new TableBuilder("punishments", this.databaseManager)
+                    .addColumn("uuid", SQLDataType.VARCHAR, 300,false, SQLDefaultType.NO_DEFAULT, false)
+                    .addColumn("type", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
+                    .addColumn("category", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
+                    .addColumn("level", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
+                    .addColumn("issued", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
+                    .addColumn("till", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
+                    .addColumn("punisher", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
+                    .addColumn("active", SQLDataType.BIT, -1,false, SQLDefaultType.NO_DEFAULT, false)
+                    .execute();
 
         }catch (FileNotFoundException e){
             //TODO: Create one instead

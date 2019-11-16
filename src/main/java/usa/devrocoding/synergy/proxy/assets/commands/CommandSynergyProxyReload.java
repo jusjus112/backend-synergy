@@ -11,7 +11,7 @@ import usa.devrocoding.synergy.proxy.ProxyModule;
 public class CommandSynergyProxyReload extends Command {
 
     public CommandSynergyProxyReload(){
-        super("synergyreload", "synergy.reload.modules", "synrl", "synreload");
+        super("synergyproxyreload", "synergy.reload.modules", "synprl", "synpreload");
     }
 
     @Override
@@ -32,7 +32,7 @@ public class CommandSynergyProxyReload extends Command {
                 }
                 sender.sendMessage(new TextComponent(ChatColor.RED+"Cannot reload the module "+args[0]));
             }else{
-                sender.sendMessage(new TextComponent(ChatColor.RED+"Usage: /synergyreload <module>"));
+                sender.sendMessage(new TextComponent(ChatColor.RED+"Usage: /synergyproxyreload <module>"));
             }
         }
     }

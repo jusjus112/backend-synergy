@@ -24,7 +24,7 @@ public class Rebooter implements Consumer<Core> {
             SynergyPeriod.SECOND.getPeriod()*4,SynergyPeriod.SECOND.getPeriod()*3,SynergyPeriod.SECOND.getPeriod()*2,SynergyPeriod.SECOND.getPeriod()
     };
 
-    public Rebooter(long timeUntilRestart){
+    public Rebooter(long timeUntilRestart, String reason){
         this.timeUntilRestart = ++timeUntilRestart;
 
         String time_str = UtilTime.format((timeUntilRestart/20d));
@@ -33,8 +33,9 @@ public class Rebooter implements Consumer<Core> {
                     MessageModification.RAW,
                     C.getLine(),
                     "§eServer restarts in §c§l" + time_str,
-                    "§eMake sure to save your progress and",
-                    "§eyour items. We will be back directly after!",
+                    "§cReason: "+reason,
+                    "§eDon't worry, your progress is saved automatically!",
+                    "§eWe will be back directly after!",
                     C.getLine()
             );
             user.getSoundControl().play(Sound.BLOCK_NOTE_BLOCK_GUITAR);
@@ -54,14 +55,14 @@ public class Rebooter implements Consumer<Core> {
             if (getTimeUntilRestart() == time){
                 if (!Core.getPlugin().getCooldownManager().isOnCooldown(getTimeUntilRestart())) {
                     String time_str = UtilTime.format((getTimeUntilRestart()/20d));
-                    Synergy.info("Auto Restart in ".toUpperCase()+time_str);
+                    Synergy.info("Restarting in ".toUpperCase()+time_str);
                     for (SynergyUser user : core.getUserManager().getUsers().values()) {
                         boolean fade = getTimeUntilRestart() < (SynergyPeriod.SECOND.getPeriod()*10);
                         user.getDisplay().sendTitleAndSubTitle("§c§lServer restarts in".toUpperCase(), time_str, fade?0:20, 40, fade?0:20);
                         user.getSoundControl().pling();
                     }
                 }else{
-                    Core.getPlugin().getCooldownManager().addCooldown(time, 2);
+                    Core.getPlugin().getCooldownManager().addCooldown(time, SynergyPeriod.SECOND.getPeriod()*2);
                 }
             }
         }

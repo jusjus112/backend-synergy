@@ -1,4 +1,4 @@
-package usa.devrocoding.synergy.spigot.assets.gui;
+package usa.devrocoding.synergy.spigot.user.gui;
 
 import org.bukkit.Material;
 import org.bukkit.event.inventory.ClickType;
@@ -10,12 +10,17 @@ import usa.devrocoding.synergy.spigot.gui.object.GuiSize;
 import usa.devrocoding.synergy.spigot.user.gui.HomeGUI;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 import usa.devrocoding.synergy.spigot.utilities.ItemBuilder;
+import usa.devrocoding.synergy.spigot.utilities.SkullItemBuilder;
 import usa.devrocoding.synergy.spigot.warp.gui.WarpGUI;
 
-public class WarpHomeGUI extends Gui {
+public class UserGUI extends Gui {
 
-    public WarpHomeGUI(Core plugin){
-        super(plugin, "Warp & Home GUI", GuiSize.FIVE_ROWS);
+    private SynergyUser user;
+
+    public UserGUI(Core plugin, SynergyUser synergyUser){
+        super(plugin, synergyUser.getName()+"'s Information", GuiSize.FIVE_ROWS);
+
+        this.user = synergyUser;
     }
 
     @Override
@@ -35,24 +40,23 @@ public class WarpHomeGUI extends Gui {
             @Override
             public ItemStack getIcon(SynergyUser synergyUser) {
                 return new ItemBuilder(Material.ENDER_EYE)
-                        .setName("§b§lServer Warps")
-                        .setLore(" ", "Click to see all the", "&c&lSERVER &7Warps you can", "go to based on permissions.")
+                        .setName("§b§lPunishments")
+                        .setLore(" ", "Click to see all the", "punishments from "+user.getName())
                         .build();
             }
 
             @Override
             public void click(SynergyUser synergyUser, ClickType clickType) {
-                new WarpGUI(getPlugin(), synergyUser).open(synergyUser.getPlayer());
+
             }
         });
 
         addElement(13, new GuiElement() {
             @Override
             public ItemStack getIcon(SynergyUser synergyUser) {
-//                return new SkullItemBuilder(synergyUser.getPlayer())
-//                        .setName("&e&l"+synergyUser.getName())
-//                        .build();
-                return new ItemBuilder(Material.ENDER_EYE).build();
+                return new SkullItemBuilder(user.getPlayer())
+                        .setName("&e&l"+user.getName())
+                        .build();
             }
 
             @Override
@@ -65,8 +69,8 @@ public class WarpHomeGUI extends Gui {
             @Override
             public ItemStack getIcon(SynergyUser synergyUser) {
                 return new ItemBuilder(Material.COMPASS)
-                        .setName("§b§lGo to spawn")
-                        .setLore(" ", "Click to go to the spawn")
+                        .setName("§b§lSomething.....")
+                        .setLore("Well... This is awkward")
                         .build();
             }
 
@@ -80,8 +84,8 @@ public class WarpHomeGUI extends Gui {
             @Override
             public ItemStack getIcon(SynergyUser synergyUser) {
                 return new ItemBuilder(Material.WHITE_BED)
-                        .setName("&e&l"+synergyUser.getName()+"'s &7Homes")
-                        .setLore(" ", "Click to see all your", "homes you have set")
+                        .setName("&b&lAchievements")
+                        .setLore(" ", "Click to see all "+user.getName()+"'s", "achievements they have earned.")
                         .build();
             }
 

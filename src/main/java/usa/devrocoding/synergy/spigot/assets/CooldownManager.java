@@ -18,7 +18,6 @@ public class CooldownManager extends Module {
         super(plugin, "Cooldown Manager", false);
 
         run();
-
     }
 
     @Override
@@ -26,7 +25,7 @@ public class CooldownManager extends Module {
 
     }
 
-    private final static HashMap<Object, HashMap<Integer, Boolean>> cd = new HashMap<Object, HashMap<Integer, Boolean>>();
+    private final static HashMap<Object, HashMap<Long, Boolean>> cd = new HashMap<>();
 
     public void run() {
         new BukkitRunnable(){
@@ -36,10 +35,10 @@ public class CooldownManager extends Module {
                 while (iter.hasNext()){
                     Object ob = iter.next();
                     if (cd.containsKey(ob)) {
-                        HashMap<Integer, Boolean> map = cd.get(ob);
+                        HashMap<Long, Boolean> map = cd.get(ob);
                         if (map.values().contains(Boolean.TRUE)){
-                            int i = 0;
-                            for(int k : map.keySet())
+                            long i = 0;
+                            for(long k : map.keySet())
                                 i=k;
                             i--;
                             map.clear();
@@ -52,18 +51,18 @@ public class CooldownManager extends Module {
                     }
                 }
             }
-        }.runTaskTimerAsynchronously(getPlugin(), 100, 20);
+        }.runTaskTimerAsynchronously(getPlugin(), 100, 1);
     }
   
-    public void addCooldown(Object ob, int seconds){
+    public void addCooldown(Object ob, long ticks){
         if (cd.containsKey(ob))return;
-        HashMap<Integer, Boolean> map = new HashMap<Integer, Boolean>();
-        map.put(seconds, true);
+        HashMap<Long, Boolean> map = new HashMap<>();
+        map.put(ticks, true);
         cd.put(ob, map);
     }
   
     public boolean isOnCooldown(Object ob){
-        HashMap<Integer, Boolean> map = cd.get(ob);
+        HashMap<Long, Boolean> map = cd.get(ob);
         boolean value = false;
         if (map == null || map.isEmpty())
             return false;
@@ -72,12 +71,12 @@ public class CooldownManager extends Module {
         return value;
     }
   
-    public Integer getLastSeconds(Object ob){
+    public Long getLastMiliSeconds(Object ob){
         if (!cd.containsKey(ob))
-            return 0;
-        HashMap<Integer, Boolean> map = cd.get(ob);
-        int key = 0;
-        for (int i : map.keySet())
+            return 0L;
+        HashMap<Long, Boolean> map = cd.get(ob);
+        long key = 0;
+        for (long i : map.keySet())
             key=i;
         return key;
     }

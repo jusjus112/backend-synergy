@@ -10,14 +10,12 @@ import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 public class CommandKill extends SynergyCommand {
 
     public CommandKill(Core plugin) {
-        super(plugin, Rank.NONE, "Synergy's Kill Command", false,"kill");
+        super(plugin, "command.kill", "Synergy's Kill Command", false,"kill");
     }
 
     @Override
     public void execute(SynergyUser synergyUser, Player player, String command, String[] args) {
-        if (synergyUser.hasPermission("command.kill")) {
 
-        }
     }
 
     @Override

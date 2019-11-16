@@ -10,14 +10,12 @@ import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 public class CommandEnderchest extends SynergyCommand {
 
     public CommandEnderchest(Core plugin) {
-        super(plugin, Rank.NONE, "Opens the enderchest", false,"enderchest", "ec", "echest");
+        super(plugin, "command.enderchest", "Opens the enderchest", false,"enderchest", "ec", "echest");
     }
 
     @Override
     public void execute(SynergyUser synergyUser, Player player, String command, String[] args) {
-        if (synergyUser.hasPermission("command.enderchest")) {
-            player.openInventory(player.getEnderChest());
-        }
+        player.openInventory(player.getEnderChest());
     }
 
     @Override

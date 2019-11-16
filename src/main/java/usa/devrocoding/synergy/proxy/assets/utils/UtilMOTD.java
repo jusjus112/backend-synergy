@@ -18,6 +18,12 @@ public class UtilMOTD {
         }
     }
 
+    /**
+     * Wil center the given line with the given length.
+     *
+     * @param s String to center
+     * @param max Maximum length of the string
+     */
     private static String centerLine(String s, int max){
         StringBuilder builder = new StringBuilder();
         int count=0, colors = 0;
@@ -25,14 +31,10 @@ public class UtilMOTD {
 //        colors = StringUtils.countMatches(s, "&l");
 //        max -= colors;
 
-
-//        Synergy.debug(((max-s.length()))+" =NUMBER", s.length()+" =LENGTH", ((max-s.length())/2)/2 +" =APPEND", max+" =MAX");
         for(double i=(Math.ceil(max-s.length()))/2;i>0;i--){
             builder.append(" ");
-//            Synergy.debug(i +" =I");
         }
         builder.append(s);
-//        Synergy.debug("-------------");
         return builder.toString();
     }
 

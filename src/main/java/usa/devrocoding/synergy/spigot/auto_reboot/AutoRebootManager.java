@@ -11,7 +11,7 @@ import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 
 public class AutoRebootManager extends Module {
 
-    private long period = SynergyPeriod.MINUTE.getPeriod() * 50;
+    private long period = SynergyPeriod.MINUTE.getPeriod() * 5;
     @Getter
     private int restartHour;
     @Getter
@@ -25,8 +25,10 @@ public class AutoRebootManager extends Module {
         );
 
         // Init the async timer
-        this.restartHour = 0; // 12 AM                                                                                         DELAY = 1 hour        PERIOD = 1 hour
-        getPlugin().getRunnableManager().runTaskTimerAsynchronously("Reboot Check", new RebootChecker(this), SynergyPeriod.HOUR.getPeriod(), period);
+        this.restartHour = 0; // 12 AM
+        getPlugin().getRunnableManager().runTaskTimerAsynchronously("Reboot Check", new RebootChecker(this),
+                //      DELAY = 30 min             PERIOD = 1 hour
+                SynergyPeriod.MINUTE.getPeriod()*61, period);
     }
 
     @Override
@@ -34,12 +36,11 @@ public class AutoRebootManager extends Module {
 
     }
 
-    public void rebootServer(){
+    public void rebootServer(SynergyPeriod synergyPeriod){
         restarting = true;
         getPlugin().getRunnableManager().runTaskTimerAsynchronously(
             "Rebooter",
-            new Rebooter(
-                    SynergyPeriod.MINUTE.getPeriod()
+            new Rebooter(synergyPeriod.getPeriod(), "Daily Restart"
             ), SynergyPeriod.SECOND.getPeriod(), SynergyPeriod.TICK.getPeriod()
         );
     }

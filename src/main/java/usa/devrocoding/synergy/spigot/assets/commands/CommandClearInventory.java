@@ -18,12 +18,10 @@ public class CommandClearInventory extends SynergyCommand {
 
     @Override
     public void execute(SynergyUser synergyUser, Player player, String command, String[] args) {
-        if (synergyUser.hasPermission("inventory.clear")) {
-            player.getInventory().setContents(new ItemStack[]{});
-            player.getInventory().setArmorContents(new ItemStack[]{});
-            player.getInventory().setItemInOffHand(null);
-            synergyUser.info("Successful cleared your inventory!");
-        }
+        player.getInventory().setContents(new ItemStack[]{});
+        player.getInventory().setArmorContents(new ItemStack[]{});
+        player.getInventory().setItemInOffHand(null);
+        synergyUser.info("Successful cleared your inventory!");
     }
 
     @Override

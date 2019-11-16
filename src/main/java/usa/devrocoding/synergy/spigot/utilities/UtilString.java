@@ -282,6 +282,7 @@ public class UtilString {
         return l;
     }
 
+
     public static String[] trim(String text, String colour) {
         List<String> l = new ArrayList<String>();
         int index = 0;

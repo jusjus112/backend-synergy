@@ -1,174 +1,102 @@
 package usa.devrocoding.synergy.spigot.hologram;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import lombok.Getter;
 import net.minecraft.server.v1_14_R1.*;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
 import org.bukkit.entity.Player;
-import usa.devrocoding.synergy.spigot.utilities.UtilMath;
+import usa.devrocoding.synergy.spigot.hologram.object.HologramLine;
+import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 import usa.devrocoding.synergy.spigot.utilities.UtilPlayer;
 
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.lang.reflect.Field;
 import java.util.function.Predicate;
 
 public class Hologram {
 
-    private static final double HOLOGRAM_DISTANCE = 0.3D;
-    private static final double SEND_RADIUS_SQUARED = UtilMath.square(40);
-
-    private List<String> lines = Lists.newArrayList();
-
-    private final Map<UUID, List<Integer>> viewers = Maps.newHashMap();
-    private final List<EntityArmorStand> armorStands = Lists.newArrayList();
-
+    @Getter
+    private HologramLine hologramLine;
+    @Getter
     private Location location;
+    private EntityArmorStand entityArmorStand;
+    @Getter
     private Predicate<Player> shouldShow;
+    private String lineCache = "";
 
-    public Hologram(Location location, List<String> lines, Predicate<Player> shouldShow) {
+    public Hologram(Location location, HologramLine hologramLine, Predicate<Player> shouldShow) {
         this.location = location;
+        this.hologramLine = hologramLine;
         this.shouldShow = shouldShow;
-
-        lines.forEach(s -> this.lines.add(ChatColor.translateAlternateColorCodes('&', s)));
     }
 
     public boolean shouldShow(Player player) {
         return this.shouldShow != null ? this.shouldShow.test(player) : true;
     }
 
-    public void send() {
-        send(false);
+    private boolean needsUpdate(SynergyUser synergyUser){
+        return !lineCache.equalsIgnoreCase(hologramLine.getMessage(synergyUser));
     }
 
-    public void send(boolean override) {
-        for (int i = 0; i < this.lines.size(); i++) {
-            EntityArmorStand entityArmorStand = null;
-
-            if (i > this.armorStands.size() - 1) {
-                entityArmorStand = new EntityArmorStand(EntityTypes.ARMOR_STAND,
-                        ((CraftWorld)
-                                this.location.getWorld())
-                                .getHandle());
-                entityArmorStand.setLocation(this.location.getX(), this.location.getY() - i * HOLOGRAM_DISTANCE, this.location.getZ(), this.location.getYaw(), this.location.getPitch());
-                entityArmorStand.setInvisible(true);
-                entityArmorStand.setCustomNameVisible(true);
-                entityArmorStand.setCustomName(new ChatMessage(this.lines.get(i)));
-                entityArmorStand.setNoGravity(true);
-                entityArmorStand.setSilent(true);
-                entityArmorStand.setMarker(true);
-                entityArmorStand.setSmall(true);
-                this.armorStands.add(entityArmorStand);
+    public void send(SynergyUser synergyUser) {
+        // (!player.hasMetadata("NPC") && player.getLocation().distanceSquared(this.location) <= SEND_RADIUS_SQUARED)
+        if (shouldShow(synergyUser.getPlayer())) {
+            if (!isValid()) {
+                create(synergyUser);
             } else {
-                entityArmorStand = this.armorStands.get(i);
-
-                final EntityArmorStand finalArmorStand = entityArmorStand;
-
-                this.location.getWorld().getPlayers().forEach(player -> {
-                    if (!player.hasMetadata("NPC") && player.getLocation().distanceSquared(this.location) <= SEND_RADIUS_SQUARED) {
-                        if (shouldShow(player)) {
-                            if (override) {
-                                UtilPlayer.sendPacket(player, new PacketPlayOutSpawnEntityLiving(finalArmorStand));
-
-                                List<Integer> entities = viewers.getOrDefault(player.getUniqueId(), Lists.newArrayList());
-                                entities.add(finalArmorStand.getId());
-
-                                viewers.put(player.getUniqueId(), entities);
-                            } else {
-                                if (!viewers.containsKey(player.getUniqueId()) || !viewers.get(player.getUniqueId()).contains(finalArmorStand.getId())) {
-                                    UtilPlayer.sendPacket(player, new PacketPlayOutSpawnEntityLiving(finalArmorStand));
-
-                                    List<Integer> entities = viewers.getOrDefault(player.getUniqueId(), Lists.newArrayList());
-                                    entities.add(finalArmorStand.getId());
-
-                                    viewers.put(player.getUniqueId(), entities);
-                                }
-                            }
-                        }
-                    } else {
-                        if (viewers.containsKey(player.getUniqueId()) && viewers.get(player.getUniqueId()).contains(finalArmorStand.getId())) {
-                            UtilPlayer.sendPacket(player, new PacketPlayOutEntityDestroy(finalArmorStand.getId()));
-                            viewers.remove(player.getUniqueId());
-                        }
-                    }
-                });
-            }
-        }
-    }
-
-    public void addLine(String line) {
-        EntityArmorStand armorStand = new EntityArmorStand(EntityTypes.ARMOR_STAND, ((CraftWorld) this.location.getWorld()).getHandle());
-        armorStand.setLocation( this.location.getX(), this.location.getY() - this.lines.size() * HOLOGRAM_DISTANCE, this.location.getZ(), this.location.getYaw(), this.location.getPitch());
-        armorStand.setInvisible(true);
-        armorStand.setCustomName(new ChatMessage(line));
-        armorStand.setCustomNameVisible(true);
-        armorStand.setNoGravity(true);
-        armorStand.setSilent(true);
-        armorStand.setMarker(true);
-        armorStand.setSmall(true);
-        this.armorStands.add(armorStand);
-        this.lines.add(line);
-    }
-
-    public void setLine(int index, String line) {
-        if(index >= armorStands.size()) {
-            EntityArmorStand armorStand = new EntityArmorStand(EntityTypes.ARMOR_STAND, ((CraftWorld) this.location.getWorld()).getHandle());
-            armorStand.setLocation( this.location.getX(), this.location.getY() - this.lines.size() * HOLOGRAM_DISTANCE, this.location.getZ(), this.location.getYaw(), this.location.getPitch());
-            armorStand.setInvisible(true);
-            armorStand.setCustomName(new ChatMessage(line));
-            armorStand.setCustomNameVisible(true);
-            armorStand.setNoGravity(true);
-            armorStand.setSilent(true);
-            armorStand.setMarker(true);
-            armorStand.setSmall(true);
-            this.armorStands.add(armorStand);
-            this.lines.add(line);
-        }
-
-        armorStands.get(index).setCustomName(new ChatMessage(line));
-    }
-
-
-    public void setLines(List<String> lines) {
-        this.lines = lines;
-
-        remove();
-        send();
-    }
-
-    public boolean hasLine(String line, Boolean ignoreCase) {
-        for (String s : lines) {
-            if (ignoreCase) {
-                if (ChatColor.stripColor(s).toLowerCase().equals(line.toLowerCase())) {
-                    return true;
+                if (needsUpdate(synergyUser)){
+                    this.entityArmorStand.setCustomNameVisible(true);
+                    this.entityArmorStand.setCustomName(new ChatMessage(hologramLine.getMessage(synergyUser)));
+                    send(entityArmorStand, synergyUser.getPlayer());
                 }
             }
+        }else{
+            remove(synergyUser.getPlayer());
+        }
+    }
+
+    private void create(SynergyUser synergyUser){
+        String line = hologramLine.getMessage(synergyUser);
+
+        EntityArmorStand entityArmorStand = new EntityArmorStand(EntityTypes.ARMOR_STAND, ((CraftWorld) this.location.getWorld()).getHandle());
+        entityArmorStand.setLocation(this.location.getX(), this.location.getY(), this.location.getZ(), this.location.getYaw(), this.location.getPitch());
+        entityArmorStand.setInvisible(true);
+        entityArmorStand.setCustomNameVisible(true);
+        entityArmorStand.setCustomName(new ChatMessage(line));
+        entityArmorStand.setNoGravity(true);
+        entityArmorStand.setSilent(true);
+        entityArmorStand.setMarker(true);
+        entityArmorStand.setSmall(true);
+
+        Field disabledSlots;
+        try {
+            disabledSlots = entityArmorStand.getClass().getDeclaredField("bE");
+            disabledSlots.setAccessible(true);
+            disabledSlots.set(entityArmorStand, 2039583);
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+            e.printStackTrace();
         }
 
-        return false;
+        this.entityArmorStand = entityArmorStand;
+        this.lineCache = line;
+        send(entityArmorStand, synergyUser.getPlayer());
     }
 
-    public void remove() {
-        this.location.getWorld().getPlayers().forEach(this::remove);
+    private boolean isValid(){
+        return entityArmorStand != null;
     }
 
-    public Map<UUID, List<Integer>> getViewers() {
-        return viewers;
+    private void send(EntityArmorStand armorStand, Player player){
+        PacketPlayOutSpawnEntityLiving packetPlayOutSpawnEntity = new PacketPlayOutSpawnEntityLiving(armorStand);
+        UtilPlayer.sendPacket(player, packetPlayOutSpawnEntity);
+//        PacketPlayOutEntityMetadata packetPlayOutEntityMetadata = new PacketPlayOutEntityMetadata(armorStand.getId(), armorStand.getDataWatcher(), false);
+//        UtilPlayer.sendPacket(player, packetPlayOutEntityMetadata);
     }
 
     public void remove(Player player) {
-        Lists.newArrayList(armorStands).forEach(armorStand -> {
-            UtilPlayer.sendPacket(player, new PacketPlayOutEntityDestroy(armorStand.getId()));
-        });
-
-        armorStands.clear();
-    }
-
-
-    public Location getLocation() {
-        return location;
+        if (isValid()){
+            UtilPlayer.sendPacket(player, new PacketPlayOutEntityDestroy(this.entityArmorStand.getId()));
+            this.entityArmorStand = null;
+        }
     }
 
 }

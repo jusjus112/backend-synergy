@@ -11,14 +11,12 @@ import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 public class CommandWorkbench extends SynergyCommand {
 
     public CommandWorkbench(Core plugin) {
-        super(plugin, Rank.NONE, "Synergy's Workbench Command", false,"workbench", "wb", "wbench");
+        super(plugin, "command.workbench", "Synergy's Workbench Command", false,"workbench", "wb", "wbench");
     }
 
     @Override
     public void execute(SynergyUser synergyUser, Player player, String command, String[] args) {
-        if (synergyUser.hasPermission("command.workbench")){
-            player.openWorkbench(null, true);
-        }
+        player.openWorkbench(null, true);
     }
 
     @Override

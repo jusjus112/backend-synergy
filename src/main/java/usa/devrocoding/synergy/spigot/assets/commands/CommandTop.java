@@ -13,15 +13,13 @@ import usa.devrocoding.synergy.spigot.utilities.UtilLoc;
 public class CommandTop extends SynergyCommand {
 
     public CommandTop(Core plugin) {
-        super(plugin, Rank.NONE, "Synergy's Top Command", false,"top");
+        super(plugin, "command.top", "Synergy's Top Command", false,"top");
     }
 
     @Override
     public void execute(SynergyUser synergyUser, Player player, String command, String[] args) {
-        if (synergyUser.hasPermission("top")) {
-            player.teleport(UtilLoc.getHighestBlockLocation(player.getLocation()));
-            synergyUser.info("I've teleported you to the highest block");
-        }
+        player.teleport(UtilLoc.getHighestBlockLocation(player.getLocation()));
+        synergyUser.info("I've teleported you to the highest block");
     }
 
     @Override

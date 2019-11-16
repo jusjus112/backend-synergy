@@ -11,6 +11,7 @@ import org.bukkit.event.server.ServerCommandEvent;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
 import usa.devrocoding.synergy.spigot.assets.object.Message;
+import usa.devrocoding.synergy.spigot.bot_sam.object.SamMessage;
 import usa.devrocoding.synergy.spigot.command.listener.TabCompleteListener;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 import usa.devrocoding.synergy.spigot.utilities.UtilString;
@@ -48,16 +49,16 @@ public class CommandManager extends Module implements Listener {
                 "me","testfor","scoreboard","tellraw","summon","teleport","defaultgamemode",
 
                 "about","whisper","tell","msg",
-                "seed","xp","tp","kill","playsound","title","say","spreadplayers",
+                "seed","xp","tp","playsound","title","say","spreadplayers",
                 "advancement","toggledownfall","worldborder","trigger",
                 "fill","particle","setidletimeout","setworldspawn","locate","recipe",
                 "function","pardon","ban","kick","testforblock","spawnpoint","clone","enchant","w",
-                "blockdata","entitydata","difficulty","stopsound","stats",
+                "blockdata","entitydata","stopsound","stats",
                 "banlist","list","clear","execute","replaceitem",
                 "ban-ip","pardon-ip","save-off","save-on",
                 "debug",
 
-//                "reload","rl","weather","time","effect","gamerule",
+//                "reload","rl","weather","time","effect","gamerule","difficulty","kill",
 
                 // Essentials Commands
                 "powertool","powertooltoggle","tp2p","tele","tp","gm", "gmc","gma","gmc","gms","gmsp","gmt",
@@ -108,11 +109,19 @@ public class CommandManager extends Module implements Listener {
                 args.remove(0);
 
                 SynergyUser user = getPlugin().getUserManager().getUser(e.getPlayer());
-//                if(Permission.allowed(user, command.getRank(), false)) {
-//                    if(Recharge.recharge(getPlugin(), e.getPlayer(), "Command " + command.getAliases()[0], command.getCooldown())) {
-                        command.execute(user, e.getPlayer(), cmd, args.toArray(new String[args.size()]));
+                if (command.getPermission() != null){
+                    if(!user.hasPermission(command.getPermission())) {
                         return;
-//                    }
+                    }
+                }
+                if (command.getRank().getId() > user.getRank().getId()){
+                    user.error(SamMessage.NO_PERMISSIONS.getRandom());
+                    return;
+                }
+
+//                if(Recharge.recharge(getPlugin(), e.getPlayer(), "Command " + command.getAliases()[0], command.getCooldown())) {
+                    command.execute(user, e.getPlayer(), cmd, args.toArray(new String[args.size()]));
+                    return;
 //                }
             }
         }

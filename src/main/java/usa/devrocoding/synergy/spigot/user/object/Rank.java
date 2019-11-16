@@ -8,14 +8,14 @@ import java.util.List;
 
 public enum Rank {
 
-    NONE(-1, "NONE", "", ChatColor.GRAY, "rank.none"),
-    HELPER(6, "HELPER", "HELPER", ChatColor.YELLOW, "rank.helper"),
-    MODERATOR(5, "MODERATOR", "MOD", ChatColor.BLUE, "rank.moderator"),
-    ADMIN(4, "ADMIN", "ADMIN", ChatColor.RED, "rank.admin"),
-    MANAGER(3, "MANAGER", "MANAGER", ChatColor.GOLD, "rank.manager"),
-    JRDEVELOPER(2, "JRDEVELOPER", "JR. DEVELOPER", ChatColor.LIGHT_PURPLE, "rank.jrdeveloper"),
-    SRDEVELOPER(1, "SRDEVELOPER", "SR. DEVELOPER", ChatColor.RED, "rank.srdeveloper"),
-    OWNER(0, "ADMIN", "ADMIN", ChatColor.RED, "rank.owner");
+    NONE(0, "NONE", "", ChatColor.GRAY, "rank.none"),
+    HELPER(1, "HELPER", "HELPER", ChatColor.YELLOW, "rank.helper"),
+    MODERATOR(2, "MODERATOR", "MOD", ChatColor.BLUE, "rank.moderator"),
+    ADMIN(3, "ADMIN", "ADMIN", ChatColor.RED, "rank.admin"),
+    MANAGER(4, "MANAGER", "MANAGER", ChatColor.GOLD, "rank.manager"),
+    JRDEVELOPER(5, "JRDEVELOPER", "JR. DEVELOPER", ChatColor.LIGHT_PURPLE, "rank.jrdeveloper"),
+    SRDEVELOPER(6, "SRDEVELOPER", "SR. DEVELOPER", ChatColor.RED, "rank.srdeveloper"),
+    OWNER(7, "OWNER", "OWNER", ChatColor.RED, "rank.owner");
 
     @Getter
     private final Integer id;
@@ -47,6 +47,13 @@ public enum Rank {
             }
         }
         return null;
+    }
+
+    public static boolean isStaff(SynergyUser synergyUser){
+        if (synergyUser.getRank().getId() > getLowestStaffRank().getId()){
+            return true;
+        }
+        return false;
     }
 
     public static Rank getLowestStaffRank() {

@@ -13,7 +13,7 @@ import usa.devrocoding.synergy.spigot.warp.object.Warp;
 public class CommandSpawn extends SynergyCommand {
 
     public CommandSpawn(Core plugin) {
-        super(plugin, Rank.NONE, "Synergy's Clear Inventory Command", false,"spawn");
+        super(plugin, "command.spawn", "Synergy's Clear Inventory Command", false,"spawn");
     }
 
     @Override

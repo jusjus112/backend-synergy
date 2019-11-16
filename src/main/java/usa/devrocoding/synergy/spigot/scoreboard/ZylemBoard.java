@@ -210,7 +210,6 @@ public class ZylemBoard {
 		if (suffix != null) {
 			team.setSuffix(suffix);
 		}
-
 		team.addEntry(user.getName());
 
 		if (undernameObjective == null) {
