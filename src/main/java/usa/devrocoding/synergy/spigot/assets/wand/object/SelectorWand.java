@@ -9,7 +9,7 @@ import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 public class SelectorWand {
 
     @Getter
-    private Block first = null, second = null;
+    private Region region = new Region();
 
     public enum SelectorUnit{
         FIRST,
@@ -19,13 +19,13 @@ public class SelectorWand {
     public void select(SynergyUser user, SelectorUnit selectorUnit, Block block){
         switch (selectorUnit){
             case FIRST:
-                this.first = block;
+                this.region.setFirstLocation(block.getLocation());
                 break;
             case SECOND:
-                this.second = block;
+                this.region.setSecondLocation(block.getLocation());
                 break;
         }
-        if (first != null && second != null){
+        if (this.region.getFirstLocation() != null && this.region.getSecondLocation() != null){
             user.getPlayer().getInventory().remove(Core.getPlugin().getWandManager().getWand());
             Core.getPlugin().getServer().getPluginManager().callEvent(new SelectorWandCompletionEvent(this, user));
 

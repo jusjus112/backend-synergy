@@ -36,10 +36,10 @@ public class PunishmentsGUI extends Gui{
             addElement(new GuiElement() {
                 @Override
                 public ItemStack getIcon(SynergyUser synergyUser) {
-                    Material material = Material.RED_TERRACOTTA;
+                    Material material = Material.REDSTONE_BLOCK;
                     ChatColor color = ChatColor.RED;
                     if (punishment.isActive()){
-                        material = Material.GREEN_TERRACOTTA;
+                        material = Material.GREEN_SHULKER_BOX;
                         color = ChatColor.GREEN;
                     }
                     List<String> lore = new ArrayList<>();

@@ -23,6 +23,7 @@ public enum SamMessage {
             "Cannot let you through",
             "Sorry, I can't allow you to use this",
             "Try again, but with permissions please!",
+            "You knew this command was restricted...",
             "Hahahahaha.. Nice try, no permissions"
     );
 

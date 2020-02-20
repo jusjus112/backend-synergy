@@ -32,7 +32,7 @@ public class WandManager extends Module {
     }
 
     public ItemStack getWand(){
-        return new ItemBuilder(Material.GOLDEN_AXE)
+        return new ItemBuilder(Material.GOLD_AXE)
                 .setName("§6Wand of Selections")
                 .setLore(
                         "With this magic wand you are",

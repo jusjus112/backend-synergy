@@ -5,7 +5,6 @@ import com.comphenix.packetwrapper.WrapperPlayServerSpawnEntity;
 import com.comphenix.packetwrapper.WrapperPlayServerSpawnEntityLiving;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
-import net.minecraft.server.v1_14_R1.EntityTypes;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import usa.devrocoding.synergy.assets.Synergy;

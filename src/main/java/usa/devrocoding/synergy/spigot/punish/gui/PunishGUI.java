@@ -3,6 +3,7 @@ package usa.devrocoding.synergy.spigot.punish.gui;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.assets.gui.ConfirmationGUI;
 import usa.devrocoding.synergy.spigot.gui.Gui;
@@ -38,7 +39,7 @@ public class PunishGUI extends Gui {
             addElement(i, new GuiElement() {
                 @Override
                 public ItemStack getIcon(SynergyUser synergyUser) {
-                    return new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName(" ").build();
+                    return new ItemBuilder(Material.STAINED_GLASS_PANE).setMaterialData(new MaterialData((byte) 7)).setName(" ").build();
                 }
 
                 @Override
@@ -50,7 +51,7 @@ public class PunishGUI extends Gui {
         addElement(0, new GuiElement() {
             @Override
             public ItemStack getIcon(SynergyUser synergyUser) {
-                return new ItemBuilder(Material.WRITABLE_BOOK)
+                return new ItemBuilder(Material.WRITTEN_BOOK)
                         .setName("§eAll punishments from "+user.getName())
                         .addLore(" ", "Total Punishments: "+user.getPunishments().size())
                         .build();
@@ -156,16 +157,16 @@ public class PunishGUI extends Gui {
             case WARNING:
                 return new org.bukkit.inventory.ItemStack(org.bukkit.Material.REDSTONE);
             case ONE:
-                return new ItemBuilder(org.bukkit.Material.LILY_PAD).build();
+                return new ItemBuilder(Material.WATER_LILY).build();
             case TWO:
                 return new ItemBuilder(org.bukkit.Material.ENDER_PEARL).build();
             case THREE:
-                return new ItemBuilder(org.bukkit.Material.ENDER_EYE).build();
+                return new ItemBuilder(Material.EYE_OF_ENDER).build();
             case PermanentMute:
-                return new org.bukkit.inventory.ItemStack(org.bukkit.Material.LEGACY_BOOK_AND_QUILL);
+                return new org.bukkit.inventory.ItemStack(Material.BOOK_AND_QUILL);
             case PermanentBan:
                 return new org.bukkit.inventory.ItemStack(org.bukkit.Material.REDSTONE_BLOCK);
         }
-        return new ItemBuilder(org.bukkit.Material.LILY_PAD).build();
+        return new ItemBuilder(Material.WATER_LILY).build();
     }
 }

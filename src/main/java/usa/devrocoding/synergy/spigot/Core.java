@@ -3,6 +3,7 @@ package usa.devrocoding.synergy.spigot;
 import com.google.inject.Injector;
 import lombok.Getter;
 import lombok.Setter;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.ChatColor;
 import org.bukkit.scheduler.BukkitRunnable;
 import usa.devrocoding.synergy.services.SQLService;
@@ -45,7 +46,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@SynergyMani(backend_name = "Synergy", main_color = ChatColor.AQUA, permission_prefix = "synergy", proxy = "BungeeCord", server_name = "Zurvive")
+@SynergyMani(backend_name = "Synergy", main_color = ChatColor.AQUA, permission_prefix = "synergy", proxy = "BungeeCord", server_name = "ValanePrison")
 public class Core extends SynergyPlugin {
 
     @Getter @Setter
@@ -161,48 +162,23 @@ public class Core extends SynergyPlugin {
 
             // Connect to SQL
             Synergy.info("Connecting to SQL....");
-            this.databaseManager.connect();
-            Synergy.success("Connected to your SQL Service Provider");
+            if (this.databaseManager.connect()) {
+                Synergy.success("Connected to your SQL Service Provider");
 
-             // Generate Tables
-            new TableBuilder("users", this.databaseManager)
-                    .addColumn("uuid", SQLDataType.VARCHAR, 300,false, SQLDefaultType.NO_DEFAULT, true)
-                    .addColumn("name", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
-                    .addColumn("rank", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
-                    .addColumn("user_experience", SQLDataType.VARCHAR, 100,false, SQLDefaultType.CUSTOM.setCustom(UserExperience.NOOB.toString().toUpperCase()), false)
-                    .addColumn("xp", SQLDataType.DOUBLE, -1,true, SQLDefaultType.CUSTOM.setCustom(0), false)
-                    .execute();
-            new TableBuilder("user_achievements", this.databaseManager)
-                    .addColumn("uuid", SQLDataType.VARCHAR, 300,false, SQLDefaultType.NO_DEFAULT, true)
-                    .addColumn("achievement", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
-                    .addColumn("achieved_on", SQLDataType.DATE, -1, false, SQLDefaultType.NO_DEFAULT, false)
-                    .execute();
-            new TableBuilder("punishments", this.databaseManager)
-                    .addColumn("uuid", SQLDataType.VARCHAR, 300,false, SQLDefaultType.NO_DEFAULT, false)
-                    .addColumn("type", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
-                    .addColumn("category", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
-                    .addColumn("level", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
-                    .addColumn("issued", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
-                    .addColumn("till", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
-                    .addColumn("punisher", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
-                    .addColumn("active", SQLDataType.BIT, -1,false, SQLDefaultType.NO_DEFAULT, false)
-                    .execute();
-
+            }else{
+                Synergy.success("Cannot connect to MySQL. Something went wrong.", "Using JSON files as your database!");
+                return;
+            }
+            this.databaseManager.loadDefaultTables(); // Generate the default tables if they didn't exist
         }catch (FileNotFoundException e){
             //TODO: Create one instead
-            Sam.getRobot().error(null, "File 'settings.yml' doesn't exists", "I can't fix it myself so it has to be done by a developer!", e);
-            getPluginLoader().disablePlugin(this);
+            Synergy.error("File 'settings.yml' doesn't exists. Creating one now...", "Restarting Plugin.....");
+            this.setEnabled(true);
             return;
         }catch (SQLException e){
-            Synergy.error("I can't connect to your SQL Service provider", "Check your SQL settings in the 'settings.yml'");
-            getPluginLoader().disablePlugin(this);
+            Synergy.error("I can't connect to your SQL Service provider", e.getMessage(), "Check your SQL settings in the 'settings.yml'");
             return;
         }
-//        catch (ClassNotFoundException e){
-//            Synergy.error("OMG, there is no SQL Server here...", "Install a SQL Server");
-//            getPluginLoader().disablePlugin(this);
-//            return;
-//        }
 
         this.message = new Message(this);
 
@@ -214,14 +190,12 @@ public class Core extends SynergyPlugin {
             Sam.getRobot().error(null, e.getMessage(), "Try to contact the server developer", e);
         }
 
-        // Load the modules
-
-        // WARNING !!! WARNING (Do not place any modules with commands above this line)
+        // Load the modules \\
+        // WARNING !!! WARNING (Do not place any modules above this line)
         this.commandManager = new CommandManager(this);
         ///////////////
         this.cooldownManager = new CooldownManager(this);
         this.userManager = new UserManager(this);
-
 
         this.autoRebootManager = new AutoRebootManager(this);
         this.dependencyManager = new DependencyManager(this);
@@ -262,6 +236,15 @@ public class Core extends SynergyPlugin {
         // Update all the messages that are being sent..
         Message.update();
 
+//        try{
+//            Metrics metrics = new Metrics(this); // Enable the stats
+//            if (!metrics.isEnabled()){
+//                Synergy.error("Plugin stopped sending data to bStats! bStats error..");
+//            }
+//        }catch (Exception e){
+//            Synergy.error(e.getMessage());
+//        }
+
         Synergy.info("Loaded a total of "+Module.getTotal()+" Modules & Systems!");
         Module.total = 0;
 
@@ -284,7 +267,9 @@ public class Core extends SynergyPlugin {
 
     @Override
     public void preDeInit(){
-        this.warpManager.saveAllWarps();
+        if (this.isLoaded()) { // Make sure the modules are loaded to use the modules
+            this.warpManager.saveAllWarps();
+        }
     }
 
     /*
@@ -292,13 +277,6 @@ public class Core extends SynergyPlugin {
      * completely enabled and all the plugin are loaded!
      */
     private void onServerEnabled(){
-//        int plugins = getPluginManager().getPlugins().size();
-//        if (plugins > 0){
-//            for(SynergyPlugin plugin : getPluginManager().getPlugins()){
-//
-//            }
-//        }
-
         // Init all the warps because of a world manager problem
         this.warpManager.cacheSavedWarps();
     }

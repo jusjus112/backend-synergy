@@ -5,6 +5,7 @@ import lombok.Getter;
 import usa.devrocoding.synergy.assets.Cache;
 import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.services.SQLService;
+import usa.devrocoding.synergy.spigot.user.object.UserExperience;
 
 import java.sql.*;
 import java.util.Arrays;
@@ -28,7 +29,13 @@ public class DatabaseManager {
             return false;
         }
         if (getSqlService().isIniatialized()) {
-//            Class.forName("com.mysql.jdbc.Driver");
+            try{
+                Class.forName("com.mysql.jdbc.Driver");
+            }catch (ClassNotFoundException e){
+                Synergy.error("We can't find a SQL server on this machine!", "Install one first in order to use MySQL.");
+                return false;
+            }
+
             this.connection = DriverManager.getConnection("jdbc:mysql://" + getSqlService().getHost() + ":" + getSqlService().getPort()
                     + "/" + getSqlService().getDatabase(), getSqlService().getUsername(), getSqlService().getPassword());
             return true;
@@ -41,6 +48,32 @@ public class DatabaseManager {
         if (!this.connection.isClosed()) {
             this.connection.close();
         }
+    }
+
+    public void loadDefaultTables(){
+        // Generate Tables
+        new TableBuilder("users", this)
+                .addColumn("uuid", SQLDataType.VARCHAR, 300,false, SQLDefaultType.NO_DEFAULT, true)
+                .addColumn("name", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
+                .addColumn("rank", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
+                .addColumn("user_experience", SQLDataType.VARCHAR, 100,false, SQLDefaultType.CUSTOM.setCustom(UserExperience.NOOB.toString().toUpperCase()), false)
+                .addColumn("xp", SQLDataType.DOUBLE, -1,true, SQLDefaultType.CUSTOM.setCustom(0), false)
+                .execute();
+        new TableBuilder("user_achievements", this)
+                .addColumn("uuid", SQLDataType.VARCHAR, 300,false, SQLDefaultType.NO_DEFAULT, true)
+                .addColumn("achievement", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
+                .addColumn("achieved_on", SQLDataType.DATE, -1, false, SQLDefaultType.NO_DEFAULT, false)
+                .execute();
+        new TableBuilder("punishments", this)
+                .addColumn("uuid", SQLDataType.VARCHAR, 300,false, SQLDefaultType.NO_DEFAULT, false)
+                .addColumn("type", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
+                .addColumn("category", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
+                .addColumn("level", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
+                .addColumn("issued", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
+                .addColumn("till", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
+                .addColumn("punisher", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
+                .addColumn("active", SQLDataType.BIT, -1,false, SQLDefaultType.NO_DEFAULT, false)
+                .execute();
     }
 
     public boolean update(String table, Map<String, Object> data, String where){

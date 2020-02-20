@@ -158,7 +158,8 @@ public class MapBuilder {
 
         if (isOnePointFourteen) {
             MapMeta mapMeta = (MapMeta) item.getItemMeta();
-            mapMeta.setMapView(map);
+//            mapMeta.setMapView(map);
+            // TODO: Fix later cause i don't know if this still works, cause 1.12 doesn't support that function
             item.setItemMeta(mapMeta);
         } else {
             item.setDurability(getMapId(map));

@@ -3,6 +3,7 @@ package usa.devrocoding.synergy.spigot.assets.gui;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.gui.Gui;
 import usa.devrocoding.synergy.spigot.gui.GuiElement;
@@ -25,7 +26,8 @@ public abstract class ConfirmationGUI extends Gui {
             addElement(i, new GuiElement() {
                 @Override
                 public ItemStack getIcon(SynergyUser synergyUser) {
-                    return new ItemBuilder(Material.LIME_STAINED_GLASS_PANE)
+                    return new ItemBuilder(Material.STAINED_GLASS_PANE)
+                            .setMaterialData(new MaterialData((byte) 5))
                             .setName("§a§lYes!")
                             .build();
                 }
@@ -41,7 +43,8 @@ public abstract class ConfirmationGUI extends Gui {
             addElement(i, new GuiElement() {
                 @Override
                 public ItemStack getIcon(SynergyUser synergyUser) {
-                    return new ItemBuilder(Material.RED_STAINED_GLASS_PANE)
+                    return new ItemBuilder(Material.STAINED_GLASS_PANE)
+                            .setMaterialData(new MaterialData((byte) 14))
                             .setName("§c§lNo")
                             .build();
                 }
@@ -57,7 +60,8 @@ public abstract class ConfirmationGUI extends Gui {
             addElement(i, new GuiElement() {
                 @Override
                 public ItemStack getIcon(SynergyUser synergyUser) {
-                    return new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE)
+                    return new ItemBuilder(Material.STAINED_GLASS_PANE)
+                            .setMaterialData(new MaterialData((byte) 15))
                             .setName(" ")
                             .build();
                 }

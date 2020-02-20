@@ -27,7 +27,7 @@ public class SettingsGUI extends Gui{
         line(0, 8, new GuiElement() {
             @Override
             public ItemStack getIcon(SynergyUser synergyUser) {
-                return new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName(" ").build();
+                return new ItemBuilder(Material.STAINED_GLASS_PANE).setMaterialData(new MaterialData((byte) 7)).setName(" ").build();
             }
 
             @Override public void click(SynergyUser synergyUser, ClickType clickType) {}
@@ -39,7 +39,7 @@ public class SettingsGUI extends Gui{
 //                return new ItemBuilder(UtilItem.getPlayerSkull("§e"+synergyUser.getLanguage().getList(LanguageStrings.SETTINGS_ITEM_LANGUAGE_NAME), "0qt")).setLore(
 //                        synergyUser.getLanguage().getList(LanguageStrings.SETTINGS_ITEM_LANGUAGE_LORE)
 //                ).build();
-                return new ItemBuilder(Material.ENDER_EYE).build();
+                return new ItemBuilder(Material.EYE_OF_ENDER).build();
             }
 
             @Override
@@ -54,7 +54,7 @@ public class SettingsGUI extends Gui{
 //                return new ItemBuilder(UtilItem.getPlayerSkull("§e"+synergyUser.getLanguage().getList(LanguageStrings.SETTINGS_ITEM_FRIENDS_NAME), "0qt")).setLore(
 //                        synergyUser.getLanguage().getList(LanguageStrings.SETTINGS_ITEM_FRIENDS_LORE)
 //                ).build();
-                return new ItemBuilder(Material.ENDER_EYE).build();
+                return new ItemBuilder(Material.EYE_OF_ENDER).build();
             }
 
             @Override
@@ -66,7 +66,7 @@ public class SettingsGUI extends Gui{
         line(45, 53, new GuiElement() {
             @Override
             public ItemStack getIcon(SynergyUser synergyUser) {
-                return new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName(" ").build();
+                return new ItemBuilder(Material.STAINED_GLASS_PANE).setMaterialData(new MaterialData((byte) 7)).setName(" ").build();
             }
 
             @Override public void click(SynergyUser synergyUser, ClickType clickType) {}

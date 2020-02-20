@@ -25,7 +25,7 @@ public class ChangelogMainGUI extends Gui {
         surroundWith(new GuiElement() {
             @Override
             public ItemStack getIcon(SynergyUser synergyUser) {
-                return new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE)
+                return new ItemBuilder(Material.STAINED_GLASS_PANE).setMaterialData(new MaterialData((byte) 7))
                         .setName(" ")
                         .build();
             }

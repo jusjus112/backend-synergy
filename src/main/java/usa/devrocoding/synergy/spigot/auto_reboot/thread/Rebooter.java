@@ -38,7 +38,7 @@ public class Rebooter implements Consumer<Core> {
                     "§eWe will be back directly after!",
                     C.getLine()
             );
-            user.getSoundControl().play(Sound.BLOCK_NOTE_BLOCK_GUITAR);
+            user.getSoundControl().play(Sound.BLOCK_NOTE_GUITAR);
         }
     }
 

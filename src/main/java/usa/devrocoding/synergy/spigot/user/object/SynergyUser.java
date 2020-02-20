@@ -83,12 +83,12 @@ public class SynergyUser {
 
     public void message(String... messages){
         Arrays
-                .stream(messages)
-                .forEach(s ->
-                        getPlayer()
-                                .sendMessage(
-                                        C.translateColors(
-                                                s)));
+            .stream(messages)
+            .forEach(s ->
+                getPlayer()
+                    .sendMessage(
+                        C.translateColors(
+                            s)));
     }
 
     public void sendToServer(String server){

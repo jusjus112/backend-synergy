@@ -1,15 +1,8 @@
 package usa.devrocoding.synergy.spigot.utilities;
 
-import net.minecraft.server.v1_14_R1.Packet;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
+import net.minecraft.server.v1_12_R1.Packet;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
-import usa.devrocoding.synergy.assets.Synergy;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class UtilPlayer {
 

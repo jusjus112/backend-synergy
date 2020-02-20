@@ -4,6 +4,7 @@ import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
 import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.gui.Gui;
@@ -31,7 +32,7 @@ public class WarpGUI extends Gui {
         surroundWith(new GuiElement() {
             @Override
             public ItemStack getIcon(SynergyUser synergyUser) {
-                return new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE)
+                return new ItemBuilder(Material.STAINED_GLASS_PANE).setMaterialData(new MaterialData((byte) 7))
                         .setName(" ")
                         .build();
             }
@@ -43,12 +44,11 @@ public class WarpGUI extends Gui {
         int index = 0;
 
         if (warpManager.getWarps().size() <= 0){
-            addElement(21, new GuiElement() {
+            addElement(22, new GuiElement() {
                 @Override
                 public ItemStack getIcon(SynergyUser synergyUser) {
                     return new ItemBuilder(Material.BARRIER)
-                            .setName("No warps!")
-                            .addLore("Use /warp create <name> to create a warp!")
+                            .setName("No warps has been created!")
                             .build();
                 }
 
@@ -67,7 +67,7 @@ public class WarpGUI extends Gui {
                 addElement(place, new GuiElement() {
                     @Override
                     public ItemStack getIcon(SynergyUser synergyUser) {
-                        return new ItemBuilder(Material.LILY_PAD)
+                        return new ItemBuilder(Material.WATER_LILY)
                                 .setName("&d&l" + warp.getName())
                                 .build();
                     }

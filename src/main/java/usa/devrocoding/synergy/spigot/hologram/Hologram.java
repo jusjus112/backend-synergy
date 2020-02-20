@@ -1,9 +1,9 @@
 package usa.devrocoding.synergy.spigot.hologram;
 
 import lombok.Getter;
-import net.minecraft.server.v1_14_R1.*;
+import net.minecraft.server.v1_12_R1.*;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
 import org.bukkit.entity.Player;
 import usa.devrocoding.synergy.spigot.hologram.object.HologramLine;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
@@ -45,7 +45,7 @@ public class Hologram {
             } else {
                 if (needsUpdate(synergyUser)){
                     this.entityArmorStand.setCustomNameVisible(true);
-                    this.entityArmorStand.setCustomName(new ChatMessage(hologramLine.getMessage(synergyUser)));
+                    this.entityArmorStand.setCustomName(hologramLine.getMessage(synergyUser));
                     send(entityArmorStand, synergyUser.getPlayer());
                 }
             }
@@ -57,11 +57,11 @@ public class Hologram {
     private void create(SynergyUser synergyUser){
         String line = hologramLine.getMessage(synergyUser);
 
-        EntityArmorStand entityArmorStand = new EntityArmorStand(EntityTypes.ARMOR_STAND, ((CraftWorld) this.location.getWorld()).getHandle());
+        EntityArmorStand entityArmorStand = new EntityArmorStand(((CraftWorld) this.location.getWorld()).getHandle());
         entityArmorStand.setLocation(this.location.getX(), this.location.getY(), this.location.getZ(), this.location.getYaw(), this.location.getPitch());
         entityArmorStand.setInvisible(true);
         entityArmorStand.setCustomNameVisible(true);
-        entityArmorStand.setCustomName(new ChatMessage(line));
+        entityArmorStand.setCustomName(line);
         entityArmorStand.setNoGravity(true);
         entityArmorStand.setSilent(true);
         entityArmorStand.setMarker(true);

@@ -12,7 +12,7 @@ public class SkullItemBuilder extends ItemBuilder{
     private SkullMeta skullMeta;
 
     public SkullItemBuilder(Player player){
-        super(Material.PLAYER_HEAD);
+        super(Material.SKULL_ITEM);
 
         this.skullMeta = (SkullMeta) getItemMeta();
         this.skullMeta.setOwningPlayer(player);
@@ -20,7 +20,7 @@ public class SkullItemBuilder extends ItemBuilder{
     }
 
     public SkullItemBuilder(String uuid){
-        super(Material.PLAYER_HEAD);
+        super(Material.SKULL_ITEM);
 
         this.skullMeta = (SkullMeta) getItemMeta();
         this.skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(UUID.fromString(uuid)));

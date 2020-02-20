@@ -18,20 +18,41 @@ public class CommandReboot extends SynergyCommand {
         setConsoleUsage("[confirm]");
     }
 
-    @Override
+    @Override // /reboot <seconds>
     public void execute(SynergyUser synergyUser, Player player, String command, String[] args) {
-        synergyUser.info("Starting the reboot sequence for you...");
-        Core.getPlugin().getAutoRebootManager().rebootServer(SynergyPeriod.MINUTE);
+        if (args.length > 0 && args.length < 3){
+            Integer seconds = 5;
+            try{
+                seconds = Integer.valueOf(args[1]);
+            }catch (NumberFormatException e){
+                synergyUser.error("Wrong format! " + args[1] + " is not a number.");
+                return;
+            }
+            synergyUser.info("Starting the reboot sequence for you...");
+            Core.getPlugin().getAutoRebootManager().rebootServer(SynergyPeriod.SECOND.a(seconds));
+        }else{
+            sendUsageMessage(player);
+        }
     }
 
     @Override
     public void execute(ConsoleCommandSender sender, String command, String[] args) {
-        if (args.length > 0 && args.length < 2){
-            if (args[0].equalsIgnoreCase("confirm")){
-                Bukkit.getServer().shutdown();
-            }
-        }else{
+        if (args.length == 0){
             sender.sendMessage(Synergy.SynergyColor.ERROR+"Please use /stop confirm if you are sure!");
+        }else{
+            Integer secs = 5;
+            if (args[0].equalsIgnoreCase("confirm")){ // Only possible in your console
+                Bukkit.getServer().shutdown();
+                return;
+            }
+            try{
+                secs = Integer.valueOf(args[1]);
+            }catch (NumberFormatException e){
+                sender.sendMessage("Wrong format! " + args[1] + " is not a number.");
+                return;
+            }
+            sender.sendMessage("Starting the reboot sequence for you...");
+            Core.getPlugin().getAutoRebootManager().rebootServer(SynergyPeriod.SECOND.a(secs));
         }
     }
 }

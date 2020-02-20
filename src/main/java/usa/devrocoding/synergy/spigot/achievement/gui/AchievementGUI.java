@@ -30,7 +30,7 @@ public class AchievementGUI extends Gui {
         surroundWith(new GuiElement() {
             @Override
             public ItemStack getIcon(SynergyUser synergyUser) {
-                return new ItemBuilder(Material.WHITE_STAINED_GLASS_PANE)
+                return new ItemBuilder(Material.STAINED_GLASS_PANE)
                         .setName(" ")
                         .build();
             }

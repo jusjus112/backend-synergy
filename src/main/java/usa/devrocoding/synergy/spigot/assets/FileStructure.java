@@ -1,5 +1,6 @@
 package usa.devrocoding.synergy.spigot.assets;
 
+import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.files.json.JSONFile;
 import usa.devrocoding.synergy.spigot.files.txt.TXTFile;
@@ -50,6 +51,7 @@ public class FileStructure {
                     return this;
                 }
                 if (folder == null){
+                    Synergy.debug(new File("").getAbsolutePath()+"");
                     query = Core.getPlugin().getDataFolder()+"";
                 }else{
                     query = Core.getPlugin().getDataFolder()+File.separator+folder;

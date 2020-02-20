@@ -1,10 +1,10 @@
 package usa.devrocoding.synergy.spigot.utilities;
 
-import net.minecraft.server.v1_14_R1.IChatBaseComponent;
-import net.minecraft.server.v1_14_R1.PacketPlayOutPlayerListHeaderFooter;
-import net.minecraft.server.v1_14_R1.PacketPlayOutTitle;
-import net.minecraft.server.v1_14_R1.PlayerConnection;
-import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
+import net.minecraft.server.v1_12_R1.IChatBaseComponent;
+import net.minecraft.server.v1_12_R1.PacketPlayOutPlayerListHeaderFooter;
+import net.minecraft.server.v1_12_R1.PacketPlayOutTitle;
+import net.minecraft.server.v1_12_R1.PlayerConnection;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import usa.devrocoding.synergy.assets.Synergy;

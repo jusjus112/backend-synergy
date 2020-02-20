@@ -5,5 +5,6 @@ version: 1.0
 api-version: 1.13
 author: JusJus
 
-#We are softdepending Multiverse, because we always need to load the worlds before everything!
-softdepend: [PlaceHolderAPI, Multiverse-Core]
+depend: [PacketWrapper, ProtocolLib]
+#We are softdepending WorldManagers, because we always need to load the worlds before enabling Synergy!
+softdepend: [WorldEdit, PlaceHolderAPI, Essentials, Vault, Multiverse-Core, PlotSquared, PlotMe, MultiWorld]

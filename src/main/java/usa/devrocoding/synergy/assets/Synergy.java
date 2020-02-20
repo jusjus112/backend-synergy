@@ -6,8 +6,6 @@ import net.md_5.bungee.api.ChatColor;
 import usa.devrocoding.synergy.assets.letters.LetterGenerator;
 import usa.devrocoding.synergy.assets.letters.Logo;
 import usa.devrocoding.synergy.assets.object.LinuxColorCodes;
-import usa.devrocoding.synergy.spigot.api.BungeeAPI;
-import usa.devrocoding.synergy.spigot.api.SpigotAPI;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -88,8 +86,6 @@ public class Synergy {
 
     @Setter @Getter
     private static usa.devrocoding.synergy.spigot.Core spigotAPI;
-    @Setter @Getter
-    private static BungeeAPI bungeeAPI;
     @Getter
     private static LetterGenerator letterGenerator = new LetterGenerator();
     @Getter

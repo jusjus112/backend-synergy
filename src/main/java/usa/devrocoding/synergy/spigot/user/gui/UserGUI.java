@@ -3,6 +3,7 @@ package usa.devrocoding.synergy.spigot.user.gui;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.gui.Gui;
 import usa.devrocoding.synergy.spigot.gui.GuiElement;
@@ -28,7 +29,7 @@ public class UserGUI extends Gui {
         surroundWith(new GuiElement() {
             @Override
             public ItemStack getIcon(SynergyUser synergyUser) {
-                return new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE)
+                return new ItemBuilder(Material.STAINED_GLASS_PANE).setMaterialData(new MaterialData((byte) 7))
                         .setName(" ")
                         .build();
             }
@@ -39,7 +40,7 @@ public class UserGUI extends Gui {
         addElement(11, new GuiElement() {
             @Override
             public ItemStack getIcon(SynergyUser synergyUser) {
-                return new ItemBuilder(Material.ENDER_EYE)
+                return new ItemBuilder(Material.EYE_OF_ENDER)
                         .setName("§b§lPunishments")
                         .setLore(" ", "Click to see all the", "punishments from "+user.getName())
                         .build();
@@ -83,7 +84,7 @@ public class UserGUI extends Gui {
         addElement(31, new GuiElement() {
             @Override
             public ItemStack getIcon(SynergyUser synergyUser) {
-                return new ItemBuilder(Material.WHITE_BED)
+                return new ItemBuilder(Material.BED)
                         .setName("&b&lAchievements")
                         .setLore(" ", "Click to see all "+user.getName()+"'s", "achievements they have earned.")
                         .build();
