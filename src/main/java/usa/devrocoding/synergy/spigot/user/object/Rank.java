@@ -56,6 +56,22 @@ public enum Rank {
         return false;
     }
 
+    public boolean isHigherThan(Rank rank){
+        return getId() > rank.getId();
+    }
+
+    public boolean isHigherThanAndEqualTo(Rank rank){
+        return getId() >= rank.getId();
+    }
+
+    public boolean isLowerThan(Rank rank){
+        return getId() < rank.getId();
+    }
+
+    public boolean isLowerThanAndEqualTo(Rank rank){
+        return getId() <= rank.getId();
+    }
+
     public static Rank getLowestStaffRank() {
         return HELPER;
     }

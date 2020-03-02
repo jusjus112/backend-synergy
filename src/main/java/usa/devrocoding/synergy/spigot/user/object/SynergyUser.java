@@ -66,6 +66,10 @@ public class SynergyUser {
         this(uuid, name, rank, language, UserLoadEvent.UserLoadType.NEW_INSTANCE, true);
     }
 
+    public boolean hasRank(Rank rank){
+        return this.rank == rank;
+    }
+
     public void delete(){
         if (getPlayer() != null && getPlayer().isOnline()){
             return;
@@ -126,6 +130,8 @@ public class SynergyUser {
     }
 
     public void teleport(SynergyUser target){
+        //TODO: Add a fix so they can't teleport out of combat and add several checks for combat tag e.t.c.
+        // And make a function with a countdown..
         getPlayer().teleport(target.getPlayer());
     }
 
@@ -228,16 +234,4 @@ public class SynergyUser {
     public boolean hasAchievement(Achievement achievement){
         return getAchievements().contains(achievement);
     }
-
-//    public void addPermissionNode(String node){
-//        this.permissions.setPermission(node, true);
-//    }
-//
-//    public void removePermissionNode(String node){
-//        this.permissions.unsetPermission(node);
-//    }
-//
-//    public Map<String, Boolean> getPermissions(){
-//        return this.permissions.getPermissions();
-//    }
 }
