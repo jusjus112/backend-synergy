@@ -47,9 +47,14 @@ public abstract class SynergyCommand {
         this.consoleAllowed = consoleAllowed;
         this.description = description;
         this.permission = permission;
-        this.aliases = aliases;
         this.playerUsage = aliases;
         this.consoleUsage = aliases;
+
+        String[] as = new String[aliases.length];
+        for(int i=0;i<aliases.length;i++){
+            as[i] = aliases[i].toLowerCase();
+        }
+        this.aliases = as;
     }
 
     public void setPlayerUsage(String... usage) {

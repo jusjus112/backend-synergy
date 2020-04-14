@@ -1,6 +1,5 @@
 package usa.devrocoding.synergy.spigot.assets;
 
-import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import usa.devrocoding.synergy.spigot.Core;
@@ -12,7 +11,6 @@ import static org.bukkit.Bukkit.getServer;
 public class DependencyManager extends Module {
 
     private PlaceHolderAPI placeHolderAPI;
-    private Economy vaultEconomy;
 
     public DependencyManager(Core plugin){
         super(plugin, "Dependency Manager", false);
@@ -22,9 +20,9 @@ public class DependencyManager extends Module {
         }
 
         if (isPluginEnabled("Vault")){
-            RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+            RegisteredServiceProvider<net.milkbowl.vault.economy.Economy> rsp = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
             if (rsp != null) {
-                this.vaultEconomy = rsp.getProvider();
+//                this.vaultEconomy = rsp.getProvider();
             }
         }
     }
@@ -39,10 +37,10 @@ public class DependencyManager extends Module {
         return this.placeHolderAPI;
     }
 
-    @Deprecated
-    public Economy getVaultEconomy() throws NullPointerException{
-        return this.vaultEconomy;
-    }
+//    @Deprecated
+//    public Economy getVaultEconomy() throws NullPointerException{
+//        return this.vaultEconomy;
+//    }
 
     public boolean isPluginEnabled(String plugin){
         return Bukkit.getPluginManager().getPlugin(plugin) != null;

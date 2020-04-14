@@ -25,13 +25,14 @@ public class Region {
         if (string.contains("region".toUpperCase())){
             String[] args = string.split("//");
             List<Location> locations = new ArrayList<>();
-            for(int i=1;i<=args.length;i++){
+            for(int i=1;i<args.length;i++){
                 String arg = args[i];
                 String[] parameters = arg.split(",");
-                locations.add(new Location(Bukkit.getWorld(parameters[0]), Double.valueOf(parameters[0]), Double.valueOf(parameters[0]), Double.valueOf(parameters[0])));
+                locations.add(new Location(Bukkit.getWorld(parameters[0]), Double.parseDouble(parameters[1]), Double.parseDouble(parameters[2]), Double.parseDouble(parameters[3])));
             }
             this.setFirstLocation(locations.get(0));
-            this.setFirstLocation(locations.get(1));
+            this.setSecondLocation(locations.get(1));
+            return this;
         }
         throw new NullPointerException("Region String not a valid formatted string!");
     }

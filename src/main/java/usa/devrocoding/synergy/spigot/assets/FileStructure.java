@@ -51,7 +51,7 @@ public class FileStructure {
                     return this;
                 }
                 if (folder == null){
-                    Synergy.debug(new File("").getAbsolutePath()+"");
+//                    Synergy.debug(new File("").getAbsolutePath()+"");
                     query = Core.getPlugin().getDataFolder()+"";
                 }else{
                     query = Core.getPlugin().getDataFolder()+File.separator+folder;

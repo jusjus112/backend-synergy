@@ -46,6 +46,10 @@ public abstract class Gui {
 	}
 
 	public abstract void setup();
+	public void onClose(Inventory inventory){}
+	public boolean onInsert(ItemStack itemStack){
+		return false;
+	}
 
 	public void insert(Inventory inventory, SynergyUser user){
 		for(Entry<Integer, GuiElement> element : elements.entrySet()) {
