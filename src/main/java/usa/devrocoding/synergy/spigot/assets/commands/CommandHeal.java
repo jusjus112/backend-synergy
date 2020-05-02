@@ -23,7 +23,6 @@ public class CommandHeal extends SynergyCommand {
 
     @Override
     public void execute(SynergyUser synergyUser, Player player, String command, String[] args) {
-        new HologramProt(player);
         getPlugin().getHologramManager().createHologram(
                 player.getLocation(),
                 player1 ->

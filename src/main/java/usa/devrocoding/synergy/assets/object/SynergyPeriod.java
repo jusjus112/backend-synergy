@@ -2,7 +2,7 @@ package usa.devrocoding.synergy.assets.object;
 
 import lombok.Getter;
 
-public enum SynergyPeriod {
+public enum SynergyPeriod{
 
     TICK(1),
     SECOND(TICK.getPeriod()*20),

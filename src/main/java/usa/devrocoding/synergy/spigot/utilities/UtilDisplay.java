@@ -1,5 +1,7 @@
 package usa.devrocoding.synergy.spigot.utilities;
 
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.minecraft.server.v1_12_R1.IChatBaseComponent;
 import net.minecraft.server.v1_12_R1.PacketPlayOutPlayerListHeaderFooter;
 import net.minecraft.server.v1_12_R1.PacketPlayOutTitle;
@@ -39,6 +41,10 @@ public class UtilDisplay implements Listener {
 
     public void sendSubtitle(String subTitle, int fadeIn, int stay, int fadeOut) {
         this.player.sendTitle(null, subTitle, fadeIn, stay, fadeOut);
+    }
+
+    public void sendActionMessage(String text){
+        this.player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(text));
     }
 
     public void sendTiming(int fadeIn, int stay, int fadeOut) {

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 
 import java.util.ArrayList;
@@ -16,6 +17,13 @@ public class Region {
 
     public boolean isInside(final SynergyUser user) {
         final ZoneVector curr = new ZoneVector(user.getPlayer().getLocation().getBlockX(), user.getPlayer().getLocation().getBlockY(), user.getPlayer().getLocation().getBlockZ());
+        final ZoneVector min = new ZoneVector(Math.min(this.getFirstLocation().getBlockX(), this.getSecondLocation().getBlockX()), Math.min(this.getFirstLocation().getBlockY(), this.getSecondLocation().getBlockY()), Math.min(this.getFirstLocation().getBlockZ(), this.getSecondLocation().getBlockZ()));
+        final ZoneVector max = new ZoneVector(Math.max(this.getFirstLocation().getBlockX(), this.getSecondLocation().getBlockX()), Math.max(this.getFirstLocation().getBlockY(), this.getSecondLocation().getBlockY()), Math.max(this.getFirstLocation().getBlockZ(), this.getSecondLocation().getBlockZ()));
+        return curr.isInAABB(min, max);
+    }
+
+    public boolean isInside(final Block block) {
+        final ZoneVector curr = new ZoneVector(block.getLocation().getBlockX(), block.getLocation().getBlockY(), block.getLocation().getBlockZ());
         final ZoneVector min = new ZoneVector(Math.min(this.getFirstLocation().getBlockX(), this.getSecondLocation().getBlockX()), Math.min(this.getFirstLocation().getBlockY(), this.getSecondLocation().getBlockY()), Math.min(this.getFirstLocation().getBlockZ(), this.getSecondLocation().getBlockZ()));
         final ZoneVector max = new ZoneVector(Math.max(this.getFirstLocation().getBlockX(), this.getSecondLocation().getBlockX()), Math.max(this.getFirstLocation().getBlockY(), this.getSecondLocation().getBlockY()), Math.max(this.getFirstLocation().getBlockZ(), this.getSecondLocation().getBlockZ()));
         return curr.isInAABB(min, max);

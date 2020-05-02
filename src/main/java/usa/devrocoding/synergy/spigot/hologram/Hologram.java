@@ -30,7 +30,7 @@ public class Hologram {
     }
 
     public boolean shouldShow(Player player) {
-        return this.shouldShow != null ? this.shouldShow.test(player) : true;
+        return this.shouldShow == null || this.shouldShow.test(player);
     }
 
     private boolean needsUpdate(SynergyUser synergyUser){
@@ -67,14 +67,15 @@ public class Hologram {
         entityArmorStand.setMarker(true);
         entityArmorStand.setSmall(true);
 
-        Field disabledSlots;
-        try {
-            disabledSlots = entityArmorStand.getClass().getDeclaredField("bE");
-            disabledSlots.setAccessible(true);
-            disabledSlots.set(entityArmorStand, 2039583);
-        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
+        // Not available in 1.12.. Still need ti find the right field
+//        Field disabledSlots;
+//        try {
+//            disabledSlots = entityArmorStand.getClass().getDeclaredField("bE");
+//            disabledSlots.setAccessible(true);
+//            disabledSlots.set(entityArmorStand, 2039583);
+//        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+//            e.printStackTrace();
+//        }
 
         this.entityArmorStand = entityArmorStand;
         this.lineCache = line;

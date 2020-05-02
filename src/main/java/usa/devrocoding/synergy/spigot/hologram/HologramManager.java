@@ -27,18 +27,23 @@ public class HologramManager extends Module implements Listener {
 
     @Getter
     private final List<Hologram> globalHolograms = new ArrayList<>();
+    private final List<HologramProt> globalProtHolograms = new ArrayList<>();
     private final Map<UUID, List<Hologram>> holograms = new HashMap<>();
+
+    // Prototype Holograms
+    private final Map<UUID, List<HologramProt>> protHolograms = new HashMap<>();
 
     public HologramManager(Core plugin) {
         super(plugin, "Hologram Manager", false);
 
         registerListener(
-                this
+            this
         );
 
         plugin.getRunnableManager().runTaskTimerAsynchronously("Hologram Update", (echo) -> {
             Lists.newArrayList(getPlugin().getUserManager().getOnlineUsers()).forEach(synergyUser -> update(synergyUser));
-        }, 0, 20 * 2);
+            Lists.newArrayList(getPlugin().getUserManager().getOnlineUsers()).forEach(synergyUser -> updateProts(synergyUser));
+        }, 0, 20 * 3 ); // 3 seconds to ensure performance
     }
 
     @Override
@@ -55,6 +60,19 @@ public class HologramManager extends Module implements Listener {
         return hologram;
     }
 
+    public void createHologramProt(Location location, HologramLine... hologramLines){
+        int i = 0;
+        for(HologramLine hologramLine : hologramLines){
+            Location loc = new Location(location.getWorld(), location.getX(), location.getY() - i * HOLOGRAM_DISTANCE,location.getZ(), location.getYaw(), location.getPitch());
+            HologramProt hologramProt = new HologramProt(loc);
+            this.globalProtHolograms.add(hologramProt);
+            i++;
+        }
+        for(SynergyUser synergyUser : getPlugin().getUserManager().getOnlineUsers()){
+            createProtHologramForPlayer(synergyUser.getUuid());
+        }
+    }
+
     public void createHologram(Location location, Predicate<Player> predicate, HologramLine... hologramLines) {
         int i = 0;
         for(HologramLine hologramLine : hologramLines){
@@ -66,6 +84,19 @@ public class HologramManager extends Module implements Listener {
         for(SynergyUser synergyUser : getPlugin().getUserManager().getOnlineUsers()){
             createHologramForPlayer(synergyUser.getUuid());
         }
+    }
+
+    private void createProtHologramForPlayer(UUID uuid){
+        List<HologramProt> list = new ArrayList<>();
+
+        Lists.newArrayList(this.globalProtHolograms).forEach(hologram -> {
+            try{
+                list.add(new HologramProt(hologram.getLocation()));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        });
+        if (!list.isEmpty()) this.protHolograms.put(uuid, list);
     }
 
     private void createHologramForPlayer(UUID uuid){
@@ -86,6 +117,16 @@ public class HologramManager extends Module implements Listener {
 
         if (holograms.containsKey(uuid)){
             Lists.newArrayList(holograms.get(uuid)).forEach(hologram -> {
+                hologram.send(synergyUser);
+            });
+        }
+    }
+
+    private void updateProts(SynergyUser synergyUser){
+        UUID uuid = synergyUser.getUuid();
+
+        if (protHolograms.containsKey(uuid)){
+            Lists.newArrayList(protHolograms.get(uuid)).forEach(hologram -> {
                 hologram.send(synergyUser);
             });
         }
