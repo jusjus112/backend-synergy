@@ -27,7 +27,7 @@ public abstract class ConfirmationGUI extends Gui {
                 @Override
                 public ItemStack getIcon(SynergyUser synergyUser) {
                     return new ItemBuilder(Material.STAINED_GLASS_PANE)
-                            .setMaterialData(new MaterialData((byte) 5))
+                            .setDamage((byte) 5)
                             .setName("§a§lYes!")
                             .build();
                 }
@@ -44,7 +44,7 @@ public abstract class ConfirmationGUI extends Gui {
                 @Override
                 public ItemStack getIcon(SynergyUser synergyUser) {
                     return new ItemBuilder(Material.STAINED_GLASS_PANE)
-                            .setMaterialData(new MaterialData((byte) 14))
+                            .setDamage((byte) 14)
                             .setName("§c§lNo")
                             .build();
                 }
@@ -61,7 +61,7 @@ public abstract class ConfirmationGUI extends Gui {
                 @Override
                 public ItemStack getIcon(SynergyUser synergyUser) {
                     return new ItemBuilder(Material.STAINED_GLASS_PANE)
-                            .setMaterialData(new MaterialData((byte) 15))
+                            .setDamage((byte) 15)
                             .setName(" ")
                             .build();
                 }

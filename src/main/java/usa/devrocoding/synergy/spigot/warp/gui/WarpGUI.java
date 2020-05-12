@@ -61,6 +61,10 @@ public class WarpGUI extends Gui {
         }
 
         for(Warp warp : warpManager.getWarps()){
+            // No warps allowed called Spawn
+            if (warp.getName().contains("tutorial")||warp.getName().contains("spawn"))
+                continue;
+
             if (this.getUser().hasPermission(warp.getPermissionNode(), false)) {
                 int place = getCenterInput().get(index);
 
