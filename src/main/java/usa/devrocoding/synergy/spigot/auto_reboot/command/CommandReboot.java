@@ -16,14 +16,15 @@ public class CommandReboot extends SynergyCommand {
         super(plugin, "command.reboot", "Synergy's Reboot Command", true,"reboot", "stop", "shutdown");
 
         setConsoleUsage("[confirm]");
+        setPlayerUsage("<seconds>");
     }
 
     @Override // /reboot <seconds>
     public void execute(SynergyUser synergyUser, Player player, String command, String[] args) {
-        if (args.length > 0 && args.length < 3){
-            Integer seconds = 5;
+        if (args.length == 1){
+            int seconds = 5;
             try{
-                seconds = Integer.valueOf(args[1]);
+                seconds = Integer.parseInt(args[0]);
             }catch (NumberFormatException e){
                 synergyUser.error("Wrong format! " + args[1] + " is not a number.");
                 return;

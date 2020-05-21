@@ -7,9 +7,9 @@ public class ScoreboardAnimation {
     public static String text = "  "+Core.getPlugin().getManifest().server_name()+"  ";
     public static String frame;
 
-    String primary = "§c§l";
-    String secondary = "§e§l";
-    String transition = "§f§l";
+    String primary = "§e§l";
+    String secondary = "§5§l";
+    String transition = "§d§l";
     int counter = -1;
     boolean stage = false;
 

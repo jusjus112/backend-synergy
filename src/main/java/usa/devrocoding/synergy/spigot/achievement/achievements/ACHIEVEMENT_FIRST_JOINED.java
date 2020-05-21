@@ -12,9 +12,8 @@ import usa.devrocoding.synergy.spigot.utilities.ItemBuilder;
 
 public class ACHIEVEMENT_FIRST_JOINED extends Achievement {
 
-
     public ACHIEVEMENT_FIRST_JOINED(){
-        super("Looking for something new", new String[]{"Joining this network for","the first time in your life."});
+        super("Looking for something new", new String[]{"Joining this server for","the first time in your life."});
     }
 
     @Override

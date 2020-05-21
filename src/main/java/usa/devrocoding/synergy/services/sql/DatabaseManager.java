@@ -142,18 +142,20 @@ public class DatabaseManager {
         return resultSet;
     }
 
-    public void executeQuery(String query) {
+    public ResultSet executeQuery(String query) {
         try {
             connect();
         }catch (SQLException e){
             Synergy.warn("Can't connect again... " + e.getMessage());
         }
         try {
-            getConnection().prepareStatement(query).execute();
-            disconnect();
+            ResultSet resultSet = getConnection().prepareStatement(query).executeQuery();
+//            disconnect();
+            return resultSet;
         }catch (SQLException e){
             Synergy.warn("Can't executeQuery statement. " + e.getMessage());
         }
+        return null;
     }
 
     public boolean insert(String table, Map<String, Object> data){

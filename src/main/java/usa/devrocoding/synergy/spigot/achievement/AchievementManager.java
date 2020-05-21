@@ -82,14 +82,4 @@ public class AchievementManager extends Module {
             }
         };
     }
-
-    public void registerAchievements(Achievement... achievements){
-        Arrays.stream(achievements).forEach(
-            achievement -> {
-                if (!getAvailableAchievements().contains(achievement)){
-                    getAvailableAchievements().add(achievement);
-                }
-            }
-        );
-    }
 }

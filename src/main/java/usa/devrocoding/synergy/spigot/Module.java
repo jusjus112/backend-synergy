@@ -2,6 +2,7 @@ package usa.devrocoding.synergy.spigot;
 
 import lombok.Getter;
 import org.bukkit.event.Listener;
+import usa.devrocoding.synergy.spigot.achievement.object.Achievement;
 import usa.devrocoding.synergy.spigot.bot_sam.Sam;
 import usa.devrocoding.synergy.spigot.command.SynergyCommand;
 
@@ -52,5 +53,15 @@ public abstract class Module implements Listener {
 
     public void disable(){
         this.disabled = true;
+    }
+
+    public void registerAchievements(Achievement... achievements){
+        Arrays.stream(achievements).forEach(
+                achievement -> {
+                    if (!getPlugin().getAchievementManager().getAvailableAchievements().contains(achievement)){
+                        getPlugin().getAchievementManager().getAvailableAchievements().add(achievement);
+                    }
+                }
+        );
     }
 }
