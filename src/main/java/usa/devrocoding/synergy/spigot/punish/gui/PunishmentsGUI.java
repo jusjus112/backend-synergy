@@ -44,14 +44,14 @@ public class PunishmentsGUI extends Gui{
                     }
                     List<String> lore = new ArrayList<>();
                     lore.add("§ePunishment: §7"+punishment.getType().name());
-                    lore.add("§eWeging: §7"+punishment.getLevel().name());
+                    lore.add("§eWeight: §7"+punishment.getLevel().name());
                     lore.add(" ");
                     lore.add("§eStaff: §b"+ Bukkit.getOfflinePlayer(punishment.getPunisher()).getName());
                     lore.add("§eCategory: §7"+punishment.getCategory().getName());
                     lore.add("§eLevel §7"+punishment.getCategory().getName());
-                    lore.add("§eDatum: §7"+punishment.getIssuedFormatted());
-                    lore.add("§eTot: §b"+punishment.getPlainerMessage());
-                    lore.add("§eActief: §7"+(punishment.isActive()?"Yes":"No"));
+                    lore.add("§ePunished On: §7"+punishment.getIssuedFormatted());
+                    lore.add("§eTill: §b"+punishment.getPlainerMessage());
+                    lore.add("§eActive: §7"+(punishment.isActive()?"Yes":"No"));
                     if (punishment.isActive()) {
                         lore.add(" ");
                         lore.add("§e§lCLICK §7to deactivate this punishment");
@@ -75,7 +75,8 @@ public class PunishmentsGUI extends Gui{
 
                             @Override
                             public void onDisallow(SynergyUser synergyUser) {
-                                synergyUser.getPlayer().closeInventory();
+//                                synergyUser.getPlayer().closeInventory();
+                                PunishmentsGUI.this.open(synergyUser.getPlayer());
                             }
                         }.open(player.getPlayer());
                     }

@@ -82,12 +82,13 @@ public class TableBuilder {
 
     public void execute(){
         query += ")";
-        this.databaseManager.executeQuery(query);
+
+        this.databaseManager.execute(query);
         if (!(query_update.equals(""))){
             String[] queries = query_update.split(";");
             for(String query_u : queries) {
                 if (!query_u.equals("")) {
-                    this.databaseManager.executeQuery(query_u);
+                    this.databaseManager.executeUpdate(query_u);
                 }
             }
         }

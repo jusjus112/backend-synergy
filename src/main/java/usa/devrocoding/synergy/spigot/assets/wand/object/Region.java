@@ -15,11 +15,41 @@ public class Region {
     @Getter @Setter
     private Location firstLocation = null, secondLocation = null;
 
-    public boolean isInside(final SynergyUser user) {
-        final ZoneVector curr = new ZoneVector(user.getPlayer().getLocation().getBlockX(), user.getPlayer().getLocation().getBlockY(), user.getPlayer().getLocation().getBlockZ());
-        final ZoneVector min = new ZoneVector(Math.min(this.getFirstLocation().getBlockX(), this.getSecondLocation().getBlockX()), Math.min(this.getFirstLocation().getBlockY(), this.getSecondLocation().getBlockY()), Math.min(this.getFirstLocation().getBlockZ(), this.getSecondLocation().getBlockZ()));
-        final ZoneVector max = new ZoneVector(Math.max(this.getFirstLocation().getBlockX(), this.getSecondLocation().getBlockX()), Math.max(this.getFirstLocation().getBlockY(), this.getSecondLocation().getBlockY()), Math.max(this.getFirstLocation().getBlockZ(), this.getSecondLocation().getBlockZ()));
+    public boolean isInside(final SynergyUser user, int addX, int addY, int addZ) {
+        final ZoneVector curr = new ZoneVector(
+                user.getPlayer().getLocation().getBlockX(),
+                user.getPlayer().getLocation().getBlockY(),
+                user.getPlayer().getLocation().getBlockZ()
+        );
+        final ZoneVector min = new ZoneVector(
+                Math.min(
+                        this.getFirstLocation().getBlockX()+addX,
+                        this.getSecondLocation().getBlockX()+addX),
+                Math.min(
+                        this.getFirstLocation().getBlockY()+addY,
+                        this.getSecondLocation().getBlockY()+addY),
+                Math.min(
+                        this.getFirstLocation().getBlockZ()+addZ,
+                        this.getSecondLocation().getBlockZ()+addZ
+                )
+        );
+        final ZoneVector max = new ZoneVector(
+                Math.max(
+                        this.getFirstLocation().getBlockX()+addX,
+                        this.getSecondLocation().getBlockX())+addX,
+                Math.max(
+                        this.getFirstLocation().getBlockY()+addY,
+                        this.getSecondLocation().getBlockY()+addY),
+                Math.max(
+                        this.getFirstLocation().getBlockZ()+addZ,
+                        this.getSecondLocation().getBlockZ()+addZ
+                )
+        );
         return curr.isInAABB(min, max);
+    }
+
+    public boolean isInside(final SynergyUser synergyUser){
+        return this.isInside(synergyUser, 0, 0 ,0);
     }
 
     public boolean isInside(final Block block) {

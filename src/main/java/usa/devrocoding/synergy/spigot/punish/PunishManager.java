@@ -64,6 +64,7 @@ public class PunishManager extends Module {
                 put("punisher", punishment.getPunisher().toString());
                 put("active", punishment.isActive());
             }});
+            Synergy.debug("PUNISHMENT ACTIVE - "+punishment.isActive());
             System.out.println("INSERTED INTO DATABASE");
             for(SynergyUser synergyUser : getPlugin().getUserManager().getOnlineUsers()){
                 if (synergyUser.getUuid().equals(punishment.getPunished())){
@@ -129,6 +130,7 @@ public class PunishManager extends Module {
                 put("punisher", punishment.getPunisher().toString());
                 put("active", punishment.isActive());
             }}, "uuid = '"+punishment.getPunished().toString()+"' AND issued = '"+punishment.getIssued()+"'");
+            Synergy.debug("PUNISHMENT ACTIVE 2 - "+punishment.isActive());
         });
     }
 
@@ -150,7 +152,7 @@ public class PunishManager extends Module {
                 boolean active = result.getBoolean("active");
                 Long till = Long.valueOf(result.getString("till"));
                 if (active){
-                    if (till <= System.currentTimeMillis()){
+                    if (!(till < 0L) && till <= System.currentTimeMillis()){
                         active = false;
                         update = true;
                     }
@@ -163,7 +165,7 @@ public class PunishManager extends Module {
                         PunishType.valueOf(result.getString("type")),
                         PunishCategory.valueOf(result.getString("category")),
                         PunishLevel.valueOf(result.getString("level")),
-                        Long.valueOf(result.getString("issued")),
+                        Long.parseLong(result.getString("issued")),
                         till,
                         UUID.fromString(result.getString("punisher")),
                         active

@@ -21,9 +21,8 @@ public enum SynergyPeriod{
         this.period = period;
     }
 
-    public SynergyPeriod a(int value){
-        this.period *= 2;
-        return this;
+    public long getCustom(long value){
+        return this.getPeriod() * value;
     }
 
 

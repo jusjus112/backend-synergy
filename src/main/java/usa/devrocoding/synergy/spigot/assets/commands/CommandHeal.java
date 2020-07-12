@@ -23,24 +23,24 @@ public class CommandHeal extends SynergyCommand {
 
     @Override
     public void execute(SynergyUser synergyUser, Player player, String command, String[] args) {
-        getPlugin().getHologramManager().createHologram(
-                player.getLocation(),
-                player1 ->
-                    player1.getInventory().getItemInMainHand().getType() == Material.BARRIER
-                ,
-                new HologramLine() {
-                    @Override
-                    public String getMessage(SynergyUser synergyUser) {
-                        return ChatColor.GREEN +""+ ChatColor.BOLD + "HELLO "+ChatColor.YELLOW+""+ChatColor.BOLD+synergyUser.getPlayer().getName();
-                    }
-                },
-                new HologramLine() {
-                    @Override
-                    public String getMessage(SynergyUser synergyUser) {
-                        return "§cYour Coins: §e§l"+synergyUser.getNetworkXP();
-                    }
-                }
-        );
+//        getPlugin().getHologramManager().createHologram(
+//                player.getLocation(),
+//                player1 ->
+//                    player1.getInventory().getItemInMainHand().getType() == Material.BARRIER
+//                ,
+//                new HologramLine() {
+//                    @Override
+//                    public String getMessage(SynergyUser synergyUser) {
+//                        return ChatColor.GREEN +""+ ChatColor.BOLD + "HELLO "+ChatColor.YELLOW+""+ChatColor.BOLD+synergyUser.getPlayer().getName();
+//                    }
+//                },
+//                new HologramLine() {
+//                    @Override
+//                    public String getMessage(SynergyUser synergyUser) {
+//                        return "§cYour Coins: §e§l"+synergyUser.getNetworkXP();
+//                    }
+//                }
+//        );
         player.setHealth(player.getMaxHealth());
         player.setFoodLevel(20);
         for (PotionEffect potionEffect : player.getActivePotionEffects()){

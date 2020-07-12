@@ -33,7 +33,8 @@ public class GlobalManager extends Module {
             new CommandTeleport(plugin),
             new CommandTop(plugin),
             new CommandWorkbench(plugin),
-            new CommandSpawn(plugin)
+            new CommandSpawn(plugin),
+            new CommandWeather(plugin)
         );
 
         registerListener(

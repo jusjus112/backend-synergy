@@ -5,6 +5,7 @@ import net.minecraft.server.v1_12_R1.*;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
 import org.bukkit.entity.Player;
+import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.hologram.object.HologramLine;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 import usa.devrocoding.synergy.spigot.utilities.UtilPlayer;

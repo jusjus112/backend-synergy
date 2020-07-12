@@ -10,12 +10,13 @@ public enum Rank {
 
     NONE(0, "NONE", "", ChatColor.GRAY, "rank.none"),
     HELPER(1, "HELPER", "HELPER", ChatColor.YELLOW, "rank.helper"),
-    MODERATOR(2, "MODERATOR", "MOD", ChatColor.BLUE, "rank.moderator"),
-    ADMIN(3, "ADMIN", "ADMIN", ChatColor.RED, "rank.admin"),
-    MANAGER(4, "MANAGER", "MANAGER", ChatColor.GOLD, "rank.manager"),
-    JRDEVELOPER(5, "JRDEVELOPER", "JR. DEVELOPER", ChatColor.LIGHT_PURPLE, "rank.jrdeveloper"),
-    SRDEVELOPER(6, "SRDEVELOPER", "SR. DEVELOPER", ChatColor.RED, "rank.srdeveloper"),
-    OWNER(7, "OWNER", "OWNER", ChatColor.RED, "rank.owner");
+    JRMODERATOR(2, "JRMODERATOR", "JR. MOD", ChatColor.BLUE, "rank.jrmoderator"),
+    SRMODERATOR(3, "SRMODERATOR", "SR. MOD", ChatColor.BLUE, "rank.srmoderator"),
+    ADMIN(4, "ADMIN", "ADMIN", ChatColor.RED, "rank.admin"),
+    MANAGER(5, "MANAGER", "MANAGER", ChatColor.GOLD, "rank.manager"),
+    JRDEVELOPER(6, "JRDEVELOPER", "JR. DEVELOPER", ChatColor.LIGHT_PURPLE, "rank.jrdeveloper"),
+    SRDEVELOPER(7, "SRDEVELOPER", "SR. DEVELOPER", ChatColor.RED, "rank.srdeveloper"),
+    OWNER(8, "OWNER", "OWNER", ChatColor.RED, "rank.owner");
 
     @Getter
     private final Integer id;
@@ -79,7 +80,7 @@ public enum Rank {
         return MANAGER;
     }
     public static Rank getHighestRank() {
-        return SRDEVELOPER;
+        return OWNER;
     }
 
     public ChatColor getTextColor() {

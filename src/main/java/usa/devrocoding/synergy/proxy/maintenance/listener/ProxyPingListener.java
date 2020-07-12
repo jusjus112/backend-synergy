@@ -19,11 +19,11 @@ public class ProxyPingListener implements Listener {
 
         if (maintenanceManager.isServerOnMaintenance("proxy")) {
             e.getResponse().getVersion().setProtocol(1);
-            e.getResponse().getVersion().setName(maintenanceManager.getMotd().get("version"));
+            e.getResponse().getVersion().setName((String)maintenanceManager.getMotd().get("version"));
 
             e.getResponse().setDescriptionComponent(new TextComponent(UtilMOTD.getCenteredMOTD(
-                    maintenanceManager.getMotd().get("motd.first_line"),
-                    maintenanceManager.getMotd().get("motd.second_line")
+                    (String)maintenanceManager.getMotd().get("motd.first_line"),
+                    (String)maintenanceManager.getMotd().get("motd.second_line")
             )));
             e.getResponse().getPlayers().setOnline(0);
             e.getResponse().getPlayers().setMax(0);
@@ -31,6 +31,16 @@ public class ProxyPingListener implements Listener {
 //        e.getResponse().getPlayers().setSample(new ServerPing.PlayerInfo[]{
 //                new ServerPing.PlayerInfo("TesterdeTest", "")
 //        });
+        }else{
+            e.getResponse().setDescriptionComponent(new TextComponent(UtilMOTD.getCenteredMOTD(
+                    (String)maintenanceManager.getMotd().get("motd_normal.first_line"),
+                    (String)maintenanceManager.getMotd().get("motd_normal.second_line")
+            )));
+            e.getResponse().getPlayers().setOnline(
+                    e.getResponse().getPlayers().getOnline()+1+
+                    (int)maintenanceManager.getMotd().get("motd.fakePlayerCount")
+            );
+            e.getResponse().getPlayers().setMax(1);
         }
 
 //        Core.getCore().getMaintenanceManager().getServerOnMaintenance().iterator().forEachRemaining(s -> Synergy.debug(s));

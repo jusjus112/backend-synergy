@@ -57,9 +57,8 @@ public class CommandManager extends Module implements Listener {
                 "blockdata","entitydata","stopsound","stats",
                 "banlist","list","clear","execute","replaceitem",
                 "ban-ip","pardon-ip","save-off","save-on",
-                "debug",
-
-//                "reload","rl","weather","time","effect","gamerule","difficulty","kill",
+                "debug", "eather","time","effect","gamerule","difficulty",
+                "kill","give","help","stop","time","whitelist","spigot","restart",
 
                 // Essentials Commands
                 "powertool","powertooltoggle","tp2p","tele","tp","gm", "gmc","gma","gmc","gms","gmsp","gmt",

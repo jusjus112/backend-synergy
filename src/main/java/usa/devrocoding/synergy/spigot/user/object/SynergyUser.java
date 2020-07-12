@@ -14,6 +14,7 @@ import usa.devrocoding.synergy.spigot.assets.C;
 import usa.devrocoding.synergy.spigot.bot_sam.Sam;
 import usa.devrocoding.synergy.spigot.bot_sam.object.SamMessage;
 import usa.devrocoding.synergy.spigot.language.LanguageFile;
+import usa.devrocoding.synergy.spigot.objectives.object.Objective;
 import usa.devrocoding.synergy.spigot.punish.PunishType;
 import usa.devrocoding.synergy.spigot.punish.object.Punishment;
 import usa.devrocoding.synergy.spigot.user.event.UserLoadEvent;
@@ -41,6 +42,10 @@ public class SynergyUser {
     private UserExperience userExperience = UserExperience.NOOB;
     @Getter @Setter
     private List<Achievement> achievements = new ArrayList<>();
+    @Getter @Setter
+    private List<Objective> objectives = new ArrayList<>();
+    @Getter
+    private List<Achievement> achievementsToBeUpdated = new ArrayList<>();
     @Getter
     private UserLoadEvent.UserLoadType loadType;
     @Getter
@@ -139,6 +144,14 @@ public class SynergyUser {
         Sam.getRobot().info(getPlayer(), messages);
     }
 
+    public void important(String... messages){
+        Sam.getRobot().important(getPlayer(), messages);
+    }
+
+    public void announcement(String... messages){
+        Sam.getRobot().announcement(getPlayer(), messages);
+    }
+
     public void sam(SamMessage samMessage){
         Sam.getRobot().sam(getPlayer());
     }
@@ -185,6 +198,7 @@ public class SynergyUser {
                 Synergy.debug("5 UPDATE_PUNISHMENTS = "+punishment.isActive());
                 Synergy.debug("5 UPDATE_PUNISHMENTS = "+punishment.getIssued());
 
+                // TODO: If statement is false for some reason
                 if (punishment.getType() == PunishType.BAN && punishment.isActive()) {
                     Synergy.debug("6 UPDATE_PUNISHMENTS");
                     Core.getPlugin().getPluginMessagingManager().kick(getName(), punishment.getBanMessage());
@@ -201,7 +215,7 @@ public class SynergyUser {
 
     public boolean hasPermission(String node){
         String p = Core.getPlugin().getManifest().permission_prefix()+"."+node;
-        if (getPlayer().hasPermission(p)){
+        if (getPlayer().hasPermission(p) || this.rank == Rank.getHighestRank()){
             return true;
         }else{
             error(SamMessage.NO_PERMISSIONS.getRandom());
@@ -228,10 +242,15 @@ public class SynergyUser {
     public void unlockAchievement(Achievement achievement){
         if (!hasAchievement(achievement)){
             getAchievements().add(achievement);
+            getAchievementsToBeUpdated().add(achievement);
         }
     }
 
     public boolean hasAchievement(Achievement achievement){
         return getAchievements().contains(achievement);
+    }
+
+    public boolean hasObjective(Objective objective){
+        return false;
     }
 }

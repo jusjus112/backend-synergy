@@ -185,6 +185,22 @@ public class UtilLoc {
 		return location.getWorld().getName()+"/"+location.getX()+"/"+location.getY()+"/"+location.getZ();
 	}
 
+	public static String serializeWithDirection(Location location){
+		return location.getWorld().getName()+"/"+location.getX()+"/"+location.getY()+"/"+location.getZ()+"/"+location.getYaw()+"/"+location.getPitch();
+	}
+
+	public static Location deserializeWithDirection(String s){
+		String[] strings = s.split("/");
+		return new Location(
+				Bukkit.getWorld(strings[0]),
+				Double.valueOf(strings[1]),
+				Double.valueOf(strings[2]),
+				Double.valueOf(strings[3]),
+				Float.valueOf(strings[4]),
+				Float.valueOf(strings[5])
+		);
+	}
+
 	public static Location deserialize(String s){
 		String[] strings = s.split("/");
 		return new Location(

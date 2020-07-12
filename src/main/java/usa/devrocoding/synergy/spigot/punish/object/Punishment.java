@@ -47,14 +47,14 @@ public class Punishment {
     }
 
     public String getBanMessage() {
-        return "§7§l<§e/§7§l> §f§lYOUR ACCOUNT HAS BEEN §c§lBANNED §f§lFROM VALANEPRISON §7§l<§e/§7§l>"+"\n"+
+        return "§7§l<§e/§7§l> §f§lYOUR ACCOUNT HAS BEEN §c§lBANNED §f§lFROM MIRAGEPRISONS §7§l<§e/§7§l>"+"\n"+
                 " \n"+
 //                "§7Banned by: §e"+this.getPunisherName()+"\n"+
                 "§7Ban Category: §c"+this.getCategory().getName()+"\n"+
                 "§7Ban Level: §c"+this.getLevel().getName()+"\n"+
                 " \n"+
                 (isPermanent() ? "§f§lThis ban is §c§lPERMANENT" : "§f§lUNBANNED ON §b§l"+this.getPlainerMessage())+"\n"+
-                "§7You may appeal your ban at §ewww.valaneprison.net";
+                "§7You may appeal your ban at §ewww.mirageprisons.net";
     }
 
     public boolean isActive() {
@@ -74,7 +74,7 @@ public class Punishment {
     }
 
     public boolean isPermanent() {
-        return getTill() == -1L;
+        return getTill() < 0L;
     }
 
     public int getMinutesActive() {
@@ -82,6 +82,9 @@ public class Punishment {
     }
 
     public String getPlainerMessage() {
+        if (isPermanent()){
+            return "§cPermanent Punishment";
+        }
         return UtilTime.formatMilliSecondsToDate(getTill())+" "+UtilTime.formatMilliSecondsToTime(getTill());
     }
 

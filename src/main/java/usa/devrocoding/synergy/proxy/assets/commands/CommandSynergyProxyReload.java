@@ -11,7 +11,7 @@ import usa.devrocoding.synergy.proxy.ProxyModule;
 public class CommandSynergyProxyReload extends Command {
 
     public CommandSynergyProxyReload(){
-        super("synergyproxyreload", "synergy.reload.modules", "synprl", "synpreload");
+        super("synergyproxyreload", "synergy.reload.modules", "synrl", "synreload", "synergyreload");
     }
 
     @Override

@@ -22,7 +22,7 @@ public class RebootChecker implements Consumer<Core> {
     public void accept(Core core) {
         if (LocalTime.now().getHour()==getManager().getRestartHour()){
             if (!getManager().isRestarting()) {
-                getManager().rebootServer(SynergyPeriod.MINUTE.a(2));
+                getManager().rebootServer(SynergyPeriod.MINUTE.getCustom(2));
             }
             core.getRunnableManager().getRunnables().get("Reboot Check").cancel();
         }

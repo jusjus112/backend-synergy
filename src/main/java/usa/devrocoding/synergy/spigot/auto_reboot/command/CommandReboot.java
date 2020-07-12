@@ -30,7 +30,7 @@ public class CommandReboot extends SynergyCommand {
                 return;
             }
             synergyUser.info("Starting the reboot sequence for you...");
-            Core.getPlugin().getAutoRebootManager().rebootServer(SynergyPeriod.SECOND.a(seconds));
+            Core.getPlugin().getAutoRebootManager().rebootServer(SynergyPeriod.SECOND.getCustom(seconds));
         }else{
             sendUsageMessage(player);
         }
@@ -53,7 +53,7 @@ public class CommandReboot extends SynergyCommand {
                 return;
             }
             sender.sendMessage("Starting the reboot sequence for you...");
-            Core.getPlugin().getAutoRebootManager().rebootServer(SynergyPeriod.SECOND.a(secs));
+            Core.getPlugin().getAutoRebootManager().rebootServer(SynergyPeriod.SECOND.getCustom(secs));
         }
     }
 }

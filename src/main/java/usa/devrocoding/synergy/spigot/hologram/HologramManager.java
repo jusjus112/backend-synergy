@@ -43,7 +43,7 @@ public class HologramManager extends Module implements Listener {
         plugin.getRunnableManager().runTaskTimerAsynchronously("Hologram Update", (echo) -> {
             Lists.newArrayList(getPlugin().getUserManager().getOnlineUsers()).forEach(synergyUser -> update(synergyUser));
             Lists.newArrayList(getPlugin().getUserManager().getOnlineUsers()).forEach(synergyUser -> updateProts(synergyUser));
-        }, 0, 20 * 3 ); // 3 seconds to ensure performance
+        }, 0, 20);
     }
 
     @Override

@@ -16,6 +16,7 @@ public class UserQuitEvent implements Listener {
         e.setQuitMessage(null);
         if (user != null) {
             Core.getPlugin().getUserManager().updateUser(user);
+            Core.getPlugin().getAchievementManager().saveAchievementsToDatabase(user);
             Core.getPlugin().getUserManager().getUsers().remove(user.getUuid());
         }
     }

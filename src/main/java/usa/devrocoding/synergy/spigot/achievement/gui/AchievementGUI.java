@@ -16,7 +16,7 @@ import java.util.List;
 
 public class AchievementGUI extends Gui {
 
-    private SynergyUser user;
+    private SynergyUser user = null;
 
     public AchievementGUI(SynergyUser user, Core plugin){
         super(plugin, "Your Achievements", GuiSize.SIX_ROWS, false);

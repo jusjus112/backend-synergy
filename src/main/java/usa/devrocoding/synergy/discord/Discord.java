@@ -10,6 +10,7 @@ import usa.devrocoding.synergy.assets.object.LinuxColorCodes;
 import usa.devrocoding.synergy.discord.assets.DiscordManager;
 import usa.devrocoding.synergy.discord.command.CommandManager;
 import usa.devrocoding.synergy.discord.file.FileManager;
+import usa.devrocoding.synergy.discord.server.MessageManager;
 import usa.devrocoding.synergy.discord.terminal.playercount.PlayercountManager;
 import usa.devrocoding.synergy.spigot.assets.C;
 
@@ -24,6 +25,8 @@ public class Discord {
     public static CommandManager commandManager;
     @Getter
     public static DiscordManager discordManager;
+    @Getter
+    private static MessageManager messageManager;
 
     public static void main(String[] args) {
         try{
@@ -42,6 +45,7 @@ public class Discord {
             Synergy.discord("Loading Modules");
             commandManager = new CommandManager();
             discordManager = new DiscordManager();
+            messageManager = new MessageManager();
 
 //            getJda().addEventListener(
 //                    discordManager.getListeners()
@@ -60,11 +64,12 @@ public class Discord {
             Synergy.discord("Bot Token installed.");
             // Bot properties
             getJda().setAutoReconnect(true);
-            getJda().getPresence().setActivity(Activity.playing("play.valaneprison.net"));
+            getJda().getPresence().setActivity(Activity.playing("play.mirageprisons.net"));
 
             Synergy.discord("Loading Modules");
             commandManager = new CommandManager();
             discordManager = new DiscordManager();
+            messageManager = new MessageManager();
 
             new PlayercountManager();
             Synergy.discord("Bot loaded..");

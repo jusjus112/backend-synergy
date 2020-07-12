@@ -12,14 +12,14 @@ import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 public class CommandSynergy extends SynergyCommand {
 
     public CommandSynergy(Core plugin) {
-        super(plugin, "Synergy's official command", true,"synergy");
+        super(plugin, "Synergy's official command", false,"synergy");
     }
 
     @Override
     public void execute(SynergyUser synergyUser, Player player, String command, String[] args) {
         synergyUser.message(
                 C.getLine(),
-                "§eA §6Fully Custom §eNetwork system for this awesome network named \""+getPlugin().getManifest().server_name()+"\"",
+                "§eA §6Fully Custom §eBackend system for this network with over §615.000+ lines of code",
                 "§eAuthor: §3JusJus§e",
                 "§eVersion: " + Core.getPlugin().getDescription().getVersion(),
                 "§eThis system has their first code written on §eAugust 24, 2017 and released on May 2nd 2018 made with §c"+ C.Symbol.HEARTH.getSymbol(),
@@ -29,6 +29,6 @@ public class CommandSynergy extends SynergyCommand {
 
     @Override
     public void execute(ConsoleCommandSender sender, String command, String[] args) {
-        sender.sendMessage("Test1");
+
     }
 }

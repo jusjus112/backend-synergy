@@ -32,30 +32,34 @@ public class UserJoinEvent implements Listener {
             "Load User",
             core -> {
                 UserManager userManager = Core.getPlugin().getUserManager();
-                final SynergyUser user = userManager.retrievePlayer(userManager.loadFromUUID(e.getUniqueId()));
-                if (user == null){
-                    SynergyUser userNew = new SynergyUser(
-                            e.getUniqueId(),
-                            e.getName(),
-                            Rank.NONE,
-                            Core.getPlugin().getLanguageManager().getLanguage("en"),
-                            UserLoadEvent.UserLoadType.NEW
-                    );
-                    Core.getPlugin().getRunnableManager().runTask("hack main thread", core1 -> {
-                        UserPreLoadEvent userPreLoadEvent = new UserPreLoadEvent(userNew);
-                        Core.getPlugin().getServer().getPluginManager().callEvent(userPreLoadEvent);
-                        if (!userPreLoadEvent.isCancelled()) {
-                            Core.getPlugin().getServer().getPluginManager().callEvent(new UserLoadEvent(userNew, UserLoadEvent.UserLoadType.NEW));
-                        }
-                    });
-                }else{
-                    Core.getPlugin().getRunnableManager().runTask("hack main thread", core1 -> {
-                        UserPreLoadEvent userPreLoadEvent = new UserPreLoadEvent(user);
-                        Core.getPlugin().getServer().getPluginManager().callEvent(userPreLoadEvent);
-                        if (!userPreLoadEvent.isCancelled()) {
-                            Core.getPlugin().getServer().getPluginManager().callEvent(new UserLoadEvent(user, UserLoadEvent.UserLoadType.RETRIEVED_FROM_DATABASE));
-                        }
-                    });
+                SynergyUser user = userManager.getUser(e.getUniqueId());
+                if (user == null) {
+                    user = userManager.retrievePlayer(userManager.loadFromUUID(e.getUniqueId()));
+                    if (user == null) {
+                        SynergyUser userNew = new SynergyUser(
+                                e.getUniqueId(),
+                                e.getName(),
+                                Rank.NONE,
+                                Core.getPlugin().getLanguageManager().getLanguage("en"),
+                                UserLoadEvent.UserLoadType.NEW
+                        );
+                        Core.getPlugin().getRunnableManager().runTask("hack main thread", core1 -> {
+                            UserPreLoadEvent userPreLoadEvent = new UserPreLoadEvent(userNew);
+                            Core.getPlugin().getServer().getPluginManager().callEvent(userPreLoadEvent);
+                            if (!userPreLoadEvent.isCancelled()) {
+                                Core.getPlugin().getServer().getPluginManager().callEvent(new UserLoadEvent(userNew, UserLoadEvent.UserLoadType.NEW));
+                            }
+                        });
+                    } else {
+                        SynergyUser finalUser = user;
+                        Core.getPlugin().getRunnableManager().runTask("hack main thread", core1 -> {
+                            UserPreLoadEvent userPreLoadEvent = new UserPreLoadEvent(finalUser);
+                            Core.getPlugin().getServer().getPluginManager().callEvent(userPreLoadEvent);
+                            if (!userPreLoadEvent.isCancelled()) {
+                                Core.getPlugin().getServer().getPluginManager().callEvent(new UserLoadEvent(finalUser, UserLoadEvent.UserLoadType.RETRIEVED_FROM_DATABASE));
+                            }
+                        });
+                    }
                 }
             }
         );

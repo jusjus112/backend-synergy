@@ -15,6 +15,10 @@ import java.util.Map;
 
 public class DatabaseManager {
 
+    /**
+     * TODO: Disconnect connection after a while with no queries
+     */
+
     @Getter
     private Connection connection;
     @Getter
@@ -53,19 +57,19 @@ public class DatabaseManager {
     public void loadDefaultTables(){
         // Generate Tables
         new TableBuilder("users", this)
-                .addColumn("uuid", SQLDataType.VARCHAR, 300,false, SQLDefaultType.NO_DEFAULT, true)
+                .addColumn("uuid", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, true)
                 .addColumn("name", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
                 .addColumn("rank", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
                 .addColumn("user_experience", SQLDataType.VARCHAR, 100,false, SQLDefaultType.CUSTOM.setCustom(UserExperience.NOOB.toString().toUpperCase()), false)
                 .addColumn("xp", SQLDataType.DOUBLE, -1,true, SQLDefaultType.CUSTOM.setCustom(0), false)
                 .execute();
         new TableBuilder("user_achievements", this)
-                .addColumn("uuid", SQLDataType.VARCHAR, 300,false, SQLDefaultType.NO_DEFAULT, true)
+                .addColumn("uuid", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, true)
                 .addColumn("achievement", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
                 .addColumn("achieved_on", SQLDataType.DATE, -1, false, SQLDefaultType.NO_DEFAULT, false)
                 .execute();
         new TableBuilder("punishments", this)
-                .addColumn("uuid", SQLDataType.VARCHAR, 300,false, SQLDefaultType.NO_DEFAULT, false)
+                .addColumn("uuid", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
                 .addColumn("type", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
                 .addColumn("category", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
                 .addColumn("level", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
@@ -105,7 +109,7 @@ public class DatabaseManager {
             }
 
             preparedStatement.executeUpdate();
-            disconnect();
+//            disconnect();
             return true;
         }catch (SQLException e){
             Synergy.warn("Can't execute update statement. " + e.getMessage());
@@ -148,14 +152,47 @@ public class DatabaseManager {
         }catch (SQLException e){
             Synergy.warn("Can't connect again... " + e.getMessage());
         }
+//        Synergy.debug(query);
         try {
             ResultSet resultSet = getConnection().prepareStatement(query).executeQuery();
 //            disconnect();
             return resultSet;
         }catch (SQLException e){
+//            e.printStackTrace();
             Synergy.warn("Can't executeQuery statement. " + e.getMessage());
         }
         return null;
+    }
+
+    public void execute(String query){
+        try {
+            connect();
+        }catch (SQLException e){
+            Synergy.warn("Can't connect again... " + e.getMessage());
+        }
+//        Synergy.debug(query);
+        try {
+            getConnection().prepareStatement(query).execute();
+//            disconnect();
+        }catch (SQLException e){
+//            e.printStackTrace();
+            Synergy.warn("Can't execute statement. " + e.getMessage());
+        }
+    }
+
+    public void executeUpdate(String query){
+        try {
+            connect();
+        }catch (SQLException e){
+            Synergy.warn("Can't connect again... " + e.getMessage());
+        }
+        try {
+            getConnection().prepareStatement(query).executeUpdate();
+//            disconnect();
+        }catch (SQLException e){
+//            e.printStackTrace();
+            Synergy.warn("Can't executeUpdate statement. " + e.getMessage());
+        }
     }
 
     public boolean insert(String table, Map<String, Object> data){
@@ -194,7 +231,7 @@ public class DatabaseManager {
             }
 
             preparedStatement.executeUpdate();
-            disconnect();
+//            disconnect();
             return true;
         }catch (SQLException e){
             Synergy.warn("Can't execute statement. " + e.getMessage());

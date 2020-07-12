@@ -14,16 +14,25 @@ public class ServerConnectListener implements Listener {
     @EventHandler
     public void onPluginMessage(ServerConnectEvent e){
         MaintenanceManager maintenanceManager = Core.getCore().getMaintenanceManager();
-
-        if (maintenanceManager.isServerOnMaintenance(e.getTarget().getName())){
-            if (e.getPlayer().getUniqueId().toString().equals("c1bbd6fc-542d-48cf-9f94-954896a18e2a")){
-                return;
+        Synergy.debug("SERVER CONNECT = "+e.getReason());
+        Synergy.debug("SERVER CONNECT = "+e.getTarget().getName());
+        if (e.getReason() == ServerConnectEvent.Reason.JOIN_PROXY){
+            if (maintenanceManager.isServerOnMaintenance("proxy")){
+                if (!e.getPlayer().hasPermission("synergy.maintenance.override")) {
+                    e.setCancelled(true);
+                    return;
+                }
             }
-
+        }
+        if (maintenanceManager.isServerOnMaintenance(e.getTarget().getName())){
             if (!e.getPlayer().hasPermission("synergy.maintenance.override")) {
                 e.setCancelled(true);
+                if (e.getPlayer().getServer() == null){
+                    e.getPlayer().disconnect(new TextComponent(ChatColor.translateAlternateColorCodes('&', (String)maintenanceManager.getMotd().get("kick_message"))));
+                    return;
+                }
                 e.getPlayer().sendMessage(new TextComponent(Synergy.SynergyColor.getLineWithName(ChatColor.GRAY)));
-                e.getPlayer().sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', maintenanceManager.getMotd().get("kick_message"))));
+                e.getPlayer().sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', (String)maintenanceManager.getMotd().get("kick_message"))));
                 e.getPlayer().sendMessage(new TextComponent(Synergy.SynergyColor.getLine()));
             }
         }

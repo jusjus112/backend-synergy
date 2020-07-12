@@ -14,15 +14,15 @@ public enum PunishIcon {
             }),
     GENERALTWO(
             PunishCategory.GENERAL, PunishLevel.TWO, PunishType.BAN, 1209600000,
-            new String[] { "§e§lBug abuse", "Terug springen in de safe zONE", "of mONEyfarming" }),
+            new String[] { "§e§lBug abuse", "Using bugs to get an advantage.", "Or moneyfarming." }),
     CHATONE(
             PunishCategory.CHAT, PunishLevel.ONE, PunishType.MUTE, 259200000L,
-            new String[] { "§e§lLicht schelden", "Je zuigt", "Geen respect naar staff", "",
+            new String[] { "§e§lLight Cursing", "Je zuigt", "Geen respect naar staff", "",
                     "§e§lLicht spammen", "LOLOLOLOLOLOLOL.", "", "§e§lLigt adverteren",
                     "Hey iemand hypixel?", }),
     CHATTWO(PunishCategory.CHAT, PunishLevel.TWO,
             PunishType.MUTE, 604800000,
-            new String[] { "§e§lMedium spam",
+            new String[] { "§e§lMedium Spam",
                     "omg mist69 OMG PLEASE IK WIL EEN SCREENSHOT!", "",
                     "§e§lMedium Advertisment",
                     "Hey mensen join mijn server stopreadingthip:25544 ",
@@ -30,7 +30,7 @@ public enum PunishIcon {
                     "Je bent een debiel" }),
     CHATTHREE(PunishCategory.CHAT,
             PunishLevel.THREE, PunishType.MUTE, 1209600000,
-            new String[] { "§e§lZwaar Adverteren",
+            new String[] { "§e§lHeavy Advertising",
                     "SNEL JOIN ME SERVER PLAY.THENOOTMC.NET IK GEEF STAFF ",
                     "AAN DE EERSTE 5 MENSEN!!!!!!!11", "",
                     "§e§lZwaar schelden", "Je bent een kanker debiel",
@@ -39,32 +39,32 @@ public enum PunishIcon {
     HACKINGONE(
             PunishCategory.HACKING, PunishLevel.ONE,
             PunishType.BAN, 604800000L,
-            new String[] { "§e§lLichte hacks",
+            new String[] { "§e§lLow Tier Modded Client",
                     "Gebruik maken van anti-afk, auto eat of derp hacks." }),
     HACKINGTWO(
             PunishCategory.HACKING,
             PunishLevel.TWO,
             PunishType.BAN, 2592000000L,
             new String[] {
-                    "§e§lMedium hacks",
-                    "Gameplay aanpassende mods",
-                    "bijvoorbeeld pvp-mods of auto speed" }),
+                    "§e§lMedium Tier Modded Client",
+                    "Gameplay changing mods (Killaura is heavy)",
+                    "pvp-mods or auto speed" }),
     HACKINGTHREE(
             PunishCategory.HACKING,
             PunishLevel.THREE,
             PunishType.BAN,
             5184000000L,
             new String[] {
-                    "§e§lZware hacks",
-                    "Xrax, nodes, wurst, anti kb, killaura etc", }),
+                    "§e§lHeavy Tier Modded Client",
+                    "Xray, nodes, wurst, anti kb, killaura etc", }),
     WARNING(
             PunishCategory.OTHER,
             PunishLevel.WARNING,
             PunishType.WARNING,
             -1,
             new String[] {
-                    "Bijvoorbeeld kleine fouten zoals",
-                    "adverteren, spammen of overtollig caps gebruik.",
+                    "Notify the player that they made a mistake.",
+                    "Advertising or spamming.",
                     "Als ze door dan de punishment geven die erbij hoort" }),
     PermanentMUTE(
             PunishCategory.OTHER,
@@ -72,7 +72,7 @@ public enum PunishIcon {
             PunishType.MUTE,
             -1,
             new String[] {
-                    "Vaak geMUTE worden zorgt ervoor dat die nooit meer kan praten", }),
+                    "Remove the ability to speak from the player. Permanent.", }),
     PermanentBAN(
             PunishCategory.OTHER,
             PunishLevel.PermanentBan,

@@ -1,6 +1,7 @@
 package usa.devrocoding.synergy.proxy;
 
 import lombok.Getter;
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.plugin.Plugin;
 import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.discord.Discord;
@@ -11,11 +12,13 @@ import usa.devrocoding.synergy.proxy.party.PartyManager;
 import usa.devrocoding.synergy.proxy.plugin_messaging.PluginMessaging;
 import usa.devrocoding.synergy.proxy.punish.PunishManager;
 import usa.devrocoding.synergy.proxy.two_factor_authentication.GoogleAuthManager;
+import usa.devrocoding.synergy.proxy.user.UserManager;
 import usa.devrocoding.synergy.services.SQLService;
 import usa.devrocoding.synergy.services.sql.DatabaseManager;
 import usa.devrocoding.synergy.services.sql.SQLDataType;
 import usa.devrocoding.synergy.services.sql.SQLDefaultType;
 import usa.devrocoding.synergy.services.sql.TableBuilder;
+import usa.devrocoding.synergy.spigot.assets.C;
 import usa.devrocoding.synergy.spigot.bot_sam.Sam;
 import usa.devrocoding.synergy.spigot.files.yml.YMLFile;
 import usa.devrocoding.synergy.spigot.user.object.UserExperience;
@@ -23,6 +26,7 @@ import usa.devrocoding.synergy.spigot.user.object.UserExperience;
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -48,15 +52,25 @@ public class Core extends Plugin {
     private PunishManager punishManager;
     @Getter
     private PartyManager partyManager;
+    @Getter
+    private UserManager userManager;
 
     @Override
     public void onLoad() {
         core = this;
     }
 
+    /**
+     * TODO: Restart the proxy every XX hours
+     */
+
     @Override
     public void onEnable() {
+        Arrays.stream(Synergy.getLogos().logo_colossal).forEach(s -> System.out.println(ChatColor.YELLOW +s));
+        System.out.println("  ");
+
         // Load all the modules
+        this.userManager = new UserManager(this);
         this.assetManager = new AssetManager(this);
         this.pluginMessaging = new PluginMessaging(this);
         this.maintenanceManager = new MaintenanceManager(this);
@@ -88,7 +102,7 @@ public class Core extends Plugin {
 
             // Generate Tables
             new TableBuilder("two_factor_authentication", this.databaseManager)
-                    .addColumn("uuid", SQLDataType.VARCHAR, 300,false, SQLDefaultType.NO_DEFAULT, true)
+                    .addColumn("uuid", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, true)
                     .addColumn("account_name", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
                     .addColumn("key", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
                     .execute();

@@ -19,7 +19,7 @@ public class ChangelogJoinListener implements Listener {
     public void onChangelogJoin(PlayerJoinEvent e){
         Changelog changelog = Core.getPlugin().getChangelogManager().getLatestChangelog();
         if (changelog != null) {
-            if (UtilTime.daysBetween(changelog.getDate(), new Date()) <= 5){
+            if (UtilTime.daysBetween(changelog.getDate(), new Date()) <= 7){
                 e.getPlayer().sendMessage(new String[]{
                     C.getLineWithName("Updates"),
                     "Did you already checked the new updates?",

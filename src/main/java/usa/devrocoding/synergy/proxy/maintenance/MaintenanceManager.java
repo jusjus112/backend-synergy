@@ -24,7 +24,7 @@ public class MaintenanceManager extends ProxyModule {
     @Getter
     private List<String> serverOnMaintenance = new ArrayList<>();
     @Getter
-    private Map<String, String> motd = new HashMap<>();
+    private Map<String, Object> motd = new HashMap<>();
     private ProxyJSONFile cacheFile;
     private ProxyYMLFile file;
 
@@ -35,10 +35,14 @@ public class MaintenanceManager extends ProxyModule {
         this.file = new ProxyYMLFile(getPlugin(), getPlugin().getDataFolder(), "maintenance");
 
         this.file.set(new HashMap<String, Object>(){{
-            put("maintenance.motd.first_line", "&6&lRUNNING ON SYNERGY");
-            put("maintenance.motd.second_line", "&bThe MOTD is centered automatically!");
+            put("maintenance.motd.first_line", "&cSorry but &e&lSERVER_NAME");
+            put("maintenance.motd.second_line", "&cIs on &lMAINTENANCE. &cWe'll be back ASAP");
             put("maintenance.version", "MAINTENANCE");
-            put("maintenance.kick_message", "&cSorry but this server is in maintenance!");
+            put("maintenance.kick_message", "&cSorry but the server your connecting to is in maintenance!");
+
+            put("motd.first_line", "&6&lRUNNING ON SYNERGY");
+            put("motd.second_line", "&bThe MOTD is centered automatically!");
+            put("motd.fakePlayerCount", 0);
         }});
 
         registerListeners(
@@ -86,6 +90,10 @@ public class MaintenanceManager extends ProxyModule {
             this.motd.put("motd.first_line", this.file.getConfiguration().getString("maintenance.motd.first_line"));
             this.motd.put("motd.second_line", this.file.getConfiguration().getString("maintenance.motd.second_line"));
             this.motd.put("kick_message", this.file.getConfiguration().getString("maintenance.kick_message"));
+
+            this.motd.put("motd_normal.first_line", this.file.getConfiguration().getString("motd.first_line"));
+            this.motd.put("motd_normal.second_line", this.file.getConfiguration().getString("motd.second_line"));
+            this.motd.put("motd.fakePlayerCount", this.file.getConfiguration().getInt("motd.fakePlayerCount"));
         }
     }
 

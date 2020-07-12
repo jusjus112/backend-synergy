@@ -1,9 +1,7 @@
 package usa.devrocoding.synergy.proxy.punish;
 
-import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.proxy.Core;
 import usa.devrocoding.synergy.proxy.ProxyModule;
-import usa.devrocoding.synergy.proxy.punish.listener.UserLoginListener;
 import usa.devrocoding.synergy.spigot.punish.PunishCategory;
 import usa.devrocoding.synergy.spigot.punish.PunishLevel;
 import usa.devrocoding.synergy.spigot.punish.PunishType;
@@ -19,10 +17,6 @@ public class PunishManager extends ProxyModule {
 
     public PunishManager(Core plugin){
         super(plugin, "Punish Manager", false);
-
-        registerListeners(
-                new UserLoginListener()
-        );
     }
 
     @Override
@@ -50,7 +44,7 @@ public class PunishManager extends ProxyModule {
                 boolean active = result.getBoolean("active");
                 Long till = Long.valueOf(result.getString("till"));
                 if (active){
-                    if (till <= System.currentTimeMillis()){
+                    if (!(till < 0L) && till <= System.currentTimeMillis()){
                         active = false;
                         update = true;
                     }
@@ -61,7 +55,7 @@ public class PunishManager extends ProxyModule {
                         PunishType.valueOf(result.getString("type")),
                         PunishCategory.valueOf(result.getString("category")),
                         PunishLevel.valueOf(result.getString("level")),
-                        Long.valueOf(result.getString("issued")),
+                        Long.parseLong(result.getString("issued")),
                         till,
                         UUID.fromString(result.getString("punisher")),
                         active

@@ -4,8 +4,11 @@ import lombok.Getter;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.ClickType;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import usa.devrocoding.synergy.assets.Synergy;
+import usa.devrocoding.synergy.services.sql.SQLDataType;
+import usa.devrocoding.synergy.services.sql.SQLDefaultType;
+import usa.devrocoding.synergy.services.sql.TableBuilder;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
 import usa.devrocoding.synergy.spigot.achievement.achievements.*;
@@ -15,8 +18,9 @@ import usa.devrocoding.synergy.spigot.achievement.object.Achievement;
 import usa.devrocoding.synergy.spigot.gui.GuiElement;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 import usa.devrocoding.synergy.spigot.utilities.ItemBuilder;
-import usa.devrocoding.synergy.spigot.utilities.UtilString;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 public class AchievementManager extends Module {
@@ -26,6 +30,11 @@ public class AchievementManager extends Module {
 
     public AchievementManager(Core plugin){
         super(plugin, "Achievement Manager", false);
+
+        new TableBuilder("achievements", getPlugin().getDatabaseManager())
+                .addColumn("uuid", SQLDataType.VARCHAR, 200, false, SQLDefaultType.NO_DEFAULT, false)
+                .addColumn("achievement", SQLDataType.VARCHAR, 100, false, SQLDefaultType.NO_DEFAULT, false)
+                .execute();
 
         registerAchievements(
             new ACHIEVEMENT_FIRST_JOINED()
@@ -81,5 +90,57 @@ public class AchievementManager extends Module {
 
             }
         };
+    }
+
+    public void registerAchievements(Achievement... achievements){
+        Arrays.stream(achievements).forEach(
+            achievement -> {
+                if (!getAvailableAchievements().contains(achievement)){
+                    getAvailableAchievements().add(achievement);
+                }
+            }
+        );
+    }
+
+    public void saveAchievementsToDatabase(SynergyUser synergyUser){
+        getPlugin().getRunnableManager().runTaskAsynchronously(
+            "Save Achievements",
+            core -> {
+                for(Achievement achievement : synergyUser.getAchievementsToBeUpdated()){
+                    HashMap<String, Object> data = new HashMap<String, Object>() {{
+                        put("uuid", synergyUser.getUuid().toString());
+                        put("achievement", achievement.getClass().getSimpleName().toUpperCase());
+                    }};
+                    getPlugin().getDatabaseManager().insert("achievements", data);
+                }
+                synergyUser.getAchievementsToBeUpdated().clear();
+            }
+        );
+    }
+
+    public List<Achievement> retrieveAchievements(String uuid){
+        List<Achievement> achievements = new ArrayList<>();
+        getPlugin().getRunnableManager().runTaskAsynchronously(
+                "Retrieve Achievements",
+                core -> {
+                    Map<Integer, Object> data = new HashMap<Integer, Object>(){{
+                        put(1, uuid);
+                    }};
+                    try{
+                        ResultSet result = getPlugin().getDatabaseManager().getResults("achievements", "uuid=?", data);
+                        while (result.next()){
+                            for(Achievement achievement : getAvailableAchievements()){
+                                if (achievement.getClass().getSimpleName().toUpperCase().equalsIgnoreCase(result.getString("achievement"))){
+                                    achievements.add(achievement);
+                                    break;
+                                }
+                            }
+                        }
+                    }catch (SQLException e){
+                        Synergy.error("SQLError Achievements: "+e.getMessage());
+                    }
+                }
+        );
+        return achievements;
     }
 }

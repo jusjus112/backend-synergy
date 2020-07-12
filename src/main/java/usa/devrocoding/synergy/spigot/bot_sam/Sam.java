@@ -7,6 +7,7 @@ import usa.devrocoding.synergy.spigot.Module;
 import usa.devrocoding.synergy.spigot.assets.C;
 import usa.devrocoding.synergy.spigot.bot_sam.object.ErrorHandler;
 import usa.devrocoding.synergy.spigot.bot_sam.object.SamMessage;
+import usa.devrocoding.synergy.spigot.utilities.UtilString;
 
 import java.util.Arrays;
 
@@ -14,6 +15,8 @@ public class Sam {
 
     @Getter
     public final String prefix = "§d§l</> §7"+ChatColor.BOLD+"Synergy"+C.CHAT.getColor()+ChatColor.BOLD+": "+ChatColor.RESET;
+    @Getter
+    public final String announcement = "§d§l</> §7"+ChatColor.BOLD+"IMPORTANT"+C.CHAT.getColor()+ChatColor.BOLD+" "+ChatColor.RESET;
 
     @Getter
     private static Sam robot;
@@ -30,6 +33,17 @@ public class Sam {
 
     public void info(Player player, String... messages){
         Arrays.stream(messages).forEach(s -> player.sendMessage(prefix+C.INFO.getColor()+C.translateColors(s)));
+    }
+
+    public void important(Player player, String... messages){
+        Arrays.stream(messages).forEach(s -> player.sendMessage(announcement+C.SUCCESS.getColor()+C.translateColors(s)));
+    }
+
+    public void announcement(Player player, String... messages){
+        player.sendMessage("  ");
+        player.sendMessage(UtilString.centered("&C&LANNOUNCEMENT"));
+        Arrays.stream(messages).forEach(s -> player.sendMessage(UtilString.centered(s)));
+        player.sendMessage("  ");
     }
 
     public void sam(Player player){
