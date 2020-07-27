@@ -23,7 +23,7 @@ public class CommandGamemode extends SynergyCommand {
     @Override
     public void execute(SynergyUser synergyUser, Player player, String command, String[] args) {
         if (command.equalsIgnoreCase("gm")||command.equalsIgnoreCase("gamemode")){
-            if (args.length>0&&args.length<2){
+            if (args.length == 1){
                 GameMode gm = getGamemode(args[0].toLowerCase());
                 if (gm == null) {
                     sendUsageMessage(player);
@@ -38,6 +38,20 @@ public class CommandGamemode extends SynergyCommand {
                 player.setGameMode(gm);
                 synergyUser.info(
                         "Your gamemode has been changed to "+ C.CHAT_HIGHLIGHT.getColor()+gm.name().toLowerCase());
+            }else if (args.length == 2){
+                GameMode gm = getGamemode(args[0].toLowerCase());
+                if (gm == null) {
+                    sendUsageMessage(player);
+                    return;
+                }
+                SynergyUser target = getPlugin().getUserManager().getUser(args[1], false);
+                if (target == null){
+                    synergyUser.error("I cannot seem find the user "+ C.CHAT_HIGHLIGHT.getColor()+args[0]);
+                    return;
+                }
+                target.getPlayer().setGameMode(gm);
+                target.info(
+                        "Your gamemode has been changed to "+ C.CHAT_HIGHLIGHT.getColor()+gm.name().toLowerCase()+" by "+ synergyUser.getName());
             }else{
                 sendUsageMessage(player);
             }

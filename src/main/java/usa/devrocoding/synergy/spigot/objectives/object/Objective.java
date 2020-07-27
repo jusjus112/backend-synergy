@@ -21,12 +21,20 @@ public abstract class Objective {
     }
 
     public abstract void mechanics();
+    public abstract Objective unlockFirst();
+    public abstract Objective next();
 
-    public void finish(SynergyUser user){
-        if (!user.hasObjective(this)) {
+    public boolean isAbletoStart(SynergyUser synergyUser){
+        return (unlockFirst() != null && synergyUser.hasObjective(unlockFirst()));
+    }
+
+    public boolean finish(SynergyUser user){
+        if (isAbletoStart(user) && !user.hasObjective(this)) {
+            user.setActiveObjective(next());
             Core.getPlugin().getServer().getPluginManager().callEvent(new ObjectiveFinishedEvent(user, this));
-//            user.unlockAchievement(this);
+            return true;
         }
+        return false;
     }
 
     public void addListener(EventListener<?> listener) {

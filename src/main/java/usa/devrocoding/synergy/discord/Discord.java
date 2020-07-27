@@ -11,8 +11,7 @@ import usa.devrocoding.synergy.discord.assets.DiscordManager;
 import usa.devrocoding.synergy.discord.command.CommandManager;
 import usa.devrocoding.synergy.discord.file.FileManager;
 import usa.devrocoding.synergy.discord.server.MessageManager;
-import usa.devrocoding.synergy.discord.terminal.playercount.PlayercountManager;
-import usa.devrocoding.synergy.spigot.assets.C;
+import usa.devrocoding.synergy.discord.terminal.TerminalManager;
 
 import java.util.Arrays;
 
@@ -71,7 +70,7 @@ public class Discord {
             discordManager = new DiscordManager();
             messageManager = new MessageManager();
 
-            new PlayercountManager();
+            new TerminalManager();
             Synergy.discord("Bot loaded..");
         }catch (Exception e){
             Synergy.error("Discord failed to load!");

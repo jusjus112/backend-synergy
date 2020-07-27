@@ -2,6 +2,7 @@ package usa.devrocoding.synergy.spigot.punish.object;
 
 import lombok.Getter;
 import lombok.Setter;
+import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.punish.PunishCategory;
 import usa.devrocoding.synergy.spigot.punish.PunishLevel;
 import usa.devrocoding.synergy.spigot.punish.PunishType;
@@ -47,7 +48,7 @@ public class Punishment {
     }
 
     public String getBanMessage() {
-        return "§7§l<§e/§7§l> §f§lYOUR ACCOUNT HAS BEEN §c§lBANNED §f§lFROM MIRAGEPRISONS §7§l<§e/§7§l>"+"\n"+
+        return "§7§l<§e/§7§l> §f§lYOUR ACCOUNT HAS BEEN §c§lBANNED §f§lFROM "+ Core.getPlugin().getManifest().server_name().toUpperCase() +" §7§l<§e/§7§l>"+"\n"+
                 " \n"+
 //                "§7Banned by: §e"+this.getPunisherName()+"\n"+
                 "§7Ban Category: §c"+this.getCategory().getName()+"\n"+

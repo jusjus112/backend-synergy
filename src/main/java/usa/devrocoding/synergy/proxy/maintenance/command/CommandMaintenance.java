@@ -5,6 +5,8 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.plugin.Command;
 import usa.devrocoding.synergy.assets.Synergy;
+import usa.devrocoding.synergy.discord.Discord;
+import usa.devrocoding.synergy.discord.utilities.MessageBuilder;
 import usa.devrocoding.synergy.proxy.Core;
 import usa.devrocoding.synergy.proxy.maintenance.MaintenanceManager;
 
@@ -17,6 +19,7 @@ public class CommandMaintenance extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length == 0){
+
             sender.sendMessage(new TextComponent(Synergy.SynergyColor.getLineWithName()));
             sender.sendMessage(new TextComponent(ChatColor.YELLOW+"/synergyreload maintenance"+ChatColor.GRAY+" - Reloads the 'maintenance.yml'"));
             sender.sendMessage(new TextComponent(ChatColor.YELLOW+"/maintenance <on/off>"+ChatColor.GRAY+" - Turns on/off the maintenance for the proxy"));

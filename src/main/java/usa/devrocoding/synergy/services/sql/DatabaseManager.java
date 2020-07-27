@@ -7,6 +7,7 @@ import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.services.SQLService;
 import usa.devrocoding.synergy.spigot.user.object.UserExperience;
 
+import java.net.ConnectException;
 import java.sql.*;
 import java.util.Arrays;
 import java.util.Formatter;
@@ -28,7 +29,7 @@ public class DatabaseManager {
         this.sqlService = service;
     }
 
-    public boolean connect() throws SQLException{
+    public boolean connect() throws SQLException {
         if (this.connection != null && !connection.isClosed()){
             return false;
         }
@@ -40,8 +41,12 @@ public class DatabaseManager {
                 return false;
             }
 
-            this.connection = DriverManager.getConnection("jdbc:mysql://" + getSqlService().getHost() + ":" + getSqlService().getPort()
-                    + "/" + getSqlService().getDatabase(), getSqlService().getUsername(), getSqlService().getPassword());
+            try{
+                this.connection = DriverManager.getConnection("jdbc:mysql://" + getSqlService().getHost() + ":" + getSqlService().getPort()
+                        + "/" + getSqlService().getDatabase(), getSqlService().getUsername(), getSqlService().getPassword());
+            }catch (Exception e){
+                throw new SQLException("Unable to connect, SQL server might be down..");
+            }
             return true;
         }else{
             throw new SQLException("SQL Information is wrong or empty! Check 'Settings.yml'");

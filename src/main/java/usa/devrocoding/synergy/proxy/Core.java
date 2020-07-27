@@ -2,9 +2,11 @@ package usa.devrocoding.synergy.proxy;
 
 import lombok.Getter;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.plugin.Plugin;
 import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.discord.Discord;
+import usa.devrocoding.synergy.discord.utilities.MessageBuilder;
 import usa.devrocoding.synergy.proxy.assets.AssetManager;
 import usa.devrocoding.synergy.proxy.files.ProxyYMLFile;
 import usa.devrocoding.synergy.proxy.maintenance.MaintenanceManager;
@@ -29,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class Core extends Plugin {
 
@@ -124,6 +127,8 @@ public class Core extends Plugin {
 
         // Initialize the discord bot
         Discord.initTerminal();
+
+//        this.assetManager.initServerChecker();
 
         Synergy.info("Synergy Loaded");
     }

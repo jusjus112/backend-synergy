@@ -569,26 +569,62 @@ public class UtilBlock {
 	}
 
 	public static List<Block> getBlocks(Location loc1, Location loc2) {
-		List<Block> blocks = new ArrayList<Block>();
+		//First of all, we create the list:
+		List<Block> blocks = new ArrayList<>();
+		// TODO: DOESN't WORK.. IT WIL LCRASH YOUR SERVER
 
-		int topBlockX = (loc1.getBlockX() < loc2.getBlockX() ? loc2.getBlockX() : loc1.getBlockX());
-		int bottomBlockX = (loc1.getBlockX() > loc2.getBlockX() ? loc2.getBlockX() : loc1.getBlockX());
-
-		int topBlockY = (loc1.getBlockY() < loc2.getBlockY() ? loc2.getBlockY() : loc1.getBlockY());
-		int bottomBlockY = (loc1.getBlockY() > loc2.getBlockY() ? loc2.getBlockY() : loc1.getBlockY());
-
-		int topBlockZ = (loc1.getBlockZ() < loc2.getBlockZ() ? loc2.getBlockZ() : loc1.getBlockZ());
-		int bottomBlockZ = (loc1.getBlockZ() > loc2.getBlockZ() ? loc2.getBlockZ() : loc1.getBlockZ());
-
-		for (int x = bottomBlockX; x <= topBlockX; x++) {
-			for (int z = bottomBlockZ; z <= topBlockZ; z++) {
-				for (int y = bottomBlockY; y <= topBlockY; y++) {
-					Block block = loc1.getWorld().getBlockAt(x, y, z);
-
-					blocks.add(block);
-				}
-			}
-		}
+//		//Next we will name each coordinate
+//		int x1 = loc1.getBlockX();
+//		int y1 = loc1.getBlockY();
+//		int z1 = loc1.getBlockZ();
+//
+//		int x2 = loc2.getBlockX();
+//		int y2 = loc2.getBlockY();
+//		int z2 = loc2.getBlockZ();
+//
+//		//Then we create the following integers
+//		int xMin, yMin, zMin;
+//		int xMax, yMax, zMax;
+//		int x, y, z;
+//
+//		//Now we need to make sure xMin is always lower then xMax
+//		if(x1 > x2){ //If x1 is a higher number then x2
+//			xMin = x2;
+//			xMax = x1;
+//		}else{
+//			xMin = x1;
+//			xMax = x2;
+//		}
+//
+//		//Same with Y
+//		if(y1 > y2){
+//			yMin = y2;
+//			yMax = y1;
+//		}else{
+//			yMin = y1;
+//			yMax = y2;
+//		}
+//
+//		//And Z
+//		if(z1 > z2){
+//			zMin = z2;
+//			zMax = z1;
+//		}else{
+//			zMin = z1;
+//			zMax = z2;
+//		}
+//
+//		//Now it's time for the loop
+//		for(x = xMin; x <= xMax; x ++){
+//			for(y = yMin; y <= yMax; y ++){
+//				for(z = zMin; z <= zMax; z ++){
+//					Block b = new Location(loc1.getWorld(), x, y, z).getBlock();
+//					blocks.add(b);
+//				}
+//			}
+//		}
+//
+//		//And last but not least, we return with the list
 		return blocks;
 	}
 }

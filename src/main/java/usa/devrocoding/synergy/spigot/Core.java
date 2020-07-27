@@ -30,6 +30,7 @@ import usa.devrocoding.synergy.spigot.gui.GuiManager;
 import usa.devrocoding.synergy.spigot.hologram.HologramManager;
 import usa.devrocoding.synergy.spigot.language.LanguageManager;
 import usa.devrocoding.synergy.spigot.nick.NickManager;
+import usa.devrocoding.synergy.spigot.objectives.ObjectiveManager;
 import usa.devrocoding.synergy.spigot.plugin_messaging.PluginMessagingManager;
 import usa.devrocoding.synergy.spigot.punish.PunishManager;
 import usa.devrocoding.synergy.spigot.runnable.RunnableManager;
@@ -69,7 +70,7 @@ public class Core extends SynergyPlugin {
     private CommandManager commandManager;
     @Getter
     private RunnableManager runnableManager;
-    @Getter
+    @Getter @Setter
     private DatabaseManager databaseManager;
     @Getter
     private GuiManager GUIManager;
@@ -109,6 +110,8 @@ public class Core extends SynergyPlugin {
     private WandManager wandManager;
     @Getter
     private PunishManager punishManager;
+    @Getter
+    private ObjectiveManager objectiveManager;
 
     @Getter
     private LobbyManager lobbyManager = null;
@@ -150,33 +153,8 @@ public class Core extends SynergyPlugin {
         this.manifest = this.getClass().getAnnotation(SynergyMani.class);
 
         // Load the sql Service so SQL can be used
-        try{
-            // Initialize SQL
-            YMLFile f = getPluginManager().getFileStructure().getYMLFile("settings");
-            this.databaseManager = new DatabaseManager(new SQLService(
-                    f.get().getString("sql.host"),
-                    f.get().getString("sql.database"),
-                    f.get().getString("sql.username"),
-                    f.get().getString("sql.password"),
-                    f.get().getInt("sql.port")));
-
-            // Connect to SQL
-            Synergy.info("Connecting to SQL....");
-            if (this.databaseManager.connect()) {
-                Synergy.success("Connected to your SQL Service Provider");
-
-            }else{
-                Synergy.success("Cannot connect to MySQL. Something went wrong.", "Using JSON files as your database!");
-                return;
-            }
-            this.databaseManager.loadDefaultTables(); // Generate the default tables if they didn't exist
-        }catch (FileNotFoundException e){
-            //TODO: Create one instead
-            Synergy.error("File 'settings.yml' doesn't exists. Creating one now...", "Restarting Plugin.....");
-            this.setEnabled(true);
-            return;
-        }catch (SQLException e){
-            Synergy.error("I can't connect to your SQL Service provider", e.getMessage(), "Check your SQL settings in the 'settings.yml'");
+        if (!this.pluginManager.initDatabase()){
+            this.setEnabled(false);
             return;
         }
 
@@ -213,6 +191,7 @@ public class Core extends SynergyPlugin {
         this.nickManager = new NickManager(this);
         this.wandManager = new WandManager(this);
         this.punishManager = new PunishManager(this);
+        this.objectiveManager = new ObjectiveManager(this);
 
         // Init the utilities
         this.globalManager.setUtilDisplay(new UtilDisplay());

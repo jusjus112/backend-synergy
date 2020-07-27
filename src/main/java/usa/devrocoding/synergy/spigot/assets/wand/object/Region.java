@@ -1,19 +1,40 @@
 package usa.devrocoding.synergy.spigot.assets.wand.object;
 
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
+import usa.devrocoding.synergy.spigot.utilities.UtilLoc;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Region {
 
-    @Getter @Setter
     private Location firstLocation = null, secondLocation = null;
+    private final int xMin;
+    private final int xMax;
+    private final int yMin;
+    private final int yMax;
+    private final int zMin;
+    private final int zMax;
+
+    public Region(@NonNull Location loc1, @NonNull Location loc2){
+        this.firstLocation = loc1;
+        this.secondLocation = loc2;
+
+        this.xMin = Math.min(loc1.getBlockX(), loc2.getBlockX());
+        this.xMax = Math.max(loc1.getBlockX(), loc2.getBlockX());
+        this.yMin = Math.min(loc1.getBlockY(), loc2.getBlockY());
+        this.yMax = Math.max(loc1.getBlockY(), loc2.getBlockY());
+        this.zMin = Math.min(loc1.getBlockZ(), loc2.getBlockZ());
+        this.zMax = Math.max(loc1.getBlockZ(), loc2.getBlockZ());
+    }
 
     public boolean isInside(final SynergyUser user, int addX, int addY, int addZ) {
         final ZoneVector curr = new ZoneVector(
@@ -59,7 +80,7 @@ public class Region {
         return curr.isInAABB(min, max);
     }
 
-    public Region getFromString(String string) throws NullPointerException{
+    public static Region getFromString(String string) throws NullPointerException{
         if (string.contains("region".toUpperCase())){
             String[] args = string.split("//");
             List<Location> locations = new ArrayList<>();
@@ -68,9 +89,7 @@ public class Region {
                 String[] parameters = arg.split(",");
                 locations.add(new Location(Bukkit.getWorld(parameters[0]), Double.parseDouble(parameters[1]), Double.parseDouble(parameters[2]), Double.parseDouble(parameters[3])));
             }
-            this.setFirstLocation(locations.get(0));
-            this.setSecondLocation(locations.get(1));
-            return this;
+            return new Region(locations.get(0), locations.get(1));
         }
         throw new NullPointerException("Region String not a valid formatted string!");
     }
@@ -84,4 +103,49 @@ public class Region {
     public String serialize(){
         return this.toString();
     }
+
+    public Iterator<Block> blockList() {
+        List<Block> bL = new ArrayList<>(this.getTotalBlockSize());
+        for (int x = xMin; x <= xMax; ++x) {
+            for (int y = yMin; y <= yMax; ++y) {
+                for (int z = zMin; z <= zMax; ++z) {
+                    bL.add(this.firstLocation.getWorld().getBlockAt(x, y, z));
+                }
+            }
+        }
+        return bL.iterator();
+    }
+
+    public int getHeight() {
+        return this.yMax - this.yMin + 1;
+    }
+
+    public int getXWidth() {
+        return this.xMax - this.xMin + 1;
+    }
+
+    public int getZWidth() {
+        return this.zMax - this.zMin + 1;
+    }
+
+    public int getTotalBlockSize() {
+        return this.getHeight() * this.getXWidth() * this.getZWidth();
+    }
+
+    public double getDistance() {
+        return this.getFirstLocation().distance(this.getSecondLocation());
+    }
+
+    public double getDistanceSquared() {
+        return this.getFirstLocation().distanceSquared(this.getSecondLocation());
+    }
+
+    public Location getFirstLocation(){
+        return UtilLoc.newInstance(this.firstLocation);
+    }
+
+    public Location getSecondLocation(){
+        return UtilLoc.newInstance(this.secondLocation);
+    }
+
 }

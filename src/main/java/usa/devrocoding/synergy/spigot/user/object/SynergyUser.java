@@ -44,6 +44,8 @@ public class SynergyUser {
     private List<Achievement> achievements = new ArrayList<>();
     @Getter @Setter
     private List<Objective> objectives = new ArrayList<>();
+    @Getter @Setter
+    private Objective activeObjective = null;
     @Getter
     private List<Achievement> achievementsToBeUpdated = new ArrayList<>();
     @Getter

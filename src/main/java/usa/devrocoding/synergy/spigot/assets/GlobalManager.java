@@ -1,6 +1,5 @@
 package usa.devrocoding.synergy.spigot.assets;
 
-import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.entity.Player;
 import usa.devrocoding.synergy.spigot.Core;
@@ -34,7 +33,8 @@ public class GlobalManager extends Module {
             new CommandTop(plugin),
             new CommandWorkbench(plugin),
             new CommandSpawn(plugin),
-            new CommandWeather(plugin)
+            new CommandWeather(plugin),
+            new CommandSystems(plugin)
         );
 
         registerListener(

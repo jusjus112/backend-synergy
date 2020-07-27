@@ -15,12 +15,11 @@ import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 public class CommandPlugins extends SynergyCommand {
 
     public CommandPlugins(Core plugin) {
-        super(plugin, Rank.ADMIN, "Synergy's Plugin Command", true,"plugins", "pl");
+        super(plugin, Rank.NONE, "Synergy's Plugin Command", true,"plugins", "pl");
     }
 
     @Override
     public void execute(SynergyUser synergyUser, Player player, String command, String[] args) {
-        synergyUser.addNetworkXP(15.3);
         int count = 0;
         if (Bukkit.getServer().getPluginManager().getPlugins().length > 65){
             StringBuilder stringBuilder = new StringBuilder();

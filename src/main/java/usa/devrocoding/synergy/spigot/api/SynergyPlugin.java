@@ -13,6 +13,12 @@ public abstract class SynergyPlugin extends JavaPlugin {
     public void onEnable() {
         if (!name().equalsIgnoreCase("Synergy")){
             Synergy.info(Synergy.format("extension", LinuxColorCodes.ANSI_YELLOW, name() + " detected...."));
+
+            if (!Core.getPlugin().isLoaded()){
+                Synergy.error("Synergy not detected or enabled! Disabling extension...");
+                Bukkit.getPluginManager().disablePlugin(this);
+                return;
+            }
         }
         try {
             preInit();

@@ -1,6 +1,7 @@
 package usa.devrocoding.synergy.spigot.assets.wand.object;
 
 import lombok.Getter;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.assets.wand.event.SelectorWandCompletionEvent;
@@ -9,7 +10,9 @@ import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 public class SelectorWand {
 
     @Getter
-    private Region region = new Region();
+    private Location firstLocation;
+    @Getter
+    private Location secondLocation;
 
     public enum SelectorUnit{
         FIRST,
@@ -19,15 +22,16 @@ public class SelectorWand {
     public void select(SynergyUser user, SelectorUnit selectorUnit, Block block){
         switch (selectorUnit){
             case FIRST:
-                this.region.setFirstLocation(block.getLocation());
+                this.firstLocation = block.getLocation();
                 break;
             case SECOND:
-                this.region.setSecondLocation(block.getLocation());
+                this.secondLocation = block.getLocation();
                 break;
         }
-        if (this.region.getFirstLocation() != null && this.region.getSecondLocation() != null){
+        if (this.firstLocation != null && this.secondLocation != null){
             user.getPlayer().getInventory().remove(Core.getPlugin().getWandManager().getWand());
-            Core.getPlugin().getServer().getPluginManager().callEvent(new SelectorWandCompletionEvent(this, user));
+            Region region = new Region(this.firstLocation, this.secondLocation);
+            Core.getPlugin().getServer().getPluginManager().callEvent(new SelectorWandCompletionEvent(this, user, region));
 
             Core.getPlugin().getWandManager().getSelectorWands().remove(user);
         }

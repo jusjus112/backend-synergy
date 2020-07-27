@@ -24,7 +24,7 @@ public class GuiManager extends Module {
 	private final List<GuiInteract> interactMenus = Lists.newArrayList();
 	
 	public GuiManager(Core plugin) {
-		super(plugin, "GuiManager", false);
+		super(plugin, "Gui Manager", false);
 	}
 	
 	@EventHandler

@@ -1,15 +1,21 @@
 package usa.devrocoding.synergy.spigot.assets;
 
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.assets.object.LinuxColorCodes;
+import usa.devrocoding.synergy.services.SQLService;
+import usa.devrocoding.synergy.services.sql.DatabaseManager;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
 import usa.devrocoding.synergy.spigot.api.SynergyPlugin;
 import usa.devrocoding.synergy.spigot.bot_sam.Sam;
+import usa.devrocoding.synergy.spigot.files.yml.YMLFile;
 import usa.devrocoding.synergy.spigot.listeners.EventHandlers;
 
 import java.io.FileNotFoundException;
+import java.net.ConnectException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +41,41 @@ public class PluginManager extends Module {
     @Override
     public void reload(String response) {
 
+    }
+
+    // Init the database
+    public boolean initDatabase(){
+        try{
+            // Initialize SQL
+            YMLFile f = getPlugin().getPluginManager().getFileStructure().getYMLFile("settings");
+            getPlugin().setDatabaseManager(new DatabaseManager(new SQLService(
+                    f.get().getString("sql.host"),
+                    f.get().getString("sql.database"),
+                    f.get().getString("sql.username"),
+                    f.get().getString("sql.password"),
+                    f.get().getInt("sql.port"))));
+
+            // Connect to SQL
+            Synergy.info("Connecting to SQL....");
+            if (getPlugin().getDatabaseManager().connect()) {
+                Synergy.success("Connected to your SQL Service Provider");
+                getPlugin().getDatabaseManager().loadDefaultTables(); // Generate the default tables if they didn't exist
+                return true;
+            }else{
+                Synergy.error("Cannot connect to MySQL. Something went wrong.", "Using JSON files as your database!");
+                return false;
+            }
+        }catch (FileNotFoundException e){
+            //TODO: Create one instead
+            Synergy.error("File 'settings.yml' doesn't exists. Creating one now...", "Restarting Plugin.....");
+            Bukkit.getServer().getPluginManager().enablePlugin(getPlugin());
+            return false;
+        }catch (Exception e){
+            Synergy.error("I can't connect to your SQL Service provider", e.getMessage(),
+                    "Check your SQL settings in the 'settings.yml'", "Shutting down.....");
+            Bukkit.getServer().shutdown();
+            return false;
+        }
     }
 
     // This will be called on a startup and on reloads
