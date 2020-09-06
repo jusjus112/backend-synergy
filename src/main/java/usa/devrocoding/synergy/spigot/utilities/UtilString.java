@@ -13,6 +13,10 @@ import java.text.DecimalFormat;
 import java.util.*;
 import java.util.List;
 
+/**
+ * @Author Hypixel LLC
+ * @Website hypixel.net
+ */
 public class UtilString {
 
     public static String[] convert(List<String> l) {

@@ -30,7 +30,7 @@ public class SettingsGUI extends Gui{
                 return new ItemBuilder(Material.STAINED_GLASS_PANE).setMaterialData(new MaterialData((byte) 7)).setName(" ").build();
             }
 
-            @Override public void click(SynergyUser synergyUser, ClickType clickType) {}
+            @Override public void click(SynergyUser synergyUser, ClickType clickType, Gui gui) {}
         });
 
         addElement(25, new GuiElement() {
@@ -43,7 +43,7 @@ public class SettingsGUI extends Gui{
             }
 
             @Override
-            public void click(SynergyUser synergyUser, ClickType clickType) {
+            public void click(SynergyUser synergyUser, ClickType clickType, Gui gui) {
 
             }
         });
@@ -58,7 +58,7 @@ public class SettingsGUI extends Gui{
             }
 
             @Override
-            public void click(SynergyUser synergyUser, ClickType clickType) {
+            public void click(SynergyUser synergyUser, ClickType clickType, Gui gui) {
 
             }
         });
@@ -69,7 +69,7 @@ public class SettingsGUI extends Gui{
                 return new ItemBuilder(Material.STAINED_GLASS_PANE).setMaterialData(new MaterialData((byte) 7)).setName(" ").build();
             }
 
-            @Override public void click(SynergyUser synergyUser, ClickType clickType) {}
+            @Override public void click(SynergyUser synergyUser, ClickType clickType, Gui gui) {}
         });
     }
 

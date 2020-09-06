@@ -5,6 +5,10 @@ import org.bukkit.Location;
 import java.text.DecimalFormat;
 import java.util.Random;
 
+/**
+ * @Author Hypixel LLC
+ * @Website hypixel.net
+ */
 public class UtilMath {
 
     public static double PI = 3.141592;

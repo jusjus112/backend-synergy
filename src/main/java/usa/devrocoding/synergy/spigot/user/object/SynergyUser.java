@@ -1,5 +1,8 @@
 package usa.devrocoding.synergy.spigot.user.object;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import java.text.SimpleDateFormat;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -13,7 +16,9 @@ import usa.devrocoding.synergy.spigot.achievement.object.Achievement;
 import usa.devrocoding.synergy.spigot.assets.C;
 import usa.devrocoding.synergy.spigot.bot_sam.Sam;
 import usa.devrocoding.synergy.spigot.bot_sam.object.SamMessage;
+import usa.devrocoding.synergy.spigot.language.Language;
 import usa.devrocoding.synergy.spigot.language.LanguageFile;
+import usa.devrocoding.synergy.spigot.objectives.TestObjective;
 import usa.devrocoding.synergy.spigot.objectives.object.Objective;
 import usa.devrocoding.synergy.spigot.punish.PunishType;
 import usa.devrocoding.synergy.spigot.punish.object.Punishment;
@@ -27,29 +32,31 @@ import java.util.*;
 public class SynergyUser {
 
     @Getter
-    private UUID uuid;
+    private final UUID uuid;
     @Getter
-    private String name;
+    private final String name;
     @Getter
-    private Rank rank;
+    private final Rank rank;
     @Getter
-    private LanguageFile language;
+    private final LanguageFile language;
     @Getter @Setter
-    private List<Punishment> punishments = new ArrayList<>();
+    private List<Punishment> punishments;
     @Getter @Setter
-    private double networkXP = 0D;
+    private double networkXP;
     @Getter @Setter
-    private UserExperience userExperience = UserExperience.NOOB;
+    private UserExperience userExperience;
     @Getter @Setter
-    private List<Achievement> achievements = new ArrayList<>();
-    @Getter @Setter
-    private List<Objective> objectives = new ArrayList<>();
-    @Getter @Setter
-    private Objective activeObjective = null;
+    private List<Achievement> achievements;
     @Getter
-    private List<Achievement> achievementsToBeUpdated = new ArrayList<>();
+    private Map<Objective, Date> objectives;
     @Getter
-    private UserLoadEvent.UserLoadType loadType;
+    private Map<Objective, Date> objectivesToBeUpdated;
+    @Getter @Setter
+    private Objective currentObjective;
+    @Getter
+    private final List<Achievement> achievementsToBeUpdated;
+    @Getter
+    private final UserLoadEvent.UserLoadType loadType;
     @Getter
     private boolean nicked = false;
 
@@ -58,7 +65,15 @@ public class SynergyUser {
         this.name = name;
         this.rank = rank;
         this.language = language;
+        this.punishments = Lists.newArrayList();
+        this.userExperience = UserExperience.NOOB;
+        this.achievements = Lists.newArrayList();
+        this.achievementsToBeUpdated = Lists.newArrayList();
+        this.objectives = Maps.newHashMap();
+        this.objectivesToBeUpdated = Maps.newHashMap();
         this.loadType = loadType;
+        this.networkXP = 0D;
+        this.currentObjective = Core.getPlugin().getObjectiveManager().getAvailableObjectives().get(0);
 
         if (save) {
             Core.getPlugin().getUserManager().getUsers().put(uuid, this);
@@ -142,30 +157,37 @@ public class SynergyUser {
         getPlayer().teleport(target.getPlayer());
     }
 
+    @Deprecated
     public void info(String... messages){
         Sam.getRobot().info(getPlayer(), messages);
     }
 
+    @Deprecated
     public void important(String... messages){
         Sam.getRobot().important(getPlayer(), messages);
     }
 
+    @Deprecated
     public void announcement(String... messages){
         Sam.getRobot().announcement(getPlayer(), messages);
     }
 
+    @Deprecated
     public void sam(SamMessage samMessage){
         Sam.getRobot().sam(getPlayer());
     }
 
+    @Deprecated
     public void error(String... messages){
         Sam.getRobot().warning(getPlayer(), messages);
     }
 
+    @Deprecated
     public void warning(String... messages){
         Sam.getRobot().warning(getPlayer(), messages);
     }
 
+    @Deprecated
     public void sendModifactionMessage(MessageModification modification, String... messages){
         switch (modification){
             case CENTERED:
@@ -248,11 +270,28 @@ public class SynergyUser {
         }
     }
 
+    public void unlockObjective(Objective objective){
+        if (!hasObjective(objective)){
+            Date date = new Date();
+            this.objectives.put(objective, date);
+            this.objectivesToBeUpdated.put(objective, date);
+        }
+    }
+
     public boolean hasAchievement(Achievement achievement){
         return getAchievements().contains(achievement);
     }
 
+    public boolean hasCurrentObjective(){
+        return this.currentObjective != null;
+    }
+
+    public void setObjectives(Map<Objective, Date> objectives){
+        this.objectives = objectives;
+        objectives.forEach((objective, date) -> {if (date == null) setCurrentObjective(objective);});
+    }
+
     public boolean hasObjective(Objective objective){
-        return false;
+        return this.objectives.containsKey(objective);
     }
 }

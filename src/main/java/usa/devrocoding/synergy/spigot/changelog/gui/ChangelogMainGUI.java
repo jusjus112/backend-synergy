@@ -30,7 +30,7 @@ public class ChangelogMainGUI extends Gui {
                         .build();
             }
             @Override
-            public void click(SynergyUser synergyUser, ClickType clickType) {}
+            public void click(SynergyUser synergyUser, ClickType clickType, Gui gui) {}
         });
 
         addElement(12, new GuiElement() {
@@ -42,7 +42,7 @@ public class ChangelogMainGUI extends Gui {
             }
 
             @Override
-            public void click(SynergyUser synergyUser, ClickType clickType) {
+            public void click(SynergyUser synergyUser, ClickType clickType, Gui gui) {
 
             }
         });
@@ -56,7 +56,7 @@ public class ChangelogMainGUI extends Gui {
             }
 
             @Override
-            public void click(SynergyUser synergyUser, ClickType clickType) {
+            public void click(SynergyUser synergyUser, ClickType clickType, Gui gui) {
                 new ChangelogGUI(getPlugin(), ChangelogType.SERVER).open(synergyUser.getPlayer());
             }
         });

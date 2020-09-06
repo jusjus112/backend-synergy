@@ -64,7 +64,7 @@ public class PunishmentsGUI extends Gui{
                 }
 
                 @Override
-                public void click(SynergyUser player, ClickType clickType) {
+                public void click(SynergyUser synergyUser, ClickType clickType, Gui gui) {
                     if (punishment.isActive()){
                         new ConfirmationGUI(getPlugin(), "Are you sure?"){
                             @Override
@@ -78,7 +78,7 @@ public class PunishmentsGUI extends Gui{
 //                                synergyUser.getPlayer().closeInventory();
                                 PunishmentsGUI.this.open(synergyUser.getPlayer());
                             }
-                        }.open(player.getPlayer());
+                        }.open(synergyUser.getPlayer());
                     }
                 }
             });

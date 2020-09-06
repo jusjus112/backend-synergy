@@ -24,7 +24,7 @@ public class GlobalManager extends Module {
             new CommandGamemode(plugin),
             new CommandHeal(plugin),
             new CommandHelp(plugin),
-            new CommandKill(plugin),
+//            new CommandKill(plugin),
             new CommandPlugins(plugin),
             new CommandSpeed(plugin),
             new CommandSynergy(plugin),

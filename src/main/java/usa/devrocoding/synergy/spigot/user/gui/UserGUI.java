@@ -34,7 +34,7 @@ public class UserGUI extends Gui {
                         .build();
             }
             @Override
-            public void click(SynergyUser synergyUser, ClickType clickType) {}
+            public void click(SynergyUser synergyUser, ClickType clickType, Gui gui) {}
         });
 
         addElement(11, new GuiElement() {
@@ -47,7 +47,7 @@ public class UserGUI extends Gui {
             }
 
             @Override
-            public void click(SynergyUser synergyUser, ClickType clickType) {
+            public void click(SynergyUser synergyUser, ClickType clickType, Gui gui) {
 
             }
         });
@@ -61,7 +61,7 @@ public class UserGUI extends Gui {
             }
 
             @Override
-            public void click(SynergyUser synergyUser, ClickType clickType) {
+            public void click(SynergyUser synergyUser, ClickType clickType, Gui gui) {
 
             }
         });
@@ -76,7 +76,7 @@ public class UserGUI extends Gui {
             }
 
             @Override
-            public void click(SynergyUser synergyUser, ClickType clickType) {
+            public void click(SynergyUser synergyUser, ClickType clickType, Gui gui) {
 
             }
         });
@@ -91,7 +91,7 @@ public class UserGUI extends Gui {
             }
 
             @Override
-            public void click(SynergyUser synergyUser, ClickType clickType) {
+            public void click(SynergyUser synergyUser, ClickType clickType, Gui gui) {
                 new HomeGUI(getPlugin(), synergyUser).open(synergyUser.getPlayer());
             }
         });

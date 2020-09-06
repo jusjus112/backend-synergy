@@ -5,6 +5,10 @@ import org.bukkit.util.Vector;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * @Author Hypixel LLC
+ * @Website hypixel.net
+ */
 public class UtilVector {
 
 	public static final Vector rotateAroundAxisX(Vector v, double angle) {

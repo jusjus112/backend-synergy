@@ -22,6 +22,8 @@ import java.util.function.Predicate;
 
 public class HologramManager extends Module implements Listener {
 
+    // TODO: Holograms are not spawning when not joining in chunk
+
     private static final double HOLOGRAM_DISTANCE = 0.3D;
     private static final double SEND_RADIUS_SQUARED = UtilMath.square(40);
 
@@ -109,16 +111,19 @@ public class HologramManager extends Module implements Listener {
                 e.printStackTrace();
             }
         });
-        if (!list.isEmpty()) this.holograms.put(uuid, list);
+        if (!list.isEmpty())
+            this.holograms.put(uuid, list);
     }
 
     private void update(SynergyUser synergyUser){
         UUID uuid = synergyUser.getUuid();
 
         if (holograms.containsKey(uuid)){
-            Lists.newArrayList(holograms.get(uuid)).forEach(hologram -> {
-                hologram.send(synergyUser);
-            });
+            try{
+                Lists.newArrayList(holograms.get(uuid)).forEach(hologram -> {
+                    hologram.send(synergyUser);
+                });
+            }catch (Exception ignored){}
         }
     }
 
@@ -135,9 +140,9 @@ public class HologramManager extends Module implements Listener {
     @EventHandler
     public void on(UserLoadEvent e) {
         // Async because of the user join server impact
-        getPlugin().getRunnableManager().runTaskAsynchronously("Hologram onJoin", (echo) -> {
+        getPlugin().getRunnableManager().runTask("Hologram onJoin", (echo) -> {
             createHologramForPlayer(e.getUser().getUuid());
-            update(e.getUser());
+//            update(e.getUser());
         });
     }
 

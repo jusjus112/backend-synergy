@@ -20,12 +20,16 @@ public class ScoreboardAnimation {
     }
 
     public void update() {
+        if (Core.getPlugin().getScoreboardManager().getScoreboards().isEmpty()){
+            return;
+        }
+
         counter++;
         String s = "";
         if (counter < 0) {
             if (counter > -48 && counter < -36) {
                 if (counter % 4 == 0) {
-                    stage = stage ? false : true;
+                    stage = !stage;
                 }
                 s = (stage ? primary : secondary) + text;
             } else {

@@ -33,9 +33,9 @@ public abstract class ConfirmationGUI extends Gui {
                 }
 
                 @Override
-                public void click(SynergyUser player, ClickType clickType) {
-                    player.getPlayer().closeInventory();
-                    onAccept(player);
+                public void click(SynergyUser synergyUser, ClickType clickType, Gui gui) {
+                    synergyUser.getPlayer().closeInventory();
+                    onAccept(synergyUser);
                 }
             });
         }
@@ -50,9 +50,9 @@ public abstract class ConfirmationGUI extends Gui {
                 }
 
                 @Override
-                public void click(SynergyUser player, ClickType clickType) {
-                    player.getPlayer().closeInventory();
-                    onDisallow(player);
+                public void click(SynergyUser synergyUser, ClickType clickType, Gui gui) {
+                    synergyUser.getPlayer().closeInventory();
+                    onDisallow(synergyUser);
                 }
             });
         }
@@ -67,7 +67,7 @@ public abstract class ConfirmationGUI extends Gui {
                 }
 
                 @Override
-                public void click(SynergyUser player, ClickType clickType) {
+                public void click(SynergyUser synergyUser, ClickType clickType, Gui gui) {
 
                 }
             });

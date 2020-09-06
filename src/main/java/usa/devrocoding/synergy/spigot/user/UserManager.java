@@ -8,7 +8,9 @@ import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
 import usa.devrocoding.synergy.spigot.achievement.object.Achievement;
+import usa.devrocoding.synergy.spigot.assets.PlayerCommunication;
 import usa.devrocoding.synergy.spigot.language.LanguageFile;
+import usa.devrocoding.synergy.spigot.objectives.object.Objective;
 import usa.devrocoding.synergy.spigot.punish.PunishCategory;
 import usa.devrocoding.synergy.spigot.punish.PunishLevel;
 import usa.devrocoding.synergy.spigot.punish.PunishType;
@@ -112,6 +114,7 @@ public class UserManager extends Module {
             Rank rank = Rank.NONE;
             List<Punishment> punishments;
             List<Achievement> achievements;
+            Map<Objective, Date> objectives;
 
             try{
                 if (resultSet.next()) {
@@ -125,6 +128,7 @@ public class UserManager extends Module {
 
                     punishments = getPlugin().getPunishManager().retrievePunishments(UUID.fromString(resultSet.getString("uuid")));
                     achievements = getPlugin().getAchievementManager().retrieveAchievements(resultSet.getString("uuid"));
+                    objectives = getPlugin().getObjectiveManager().retrieveForPlayer(UUID.fromString(resultSet.getString("uuid")));
 
                     user = new SynergyUser(
                             UUID.fromString(resultSet.getString("uuid")),
@@ -139,6 +143,7 @@ public class UserManager extends Module {
                     Synergy.debug("USER LOADED ACHIEVEMENTS !!!");
                     System.out.println(achievements);
                     Synergy.debug(rank.getCodeName());
+                    user.setObjectives(objectives);
                     resultSet.close();
                     Core.getPlugin().getDatabaseManager().disconnect();
                     return user;

@@ -58,7 +58,8 @@ public class CommandManager extends Module implements Listener {
                 "banlist","list","clear","execute","replaceitem",
                 "ban-ip","pardon-ip","save-off","save-on",
                 "debug", "eather","time","effect","gamerule","difficulty",
-                "kill","give","help","stop","time","whitelist","spigot","restart",
+                "give","help","stop","time","whitelist","spigot","restart",
+//                "kill"
 
                 // Essentials Commands
                 "powertool","powertooltoggle","tp2p","tele","tp","gm", "gmc","gma","gmc","gms","gmsp","gmt",
@@ -156,7 +157,9 @@ public class CommandManager extends Module implements Listener {
         return false;
     }
 
-
+    public void registerCommand(SynergyCommand synergyCommand){
+        this.commands.add(synergyCommand);
+    }
 
     public void unregisterMinecraftCommand(String command) {
         Bukkit.getScheduler().runTaskLater(getPlugin(), () -> {

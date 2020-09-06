@@ -37,7 +37,7 @@ public class WarpGUI extends Gui {
                         .build();
             }
             @Override
-            public void click(SynergyUser synergyUser, ClickType clickType) {}
+            public void click(SynergyUser synergyUser, ClickType clickType, Gui gui) {}
         });
 
         WarpManager warpManager = Core.getPlugin().getWarpManager();
@@ -53,7 +53,7 @@ public class WarpGUI extends Gui {
                 }
 
                 @Override
-                public void click(SynergyUser player, ClickType clickType) {
+                public void click(SynergyUser synergyUser, ClickType clickType, Gui gui) {
 
                 }
             });
@@ -77,9 +77,9 @@ public class WarpGUI extends Gui {
                     }
 
                     @Override
-                    public void click(SynergyUser player, ClickType clickType) {
-                        warp.teleportTo(player);
-                        player.info("I've teleported you to the warp '"+warp.getName()+"'");
+                    public void click(SynergyUser synergyUser, ClickType clickType, Gui gui) {
+                        warp.teleportTo(synergyUser);
+                        synergyUser.info("I've teleported you to the warp '"+warp.getName()+"'");
                     }
                 });
                 index++;

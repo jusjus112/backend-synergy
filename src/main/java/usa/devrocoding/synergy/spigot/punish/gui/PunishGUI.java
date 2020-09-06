@@ -43,7 +43,7 @@ public class PunishGUI extends Gui {
                 }
 
                 @Override
-                public void click(SynergyUser player, ClickType clickType) {
+                public void click(SynergyUser synergyUser, ClickType clickType, Gui gui) {
                 }
             });
         }
@@ -58,8 +58,8 @@ public class PunishGUI extends Gui {
             }
 
             @Override
-            public void click(SynergyUser player, ClickType clickType) {
-                new PunishmentsGUI(getPlugin(), user.getPunishments(),  user.getName()).open(player.getPlayer());
+            public void click(SynergyUser synergyUser, ClickType clickType, Gui gui) {
+                new PunishmentsGUI(getPlugin(), user.getPunishments(),  user.getName()).open(synergyUser.getPlayer());
             }
         });
 
@@ -70,7 +70,7 @@ public class PunishGUI extends Gui {
             }
 
             @Override
-            public void click(SynergyUser player, ClickType clickType) {
+            public void click(SynergyUser synergyUser, ClickType clickType, Gui gui) {
 
             }
         });
@@ -83,7 +83,7 @@ public class PunishGUI extends Gui {
                 }
 
                 @Override
-                public void click(SynergyUser player, ClickType clickType) {
+                public void click(SynergyUser synergyUser, ClickType clickType, Gui gui) {
 
                 }
             });
@@ -97,7 +97,7 @@ public class PunishGUI extends Gui {
                 }
 
                 @Override
-                public void click(SynergyUser player, ClickType clickType) {
+                public void click(SynergyUser synergyUser, ClickType clickType, Gui gui) {
                     new ConfirmationGUI(getPlugin(), "Are you sure?"){
                         @Override
                         public void onAccept(SynergyUser synergyUser) {
@@ -109,7 +109,7 @@ public class PunishGUI extends Gui {
                         public void onDisallow(SynergyUser synergyUser) {
                             PunishGUI.this.open(synergyUser.getPlayer());
                         }
-                    }.open(player.getPlayer());
+                    }.open(synergyUser.getPlayer());
                 }
             });
         }

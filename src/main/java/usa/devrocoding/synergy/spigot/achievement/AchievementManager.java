@@ -15,6 +15,7 @@ import usa.devrocoding.synergy.spigot.achievement.achievements.*;
 import usa.devrocoding.synergy.spigot.achievement.command.CommandAchievement;
 import usa.devrocoding.synergy.spigot.achievement.listener.PlayerFinishedAchievementListener;
 import usa.devrocoding.synergy.spigot.achievement.object.Achievement;
+import usa.devrocoding.synergy.spigot.gui.Gui;
 import usa.devrocoding.synergy.spigot.gui.GuiElement;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 import usa.devrocoding.synergy.spigot.utilities.ItemBuilder;
@@ -34,6 +35,7 @@ public class AchievementManager extends Module {
         new TableBuilder("achievements", getPlugin().getDatabaseManager())
                 .addColumn("uuid", SQLDataType.VARCHAR, 200, false, SQLDefaultType.NO_DEFAULT, false)
                 .addColumn("achievement", SQLDataType.VARCHAR, 100, false, SQLDefaultType.NO_DEFAULT, false)
+                .addColumn("achieved_on", SQLDataType.DATE, -1, false, SQLDefaultType.NO_DEFAULT, false)
                 .execute();
 
         registerAchievements(
@@ -86,7 +88,7 @@ public class AchievementManager extends Module {
             }
 
             @Override
-            public void click(SynergyUser player, ClickType clickType) {
+            public void click(SynergyUser synergyUser, ClickType clickType, Gui gui) {
 
             }
         };

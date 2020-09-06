@@ -46,6 +46,7 @@ public class CommandHeal extends SynergyCommand {
         for (PotionEffect potionEffect : player.getActivePotionEffects()){
             player.removePotionEffect(potionEffect.getType());
         }
+
         synergyUser.info("You have been healed with love <3");
     }
 

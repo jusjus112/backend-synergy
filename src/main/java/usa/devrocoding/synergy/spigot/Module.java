@@ -6,6 +6,7 @@ import usa.devrocoding.synergy.spigot.bot_sam.Sam;
 import usa.devrocoding.synergy.spigot.command.SynergyCommand;
 
 import java.util.Arrays;
+import usa.devrocoding.synergy.spigot.objectives.object.Objective;
 
 public abstract class Module implements Listener {
 
@@ -40,8 +41,12 @@ public abstract class Module implements Listener {
 
     public void registerCommand(SynergyCommand... commands) {
         for (SynergyCommand command : commands) {
-            plugin.getCommandManager().getCommands().add(command);
+            plugin.getCommandManager().registerCommand(command);
         }
+    }
+
+    public void registerObjectives(Objective... objectives){
+        Arrays.stream(objectives).forEach(objective -> getPlugin().getObjectiveManager().registerObjective(objective));
     }
 
     public String getShortname(){

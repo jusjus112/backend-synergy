@@ -68,11 +68,6 @@ public class DatabaseManager {
                 .addColumn("user_experience", SQLDataType.VARCHAR, 100,false, SQLDefaultType.CUSTOM.setCustom(UserExperience.NOOB.toString().toUpperCase()), false)
                 .addColumn("xp", SQLDataType.DOUBLE, -1,true, SQLDefaultType.CUSTOM.setCustom(0), false)
                 .execute();
-        new TableBuilder("user_achievements", this)
-                .addColumn("uuid", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, true)
-                .addColumn("achievement", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
-                .addColumn("achieved_on", SQLDataType.DATE, -1, false, SQLDefaultType.NO_DEFAULT, false)
-                .execute();
         new TableBuilder("punishments", this)
                 .addColumn("uuid", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
                 .addColumn("type", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)

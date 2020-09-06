@@ -2,6 +2,8 @@ package usa.devrocoding.synergy.spigot.gui;
 
 import com.google.common.collect.Maps;
 import lombok.Getter;
+import lombok.Setter;
+import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -11,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.gui.object.GuiSize;
+import usa.devrocoding.synergy.spigot.gui.object.MenuInventoryHolder;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 import usa.devrocoding.synergy.spigot.utilities.ItemBuilder;
 
@@ -24,7 +27,7 @@ public abstract class Gui {
 	private final String name;
 	private final GuiSize guiSize;
 	@Getter
-	private Gui backGui = null;
+	private Gui parent = null;
 	private final Map<Integer, GuiElement> elements;
 	private final Map<UUID, Inventory> currentSessions;
 	
@@ -56,41 +59,65 @@ public abstract class Gui {
 			inventory.setItem(element.getKey(), element.getValue().getIcon(user));
 		}
 	}
-	
-	public Inventory open(Player player) {
-		Inventory inventory = Bukkit.createInventory(null, guiSize.getSlots(), name);
-		SynergyUser synergyUser = Core.getPlugin().getUserManager().getUser(player);
 
-		for(Entry<Integer, GuiElement> element : elements.entrySet()) {
-			inventory.setItem(element.getKey(), element.getValue().getIcon(synergyUser));
-		}
-		
-		player.openInventory(inventory);
-		
+	/**
+	 * Opens the menu using a PlayerHolder, supports custom implementations for attaching data to the
+	 * player.
+	 *
+	 * @param player the holder to open the menu for.
+	 */
+	public final void open(Player player) {
+		SynergyUser synergyUser = getPlugin().getUserManager().getUser(player);
+		open(synergyUser);
+	}
+
+	/**
+	 * Opens the menu using a PlayerHolder, supports custom implementations for attaching data to the
+	 * player.
+	 *
+	 * @param synergyUser the holder to open the menu for.
+	 */
+	public final void open(SynergyUser synergyUser) {
+		MenuInventoryHolder inventoryHolder = new MenuInventoryHolder(synergyUser, this);
+		Inventory inventory = plugin.getServer()
+				.createInventory(inventoryHolder, guiSize.getSlots(), name);
+
+		inventoryHolder.setInventory(inventory);
+		setItems(inventory, synergyUser);
+
+		synergyUser.getPlayer().openInventory(inventory);
+
+		Player player = synergyUser.getPlayer();
+
+		removeFromSession(player);
+		currentSessions.put(player.getUniqueId(), inventory);
+		player.updateInventory();
+	}
+
+	void setItems(Inventory inventory, SynergyUser synergyUser){
+		elements.forEach((key, value) -> inventory.setItem(key, value.getIcon(synergyUser)));
+	}
+
+	private void removeFromSession(Player player){
 		for(Gui menu : plugin.getGUIManager().getMenus()) {
 			if(!menu.equals(this)) {
 				menu.getCurrentSessions().remove(player.getUniqueId());
 			}
 		}
-		
-		currentSessions.put(player.getUniqueId(), inventory);
-		player.updateInventory();
-		
-		return inventory;
 	}
 
 	public void close(Player player) {
 		player.closeInventory();
-		currentSessions.remove(player.getUniqueId());
+		removeFromSession(player);
 	}
 
-	public Gui setBackGui(Gui backGui){
-		this.backGui = backGui;
+	public Gui setParent(Gui parent){
+		this.parent = parent;
 		return this;
 	}
 
-	public boolean hasBackGui(){
-		return this.backGui != null;
+	public boolean hasParent(){
+		return this.parent != null;
 	}
 
 	public Gui getOuterClazz(){
@@ -109,7 +136,7 @@ public abstract class Gui {
 		return new GuiElement() {
 			@Override
 			public ItemStack getIcon(SynergyUser synergyUser) {
-				if (!hasBackGui()){
+				if (!hasParent()){
 					return alternative.build();
 				}
 				return new ItemBuilder(Material.ARROW)
@@ -118,8 +145,8 @@ public abstract class Gui {
 			}
 
 			@Override
-			public void click(SynergyUser synergyUser, ClickType clickType) {
-				if (hasBackGui()) backGui.open(synergyUser.getPlayer());
+			public void click(SynergyUser synergyUser, ClickType clickType, Gui gui) {
+				if (hasParent()) parent.open(synergyUser);
 			}
 		};
 	}

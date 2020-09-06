@@ -35,7 +35,7 @@ public class AchievementGUI extends Gui {
                         .build();
             }
             @Override
-            public void click(SynergyUser synergyUser, ClickType clickType) {}
+            public void click(SynergyUser synergyUser, ClickType clickType, Gui gui) {}
         });
 
         List<Achievement> achievements = new ArrayList<Achievement>(){{

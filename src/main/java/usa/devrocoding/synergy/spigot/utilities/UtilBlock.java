@@ -18,6 +18,10 @@ import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import usa.devrocoding.synergy.spigot.Core;
 
+/**
+ * @Author Hypixel LLC
+ * @Website hypixel.net
+ */
 public class UtilBlock {
 
 	public static Map<Location, String> blocksToRestore = Maps.newHashMap();

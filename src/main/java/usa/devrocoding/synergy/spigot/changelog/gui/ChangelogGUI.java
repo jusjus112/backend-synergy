@@ -38,7 +38,7 @@ public class ChangelogGUI extends Gui {
                         .build();
             }
             @Override
-            public void click(SynergyUser synergyUser, ClickType clickType) {}
+            public void click(SynergyUser synergyUser, ClickType clickType, Gui gui) {}
         });
 
         for(Changelog changelog : getPlugin().getChangelogManager().getChangelogs()){
@@ -60,7 +60,7 @@ public class ChangelogGUI extends Gui {
                 }
 
                 @Override
-                public void click(SynergyUser synergyUser, ClickType clickType) {
+                public void click(SynergyUser synergyUser, ClickType clickType, Gui gui) {
 
                 }
             });
