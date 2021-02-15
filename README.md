@@ -1,2 +1,1 @@
-# Synergy (Backend)
-
+![Synergy Information](https://imgur.com/LnmDMu1.png)
