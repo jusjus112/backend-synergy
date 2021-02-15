@@ -45,9 +45,9 @@ public class NickManager extends Module {
             for (Player players : Bukkit.getOnlinePlayers()) {
                 PlayerConnection connection = ((CraftPlayer) players).getHandle().playerConnection;
                 connection.sendPacket(new PacketPlayOutPlayerInfo(
-                        PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, new EntityPlayer[] { pl }));
+                        PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, pl));
                 connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER,
-                        new EntityPlayer[] { pp }));
+                    pp));
                 players.hidePlayer(player);
                 players.showPlayer(player);
             }

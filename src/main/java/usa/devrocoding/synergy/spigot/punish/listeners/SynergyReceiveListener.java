@@ -4,10 +4,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
-import usa.devrocoding.synergy.spigot.plugin_messaging.event.SynergyReceiveEvent;
-import usa.devrocoding.synergy.spigot.plugin_messaging.object.PluginMessageType;
-import usa.devrocoding.synergy.spigot.user.object.MessageModification;
-import usa.devrocoding.synergy.spigot.user.object.Rank;
+import usa.devrocoding.synergy.spigot.pluginmessaging.event.SynergyReceiveEvent;
+import usa.devrocoding.synergy.assets.PluginMessageType;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 
 public class SynergyReceiveListener implements Listener {

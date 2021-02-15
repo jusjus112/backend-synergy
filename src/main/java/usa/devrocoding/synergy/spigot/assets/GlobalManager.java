@@ -25,6 +25,7 @@ public class GlobalManager extends Module {
             new CommandHeal(plugin),
             new CommandHelp(plugin),
 //            new CommandKill(plugin),
+            new CommandInvsee(plugin),
             new CommandPlugins(plugin),
             new CommandSpeed(plugin),
             new CommandSynergy(plugin),
@@ -34,7 +35,8 @@ public class GlobalManager extends Module {
             new CommandWorkbench(plugin),
             new CommandSpawn(plugin),
             new CommandWeather(plugin),
-            new CommandSystems(plugin)
+            new CommandSystems(plugin),
+            new CommandTime(plugin)
         );
 
         registerListener(

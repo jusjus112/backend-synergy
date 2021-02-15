@@ -1,5 +1,8 @@
 package usa.devrocoding.synergy.spigot.utilities;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 public enum DefaultFontInfo {
 
         A('A', 5),
@@ -19,13 +22,13 @@ public enum DefaultFontInfo {
         H('H', 5),
         h('h', 5),
         I('I', 3),
-        i('i', 1),
+        i('i', 2),
         J('J', 5),
         j('j', 5),
         K('K', 5),
         k('k', 4),
         L('L', 5),
-        l('l', 1),
+        l('l', 2),
         M('M', 5),
         m('m', 5),
         N('N', 5),
@@ -64,7 +67,7 @@ public enum DefaultFontInfo {
         NUM_8('8', 5),
         NUM_9('9', 5),
         NUM_0('0', 5),
-        EXCLAMATION_POINT('!', 1),
+        EXCLAMATION_POINT('!', 2),
         AT_SYMBOL('@', 6),
         NUM_SIGN('#', 5),
         DOLLAR_SIGN('$', 5),
@@ -99,13 +102,8 @@ public enum DefaultFontInfo {
         SPACE(' ', 3),
         DEFAULT('a', 4);
 
-        private char character;
-        private int length;
-
-        DefaultFontInfo(char character, int length) {
-                this.character = character;
-                this.length = length;
-        }
+        private final char character;
+        private final int length;
 
         public char getCharacter() {
                 return this.character;

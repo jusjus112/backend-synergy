@@ -9,11 +9,11 @@ import java.util.Arrays;
 public abstract class ProxyModule {
 
     @Getter
-    private Core plugin;
+    private final Core plugin;
     @Getter
-    private String name;
+    private final String name;
     @Getter
-    private boolean reloadable;
+    private final boolean reloadable;
 
     public ProxyModule(Core plugin, String name, boolean reloadable){
         this.plugin = plugin;
@@ -25,6 +25,7 @@ public abstract class ProxyModule {
 
     // Called when reloading the module
     public abstract void reload();
+    // Called when disabling the plugin
     public abstract void deinit();
 
     public String getShortName(){

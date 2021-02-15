@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 import usa.devrocoding.synergy.spigot.utilities.UtilLoc;
 
@@ -14,9 +15,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+@Getter
 public class Region {
 
-    private Location firstLocation = null, secondLocation = null;
+    private final Location firstLocation;
+    private final Location secondLocation;
     private final int xMin;
     private final int xMax;
     private final int yMin;
@@ -36,41 +39,49 @@ public class Region {
         this.zMax = Math.max(loc1.getBlockZ(), loc2.getBlockZ());
     }
 
-    public boolean isInside(final SynergyUser user, int addX, int addY, int addZ) {
+    public boolean isInside(final SynergyUser synergyUser, int addX, int addY, int addZ) {
+        return isInside(synergyUser.getPlayer(), addX, addY, addZ);
+    }
+
+    public boolean isInside(final Player player, int addX, int addY, int addZ) {
         final ZoneVector curr = new ZoneVector(
-                user.getPlayer().getLocation().getBlockX(),
-                user.getPlayer().getLocation().getBlockY(),
-                user.getPlayer().getLocation().getBlockZ()
+            player.getLocation().getBlockX(),
+            player.getLocation().getBlockY(),
+            player.getLocation().getBlockZ()
         );
         final ZoneVector min = new ZoneVector(
-                Math.min(
-                        this.getFirstLocation().getBlockX()+addX,
-                        this.getSecondLocation().getBlockX()+addX),
-                Math.min(
-                        this.getFirstLocation().getBlockY()+addY,
-                        this.getSecondLocation().getBlockY()+addY),
-                Math.min(
-                        this.getFirstLocation().getBlockZ()+addZ,
-                        this.getSecondLocation().getBlockZ()+addZ
-                )
+            Math.min(
+                    this.getFirstLocation().getBlockX()-addX,
+                    this.getSecondLocation().getBlockX()-addX),
+            Math.min(
+                    this.getFirstLocation().getBlockY()-addY,
+                    this.getSecondLocation().getBlockY()-addY),
+            Math.min(
+                    this.getFirstLocation().getBlockZ()-addZ,
+                    this.getSecondLocation().getBlockZ()-addZ
+            )
         );
         final ZoneVector max = new ZoneVector(
-                Math.max(
-                        this.getFirstLocation().getBlockX()+addX,
-                        this.getSecondLocation().getBlockX())+addX,
-                Math.max(
-                        this.getFirstLocation().getBlockY()+addY,
-                        this.getSecondLocation().getBlockY()+addY),
-                Math.max(
-                        this.getFirstLocation().getBlockZ()+addZ,
-                        this.getSecondLocation().getBlockZ()+addZ
-                )
+            Math.max(
+                    this.getFirstLocation().getBlockX()+addX,
+                    this.getSecondLocation().getBlockX())+addX,
+            Math.max(
+                    this.getFirstLocation().getBlockY()+addY,
+                    this.getSecondLocation().getBlockY()+addY),
+            Math.max(
+                    this.getFirstLocation().getBlockZ()+addZ,
+                    this.getSecondLocation().getBlockZ()+addZ
+            )
         );
         return curr.isInAABB(min, max);
     }
 
     public boolean isInside(final SynergyUser synergyUser){
-        return this.isInside(synergyUser, 0, 0 ,0);
+        return this.isInside(synergyUser.getPlayer(), 0, 0 ,0);
+    }
+
+    public boolean isInside(final Player player){
+        return this.isInside(player, 0, 0 ,0);
     }
 
     public boolean isInside(final Block block) {
@@ -146,6 +157,16 @@ public class Region {
 
     public Location getSecondLocation(){
         return UtilLoc.newInstance(this.secondLocation);
+    }
+
+    public Location randomLocation(){
+        Location min = this.firstLocation,
+            max = this.secondLocation;
+        Location range = new Location(min.getWorld(), Math.abs(max.getX() - min.getX()),
+            min.getY(), Math.abs(max.getZ() - min.getZ()));
+        return new Location(min.getWorld(), (Math.random() * range.getX()) +
+            (Math.min(min.getX(), max.getX())), range.getY(),
+            (Math.random() * range.getZ()) + (Math.min(min.getZ(), max.getZ())));
     }
 
 }

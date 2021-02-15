@@ -1,6 +1,7 @@
 package usa.devrocoding.synergy.spigot.utilities;
 
 import org.bukkit.Sound;
+import usa.devrocoding.synergy.spigot.assets.Countdown;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 
 public class UtilSound {
@@ -21,5 +22,20 @@ public class UtilSound {
 
     public void play(Sound sound){
         synergyUser.getPlayer().playSound(synergyUser.getPlayer().getLocation(), sound, 2, 2);
+    }
+
+    public void winSound(){
+        new Countdown(2, synergyUser){
+            @Override
+            public void onCountdownEnd() {
+                deepPling();
+            }
+
+            @Override
+            public String message(int timeLeft) {
+                pling();
+                return null;
+            }
+        };
     }
 }

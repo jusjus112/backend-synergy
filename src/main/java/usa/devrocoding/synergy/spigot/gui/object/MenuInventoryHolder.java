@@ -19,7 +19,7 @@ public class MenuInventoryHolder implements InventoryHolder {
   private Inventory inventory;
 
   private final Gui menu;
-  private boolean openParent;
+  private final boolean openParent;
 
   @Setter
   private int pageNumber;

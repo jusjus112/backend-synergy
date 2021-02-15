@@ -53,7 +53,7 @@ repositories {
     }
 
     maven {
-        url 'https://jitpack.io' // Vault
+        url 'https://jitpack.io'
     }
 
     maven {
@@ -84,6 +84,8 @@ dependencies {
     compileOnly "com.github.MilkBowl:VaultAPI:1.7" // Vault
     compileOnly group: "com.comphenix.protocol", name: "ProtocolLib", version: "4.5.0-SNAPSHOT";
     compile group: "com.comphenix.packetwrapper", name: "PacketWrapper", version: "1.13-R0.1-SNAPSHOT";
+    compile 'com.github.Steveice10:MCProtocolLib:1.15.2-1' // Player clients
+    compile 'com.github.WesJD.AnvilGUI:anvilgui:5d0f592c63' // AnvilGUI
 
     // GLOBAL Dependencies
     compileOnly "org.projectlombok:lombok:1.18.10" // Lombok
@@ -93,7 +95,7 @@ dependencies {
     compile group: 'com.warrenstrange', name: 'googleauth', version: '1.1.2' // GoogleAuth
     compile 'org.apache.httpcomponents:httpclient:4.5.6' // HTTP requests
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.8.1' // Apache utils
-    compile 'org.bstats:bstats-bukkit:1.5' // bStats
+//    compile 'org.bstats:bstats-bukkit:1.5' // bStats
     
     // GOOGLE
     compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1'
@@ -101,10 +103,10 @@ dependencies {
     compile group: 'com.google.code.gson', name: 'gson', version: '2.3.1' // GSON
     compile group: 'com.google.zxing', name: 'core', version: '3.2.1'
     compile group: 'com.google.guava', name: 'guava', version: 'r05' // Guava
+    compile group: 'com.github.enerccio', name: 'gson-utilities', version: '1.1.0' // GSON Utility
 
     // DISCORD Dependencies
-    compile 'net.dv8tion:JDA:4.ALPHA.0_56' // Discord API
-
+    compile 'net.dv8tion:JDA:4.2.0_211' // Discord API
     // PROXY Dependencies
     compileOnly group: 'net.md-5', name: 'bungeecord-api', version: '1.12-SNAPSHOT'
 }

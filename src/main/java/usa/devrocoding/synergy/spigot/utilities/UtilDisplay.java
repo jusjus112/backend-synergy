@@ -25,7 +25,9 @@ public class UtilDisplay implements Listener {
 
 
     public void sendTitle(String title, int fadeIn, int stay, int fadeOut) {
-        this.player.sendTitle(title, null, fadeIn, stay, fadeOut);
+        if (this.player != null) {
+            this.player.sendTitle(title, null, fadeIn, stay, fadeOut);
+        }
     }
 
     public void sendTitleAndSubTitle(String title, String subtitle, int fadeIn, int stay, int fadeOut) {
@@ -35,16 +37,22 @@ public class UtilDisplay implements Listener {
 //        IChatBaseComponent message2 = ChatSerializer.a("{\"text\":\"\"}").a(subtitle);
 //        PacketPlayOutTitle packet2 = new PacketPlayOutTitle(EnumTitleAction.SUBTITLE, message2);
 //        ((CraftPlayer) this.player).getHandle().playerConnection.sendPacket(packet2);
-        this.player.sendTitle(title, subtitle, fadeIn, stay, fadeOut);
+        if (this.player != null) {
+            this.player.sendTitle(title, subtitle, fadeIn, stay, fadeOut);
+        }
 
     }
 
     public void sendSubtitle(String subTitle, int fadeIn, int stay, int fadeOut) {
-        this.player.sendTitle(null, subTitle, fadeIn, stay, fadeOut);
+        if (this.player != null) {
+            this.player.sendTitle(null, subTitle, fadeIn, stay, fadeOut);
+        }
     }
 
     public void sendActionMessage(String text){
-        this.player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(text));
+        if (this.player != null) {
+            this.player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(text));
+        }
     }
 
     public void sendTiming(int fadeIn, int stay, int fadeOut) {

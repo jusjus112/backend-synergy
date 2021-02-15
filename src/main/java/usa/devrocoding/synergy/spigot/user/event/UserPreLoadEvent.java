@@ -5,23 +5,12 @@ import org.bukkit.event.Cancellable;
 import usa.devrocoding.synergy.spigot.listeners.SynergyEvent;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 
-public class UserPreLoadEvent extends SynergyEvent implements Cancellable {
+public class UserPreLoadEvent extends SynergyEvent {
 
     @Getter
     private final SynergyUser user;
-    private boolean cancelled;
 
     public UserPreLoadEvent(SynergyUser user) {
         this.user = user;
-    }
-
-    @Override
-    public boolean isCancelled() {
-        return cancelled;
-    }
-
-    @Override
-    public void setCancelled(boolean cancel) {
-        this.cancelled = cancel;
     }
 }

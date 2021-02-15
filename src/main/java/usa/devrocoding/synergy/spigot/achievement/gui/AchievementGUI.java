@@ -31,8 +31,9 @@ public class AchievementGUI extends Gui {
             @Override
             public ItemStack getIcon(SynergyUser synergyUser) {
                 return new ItemBuilder(Material.STAINED_GLASS_PANE)
-                        .setName(" ")
-                        .build();
+                    .setDamage((byte) 15)
+                    .setName(" ")
+                    .build();
             }
             @Override
             public void click(SynergyUser synergyUser, ClickType clickType, Gui gui) {}

@@ -29,17 +29,17 @@ public class UtilTime {
 		double months = days / 30D;
 		double years = days / 365D;
 		if (minutes < 1)
-			return UtilMath.trim(seconds) + " Seconds";
+			return UtilMath.trim(seconds, 0) + " Seconds";
 		else if (hours < 1)
-			return UtilMath.trim(minutes) + " Minutes";
+			return UtilMath.trim(minutes, 0) + " Minutes";
 		else if (days < 1)
-			return UtilMath.trim(hours) + " Hours";
+			return UtilMath.trim(hours, 0) + " Hours";
 		else if (months < 1)
-			return UtilMath.trim(days) + " Days";
+			return UtilMath.trim(days, 0) + " Days";
 		else if (years < 1)
-			return UtilMath.trim(months) + " Months";
+			return UtilMath.trim(months, 0) + " Months";
 		else
-			return UtilMath.trim(years) + " Years";
+			return UtilMath.trim(years, 0) + " Years";
 	}
 
 	public static int daysBetween(Date d1, Date d2){

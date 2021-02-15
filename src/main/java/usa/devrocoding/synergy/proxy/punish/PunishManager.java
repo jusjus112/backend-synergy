@@ -2,6 +2,7 @@ package usa.devrocoding.synergy.proxy.punish;
 
 import usa.devrocoding.synergy.proxy.Core;
 import usa.devrocoding.synergy.proxy.ProxyModule;
+import usa.devrocoding.synergy.services.sql.UtilSQL;
 import usa.devrocoding.synergy.spigot.punish.PunishCategory;
 import usa.devrocoding.synergy.spigot.punish.PunishLevel;
 import usa.devrocoding.synergy.spigot.punish.PunishType;
@@ -35,11 +36,11 @@ public class PunishManager extends ProxyModule {
         try{
             ResultSet result = getPlugin().getDatabaseManager().getResults(
                     "punishments ", "uuid=?", new HashMap<Integer, Object>(){{
-                        put(1, uuid.toString());
+                        put(1, UtilSQL.convertUniqueId(uuid));
                     }}
             );
             boolean update = false;
-            System.out.println(result);
+
             while (result.next()){
                 boolean active = result.getBoolean("active");
                 Long till = Long.valueOf(result.getString("till"));
@@ -57,7 +58,7 @@ public class PunishManager extends ProxyModule {
                         PunishLevel.valueOf(result.getString("level")),
                         Long.parseLong(result.getString("issued")),
                         till,
-                        UUID.fromString(result.getString("punisher")),
+                        UtilSQL.convertBinaryStream(result.getBinaryStream("punisher")),
                         active
                 ));
             }
@@ -77,15 +78,22 @@ public class PunishManager extends ProxyModule {
     }
 
     public void updatePunishment(Punishment punishment){
-        PunishManager.this.getPlugin().getDatabaseManager().update("punishments", new HashMap<String, Object>() {{
-            put("uuid", punishment.getPunished().toString());
-            put("type", punishment.getType().name());
-            put("category", punishment.getCategory().name());
-            put("level", punishment.getLevel().name());
-            put("issued", String.valueOf(punishment.getIssued()));
-            put("till", String.valueOf(punishment.getTill()));
-            put("punisher", punishment.getPunisher().toString());
-            put("active", punishment.isActive());
-        }}, "uuid = '" + punishment.getPunished().toString() + "' AND issued = '" + punishment.getIssued() + "'");
+        PunishManager.this.getPlugin().getDatabaseManager().update(
+            "Update Punishments Player",
+            new HashMap<String, Object>() {{
+                put("uuid", UtilSQL.convertUniqueId(punishment.getPunished()));
+                put("type", punishment.getType().name());
+                put("category", punishment.getCategory().name());
+                put("level", punishment.getLevel().name());
+                put("issued", String.valueOf(punishment.getIssued()));
+                put("till", String.valueOf(punishment.getTill()));
+                put("punisher", UtilSQL.convertUniqueId(punishment.getPunisher()));
+                put("active", punishment.isActive());
+            }},
+            new HashMap<String, Object>() {{
+                put("uuid", UtilSQL.convertUniqueId(punishment.getPunished()));
+                put("issued", punishment.getIssued());
+            }}
+        );
     }
 }

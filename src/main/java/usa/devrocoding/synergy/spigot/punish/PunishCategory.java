@@ -3,6 +3,7 @@ package usa.devrocoding.synergy.spigot.punish;
 import lombok.Getter;
 import usa.devrocoding.synergy.spigot.gui.Gui;
 
+@Getter
 public enum PunishCategory {
 
     GENERAL("General",
@@ -20,12 +21,9 @@ public enum PunishCategory {
                     "warnings, mutes and perm bans." },
             new Integer[] { 25, 34, 43, 52 });
 
-    @Getter
-    private String name;
-    @Getter
-    private String[] description;
-    @Getter
-    private Integer[] slots;
+    private final String name;
+    private final String[] description;
+    private final Integer[] slots;
 
     PunishCategory(String name, String[] description, Integer[] slots) {
         this.name = name;

@@ -2,8 +2,6 @@ package usa.devrocoding.synergy.spigot.assets.commands;
 
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-import usa.devrocoding.synergy.assets.Synergy;
-import usa.devrocoding.synergy.proxy.two_factor_authentication.GoogleAuthManager;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.assets.C;
 import usa.devrocoding.synergy.spigot.command.SynergyCommand;
@@ -19,10 +17,11 @@ public class CommandSynergy extends SynergyCommand {
     public void execute(SynergyUser synergyUser, Player player, String command, String[] args) {
         synergyUser.message(
                 C.getLine(),
-                "§eA §6Fully Custom §eBackend system for this network with over §615.000+ lines of code",
-                "§eAuthor: §3JusJus§e",
+                "§eA §6Fully Custom §eBackend system for this network with over",
+                "§668.000+ lines of code.",
+                "§eAuthor: §3@JusJus#0112",
                 "§eVersion: " + Core.getPlugin().getDescription().getVersion(),
-                "§eThis system has their first code written on §eAugust 24, 2017 and released on May 2nd 2018 made with §c"+ C.Symbol.HEARTH.getSymbol(),
+                "§eThis system has their first code written on §eAugust 24, 2017 and released on May 2nd 2018 made with §c"+ C.Symbol.HEARTH,
                 C.getLine()
         );
     }

@@ -1,5 +1,6 @@
 package usa.devrocoding.synergy.spigot.assets.commands;
 
+import java.util.Arrays;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
@@ -9,13 +10,19 @@ import usa.devrocoding.synergy.assets.object.LinuxColorCodes;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.assets.C;
 import usa.devrocoding.synergy.spigot.command.SynergyCommand;
-import usa.devrocoding.synergy.spigot.user.object.Rank;
+import usa.devrocoding.synergy.assets.Rank;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 
 public class CommandPlugins extends SynergyCommand {
 
+    private final String[] disbandedNames = new String[]{
+        "NoCheatPlus", "WorldEdit", "BungeeTabListPlus", "LuckPerms", "FastAsyncWorldEdit",
+        "WorldBorder", "ImageOnMap", "WorldBorder", "F3Name"
+    };
+
     public CommandPlugins(Core plugin) {
-        super(plugin, Rank.NONE, "Synergy's Plugin Command", true,"plugins", "pl");
+        super(plugin, Rank.NONE, "List of our plugins. We aint hiding.",
+            true,"plugins", "pl");
     }
 
     @Override
@@ -24,6 +31,9 @@ public class CommandPlugins extends SynergyCommand {
         if (Bukkit.getServer().getPluginManager().getPlugins().length > 65){
             StringBuilder stringBuilder = new StringBuilder();
             for (Plugin plugin : Bukkit.getServer().getPluginManager().getPlugins()) {
+                if (Arrays.asList(this.disbandedNames).contains(plugin.getName())){
+                    continue;
+                }
                 if (count > 0){
                     stringBuilder.append(ChatColor.RESET+", ");
                 }
@@ -34,15 +44,18 @@ public class CommandPlugins extends SynergyCommand {
                 count++;
             }
             synergyUser.message(
-                    C.getLineWithNameNoAttr(count+" plugins"),
+                    "",
                     stringBuilder.toString(),
-                    C.getLine()
+                    ""
             );
         }else {
             synergyUser.message(
-                    C.getLine()
+                   " "
             );
             for (Plugin plugin : Bukkit.getServer().getPluginManager().getPlugins()) {
+                if (Arrays.asList(this.disbandedNames).contains(plugin.getName())){
+                    continue;
+                }
                 synergyUser.message(
                         (plugin.isEnabled() ? ChatColor.GREEN : ChatColor.RED) +
                                 plugin.getName() + ChatColor.YELLOW + " - " + (plugin.getDescription().getDescription() == null ? "No description..." : plugin.getDescription().getDescription())
@@ -50,7 +63,8 @@ public class CommandPlugins extends SynergyCommand {
                 count++;
             }
             synergyUser.message(
-                    C.getLineWithNameNoAttr(count+" plugins")
+//                    C.getLineWithNameNoAttr(count+" plugins")
+                " "
             );
         }
     }

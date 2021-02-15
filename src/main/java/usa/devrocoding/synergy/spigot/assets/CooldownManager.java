@@ -36,7 +36,7 @@ public class CooldownManager extends Module {
                     Object ob = iter.next();
                     if (cd.containsKey(ob)) {
                         HashMap<Long, Boolean> map = cd.get(ob);
-                        if (map.values().contains(Boolean.TRUE)){
+                        if (map.containsValue(Boolean.TRUE)){
                             long i = 0;
                             for(long k : map.keySet())
                                 i=k;

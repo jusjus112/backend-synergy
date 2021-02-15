@@ -5,10 +5,9 @@ import org.bukkit.entity.Player;
 import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
-import usa.devrocoding.synergy.spigot.assets.C;
 import usa.devrocoding.synergy.spigot.command.SynergyCommand;
 import usa.devrocoding.synergy.spigot.user.object.MessageModification;
-import usa.devrocoding.synergy.spigot.user.object.Rank;
+import usa.devrocoding.synergy.assets.Rank;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 
 import java.util.ArrayList;
@@ -17,7 +16,8 @@ import java.util.List;
 public class CommandSystems extends SynergyCommand {
 
     public CommandSystems(Core plugin) {
-        super(plugin, Rank.NONE, "Synergy's Systems Command", true,"systems");
+        super(plugin, Rank.NONE, "List of all running systems",
+            true,"systems");
     }
 
     @Override

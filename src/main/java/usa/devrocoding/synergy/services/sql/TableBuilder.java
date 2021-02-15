@@ -1,5 +1,6 @@
 package usa.devrocoding.synergy.services.sql;
 
+import java.util.Arrays;
 import usa.devrocoding.synergy.assets.Synergy;
 
 import java.sql.SQLException;
@@ -76,13 +77,22 @@ public class TableBuilder {
         return this;
     }
 
-    public TableBuilder customColumn(String query){
+    public TableBuilder setConstraints(String... columnName){
+        StringBuilder constraint = new StringBuilder(", UNIQUE (");
+        for (int i = 0; i < columnName.length; i++) {
+            if (i>0){
+                constraint.append(",");
+            }
+            constraint.append(columnName[i]);
+        }
+        this.query += constraint.toString() + ")";
+
+        Synergy.debug(this.query + "");
         return this;
     }
 
     public void execute(){
         query += ")";
-
         this.databaseManager.execute(query);
         if (!(query_update.equals(""))){
             String[] queries = query_update.split(";");

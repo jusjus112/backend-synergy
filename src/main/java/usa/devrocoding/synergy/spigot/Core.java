@@ -3,119 +3,89 @@ package usa.devrocoding.synergy.spigot;
 import com.google.inject.Injector;
 import lombok.Getter;
 import lombok.Setter;
-import org.bstats.bukkit.Metrics;
 import org.bukkit.ChatColor;
 import org.bukkit.scheduler.BukkitRunnable;
-import usa.devrocoding.synergy.services.SQLService;
 import usa.devrocoding.synergy.services.sql.DatabaseManager;
 import usa.devrocoding.synergy.assets.Synergy;
-import usa.devrocoding.synergy.services.sql.SQLDataType;
-import usa.devrocoding.synergy.services.sql.SQLDefaultType;
-import usa.devrocoding.synergy.services.sql.TableBuilder;
 import usa.devrocoding.synergy.spigot.achievement.AchievementManager;
 import usa.devrocoding.synergy.spigot.api.SynergyPlugin;
 import usa.devrocoding.synergy.spigot.assets.*;
 import usa.devrocoding.synergy.spigot.assets.lobby.LobbyManager;
 import usa.devrocoding.synergy.spigot.assets.object.Message;
 import usa.devrocoding.synergy.spigot.assets.wand.WandManager;
-import usa.devrocoding.synergy.spigot.auto_reboot.AutoRebootManager;
-import usa.devrocoding.synergy.spigot.bot_sam.Sam;
-import usa.devrocoding.synergy.spigot.bot_sam.object.ErrorHandler;
+import usa.devrocoding.synergy.spigot.autoreboot.AutoRebootManager;
+import usa.devrocoding.synergy.spigot.botsam.Sam;
+import usa.devrocoding.synergy.spigot.botsam.object.ErrorHandler;
 import usa.devrocoding.synergy.spigot.changelog.ChangelogManager;
 import usa.devrocoding.synergy.spigot.command.CommandManager;
 import usa.devrocoding.synergy.spigot.discord.DiscordManager;
 import usa.devrocoding.synergy.spigot.economy.EconomyManager;
-import usa.devrocoding.synergy.spigot.files.yml.YMLFile;
 import usa.devrocoding.synergy.spigot.gui.GuiManager;
 import usa.devrocoding.synergy.spigot.hologram.HologramManager;
 import usa.devrocoding.synergy.spigot.language.LanguageManager;
 import usa.devrocoding.synergy.spigot.nick.NickManager;
 import usa.devrocoding.synergy.spigot.objectives.ObjectiveManager;
-import usa.devrocoding.synergy.spigot.plugin_messaging.PluginMessagingManager;
+import usa.devrocoding.synergy.spigot.pluginmessaging.PluginMessagingManager;
+import usa.devrocoding.synergy.spigot.protect.ProtectManager;
 import usa.devrocoding.synergy.spigot.punish.PunishManager;
 import usa.devrocoding.synergy.spigot.runnable.RunnableManager;
 import usa.devrocoding.synergy.spigot.scoreboard.ScoreboardManager;
+import usa.devrocoding.synergy.spigot.statistics.StatisticsManager;
+import usa.devrocoding.synergy.spigot.two_factor_authentication.GoogleAuthManager;
 import usa.devrocoding.synergy.spigot.user.UserManager;
-import usa.devrocoding.synergy.spigot.user.object.UserExperience;
 import usa.devrocoding.synergy.spigot.utilities.UtilDisplay;
 import usa.devrocoding.synergy.spigot.version.VersionManager;
 import usa.devrocoding.synergy.spigot.warp.WarpManager;
 
 import java.io.FileNotFoundException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@Getter
 @SynergyMani(backend_name = "Synergy", main_color = ChatColor.AQUA, permission_prefix = "synergy", proxy = "BungeeCord", server_name = "MiragePrisons")
 public class Core extends SynergyPlugin {
 
     @Getter @Setter
     private static Core plugin;
 
-    @Getter
     private boolean loaded = false,
+                    ready = false,
                     disabled = false;
 
-    @Getter
     public List<Module> modules = new ArrayList<>();
 
-    @Getter
     private PluginManager pluginManager;
-    @Getter
     private VersionManager versionManager;
-    @Getter
     private AutoRebootManager autoRebootManager;
-    @Getter
     private CommandManager commandManager;
-    @Getter
     private RunnableManager runnableManager;
-    @Getter @Setter
+    @Setter
     private DatabaseManager databaseManager;
-    @Getter
     private GuiManager GUIManager;
-    @Getter
     private ScoreboardManager scoreboardManager;
-    @Getter
     private UserManager userManager;
-    @Getter
     private EconomyManager economyManager;
-    @Getter
     private HologramManager hologramManager;
-    @Getter
     private DiscordManager discordManager;
-    @Getter
     private LanguageManager languageManager;
-    @Getter
     private GlobalManager globalManager;
-    @Getter
     private Message message;
-    @Getter
     private ChangelogManager changelogManager;
-    @Getter
     private PluginMessagingManager pluginMessagingManager;
-    @Getter
     private CacheManager cacheManager;
-    @Getter
     private WarpManager warpManager;
-    @Getter
     private CooldownManager cooldownManager;
-    @Getter
     private AchievementManager achievementManager;
-    @Getter
     private NickManager nickManager;
-    @Getter
     private DependencyManager dependencyManager;
-    @Getter
     private WandManager wandManager;
-    @Getter
     private PunishManager punishManager;
-    @Getter
     private ObjectiveManager objectiveManager;
-
-    @Getter
+    private StatisticsManager statisticManager;
+    private GoogleAuthManager googleAuthManager;
+    private ProtectManager protectManager;
     private LobbyManager lobbyManager = null;
-    @Getter
     private SynergyMani manifest;
 
     @Override
@@ -141,12 +111,9 @@ public class Core extends SynergyPlugin {
         this.runnableManager = new RunnableManager(this);
 
         this.languageManager = new LanguageManager(this);
-
-        // Register Language Keys
-//        this.languageManager.registerLanguages(LanguageStrings.values());
+        // TODO: Implement this later on, it's not working yet!
 
         this.pluginManager = new PluginManager(this);
-
         this.pluginManager.load();
 
         // Load the Manifest so other it can be used in other classes
@@ -156,6 +123,13 @@ public class Core extends SynergyPlugin {
         if (!this.pluginManager.initDatabase()){
             this.setEnabled(false);
             return;
+        }
+
+        try{
+            Synergy.setProduction(getPluginManager().getFileStructure().getYMLFile("settings")
+                .get().getBoolean("network.isProduction"));
+        }catch (FileNotFoundException e){
+            Synergy.error("Error loading settings.yml: " + e.getMessage());
         }
 
         this.message = new Message(this);
@@ -179,6 +153,7 @@ public class Core extends SynergyPlugin {
         this.dependencyManager = new DependencyManager(this);
         this.globalManager = new GlobalManager(this);
         this.GUIManager = new GuiManager(this);
+        this.googleAuthManager = new GoogleAuthManager(this);
         this.scoreboardManager = new ScoreboardManager(this);
         this.pluginMessagingManager = new PluginMessagingManager(this);
         this.economyManager = new EconomyManager(this);
@@ -192,17 +167,23 @@ public class Core extends SynergyPlugin {
         this.wandManager = new WandManager(this);
         this.punishManager = new PunishManager(this);
         this.objectiveManager = new ObjectiveManager(this);
+        this.statisticManager = new StatisticsManager(this);
+        this.protectManager = new ProtectManager(this);
 
         // Init the utilities
         this.globalManager.setUtilDisplay(new UtilDisplay());
 
         try{
-            if (getPluginManager().getFileStructure().getYMLFile("settings").get().getBoolean("network.isLobby")){
+            if (getPluginManager().getFileStructure().getYMLFile("settings")
+                .get().getBoolean("network.isLobby")){
                 this.lobbyManager = new LobbyManager(this);
             }
         }catch (FileNotFoundException e){
             Synergy.error(e.getMessage());
         }
+
+        // Init modules
+        this.modules.forEach(Module::onInit);
 
         Synergy.info("Using version adapter "+this.versionManager.getServerVersion());
 
@@ -230,24 +211,36 @@ public class Core extends SynergyPlugin {
         this.loaded = true;
         this.disabled = false;
 
+        if (!Synergy.isProduction()) {
+            Synergy.warn("Synergy is in TEST mode! Production systems are not active!");
+        }
+
         Synergy.success("Synergy is up and running!");
 
         // Calling the method once the main thread finished
         new BukkitRunnable(){
             @Override
             public void run() {
+                new BukkitRunnable(){
+                    @Override
+                    public void run() {
+                        ready = true;
+                    }
+                }.runTaskLater(Core.this, 20L * 5);
                 onServerEnabled();
             }
         }.runTask(this);
     }
 
     @Override
-    public void deinit() {}
+    public void deinit() {
+        this.modules.forEach(Module::onDeinit);
+    }
 
     @Override
     public void preDeInit(){
         if (this.isLoaded()) { // Make sure the modules are loaded to use the modules
-            this.warpManager.saveAllWarps();
+            this.warpManager.saveWarps();
         }
     }
 
@@ -258,6 +251,9 @@ public class Core extends SynergyPlugin {
     private void onServerEnabled(){
         // Init all the warps because of a world manager problem
         this.warpManager.cacheSavedWarps();
+
+        // Init modules
+        this.modules.forEach(Module::onServerLoad);
     }
 
     // Called when typed /synergy restart/reload

@@ -1,15 +1,15 @@
 package usa.devrocoding.synergy.spigot.warp;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
+import com.github.enerccio.gson.builders.JsonBuilder;
+import com.github.enerccio.gson.builders.ValueBuilder;
 import com.google.gson.JsonObject;
+import java.io.FileNotFoundException;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
-import usa.devrocoding.synergy.spigot.bot_sam.Sam;
 import usa.devrocoding.synergy.spigot.files.json.JSONFile;
 import usa.devrocoding.synergy.spigot.warp.command.CommandWarp;
 import usa.devrocoding.synergy.spigot.warp.exception.WarpAlreadyExists;
@@ -46,16 +46,7 @@ public class WarpManager extends Module {
         }
 
         this.warps.add(warp);
-    }
-
-    public void saveAllWarps(){
-        try {
-            for(Warp warp : getWarps()){
-                saveWarp(warp);
-            }
-        }catch (Exception e){
-            Synergy.error(e.getMessage());
-        }
+        getPlugin().getRunnableManager().runTaskAsynchronously("save warps", core -> this.saveWarps());
     }
 
     public Warp getWarp(String name) throws NullPointerException{
@@ -64,7 +55,7 @@ public class WarpManager extends Module {
                 return w;
             }
         }
-        throw new NullPointerException("No warp found with the name "+name);
+        throw new NullPointerException("No warp found with the name " + name);
     }
 
     public void removeWarp(String name)throws NullPointerException{
@@ -75,79 +66,52 @@ public class WarpManager extends Module {
     public void cacheSavedWarps(){
         try{
             this.warps.clear();
-            JSONFile jsonFile = getPlugin().getPluginManager().getFileStructure().getJSONFile("storage");
-            JsonObject mainOBJ = jsonFile.get();
-            if (mainOBJ != null && jsonFile.get().has("warps")) {
-                JsonElement element = mainOBJ.get("warps");
-                if (element.isJsonArray()){
-                    JsonArray array = element.getAsJsonArray();
-                    array.iterator().forEachRemaining(jsonElement ->
-                        {
-                            JsonObject object = jsonElement.getAsJsonObject();
-                            String name = object.get("name").getAsString();
-                            Location location = new Location(
-                                    Bukkit.getServer().getWorld(object.get("WORLD").getAsString()),
-                                    object.get("X").getAsDouble(),
-                                    object.get("Y").getAsDouble(),
-                                    object.get("Z").getAsDouble()
-                            );
-                            try {
-                                new Warp(location, name);
-                            }catch (WarpAlreadyExists nothing){}
-                        }
+            JSONFile jsonFile = getPlugin().getPluginManager().getFileStructure().getJSONFile("warps");
+            jsonFile.getAs("warps").getAsJsonArray().forEach(jsonElement -> {
+                JsonObject jsonObject = jsonElement.getAsJsonObject();
+                try {
+                    new Warp(
+                        new Location(
+                            Bukkit.getWorld(jsonObject.get("WORLD").getAsString()),
+                            jsonObject.get("X").getAsDouble(),
+                            jsonObject.get("Y").getAsDouble(),
+                            jsonObject.get("Z").getAsDouble(),
+                            jsonObject.get("YAW").getAsLong(),
+                            jsonObject.get("PITCH").getAsLong()
+                        ),
+                        jsonObject.get("name").getAsString().replaceAll("'", "")
                     );
+                } catch (WarpAlreadyExists warpAlreadyExists) {
+                    warpAlreadyExists.printStackTrace();
                 }
-            }
-        }catch (Exception e){
-            Sam.getRobot().error(this, e.getMessage(), "I can't fix it myself so it has to be done by a developer!", e);
+            });
+        }catch (FileNotFoundException exception){
+            Synergy.error("Error while caching warps..");
+            Synergy.error(exception.getMessage());
         }
     }
 
-    public void saveWarp(Warp warp)throws Exception{
+    public void saveWarps(){
         try{
-            JSONFile jsonFile = getPlugin().getPluginManager().getFileStructure().getJSONFile("storage");
-            JsonObject mainOBJ = jsonFile.get();
-            if (mainOBJ != null && jsonFile.get().has("warps")) {
-                JsonObject object = jsonFile.get();
-                JsonElement element = object.get("warps");
-                if (element.isJsonArray()){
-                    JsonArray array = element.getAsJsonArray();
+            JSONFile jsonFile = getPlugin().getPluginManager().getFileStructure().getJSONFile("warps");
+            ValueBuilder valueBuilder = new JsonBuilder().object(object -> {
+                object.putArray("warps", array ->
+                    this.warps.iterator().forEachRemaining(warp ->
+                        array.addObject(warpObject -> {
+                            warpObject.put("name", warp.getName());
+                            warpObject.put("WORLD", warp.getLocation().getWorld().getName());
+                            warpObject.put("X", warp.getLocation().getX());
+                            warpObject.put("Y", warp.getLocation().getY());
+                            warpObject.put("Z", warp.getLocation().getZ());
+                            warpObject.put("YAW", warp.getLocation().getYaw());
+                            warpObject.put("PITCH", warp.getLocation().getPitch());
+                })));
+            });
 
-                    JsonArray warps = new JsonArray();
-                    JsonObject warp_data = new JsonObject();
-
-                    warp_data.addProperty("name", warp.getName());
-                    warp_data.addProperty("WORLD", warp.getLocation().getWorld().getName());
-                    warp_data.addProperty("X", warp.getLocation().getX());
-                    warp_data.addProperty("Y", warp.getLocation().getY());
-                    warp_data.addProperty("Z", warp.getLocation().getZ());
-
-//                    warps.add(warp_data);
-                    array.add(warp_data);
-
-                    object.add("warps", element);
-                    jsonFile.write("warps", element, true).finish();
-                    return;
-                }
-            }
-            JsonArray array = new JsonArray();
-
-//            JsonObject warps = new JsonObject();
-            JsonObject warp_data = new JsonObject();
-
-            warp_data.addProperty("name", warp.getName());
-            warp_data.addProperty("WORLD", warp.getLocation().getWorld().getName());
-            warp_data.addProperty("X", warp.getLocation().getX());
-            warp_data.addProperty("Y", warp.getLocation().getY());
-            warp_data.addProperty("Z", warp.getLocation().getZ());
-
-//            warps.add(warp.getName(),warp_data);
-            array.add(warp_data);
-
-            jsonFile.write("warps", array, true).finish();
-        }catch (Exception e){
-            Sam.getRobot().error(this, e.getMessage(), "I can't fix it myself so it has to be done by a developer!", e);
-            throw new Exception(e.getMessage());
+            jsonFile.write(valueBuilder);
+        }catch (FileNotFoundException exception){
+            Synergy.error("Error while saving warps.");
+            Synergy.error(exception.getMessage());
         }
     }
 }

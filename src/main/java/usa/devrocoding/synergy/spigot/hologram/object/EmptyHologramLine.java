@@ -6,6 +6,6 @@ public class EmptyHologramLine extends HologramLine {
 
   @Override
   public String getMessage(SynergyUser synergyUser) {
-    return null;
+    return "";
   }
 }

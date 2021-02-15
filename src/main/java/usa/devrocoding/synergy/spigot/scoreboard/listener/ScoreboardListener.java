@@ -1,14 +1,15 @@
 package usa.devrocoding.synergy.spigot.scoreboard.listener;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.NameTagVisibility;
 import org.bukkit.scoreboard.Team;
+import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.scoreboard.ScoreboardManager;
 import usa.devrocoding.synergy.spigot.scoreboard.ZylemBoard;
@@ -16,8 +17,8 @@ import usa.devrocoding.synergy.spigot.user.event.UserLoadEvent;
 
 public class ScoreboardListener implements Listener {
 
-	private Core plugin;
-	private ScoreboardManager scoreboardManager;
+	private final Core plugin;
+	private final ScoreboardManager scoreboardManager;
 
 	public ScoreboardListener(Core plugin, ScoreboardManager scoreboardManager) {
 		this.plugin = plugin;
@@ -56,23 +57,23 @@ public class ScoreboardListener implements Listener {
 		
 	}
 
-	@EventHandler
-	public void onPlayerLoadBoard(UserLoadEvent e) {
-		if (scoreboardManager.getScoreboardPolicy() == null) {
-			return;
-		}
-
-		Player p = e.getUser().getPlayer();
-
-		if (p == null) {
-			return;
-		}
-
-		Bukkit.getScheduler().runTaskLater(plugin, () -> {
-			scoreboardManager.getScoreboards().put(p.getUniqueId(), new ZylemBoard(plugin, p, plugin.getUserManager().getUser(p)));
-			scoreboardManager.update();
-		}, 15);//TODO: may cause issues if so change to 15 instead of 5
-	}
+//	@EventHandler (priority = EventPriority.LOWEST)
+//	public void onPlayerLoadBoard(UserLoadEvent e) {
+//		try{
+//			if (scoreboardManager.getDefaultPolicy() == null) {
+//				return;
+//			}
+//
+//			Bukkit.getScheduler().runTaskLater(plugin, () -> {
+//				scoreboardManager.getScoreboards().put(e.getUser().getUuid(), new ZylemBoard(plugin, e.getUser(),
+//						scoreboardManager.getDefaultPolicy()));
+//				scoreboardManager.update(true);
+//			}, 15);//TODO: may cause issues if so change to 15 instead of 5
+//		}catch (Exception exception){
+//			Synergy.error("Error on user joining set scoreboard.");
+//			Synergy.error(exception.getMessage());
+//		}
+//	}
 
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent e) {

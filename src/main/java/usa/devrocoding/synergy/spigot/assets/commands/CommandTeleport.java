@@ -5,7 +5,6 @@ import org.bukkit.entity.Player;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.assets.C;
 import usa.devrocoding.synergy.spigot.command.SynergyCommand;
-import usa.devrocoding.synergy.spigot.user.object.Rank;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 
 public class CommandTeleport extends SynergyCommand {
@@ -40,9 +39,8 @@ public class CommandTeleport extends SynergyCommand {
                     return;
                 }
                 target.teleport(target2);
-                target.info("We had orders from "+
-                        C.CHAT_HIGHLIGHT.getColor()+synergyUser.getName()+C.INFO.getColor()+
-                        " to teleport you to "+C.CHAT_HIGHLIGHT.getColor()+target2.getName());
+                target.info(synergyUser.getDisplayName()+C.INFO.getColor()+
+                        " teleported you to "+C.CHAT_HIGHLIGHT.getColor()+target2.getName());
             }
         }else{
             sendUsageMessage(player);

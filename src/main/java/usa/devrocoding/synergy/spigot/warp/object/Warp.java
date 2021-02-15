@@ -37,8 +37,8 @@ public class Warp {
                         this.getLocation().getX(),
                         this.getLocation().getY(),
                         this.getLocation().getZ(),
-                        user.getPlayer().getLocation().getYaw(),
-                        user.getPlayer().getLocation().getPitch()
+                        this.getLocation().getYaw(),
+                        this.getLocation().getPitch()
                 )
         );
     }

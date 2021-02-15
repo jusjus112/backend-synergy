@@ -28,7 +28,8 @@ public abstract class SynergyPlugin extends JavaPlugin {
                     Core.getPlugin().getPluginManager().getPlugins().add(this);
                 }
                 Synergy.info(
-                        Synergy.format("extension", LinuxColorCodes.ANSI_YELLOW, "Loaded a total of " + Module.getTotal() + " Modules for extension '" + name() + "'!")
+                        Synergy.format("extension", LinuxColorCodes.ANSI_YELLOW,
+                            "Loaded a total of " + Module.getTotal() + " Modules for extension '" + name() + "'!")
                 );
                 Module.total = 0;
             }
@@ -36,6 +37,8 @@ public abstract class SynergyPlugin extends JavaPlugin {
             Synergy.error("Error while loading '" +name()+"'");
             Synergy.error("@ "+e.getStackTrace()[0].toString());
             Synergy.error(e.getMessage());
+            e.printStackTrace();
+            // TODO: Create error message with bot and SAM
             Bukkit.getPluginManager().disablePlugin(this);
         }
     }

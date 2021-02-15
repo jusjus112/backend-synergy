@@ -49,9 +49,9 @@ public class ChangelogGUI extends Gui {
                     List<String> lore = new ArrayList<>();
                     lore.add(" ");
 
-                    for(String line : changelog.getLines()){
-                        lore.add(C.colorize(line));
-                    }
+//                    for(String line : changelog.getLines()){
+//                        lore.add(C.colorize(line));
+//                    }
 
                     return new ItemBuilder(Material.MAP)
                             .setName(C.colorize(changelog.getTitle()))

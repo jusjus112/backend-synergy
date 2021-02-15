@@ -22,7 +22,8 @@ import java.util.List;
 
 public class PunishGUI extends Gui {
 
-    private SynergyUser user, punisher;
+    private final SynergyUser user;
+    private final SynergyUser punisher;
 
     public PunishGUI(Core plugin, SynergyUser user, SynergyUser punisher){
         super(plugin, "Punish player "+user.getName(), GuiSize.SIX_ROWS, false);
@@ -35,18 +36,30 @@ public class PunishGUI extends Gui {
 
     @Override
     public void setup() {
-        for(int i=0;i<9;i++){
-            addElement(i, new GuiElement() {
-                @Override
-                public ItemStack getIcon(SynergyUser synergyUser) {
-                    return new ItemBuilder(Material.STAINED_GLASS_PANE).setMaterialData(new MaterialData((byte) 7)).setName(" ").build();
-                }
+        line(0, 8, new GuiElement() {
+            @Override
+            public ItemStack getIcon(SynergyUser synergyUser) {
+                return new ItemBuilder(Material.STAINED_GLASS_PANE).setDamage((byte) 10)
+                    .setName(" ")
+                    .build();
+            }
 
-                @Override
-                public void click(SynergyUser synergyUser, ClickType clickType, Gui gui) {
-                }
-            });
-        }
+            @Override
+            public void click(SynergyUser synergyUser, ClickType clickType, Gui gui) {
+            }
+        });
+        line(9, 17, new GuiElement() {
+            @Override
+            public ItemStack getIcon(SynergyUser synergyUser) {
+                return new ItemBuilder(Material.STAINED_GLASS_PANE).setDamage((byte) 15)
+                    .setName(" ")
+                    .build();
+            }
+
+            @Override
+            public void click(SynergyUser synergyUser, ClickType clickType, Gui gui) {
+            }
+        });
 
         addElement(0, new GuiElement() {
             @Override
@@ -59,7 +72,10 @@ public class PunishGUI extends Gui {
 
             @Override
             public void click(SynergyUser synergyUser, ClickType clickType, Gui gui) {
-                new PunishmentsGUI(getPlugin(), user.getPunishments(),  user.getName()).open(synergyUser.getPlayer());
+                Gui punishmentsGui = new PunishmentsGUI(getPlugin(), user.getPunishments(),  user.getName());
+
+                punishmentsGui.setParent(PunishGUI.this);
+                punishmentsGui.open(synergyUser.getPlayer());
             }
         });
 
@@ -93,15 +109,20 @@ public class PunishGUI extends Gui {
             addElement(icon.getCategory().getFirstFreeSlots(this), new GuiElement() {
                 @Override
                 public ItemStack getIcon(SynergyUser synergyUser) {
+                    if (synergyUser.getRank().isLowerThan(icon.getNeededRank())){
+                        return getNoAccessItem(icon);
+                    }
                     return getItemStackIcon(icon);
                 }
 
                 @Override
                 public void click(SynergyUser synergyUser, ClickType clickType, Gui gui) {
+                    if (synergyUser.getRank().isLowerThan(icon.getNeededRank())){
+                        return;
+                    }
                     new ConfirmationGUI(getPlugin(), "Are you sure?"){
                         @Override
                         public void onAccept(SynergyUser synergyUser) {
-                            System.out.println("HAS PUNISHED");
                             getPlugin().getPunishManager().punish(user, punisher, icon);
                         }
 
@@ -117,9 +138,12 @@ public class PunishGUI extends Gui {
 
     private static ItemStack getHeader(SynergyUser punished) {
         return new SkullItemBuilder(punished.getPlayer())
-                .addLore("§7Punishments: §f" + punished.getPunishments().size())
-                .setName("§e§l"+punished.getName())
-                .build();
+            .setName("§e§l"+punished.getName())
+            .addLore(
+                "§7Punishments: §f" + punished.getPunishments().size(),
+                "§7Status: " + (punished.isOnline() ? "§aOnline" : "§cOffline")
+            )
+            .build();
     }
 
     private org.bukkit.Material getMaterialCategory(PunishCategory category){
@@ -138,35 +162,51 @@ public class PunishGUI extends Gui {
 
     private org.bukkit.inventory.ItemStack getItemStack(PunishCategory category){
         return new ItemBuilder(getMaterialCategory(category))
-                .setName("§c"+category.getName())
+                .setName("§a§l"+category.getName().toUpperCase())
                 .addLore("  ")
                 .addLore(category.getDescription())
                 .build();
     }
 
     public org.bukkit.inventory.ItemStack getItemStackIcon(PunishIcon punishIcon){
-        return new ItemBuilder(getItemStackLevel(punishIcon.getPunishLevel()).getType())
-                .setName("§b"+punishIcon.getPunishLevel().getName())
-                .addLore("Straffen: "+ UtilTime.simpleTimeFormat(punishIcon.getPunishTime()) + " "+punishIcon.getType().name())
+        return getItemStackLevel(punishIcon.getPunishLevel())
+                .setName("§b§l"+punishIcon.getPunishLevel().getName().toUpperCase() +
+                    (punishIcon.getName() != null ? " §7○ §e§l" + punishIcon.getName() : ""))
+                .addLore("§e"+ (punishIcon.getPunishTime() > 0 ? UtilTime.simpleTimeFormat(punishIcon.getPunishTime()) : "Permanent") + " "+punishIcon.getType().name())
+                .addLore(" ")
                 .addLore(punishIcon.getDescription())
                 .build();
     }
 
-    public org.bukkit.inventory.ItemStack getItemStackLevel(PunishLevel punishLevel) {
+    public org.bukkit.inventory.ItemStack getNoAccessItem(PunishIcon punishIcon){
+        return new ItemBuilder(Material.BARRIER)
+            .setName("§c§l"+punishIcon.getPunishLevel().getName().toUpperCase() +
+                (punishIcon.getName() != null ? " §7○ §c§l" + punishIcon.getName() : ""))
+            .addLore("§e"+ (punishIcon.getPunishTime() > 0 ? UtilTime.simpleTimeFormat(punishIcon.getPunishTime()) : "Permanent") + " "+punishIcon.getType().name())
+            .addLore(" ")
+            .addLore(
+                "§cYou do not have access to this strength.",
+                "§cYour rank is not high enough.",
+                "§cYou need to contact a " + punishIcon.getNeededRank().getPrefix()
+            )
+            .build();
+    }
+
+    public ItemBuilder getItemStackLevel(PunishLevel punishLevel) {
         switch (punishLevel){
             case WARNING:
-                return new org.bukkit.inventory.ItemStack(org.bukkit.Material.REDSTONE);
+                return new ItemBuilder(Material.REDSTONE);
             case ONE:
-                return new ItemBuilder(Material.WATER_LILY).build();
+                return new SkullItemBuilder("78a42df06fc916de110f61bd76eddbf58ed4249fce5ee51c219ec75a37b414");
             case TWO:
-                return new ItemBuilder(org.bukkit.Material.ENDER_PEARL).build();
+                return new SkullItemBuilder("1ef134f0efa88351b837f7c087afe1b3fb36435ab7d746fa37c0ef155e4f29");
             case THREE:
-                return new ItemBuilder(Material.EYE_OF_ENDER).build();
+                return new SkullItemBuilder("1965e9c57c14c95c84e622e5306e1cf23bc5f1e47ac791f3d357b5ae8cded24");
             case PermanentMute:
-                return new org.bukkit.inventory.ItemStack(Material.BOOK_AND_QUILL);
+                return new ItemBuilder(Material.BOOK_AND_QUILL);
             case PermanentBan:
-                return new org.bukkit.inventory.ItemStack(org.bukkit.Material.REDSTONE_BLOCK);
+                return new SkullItemBuilder("ff9d9de62ecae9b798555fd23e8ca35e2605291939c1862fe79066698c9508a7");
         }
-        return new ItemBuilder(Material.WATER_LILY).build();
+        return new ItemBuilder(Material.WATER_LILY);
     }
 }

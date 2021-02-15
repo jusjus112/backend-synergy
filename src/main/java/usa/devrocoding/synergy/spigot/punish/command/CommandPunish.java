@@ -7,7 +7,7 @@ import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.command.SynergyCommand;
 import usa.devrocoding.synergy.spigot.punish.gui.PunishGUI;
 import usa.devrocoding.synergy.spigot.user.event.UserLoadEvent;
-import usa.devrocoding.synergy.spigot.user.object.Rank;
+import usa.devrocoding.synergy.assets.Rank;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 
 public class CommandPunish extends SynergyCommand {
@@ -23,18 +23,15 @@ public class CommandPunish extends SynergyCommand {
         getPlugin().getRunnableManager().runTaskAsynchronously("open punish menu", core -> {
             if (args.length > 0 && args.length < 3){
                 String name = args[0];
-                SynergyUser target = getPlugin().getUserManager().getUser(name, true);
-                if (target == null){
-                    target = new SynergyUser(
-                            Bukkit.getOfflinePlayer(name).getUniqueId(),
-                            name,
-                            Rank.NONE,
-                            Core.getPlugin().getLanguageManager().getLanguage("en"),
-                            UserLoadEvent.UserLoadType.NEW,
-                            false
-                    );
+                if (name.equals(synergyUser.getName())){
+                    synergyUser.error("You cannot punish yourself -_-");
+                    return;
                 }
-                target.delete();
+                SynergyUser target = getPlugin().getUserManager().getFakeUser(name);
+                if (target == null){
+                    synergyUser.error("This user has never joined our server!");
+                    return;
+                }
                 if (target.getRank().getId() > synergyUser.getRank().getId()){
                     synergyUser.info("This user has a higher rank than you!");
                     return;

@@ -20,8 +20,10 @@ public class CommandWeather extends SynergyCommand {
         if (args.length == 1){
             if (args[0].equalsIgnoreCase("sun")){
                 player.getWorld().setWeatherDuration(0);
-                synergyUser.info("Removed the rain from this world.");
-                return;
+                synergyUser.info("Removed the sadness from this world.");
+            }else if (args[0].equalsIgnoreCase("rain")){
+                player.getWorld().setWeatherDuration(0);
+                synergyUser.info("Removed the happiness from this world.");
             }
         }else{
             sendUsageMessage(player);

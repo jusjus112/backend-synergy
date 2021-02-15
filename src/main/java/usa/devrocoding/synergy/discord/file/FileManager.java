@@ -1,12 +1,18 @@
 package usa.devrocoding.synergy.discord.file;
 
 import com.google.gson.JsonObject;
+import net.dv8tion.jda.api.JDA;
 import usa.devrocoding.synergy.discord.DiscordModule;
 
 public class FileManager extends DiscordModule {
 
     public FileManager(){
         super("File Manager");
+    }
+
+    @Override
+    public void init(JDA jda) {
+
     }
 
     public void setup(){

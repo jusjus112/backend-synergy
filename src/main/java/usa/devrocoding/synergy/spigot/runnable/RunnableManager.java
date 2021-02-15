@@ -21,28 +21,40 @@ public class RunnableManager extends Module {
 
     }
 
-    public void runTask(String name, Consumer<Core> run) {
-        createRunnable(name, run).runTask(getPlugin());
+    public SynergyRunnable runTask(String name, Consumer<Core> run) {
+        SynergyRunnable runnable = createRunnable(name, run);
+        runnable.runTask(getPlugin());
+        return runnable;
     }
 
-    public void runTaskAsynchronously(String name, Consumer<Core> run) {
-        createRunnable(name, run).runTaskAsynchronously(getPlugin());
+    public SynergyRunnable runTaskAsynchronously(String name, Consumer<Core> run) {
+        SynergyRunnable runnable = createRunnable(name, run);
+        runnable.runTaskAsynchronously(getPlugin());
+        return runnable;
     }
 
-    public void runTaskLater(String name, Consumer<Core> run, long time) {
-        createRunnable(name, run).runTaskLater(getPlugin(), time);
+    public SynergyRunnable runTaskLater(String name, Consumer<Core> run, long time) {
+        SynergyRunnable runnable = createRunnable(name, run);
+        runnable.runTaskLater(getPlugin(), time);
+        return runnable;
     }
 
-    public void runTaskLaterAsynchronously(String name, Consumer<Core> run, long time) {
-        createRunnable(name, run).runTaskLaterAsynchronously(getPlugin(), time);
+    public SynergyRunnable runTaskLaterAsynchronously(String name, Consumer<Core> run, long time) {
+        SynergyRunnable runnable = createRunnable(name, run);
+        runnable.runTaskLaterAsynchronously(getPlugin(), time);
+        return runnable;
     }
 
-    public void runTaskTimer(String name, Consumer<Core> run, long delay, long period) {
-        createRunnable(name, run).runTaskTimer(getPlugin(), delay, period);
+    public SynergyRunnable runTaskTimer(String name, Consumer<Core> run, long delay, long period) {
+        SynergyRunnable runnable = createRunnable(name, run);
+        runnable.runTaskTimer(getPlugin(), delay, period);
+        return runnable;
     }
 
-    public void runTaskTimerAsynchronously(String name, Consumer<Core> run, long delay, long period) {
-        createRunnable(name, run).runTaskTimerAsynchronously(getPlugin(), delay, period);
+    public SynergyRunnable runTaskTimerAsynchronously(String name, Consumer<Core> run, long delay, long period) {
+        SynergyRunnable runnable = createRunnable(name, run);
+        runnable.runTaskTimerAsynchronously(getPlugin(), delay, period);
+        return runnable;
     }
 
     public void updateTime(String name, long delay, long period) {
@@ -57,8 +69,6 @@ public class RunnableManager extends Module {
         RUNNABLES.remove(name);
 
         runTaskTimer(name, newRunnable.getRun(), delay, period);
-
-        return;
     }
 
     private SynergyRunnable createRunnable(String name, Consumer<Core> run) {

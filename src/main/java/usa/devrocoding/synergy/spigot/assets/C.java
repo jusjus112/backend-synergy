@@ -26,13 +26,19 @@ public enum C {
 
     public enum Symbol{
         HEARTH("❤"),
-        KLAVER("♠");
+        KLAVER("♠"),
+        CROSS("✘"),
+        YES("✔");
 
-        @Getter
-        private String symbol;
+        private final String symbol;
 
         Symbol(String symbol){
             this.symbol = symbol;
+        }
+
+        @Override
+        public String toString() {
+            return this.symbol;
         }
     }
 

@@ -1,10 +1,11 @@
 package usa.devrocoding.synergy.spigot.punish;
 
 import usa.devrocoding.synergy.assets.Synergy;
+import usa.devrocoding.synergy.services.sql.UtilSQL;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
-import usa.devrocoding.synergy.spigot.plugin_messaging.PluginMessage;
-import usa.devrocoding.synergy.spigot.plugin_messaging.object.PluginMessageType;
+import usa.devrocoding.synergy.assets.PluginMessageBuilder;
+import usa.devrocoding.synergy.assets.PluginMessageType;
 import usa.devrocoding.synergy.spigot.punish.command.CommandPunish;
 import usa.devrocoding.synergy.spigot.punish.listeners.MuteListener;
 import usa.devrocoding.synergy.spigot.punish.listeners.SynergyReceiveListener;
@@ -52,20 +53,18 @@ public class PunishManager extends Module {
     }
 
     public void punish(SynergyUser user, SynergyUser punisher, Punishment punishment){
-        System.out.println("PUNISHING PLAYER");
         getPlugin().getRunnableManager().runTaskAsynchronously("Punish Player", core -> {
             core.getDatabaseManager().insert("punishments", new HashMap<String, Object>() {{
-                put("uuid", punishment.getPunished().toString());
+                put("uuid", UtilSQL.convertUniqueId(punishment.getPunished()));
                 put("type", punishment.getType().name());
                 put("category", punishment.getCategory().name());
                 put("level", punishment.getLevel().name());
                 put("issued", String.valueOf(punishment.getIssued()));
                 put("till", String.valueOf(punishment.getTill()));
-                put("punisher", punishment.getPunisher().toString());
+                put("punisher", UtilSQL.convertUniqueId(punishment.getPunisher()));
                 put("active", punishment.isActive());
             }});
             Synergy.debug("PUNISHMENT ACTIVE - "+punishment.isActive());
-            System.out.println("INSERTED INTO DATABASE");
             for(SynergyUser synergyUser : getPlugin().getUserManager().getOnlineUsers()){
                 if (synergyUser.getUuid().equals(punishment.getPunished())){
                     synergyUser.getPunishments().add(punishment);
@@ -81,34 +80,39 @@ public class PunishManager extends Module {
     public void takeAction(SynergyUser user, SynergyUser punisher, Punishment punishment){
         switch (punishment.getType()){
             case BAN:
-                new PluginMessage(PluginMessageType.ACTION)
+                new PluginMessageBuilder(PluginMessageType.ACTION)
                         .target(user.getUuid())
                         .message("UPDATE_PUNISHMENTS")
                         .send();
-                new PluginMessage(PluginMessageType.STAFF_MESSAGE)
+                new PluginMessageBuilder(PluginMessageType.STAFF_MESSAGE)
                         .target(user.getUuid())
                         .prefix("§c§l[STAFF]:§r ")
                         .message(user.getName()+" has been banned by §e"+punisher.getName())
                         .send();
                 break;
             case MUTE:
-                new PluginMessage(PluginMessageType.PLAYER_MESSAGE)
+                new PluginMessageBuilder(PluginMessageType.PLAYER_MESSAGE)
                         .target(user.getUuid())
                         .message("You have been muted by "+punisher.getName())
                         .send();
                 break;
             case WARNING:
-                new PluginMessage(PluginMessageType.PLAYER_MESSAGE)
+                new PluginMessageBuilder(PluginMessageType.PLAYER_MESSAGE)
                         .target(user.getUuid())
                         .prefix(true)
-                        .message("You have been warned by §e"+punisher.getName())
+                        .message(
+                            "You have been warned by §e"+punisher.getName(),
+                            "When exceeding 3+ warnings, you will be banned temporarily."
+                        )
                         .send();
-                new PluginMessage(PluginMessageType.STAFF_MESSAGE)
+                new PluginMessageBuilder(PluginMessageType.STAFF_MESSAGE)
                         .target(user.getUuid())
                         .prefix("§c§l[STAFF]:§r ")
                         .message(user.getName()+" has been warned by §c"+punisher.getName())
                         .send();
                 break;
+            case KICK:
+                user.kick(punishment.getBanMessage("MiragePrisons"));
         }
     }
 
@@ -120,16 +124,24 @@ public class PunishManager extends Module {
 
     public void updatePunishment(Punishment punishment){
         getPlugin().getRunnableManager().runTaskAsynchronously("Update Punishments Player", core -> {
-            core.getDatabaseManager().update("punishments", new HashMap<String, Object>() {{
-                put("uuid", punishment.getPunished().toString());
-                put("type", punishment.getType().name());
-                put("category", punishment.getCategory().name());
-                put("level", punishment.getLevel().name());
-                put("issued", String.valueOf(punishment.getIssued()));
-                put("till", String.valueOf(punishment.getTill()));
-                put("punisher", punishment.getPunisher().toString());
-                put("active", punishment.isActive());
-            }}, "uuid = '"+punishment.getPunished().toString()+"' AND issued = '"+punishment.getIssued()+"'");
+            core.getDatabaseManager().update(
+                "punishments",
+                new HashMap<String, Object>() {{
+                    put("uuid", UtilSQL.convertUniqueId(punishment.getPunished()));
+                    put("type", punishment.getType().name());
+                    put("category", punishment.getCategory().name());
+                    put("level", punishment.getLevel().name());
+                    put("issued", String.valueOf(punishment.getIssued()));
+                    put("till", String.valueOf(punishment.getTill()));
+                    put("punisher", UtilSQL.convertUniqueId(punishment.getPunisher()));
+                    put("active", punishment.isActive());
+                }},
+                new HashMap<String, Object>() {{
+                    put("uuid", UtilSQL.convertUniqueId(punishment.getPunished()));
+                    put("issued", punishment.getIssued());
+                }}
+            );
+
             Synergy.debug("PUNISHMENT ACTIVE 2 - "+punishment.isActive());
         });
     }
@@ -139,18 +151,20 @@ public class PunishManager extends Module {
 
         try{
             Synergy.debug("1 - PUNISHMENTS");
+            Synergy.debug(uuid.toString() + " = 1 - PUNISHMENTS");
             ResultSet result = Core.getPlugin().getDatabaseManager().getResults(
                     "punishments ", "uuid=?", new HashMap<Integer, Object>(){{
-                        put(1, uuid.toString());
+                        put(1, UtilSQL.convertUniqueId(uuid));
                     }}
             );
             boolean update = false;
             Synergy.debug("2 - PUNISHMENTS");
-            System.out.println(result);
+            Synergy.debug(result.isClosed() + " = 2 - PUNISHMENTS");
             while (result.next()){
                 Synergy.debug("3 - PUNISHMENTS");
                 boolean active = result.getBoolean("active");
-                Long till = Long.valueOf(result.getString("till"));
+                long till = Long.parseLong(result.getString("till"));
+
                 if (active){
                     if (!(till < 0L) && till <= System.currentTimeMillis()){
                         active = false;
@@ -167,7 +181,7 @@ public class PunishManager extends Module {
                         PunishLevel.valueOf(result.getString("level")),
                         Long.parseLong(result.getString("issued")),
                         till,
-                        UUID.fromString(result.getString("punisher")),
+                        UtilSQL.convertBinaryStream(result.getBinaryStream("punisher")),
                         active
                 ));
             }

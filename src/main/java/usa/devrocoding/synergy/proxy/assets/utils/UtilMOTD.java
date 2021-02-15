@@ -11,7 +11,7 @@ public class UtilMOTD {
         if (first.length() > 45 || (second == null || second.length() > 45)){
             throw new StringIndexOutOfBoundsException("A single line can only have 45 characters and cannot be null!");
         }else{
-            final int max = 55;
+            final int max = 57;
             String first_line = centerLine(first, max),
                     second_line = centerLine(second, max);
             return ChatColor.translateAlternateColorCodes('&', first_line + "&r\n" + second_line);
@@ -26,15 +26,15 @@ public class UtilMOTD {
      */
     private static String centerLine(String s, int max){
         StringBuilder builder = new StringBuilder();
-        int count=0, colors = 0;
+        int count = 0, colors = 0;
 
 //        colors = StringUtils.countMatches(s, "&l");
 //        max -= colors;
 
-        for(double i=(Math.ceil(max-s.length()))/2;i>0;i--){
-            builder.append(" ");
-        }
-        builder.append(s);
+//        for(double i=(Math.ceil(max-s.length()))/2;i>0;i--){
+//            builder.append(" ");
+//        }
+        builder.append(StringUtils.center(s, max));
         return builder.toString();
     }
 

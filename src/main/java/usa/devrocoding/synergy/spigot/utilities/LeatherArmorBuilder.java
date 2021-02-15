@@ -24,7 +24,7 @@ public class LeatherArmorBuilder extends ItemBuilder{
         BOOTS(Material.LEATHER_BOOTS);
 
         @Getter
-        private Material material;
+        private final Material material;
 
         LeatherArmor(Material material){
             this.material = material;

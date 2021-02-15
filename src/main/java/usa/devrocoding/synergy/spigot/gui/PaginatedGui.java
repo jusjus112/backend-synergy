@@ -3,6 +3,7 @@ package usa.devrocoding.synergy.spigot.gui;
 import com.google.common.collect.Lists;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -18,6 +19,7 @@ import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.gui.object.GuiSize;
 import usa.devrocoding.synergy.spigot.gui.object.MenuInventoryHolder;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
+import usa.devrocoding.synergy.spigot.utilities.ItemBuilder;
 
 /**
  * @Author Hypixel LLC
@@ -28,7 +30,11 @@ public abstract class PaginatedGui extends Gui {
   private final Paginator paginator;
 
   public PaginatedGui(Core plugin, String name, GuiSize guiSize, Paginator paginator) {
-    super(plugin, name, guiSize);
+    this(plugin, name, guiSize, paginator, true);
+  }
+
+  public PaginatedGui(Core plugin, String name, GuiSize guiSize, Paginator paginator, boolean setup) {
+    super(plugin, name, guiSize, setup);
 
     this.paginator = paginator;
   }
@@ -55,8 +61,14 @@ public abstract class PaginatedGui extends Gui {
   @Override
   void setItems(Inventory inventory, SynergyUser synergyUser) {
     super.setItems(inventory, synergyUser);
-    inventory.setItem(paginator.changePageSlots.getLeft(), paginator.changePageItems.getLeft());
-    inventory.setItem(paginator.changePageSlots.getRight(), paginator.changePageItems.getRight());
+
+    ItemBuilder goLeft = new ItemBuilder(paginator.changePageItems.getLeft())
+        .setName("§d§lPrevious Page");
+    ItemBuilder goRight = new ItemBuilder(paginator.changePageItems.getRight())
+        .setName("§d§lNext Page");
+
+    inventory.setItem(paginator.changePageSlots.getLeft(), goLeft.build());
+    inventory.setItem(paginator.changePageSlots.getRight(), goRight.build());
 
     MenuInventoryHolder holder = (MenuInventoryHolder) Objects
         .requireNonNull(inventory.getHolder());
@@ -161,7 +173,7 @@ public abstract class PaginatedGui extends Gui {
      * @param itemConsumer the callback method to be called with the items for that page
      */
     public abstract void getItemsFor(SynergyUser viewer, int page,
-        Consumer<List<GuiElement>> itemConsumer);
+        Consumer<LinkedList<GuiElement>> itemConsumer);
   }
 
 }

@@ -28,6 +28,8 @@ public abstract class Gui {
 	private final GuiSize guiSize;
 	@Getter
 	private Gui parent = null;
+	@Setter @Getter
+	private boolean ignoringParent;
 	private final Map<Integer, GuiElement> elements;
 	private final Map<UUID, Inventory> currentSessions;
 	
@@ -41,16 +43,17 @@ public abstract class Gui {
 		this.guiSize = guiSize;
 		this.elements = Maps.newHashMap();
 		this.currentSessions = Maps.newHashMap();
-
-		plugin.getGUIManager().getMenus().add(this);
+		this.ignoringParent = false;
 
 		if (setup)
 			setup();
 	}
 
 	public abstract void setup();
-	public void onClose(Inventory inventory){}
-	public boolean onInsert(ItemStack itemStack){
+	public boolean onClose(Inventory inventory, SynergyUser synergyUser){
+		return true;
+	}
+	public boolean onInsert(ItemStack itemStack, Inventory inventory){
 		return false;
 	}
 
@@ -89,26 +92,47 @@ public abstract class Gui {
 
 		Player player = synergyUser.getPlayer();
 
-		removeFromSession(player);
+		currentSessions.remove(player.getUniqueId());
 		currentSessions.put(player.getUniqueId(), inventory);
 		player.updateInventory();
+	}
+
+	public void update(SynergyUser synergyUser){
+		synergyUser.getPlayer().updateInventory();
+
+		Inventory inventory = currentSessions.get(synergyUser.getUuid());
+
+		Validate.notNull(inventory, "Cannot update before opening inventory!");
+
+		this.ignoringParent = false;
+		elements.clear();
+
+		setup();
+		setItems(inventory, synergyUser);
 	}
 
 	void setItems(Inventory inventory, SynergyUser synergyUser){
 		elements.forEach((key, value) -> inventory.setItem(key, value.getIcon(synergyUser)));
 	}
 
-	private void removeFromSession(Player player){
-		for(Gui menu : plugin.getGUIManager().getMenus()) {
-			if(!menu.equals(this)) {
-				menu.getCurrentSessions().remove(player.getUniqueId());
-			}
-		}
-	}
+//	private void removeFromSession(Player player){
+//		for(Gui menu : plugin.getGUIManager().getMenus()) {
+//			if(!menu.equals(this)) {
+//				menu.getCurrentSessions().remove(player.getUniqueId());
+//			}
+//		}
+//	}
 
 	public void close(Player player) {
 		player.closeInventory();
-		removeFromSession(player);
+		currentSessions.remove(player.getUniqueId());
+	}
+
+
+	public void close(Player player, boolean ignoringParent) {
+		this.ignoringParent = ignoringParent;
+		player.closeInventory();
+		currentSessions.remove(player.getUniqueId());
 	}
 
 	public Gui setParent(Gui parent){
@@ -162,7 +186,7 @@ public abstract class Gui {
 
 	public void addUnsafeElement(int slot, GuiElement menuElement) {
 		try{
-			this.elements.put(Integer.valueOf(slot), menuElement);
+			this.elements.put(slot, menuElement);
 		}catch (Exception e){
 			Synergy.error(e.getMessage());
 		}
@@ -202,7 +226,7 @@ public abstract class Gui {
 			Arrays.sort(slotsArray);
 
 			for (Object obj : slotsArray) {
-				int i = Integer.valueOf(obj.toString());
+				int i = Integer.parseInt(obj.toString());
 
 				if (i >= size){
 					break;
@@ -219,11 +243,9 @@ public abstract class Gui {
 			case TWO_ROWS:
 				return 4;
 			case THREE_ROWS:
-				return 13;
 			case FOUR_ROWS:
 				return 13;
 			case FIVE_ROWS:
-				return 22;
 			case SIX_ROWS:
 				return 22;
 		}
@@ -235,22 +257,22 @@ public abstract class Gui {
 
 		switch (this.guiSize){
 			case ONE_ROW:
-				places.addAll(Arrays.asList(new Integer[]{1,2,3,4,5,6,7}));
+				places.addAll(Arrays.asList(1,2,3,4,5,6,7));
 				break;
 			case TWO_ROWS:
-				places.addAll(Arrays.asList(new Integer[]{1,2,3,4,5,6,7,10,11,12,13,14,15,16}));
+				places.addAll(Arrays.asList(1,2,3,4,5,6,7,10,11,12,13,14,15,16));
 				break;
 			case THREE_ROWS:
-				places.addAll(Arrays.asList(new Integer[]{10,11,12,13,14,15,16}));
+				places.addAll(Arrays.asList(10,11,12,13,14,15,16));
 				break;
 			case FOUR_ROWS:
-				places.addAll(Arrays.asList(new Integer[]{10,11,12,13,14,15,16,19,20,21,22,23,24,25}));
+				places.addAll(Arrays.asList(10,11,12,13,14,15,16,19,20,21,22,23,24,25));
 				break;
 			case FIVE_ROWS:
-				places.addAll(Arrays.asList(new Integer[]{10,11,12,13,14,15,16,19,20,21,22,23,24,25,28,29,30,31,32,32,33,34}));
+				places.addAll(Arrays.asList(10,11,12,13,14,15,16,19,20,21,22,23,24,25,28,29,30,31,32,32,33,34));
 				break;
 			case SIX_ROWS:
-				places.addAll(Arrays.asList(new Integer[]{10,11,12,13,14,15,16,19,20,21,22,23,24,25,28,29,30,31,32,32,33,34,37,38,39,40,41,42,43}));
+				places.addAll(Arrays.asList(10,11,12,13,14,15,16,19,20,21,22,23,24,25,28,29,30,31,32,32,33,34,37,38,39,40,41,42,43));
 				break;
 		}
 		return places;
@@ -258,14 +280,12 @@ public abstract class Gui {
 
 	public void addElement(int slot, GuiElement menuElement) {
 		if (slot >= 0) {
-			this.elements.put(Integer.valueOf(slot), menuElement);
+			this.elements.put(slot, menuElement);
 		}
 	}
 	
 	public void removeElement(int slot) {
-		if(this.elements.containsKey(slot)) {
-			this.elements.remove(slot);
-		}
+		this.elements.remove(slot);
 	}
 	
 	public GuiElement getElement(int slot) {

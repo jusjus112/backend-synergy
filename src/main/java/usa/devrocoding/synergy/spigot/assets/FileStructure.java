@@ -13,9 +13,9 @@ import java.util.Map;
 
 public class FileStructure {
 
-    private static Map<String, YMLFile> ymlFiles = new HashMap<>();
-    private static Map<String, JSONFile> jsonFiles = new HashMap<>();
-    private static Map<String, TXTFile> txtFiles = new HashMap<>();
+    private final Map<String, YMLFile> ymlFiles = new HashMap<>();
+    private final Map<String, JSONFile> jsonFiles = new HashMap<>();
+    private final Map<String, TXTFile> txtFiles = new HashMap<>();
 
     public enum FileType{
         JSON, YML, TXT
@@ -45,16 +45,15 @@ public class FileStructure {
 
     public FileStructure add(String key, String folder, String file, FileType type){
         String query;
+        if (folder == null){
+            query = Core.getPlugin().getDataFolder()+"";
+        }else{
+            query = Core.getPlugin().getDataFolder()+File.separator+folder;
+        }
         switch (type){
             case YML:
                 if (ymlFiles.containsKey(key)){
                     return this;
-                }
-                if (folder == null){
-//                    Synergy.debug(new File("").getAbsolutePath()+"");
-                    query = Core.getPlugin().getDataFolder()+"";
-                }else{
-                    query = Core.getPlugin().getDataFolder()+File.separator+folder;
                 }
                 ymlFiles.put(key, new YMLFile(query, file));
                 break;

@@ -6,7 +6,7 @@ import usa.devrocoding.synergy.assets.object.LinuxColorCodes;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.assets.C;
 import usa.devrocoding.synergy.spigot.command.SynergyCommand;
-import usa.devrocoding.synergy.spigot.user.object.Rank;
+import usa.devrocoding.synergy.assets.Rank;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 import usa.devrocoding.synergy.spigot.utilities.MemoryUtils;
 
@@ -15,7 +15,7 @@ import static org.bukkit.Bukkit.getServer;
 public class CommandDeveloper extends SynergyCommand {
 
     public CommandDeveloper(Core plugin) {
-        super(plugin, Rank.ADMIN, "See the information needed for developers", true,"synergydev","syndev","version","ver");
+        super(plugin, Rank.JRDEVELOPER, "See the information needed for developers", true,"synergydev","syndev","version","ver");
     }
 
     @Override

@@ -2,22 +2,22 @@ package usa.devrocoding.synergy.spigot.nick.command;
 
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import usa.devrocoding.synergy.assets.Rank;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.command.SynergyCommand;
-import usa.devrocoding.synergy.spigot.user.object.Rank;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 
 public class CommandNick extends SynergyCommand {
 
     public CommandNick(Core plugin) {
-        super(plugin, "command.nick", "Synergy's Nick Command", false,"nick");
+        super(plugin, Rank.YOUTUBER, "Synergy's Nick Command", false,"nick");
 
-        setPlayerUsage("<player|off>");
+        setPlayerUsage("<name|off>");
     }
 
     @Override
     public void execute(SynergyUser synergyUser, Player player, String command, String[] args) {
-        if (args.length > 0 && args.length < 2){
+        if (args.length == 1){
             if (args[0].equalsIgnoreCase("off")){
                 synergyUser.unNick();
             }else{

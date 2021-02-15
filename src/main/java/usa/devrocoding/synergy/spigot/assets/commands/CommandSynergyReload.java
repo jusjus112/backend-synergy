@@ -23,7 +23,7 @@ public class CommandSynergyReload extends SynergyCommand {
 
     @Override
     public void execute(SynergyUser synergyUser, Player player, String command, String[] args) {
-        if (args.length > 0 && args.length < 2){
+        if (args.length == 1){
             for(Module module : Core.getPlugin().getModules()){
                 if (module.getShortname().toLowerCase().equalsIgnoreCase(args[0].toLowerCase())){
                     if (module.isReloadable()) {

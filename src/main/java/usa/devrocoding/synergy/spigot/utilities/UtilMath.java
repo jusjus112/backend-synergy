@@ -1,9 +1,17 @@
 package usa.devrocoding.synergy.spigot.utilities;
 
+import com.google.common.io.ByteStreams;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.math.BigDecimal;
+import java.nio.ByteBuffer;
+import java.util.UUID;
 import org.bukkit.Location;
 
 import java.text.DecimalFormat;
 import java.util.Random;
+import usa.devrocoding.synergy.assets.Synergy;
 
 /**
  * @Author Hypixel LLC
@@ -26,24 +34,28 @@ public class UtilMath {
     }
 
     public static int getPercentage(int fraction, int total) {
-        int percent = (int) (Double.valueOf(fraction) / Double.valueOf(total) * 100);
+        int percent = (int) ((double) fraction / (double) total * 100);
         if (percent >= 100)
             return 100;
-        return (int) (Double.valueOf(fraction) / Double.valueOf(total) * 100);
+        return (int) ((double) fraction / (double) total * 100);
     }
 
     public static double trim(double d) {
         return trim(d, 1);
     }
 
+    public static BigDecimal trimNoTrailingZeros(double d, int degree){
+        return BigDecimal.valueOf(trim(d, degree)).stripTrailingZeros();
+    }
+
     public static double trim(double d, int degree) {
         if (Double.isNaN(d) || Double.isInfinite(d))
             d = 0;
-        String format = "#.#";
+        StringBuilder format = new StringBuilder("#.#");
         for (int i = 1; i < degree; i++)
-            format += "#";
+            format.append("#");
         try {
-            return Double.valueOf(new DecimalFormat(format).format(d));
+            return Double.parseDouble(new DecimalFormat(format.toString()).format(d));
         } catch (NumberFormatException exception) {
             return d;
         }
@@ -55,7 +67,7 @@ public class UtilMath {
     }
 
     public static String getKD(int kills, int deaths) {
-        double d = Double.valueOf(kills) / Double.valueOf(deaths);
+        double d = (double) kills / (double) deaths;
         if (Double.isNaN(d) || Double.isInfinite(d))
             return "0.00";
         return new DecimalFormat("0.00").format(d);
@@ -65,6 +77,14 @@ public class UtilMath {
         String s = new DecimalFormat("0.0").format(d);
         if (s.length() == 1 || s.length() == 2) {
             s = s + ".0";
+        }
+        return s;
+    }
+
+    public static String formatDouble2DP(double d) {
+        String s = new DecimalFormat("0.00").format(d);
+        if (s.length() == 1 || s.length() == 2) {
+            s = s + ".00";
         }
         return s;
     }
@@ -124,12 +144,21 @@ public class UtilMath {
         return half + new Random().nextInt(half + (i % 2 == 0 ? 1 : 0));
     }
 
-    public static boolean getChance(float percent){
-        return getRandom(0, 100) <= percent;
+    public static boolean getChance(double percent){
+        double random = getRandom(0D, 100D);
+        if (random <= 1) {
+            Synergy.debug(random + " = RANDOM");
+            Synergy.debug(percent + " = percent");
+        }
+        return random <= percent;
     }
 
-    public static int getRandom(int min, int max){
-        return random.nextInt(max - min) + min;
+    public static boolean getChance(float percent){
+        return getRandom(0D, 100D) <= percent;
+    }
+
+    public static double getRandom(double min, double max){
+        return min + (max - min) * random.nextDouble();
     }
 
 }

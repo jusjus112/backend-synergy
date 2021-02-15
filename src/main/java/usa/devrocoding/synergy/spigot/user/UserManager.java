@@ -1,26 +1,26 @@
 package usa.devrocoding.synergy.spigot.user;
 
 import com.google.common.collect.Maps;
+import java.sql.Timestamp;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import usa.devrocoding.synergy.assets.Synergy;
+import usa.devrocoding.synergy.services.sql.UtilSQL;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
 import usa.devrocoding.synergy.spigot.achievement.object.Achievement;
-import usa.devrocoding.synergy.spigot.assets.PlayerCommunication;
-import usa.devrocoding.synergy.spigot.language.LanguageFile;
+import usa.devrocoding.synergy.spigot.economy.object.Economy;
 import usa.devrocoding.synergy.spigot.objectives.object.Objective;
-import usa.devrocoding.synergy.spigot.punish.PunishCategory;
-import usa.devrocoding.synergy.spigot.punish.PunishLevel;
-import usa.devrocoding.synergy.spigot.punish.PunishType;
 import usa.devrocoding.synergy.spigot.punish.object.Punishment;
+import usa.devrocoding.synergy.spigot.statistics.object.Statistic;
+import usa.devrocoding.synergy.spigot.statistics.object.StatisticType;
 import usa.devrocoding.synergy.spigot.user.command.CommandHome;
 import usa.devrocoding.synergy.spigot.user.event.UserLoadEvent;
 import usa.devrocoding.synergy.spigot.user.listener.UserChatListener;
-import usa.devrocoding.synergy.spigot.user.listener.UserJoinEvent;
-import usa.devrocoding.synergy.spigot.user.listener.UserQuitEvent;
-import usa.devrocoding.synergy.spigot.user.object.Rank;
+import usa.devrocoding.synergy.spigot.user.listener.UserJoinListener;
+import usa.devrocoding.synergy.spigot.user.listener.UserQuitListener;
+import usa.devrocoding.synergy.assets.Rank;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 
 import java.sql.ResultSet;
@@ -36,8 +36,8 @@ public class UserManager extends Module {
         super(plugin, "User Manager", false);
 
         registerListener(
-            new UserJoinEvent(),
-            new UserQuitEvent(),
+            new UserJoinListener(),
+            new UserQuitListener(),
             new UserChatListener()
         );
 
@@ -58,14 +58,22 @@ public class UserManager extends Module {
         return Collections.EMPTY_LIST;
     }
 
+    public SynergyUser getFakeUser(String name){
+        SynergyUser synergyUser = this.getUser(name, false);
+        if (synergyUser != null){
+            return synergyUser;
+        }
+        return retrievePlayer(loadFromUsername(name), false);
+    }
+
     public SynergyUser getUser(String name, Boolean database) {
         for (SynergyUser user : users.values()) {
-            if (user.getName().toLowerCase().equals(name.toLowerCase())) {
+            if (user.getName().equalsIgnoreCase(name)) {
                 return user;
             }
         }
         if (database){
-            return retrievePlayer(loadFromUsername(name));
+            return retrievePlayer(loadFromUsername(name), true);
         }
         return null;
     }
@@ -85,7 +93,7 @@ public class UserManager extends Module {
         try{
             return Core.getPlugin().getDatabaseManager().getResults(
                     "users ", "uuid=?", new HashMap<Integer, Object>(){{
-                        put(1, uuid.toString());
+                        put(1, UtilSQL.convertUniqueId(uuid));
                     }}
             );
         }catch (SQLException e){
@@ -107,46 +115,62 @@ public class UserManager extends Module {
         }
     }
 
-    public SynergyUser retrievePlayer(ResultSet resultSet){
+    public SynergyUser retrievePlayer(ResultSet resultSet, boolean save){
         if (resultSet != null) {
             final SynergyUser user;
-            double experience;
             Rank rank = Rank.NONE;
             List<Punishment> punishments;
-            List<Achievement> achievements;
-            Map<Objective, Date> objectives;
+            Map<Achievement, Timestamp> achievements;
+            Map<Objective, Timestamp> objectives;
+            Map<StatisticType, Statistic> statistics;
+            Economy economy;
 
             try{
                 if (resultSet.next()) {
                     Synergy.debug("USER LOADING...");
-                    experience = resultSet.getDouble("xp");
+                    UUID uuid = UtilSQL.convertBinaryStream(resultSet.getBinaryStream("uuid"));
+                    Synergy.debug(uuid + " = UUID");
+                    Synergy.debug(uuid.toString() + " = UUID");
+
                     if (Rank.fromName(resultSet.getString("rank")) != null) {
                         Synergy.debug("USER HAS RANK...");
                         rank = Rank.fromName(resultSet.getString("rank"));
-                        Synergy.debug(rank.getCodeName());
+//                        Synergy.debug(rank.getCodeName());
                     }
 
-                    punishments = getPlugin().getPunishManager().retrievePunishments(UUID.fromString(resultSet.getString("uuid")));
-                    achievements = getPlugin().getAchievementManager().retrieveAchievements(resultSet.getString("uuid"));
-                    objectives = getPlugin().getObjectiveManager().retrieveForPlayer(UUID.fromString(resultSet.getString("uuid")));
+                    punishments = getPlugin().getPunishManager().retrievePunishments(uuid);
+                    achievements = getPlugin().getAchievementManager().retrieveAchievements(uuid);
+                    objectives = getPlugin().getObjectiveManager().retrieveForPlayer(uuid);
+                    statistics = getPlugin().getStatisticManager().retrieveStatistics(uuid);
+                    economy = getPlugin().getEconomyManager().retrieveEconomy(uuid);
+
+                    Synergy.debug(statistics + " = STATS");
 
                     user = new SynergyUser(
-                            UUID.fromString(resultSet.getString("uuid")),
-                            resultSet.getString("name"),
-                            rank,
-                            Core.getPlugin().getLanguageManager().getLanguage("en"),
-                            UserLoadEvent.UserLoadType.RETRIEVED_FROM_DATABASE
+                        uuid,
+                        resultSet.getString("name"),
+                        rank,
+                        Core.getPlugin().getLanguageManager().getLanguage("en"),
+                        UserLoadEvent.UserLoadType.RETRIEVED_FROM_DATABASE,
+                        save
                     );
-                    user.setNetworkXP(experience);
+
                     user.setPunishments(punishments);
                     user.setAchievements(achievements);
-                    Synergy.debug("USER LOADED ACHIEVEMENTS !!!");
-                    System.out.println(achievements);
-                    Synergy.debug(rank.getCodeName());
+                    user.setStatistics(statistics);
+                    user.setEconomy(economy);
                     user.setObjectives(objectives);
+
+                    if (user.needs2FA()) {
+                        Core.getPlugin().getGoogleAuthManager()
+                            .getUserStuffFromDatabase(uuid, user);
+                    }
+
                     resultSet.close();
                     Core.getPlugin().getDatabaseManager().disconnect();
                     return user;
+                }else{
+                    Synergy.debug("RESULT = EMPTY");
                 }
             }catch (SQLException e){
                 e.printStackTrace();
@@ -162,21 +186,25 @@ public class UserManager extends Module {
         }
     }
 
-    public void updateUser(SynergyUser synergyUser){
+    public void updateUserTable(SynergyUser synergyUser){
         Core.getPlugin().getRunnableManager().runTaskAsynchronously(
-            "Add User",
+            "Update User",
             core -> {
                 HashMap<String, Object> data = new HashMap<String, Object>() {{
-                    put("uuid", synergyUser.getUuid().toString());
+                    put("uuid", UtilSQL.convertUniqueId(synergyUser.getUuid()));
                     put("name", synergyUser.getName());
-                    put("xp", synergyUser.getNetworkXP());
                     put("rank", synergyUser.getRank().toString().toUpperCase());
                     put("user_experience", synergyUser.getUserExperience().toString().toUpperCase());
                 }};
-                if (synergyUser.getLoadType() == UserLoadEvent.UserLoadType.NEW) {
-                    getPlugin().getDatabaseManager().insert("users", data);
-                }else{
-                    Core.getPlugin().getDatabaseManager().update("users", data, "uuid = '"+synergyUser.getUuid().toString()+"'");
+                Synergy.debug(data + " = UPDATE USER MAP");
+                if (!getPlugin().getDatabaseManager().insert("users", data)) {
+                    Core.getPlugin().getDatabaseManager().update(
+                        "users",
+                        data,
+                        new HashMap<String, Object>() {{
+                            put("uuid", UtilSQL.convertUniqueId(synergyUser.getUuid()));
+                        }}
+                    );
                 }
             }
         );

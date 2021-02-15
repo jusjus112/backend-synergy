@@ -10,18 +10,27 @@ public class PlayerFinishedAchievementListener implements Listener {
 
     @EventHandler
     public void onPlayerFinishedAchievement(PlayerFinishedAchievementEvent e){
-        e.getSynergyUser().addNetworkXP(e.getAchievement().getRewardExperience());
+//        e.getSynergyUser().getEconomy().addXP(e.getAchievement().getRewardExperience());
 
-        e.getSynergyUser().sendModifactionMessage(
+        e.getSynergyUser()
+            .sendModifactionMessage(
                 MessageModification.CENTERED,
-                C.getLine(),
+                " ",
                 " ",
                 "§9§lAchievement Unlocked",
                 "§e\""+e.getAchievement().getName()+"\"",
-                " ",
-                "§eReceived §6"+e.getAchievement().getRewardExperience()+" §eNetwork XP",
-                C.getLine()
+                " "
         );
+        e.getSynergyUser()
+            .sendModifactionMessage(
+                MessageModification.CENTERED,
+                e.getAchievement().rewards()
+            );
+        e.getSynergyUser()
+            .sendModifactionMessage(
+                MessageModification.RAW,
+                " "
+            );
     }
 
     /*

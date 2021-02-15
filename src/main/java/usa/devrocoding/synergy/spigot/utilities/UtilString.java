@@ -2,6 +2,7 @@ package usa.devrocoding.synergy.spigot.utilities;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
+import java.nio.charset.StandardCharsets;
 import net.md_5.bungee.api.ChatColor;
 
 import java.awt.*;
@@ -37,13 +38,9 @@ public class UtilString {
         for(char c : message.toCharArray()){
             if(c == '§'){
                 previousCode = true;
-                continue;
-            }else if(previousCode == true){
+            }else if(previousCode){
                 previousCode = false;
-                if(c == 'l' || c == 'L'){
-                    isBold = true;
-                    continue;
-                }else isBold = false;
+                isBold = c == 'l' || c == 'L';
             }else{
                 DefaultFontInfo dFI = DefaultFontInfo.getDefaultFontInfo(c);
                 messagePxSize += isBold ? dFI.getBoldLength() : dFI.getLength();
@@ -64,11 +61,7 @@ public class UtilString {
     }
 
     public static List<String> convert(String[] array) {
-        List<String> l = new ArrayList<>();
-        for (String s : array) {
-            l.add(s);
-        }
-        return l;
+        return new ArrayList<>(Arrays.asList(array));
     }
 
     public static String getAlphaNumericString(int length) {
@@ -76,9 +69,9 @@ public class UtilString {
         new Random().nextBytes(array);
 
         String randomString
-                = new String(array, Charset.forName("UTF-8"));
+                = new String(array, StandardCharsets.UTF_8);
 
-        StringBuffer r = new StringBuffer();
+        StringBuilder r = new StringBuilder();
 
         for (int k = 0; k < randomString.length(); k++) {
             char ch = randomString.charAt(k);
@@ -124,24 +117,22 @@ public class UtilString {
         String[] splitted = string.split("\n");
         int length1 = splitted.length;
 
-        for(int i = 0; i < length1; ++i) {
-            String a = splitted[i];
-            String line = "";
+        for (String a : splitted) {
+            StringBuilder line = new StringBuilder();
             String[] cur = a.split(" ");
             int length2 = cur.length;
 
-            for(int i1 = 0; i1 < length2; ++i1) {
-                String word = cur[i1];
-                line = line + word + " ";
-                if (line.trim().length() >= length) {
-                    l.add(line.trim());
-                    line = "";
+            for (String word : cur) {
+                line.append(word).append(" ");
+                if (line.toString().trim().length() >= length) {
+                    l.add(line.toString().trim());
+                    line = new StringBuilder();
                 }
             }
 
-            line = line.trim();
-            if (!line.isEmpty()) {
-                l.add(line);
+            line = new StringBuilder(line.toString().trim());
+            if (line.length() > 0) {
+                l.add(line.toString());
             }
         }
 

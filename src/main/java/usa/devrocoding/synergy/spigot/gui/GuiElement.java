@@ -10,4 +10,6 @@ public abstract class GuiElement {
 
 	public abstract void click(SynergyUser player, ClickType clickType, Gui gui);
 
+	public boolean disableClickEvent(){return false;}
+
 }

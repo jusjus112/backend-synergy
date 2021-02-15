@@ -2,13 +2,11 @@ package usa.devrocoding.synergy.spigot.files.txt;
 
 import lombok.Getter;
 import usa.devrocoding.synergy.spigot.Core;
-import usa.devrocoding.synergy.spigot.assets.C;
-import usa.devrocoding.synergy.spigot.bot_sam.Sam;
+import usa.devrocoding.synergy.spigot.botsam.Sam;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class TXTFile {

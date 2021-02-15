@@ -3,7 +3,7 @@ package usa.devrocoding.synergy.spigot.language;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
 import usa.devrocoding.synergy.spigot.assets.FileStructure;
-import usa.devrocoding.synergy.spigot.bot_sam.Sam;
+import usa.devrocoding.synergy.spigot.botsam.Sam;
 import usa.devrocoding.synergy.spigot.files.yml.YMLFile;
 
 import java.io.File;

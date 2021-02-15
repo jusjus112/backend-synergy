@@ -1,65 +1,118 @@
 package usa.devrocoding.synergy.spigot.objectives.object;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
+import jdk.internal.jline.internal.Nullable;
 import lombok.Getter;
+import org.bukkit.event.Event;
+import org.bukkit.event.EventPriority;
+import usa.devrocoding.synergy.assets.Cache;
 import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.assets.C;
-import usa.devrocoding.synergy.spigot.listeners.EventListener;
-import usa.devrocoding.synergy.spigot.listeners.Listeners;
 import usa.devrocoding.synergy.spigot.objectives.event.ObjectiveFinishedEvent;
+import usa.devrocoding.synergy.spigot.objectives.event.ObjectiveEvent;
 import usa.devrocoding.synergy.spigot.user.object.MessageModification;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
+import usa.devrocoding.synergy.spigot.utilities.UtilMath;
 
 public abstract class Objective {
 
-    public Objective(){
+    @Getter
+    private @Nullable Objective next = null;
+    @Getter
+    private @Nullable Objective unlockFirst = null;
+
+    public void register(){
         this.mechanics();
+
+        Synergy.debug("LOADING OBJ UNLOCKS 1");
+        Synergy.debug(name() + " = LOADING OBJ UNLOCKS 1");
+        Synergy.debug(unlockFirst() + " = LOADING OBJ UNLOCKS 1");
+        if (this.unlockFirst() != null) {
+            this.unlockFirst = Core.getPlugin().getObjectiveManager()
+                .getObjectiveFromClass(this.unlockFirst());
+        }
+        Synergy.debug("LOADING OBJ UNLOCKS 2");
+        Synergy.debug(next() + " = LOADING OBJ UNLOCKS 2");
+        if (this.next() != null) {
+            Synergy.debug("Loaded THE NEXT OBJECTIVE");
+            this.next = Core.getPlugin().getObjectiveManager()
+                .getObjectiveFromClass(this.next());
+        }
     }
 
     public abstract String name();
     public abstract String[] description();
+    public abstract String[] rewards();
+    public abstract Cache<Integer, Integer> percentage(SynergyUser synergyUser);
     public abstract void mechanics();
-    public abstract Objective unlockFirst();
-    public abstract Objective next();
+    public abstract void onFinish(SynergyUser synergyUser);
+    public abstract Class<? extends Objective> unlockFirst();
+    public abstract Class<? extends Objective> next();
 
-    public void onFinish(SynergyUser synergyUser){
+    public void sendFinishMessage(SynergyUser synergyUser){
         synergyUser.sendModifactionMessage(
             MessageModification.CENTERED,
             new ArrayList<String>(){{
-                add(C.getLine());
+                add(" ");
                 add("§9§lFinished Objective");
                 add("§e\""+Objective.this.name()+"\"");
-                add(" ");
-                if (Objective.this.next() != null){
+                if (Objective.this.next != null){
+                    add(" ");
                     add("§5§lNext Objective:");
-                    add("§e\""+Objective.this.next().name()+"\"");
+                    add("§e\""+Objective.this.next.name()+"\"");
                 }
-                add(C.getLine());
+                add(" ");
             }}
         );
     }
 
-    public boolean isAbletoStart(SynergyUser synergyUser){
-        if (unlockFirst() == null){
-            return true;
-        }else{
-            return synergyUser.hasObjective(unlockFirst());
+    public int getPercentage(SynergyUser synergyUser){
+        Cache<Integer, Integer> percentageCache = this.percentage(synergyUser);
+        return UtilMath.getPercentage(percentageCache.getLeft(), percentageCache.getRight());
+    }
+
+    public boolean hasNext(){
+        return this.next != null;
+    }
+
+    public String nextName(){
+        if (this.next== null){
+            return "";
         }
+        return this.next.name();
+    }
+
+    public boolean isAbletoStart(SynergyUser synergyUser){
+        Synergy.debug("ABLE TO START 1");
+        if (!synergyUser.hasObjective(this)) {
+            Synergy.debug("ABLE TO START 2");
+            if (this.unlockFirst != null){
+                Synergy.debug("ABLE TO START 3");
+                return synergyUser.hasObjective(unlockFirst());
+            }
+            return true;
+        }
+        return false;
     }
 
     public void setNextActive(SynergyUser synergyUser){
-        if (next() == null){
+        if (this.next == null){
+            synergyUser.setCurrentObjective(null);
             return;
         }
-        if (!synergyUser.hasObjective(next())) {
-            synergyUser.setCurrentObjective(next());
+        Synergy.debug("HAS NEXT OBJECTIVE 1");
+        if (!synergyUser.hasObjective(this.next)) {
+            Synergy.debug("HAS NEXT OBJECTIVE READY 2");
+            synergyUser.setCurrentObjective(this.next);
+        }else{
+            Synergy.debug("HAS NEXT OBJECTIVE 3");
+            synergyUser.setCurrentObjective(null);
         }
     }
 
     public boolean finish(SynergyUser synergyUser){
-        Synergy.debug("Finish 1");
         if (isAbletoStart(synergyUser) && !synergyUser.hasObjective(this)) {
             Synergy.debug("Finish 2");
             try{
@@ -68,18 +121,21 @@ public abstract class Objective {
                 setNextActive(synergyUser);
                 Core.getPlugin().getServer().getPluginManager().callEvent(new ObjectiveFinishedEvent(synergyUser, this));
                 Synergy.debug("Finish 3");
-                this.onFinish(synergyUser);
+                this.sendFinishMessage(synergyUser);
+                onFinish(synergyUser);
             }catch (Exception e){
                 Synergy.error("Error while finishing objective for user "+synergyUser.getName());
                 Synergy.error(e.getMessage());
+                e.printStackTrace();
             }
             return true;
         }
         return false;
     }
 
-    public void addListener(EventListener<?> listener) {
-        Listeners.addListener(listener);
+    public void addListener(Class<? extends Event> eventClass, ObjectiveEvent<? extends Event> listener){
+        Core.getPlugin().getServer().getPluginManager().registerEvent(
+            eventClass, listener, EventPriority.HIGHEST, listener, Core.getPlugin());
     }
 
 }

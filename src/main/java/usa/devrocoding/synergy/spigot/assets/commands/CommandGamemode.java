@@ -5,15 +5,14 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.assets.C;
-import usa.devrocoding.synergy.spigot.bot_sam.object.SamMessage;
+import usa.devrocoding.synergy.spigot.botsam.object.SamMessage;
 import usa.devrocoding.synergy.spigot.command.SynergyCommand;
-import usa.devrocoding.synergy.spigot.user.object.Rank;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 
 public class CommandGamemode extends SynergyCommand {
 
     public CommandGamemode(Core plugin) {
-        super(plugin, Rank.ADMIN, "Synergy's Plugin Command",true,
+        super(plugin,"command.gamemode", "Synergy's Plugin Command",true,
                 "gamemode", "gm", "gmc", "gms", "gma", "gmsp");
 
         setPlayerUsage("<gamemode>", "[player]");

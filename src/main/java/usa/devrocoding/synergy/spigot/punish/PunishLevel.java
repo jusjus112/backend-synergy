@@ -1,5 +1,10 @@
 package usa.devrocoding.synergy.spigot.punish;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
 public enum PunishLevel {
 
     ONE(
@@ -15,32 +20,23 @@ public enum PunishLevel {
             1
     ),
     WARNING(
-            "Waarschuwing",
+            "Warning",
             3
     ),
     PermanentMute(
-            "Pernamenten Mute",
+            "Permanent Mute",
             3
     ),
     PermanentBan(
-            "Pernamenten Ban",
+            "Permanent Ban",
             3
+    ),
+    KICK(
+        "Kick",
+        1
     );
 
-    private String name;
-    private int severity;
-
-    private PunishLevel(String name, int severity) {
-        this.name = name;
-        this.severity = severity;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getSeverity() {
-        return severity;
-    }
+    private final String name;
+    private final int severity;
 
 }

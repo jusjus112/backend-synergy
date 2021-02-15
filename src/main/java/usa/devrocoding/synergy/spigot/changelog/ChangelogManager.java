@@ -1,5 +1,10 @@
 package usa.devrocoding.synergy.spigot.changelog;
 
+import com.google.common.collect.Lists;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import lombok.Getter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -7,15 +12,13 @@ import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
 import usa.devrocoding.synergy.spigot.assets.C;
-import usa.devrocoding.synergy.spigot.bot_sam.Sam;
+import usa.devrocoding.synergy.spigot.botsam.Sam;
 import usa.devrocoding.synergy.spigot.changelog.commands.CommandChangelog;
 import usa.devrocoding.synergy.spigot.changelog.listeners.ChangelogJoinListener;
 import usa.devrocoding.synergy.spigot.changelog.object.Changelog;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -38,18 +41,14 @@ public class ChangelogManager extends Module {
         try{
             getPlugin().getPluginManager().getFileStructure().getYMLFile("example_changelog").set(
                     new HashMap<String, Object>(){{
-                        put("changelog.title", "&e&lChangelog &7for &6&l%date%");
-                        put("changelog.date", "06-02-2019");
+                        put("changelog.title", "&e&lUpdates &7From &6&l%date%");
+                        put("changelog.date", "09-11-2020");
                         put("changelog.time", "12:30 PM");
-                        put("changelog.order", "1");
+                        put("changelog.show_till", "25-11-2020");
                         put("changelog.changelog", new ArrayList<String>(){{
-                            add("FIXED:");
-                            add("- Bug #2325 | Dupe glitch playervaults");
-                            add("ADDED:");
-                            add("- Feature #04133 | Added this changelog system");
-                            add("- Feature #01312 | Added /request and /bler");
-                            add("REMOVED:");
-                            add("- Feature #01312 | Added /request and /bler");
+                            add("This is page 1");
+                            add("This is page 2");
+                            add("This is page 3");
                         }});
                     }}
             );
@@ -68,16 +67,12 @@ public class ChangelogManager extends Module {
     }
 
     public Changelog getLatestChangelog(){
-        int low = Integer.MIN_VALUE;
-        Changelog cl = null;
-
         for(Changelog changelog : getChangelogs()){
-            if (changelog.getOrder() > low){
-                low = changelog.getOrder();
-                cl = changelog;
+            if (new Date().before(changelog.getShowTill())){
+                return changelog;
             }
         }
-        return cl;
+        return null;
     }
 
     public void cacheChangelogs(){
@@ -91,29 +86,26 @@ public class ChangelogManager extends Module {
                     FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 
                     String title;
-                    int order;
-                    List<String> lines = new ArrayList<>();
                     Date date;
+                    Date showTill;
 
-                    order = config.getInt("changelog.order");
                     String time = config.getString("changelog.time");
 
                     SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm aa", Locale.ENGLISH);
                     date = format.parse(config.getString("changelog.date")+" "+time);
+
+                    showTill = new SimpleDateFormat("dd-MM-yyyy")
+                        .parse(config.getString("changelog.show_till"));
+
                     title = config.getString("changelog.title").replace("%date%",
                             new SimpleDateFormat("MMM dd, yyyy - HH:mm aa").format(date));
 
-                    for(String l : config.getStringList("changelog.changelog")){
-                        String line = l;
-                        if (l.startsWith("-")){
-                            line = "§6"+l;
-                        }else if (l.endsWith(":")){
-                            line = "§b§l"+l;
-                        }
-                        lines.add(C.colorize(line));
+                    List<String> pages = Lists.newArrayList();
+                    for(String s : config.getStringList("changelog.changelog")){
+                        pages.add(C.translateColors(s));
                     }
 
-                    new Changelog(title, order, date, lines);
+                    new Changelog(title, date, showTill, pages);
                 }
                 Synergy.info(getChangelogs().size()+" changelog's loaded!");
             }catch (Exception e){

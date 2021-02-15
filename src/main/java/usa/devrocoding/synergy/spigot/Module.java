@@ -2,28 +2,29 @@ package usa.devrocoding.synergy.spigot;
 
 import lombok.Getter;
 import org.bukkit.event.Listener;
-import usa.devrocoding.synergy.spigot.bot_sam.Sam;
+import usa.devrocoding.synergy.assets.Synergy;
+import usa.devrocoding.synergy.spigot.botsam.Sam;
 import usa.devrocoding.synergy.spigot.command.SynergyCommand;
 
 import java.util.Arrays;
 import usa.devrocoding.synergy.spigot.objectives.object.Objective;
 
+@Getter
 public abstract class Module implements Listener {
 
-    @Getter
     private final Core plugin;
-    @Getter
     private final String name;
-    @Getter
     private final Sam sam;
-    @Getter
     private boolean disabled = false;
-    @Getter
-    private boolean reloadable;
+    private final boolean reloadable;
     @Getter
     public static int total = 0;
 
     public Module(Core plugin, String name, boolean reloadable) {
+
+//        Thread.setDefaultUncaughtExceptionHandler(
+//            (t, e) -> Synergy.error("Uncaught Exception detected in thread", t.toString(), e.toString()));
+
         this.plugin = plugin;
         this.name = name;
         this.sam = new Sam();
@@ -36,7 +37,8 @@ public abstract class Module implements Listener {
     }
 
     public void registerListener(Listener... listeners) {
-        Arrays.stream(listeners).forEach(listener -> getPlugin().getServer().getPluginManager().registerEvents(listener, plugin));
+        Arrays.stream(listeners).forEach(listener ->
+            getPlugin().getServer().getPluginManager().registerEvents(listener, plugin));
     }
 
     public void registerCommand(SynergyCommand... commands) {
@@ -46,7 +48,8 @@ public abstract class Module implements Listener {
     }
 
     public void registerObjectives(Objective... objectives){
-        Arrays.stream(objectives).forEach(objective -> getPlugin().getObjectiveManager().registerObjective(objective));
+        Arrays.stream(objectives).forEach(objective -> getPlugin()
+            .getObjectiveManager().registerObjective(objective));
     }
 
     public String getShortname(){
@@ -54,6 +57,10 @@ public abstract class Module implements Listener {
     }
 
     public abstract void reload(String response);
+
+    public void onServerLoad(){}
+    public void onInit(){}
+    public void onDeinit(){}
 
     public void disable(){
         this.disabled = true;

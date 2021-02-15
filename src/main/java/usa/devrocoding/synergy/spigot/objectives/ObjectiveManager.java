@@ -4,25 +4,39 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
+import jdk.internal.jline.internal.Nullable;
 import lombok.Getter;
+import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
+import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.services.sql.SQLDataType;
 import usa.devrocoding.synergy.services.sql.SQLDefaultType;
 import usa.devrocoding.synergy.services.sql.TableBuilder;
+import usa.devrocoding.synergy.services.sql.UtilSQL;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
-import usa.devrocoding.synergy.spigot.achievement.object.Achievement;
+import usa.devrocoding.synergy.spigot.gui.Gui;
+import usa.devrocoding.synergy.spigot.gui.GuiElement;
+import usa.devrocoding.synergy.spigot.objectives.command.CommandObjectives;
 import usa.devrocoding.synergy.spigot.objectives.object.Objective;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
+import usa.devrocoding.synergy.spigot.utilities.ItemBuilder;
 
 public class ObjectiveManager extends Module {
 
     @Getter
-    private List<Objective> availableObjectives;
+    private final List<Objective> availableObjectives;
 
     public ObjectiveManager(Core plugin){
         super(plugin, "Objective Manager", false);
@@ -30,17 +44,52 @@ public class ObjectiveManager extends Module {
         this.availableObjectives = Lists.newArrayList();
 
         new TableBuilder("objectives", getPlugin().getDatabaseManager())
-            .addColumn("uuid", SQLDataType.VARCHAR, 200, false, SQLDefaultType.NO_DEFAULT, false)
+            .addColumn("uuid", SQLDataType.BINARY, 16, false, SQLDefaultType.NO_DEFAULT, false)
             .addColumn("objective", SQLDataType.VARCHAR, 100, false, SQLDefaultType.NO_DEFAULT, false)
-            .addColumn("solved_on", SQLDataType.DATE, -1, true, SQLDefaultType.NO_DEFAULT, false)
+            .addColumn("solved_on", SQLDataType.DATETIME, -1, true, SQLDefaultType.NO_DEFAULT, false)
+            .setConstraints("uuid", "objective")
         .execute();
 
-        registerObjective(new TestObjective());
+        registerCommand(
+            new CommandObjectives(plugin)
+        );
+    }
+
+    @Override
+    public void onServerLoad() {
+        new BukkitRunnable(){
+            @Override
+            public void run() {
+                availableObjectives.forEach(Objective::register);
+            }
+        }.runTaskLater(getPlugin(), 20L * 3);
     }
 
     @Override
     public void reload(String s) {
 
+    }
+
+    public void startMostRecentObjective(SynergyUser synergyUser){
+        Synergy.debug("STARTED MOST RECENT OBJECTIVE 2");
+        for (Objective availableObjective : this.availableObjectives) {
+            Synergy.debug(availableObjective.name() + " = STARTED MOST RECENT OBJECTIVE 3");
+            if (availableObjective.isAbletoStart(synergyUser)){
+                Synergy.debug("STARTED MOST RECENT OBJECTIVE 4");
+                synergyUser.setCurrentObjective(availableObjective);
+                break;
+            }
+        }
+    }
+
+    public Objective getObjectiveFromClass(@Nullable Class<? extends Objective> clazz){
+        Optional<Objective> optionalObjective = this.availableObjectives.stream()
+            .filter(objective -> objective.getClass() == clazz)
+            .findFirst();
+
+        Synergy.debug(optionalObjective + " = OPTIONAL");
+        Synergy.debug(optionalObjective.isPresent() + " = OPTIONAL 2");
+        return optionalObjective.orElse(null);
     }
 
     public void registerObjective(Objective objective){
@@ -55,9 +104,9 @@ public class ObjectiveManager extends Module {
             core -> {
                 synergyUser.getObjectivesToBeUpdated().forEach((objective, date) -> {
                     HashMap<String, Object> data = new HashMap<String, Object>() {{
-                        put("uuid", synergyUser.getUuid().toString());
+                        put("uuid", UtilSQL.convertUniqueId(synergyUser.getUuid()));
                         put("objective", objective.getClass().getSimpleName().toUpperCase());
-                        put("solved_on", java.sql.Date.from(date.toInstant()));
+                        put("solved_on", java.sql.Timestamp.from(date.toInstant()));
                     }};
                     getPlugin().getDatabaseManager().insert("objectives", data);
                 });
@@ -66,22 +115,75 @@ public class ObjectiveManager extends Module {
         );
     }
 
-    public Map<Objective, Date> retrieveForPlayer(UUID uuid) throws SQLException {
-        Map<Objective, Date> objectives = Maps.newHashMap();
+    public GuiElement getElement(SynergyUser user, Objective objective){
+        final Material material = user.hasObjective(objective)
+            ? Material.MAGMA_CREAM // Unlocked
+            : Material.ENDER_PEARL; // Not Unlocked
+        final ChatColor color = user.hasObjective(objective)
+            ? ChatColor.GREEN // Unlocked
+            : ChatColor.RED; // Not Unlocked
+
+        final String availability = user.hasObjective(objective)
+            ? color+""+ChatColor.BOLD+"Unlocked".toUpperCase()+" §eon " + user.getObjectives().get(objective).toString() // Unlocked
+            : color+""+ChatColor.BOLD+"Not Unlocked Yet".toUpperCase(); // Not Unlocked
+        return new GuiElement() {
+            @Override
+            public ItemStack getIcon(SynergyUser synergyUser) {
+                return new ItemBuilder(material)
+                    .setName(color+""+ChatColor.BOLD+objective.name())
+                    .addLore(
+                        " ",
+                        "§eDescription:"
+                    )
+                    .addLore(
+                        objective.description()
+                    )
+                    .addLore(
+                        " ",
+                        "§eReward(s):"
+                    )
+                    .addLore(
+                        objective.rewards()
+                    )
+                    .addLore(
+                        " ",
+                        availability
+                    )
+                    .build();
+            }
+
+            @Override
+            public void click(SynergyUser synergyUser, ClickType clickType, Gui gui) {
+
+            }
+        };
+    }
+
+    public Map<Objective, Timestamp> retrieveForPlayer(UUID uuid) throws SQLException {
+        Map<Objective, Timestamp> objectives = Maps.newHashMap();
 
         ResultSet result = Core.getPlugin().getDatabaseManager().getResults(
             "objectives ", "uuid=?", new HashMap<Integer, Object>(){{
-                put(1, uuid.toString());
+                put(1, UtilSQL.convertUniqueId(uuid));
             }}
         );
 
+        Synergy.debug("retrieveForPlayer OBJECTIVES FOR PLAYER");
         while (result.next()){
-            for(Objective objective : this.availableObjectives){
-                if (objective.getClass().getSimpleName().toUpperCase().equalsIgnoreCase(result.getString("objective"))){
-                    objectives.put(objective, result.getTimestamp("solved_on"));
-                    break;
+            Synergy.debug(this.availableObjectives.size() + " = retrieveForPlayer OBJECTIVES FOR PLAYER");
+            this.availableObjectives.iterator().forEachRemaining(objective -> {
+                try {
+                    Synergy.debug(objective.getClass().getSimpleName().toUpperCase() + " = OBJECTIVE CLASS");
+                    Synergy.debug(result.getString("objective") + " = OBJECTIVE!!!!!!!!!");
+                    if (objective.getClass().getSimpleName().toUpperCase()
+                        .equalsIgnoreCase(result.getString("objective"))){
+                        objectives.put(objective, result.getTimestamp("solved_on"));
+                        Synergy.debug(result.getString("objective") + " = OBJECTIVE");
+                    }
+                } catch (SQLException exception) {
+                    exception.printStackTrace();
                 }
-            }
+            });
         }
 
         return objectives;

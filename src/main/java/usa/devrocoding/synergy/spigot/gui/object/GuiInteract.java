@@ -43,7 +43,7 @@ public abstract class GuiInteract {
 
     public void addElement(GuiInteractElement menuElement, int slot) {
         if (slot >= 0) {
-            if (!this.elements.containsValue(slot)) this.elements.put(menuElement, Integer.valueOf(slot));
+            if (!this.elements.containsValue(slot)) this.elements.put(menuElement, slot);
         }
     }
 

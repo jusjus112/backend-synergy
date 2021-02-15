@@ -3,19 +3,17 @@ package usa.devrocoding.synergy.spigot.assets;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import usa.devrocoding.synergy.assets.Synergy;
-import usa.devrocoding.synergy.assets.object.LinuxColorCodes;
 import usa.devrocoding.synergy.services.SQLService;
 import usa.devrocoding.synergy.services.sql.DatabaseManager;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
 import usa.devrocoding.synergy.spigot.api.SynergyPlugin;
-import usa.devrocoding.synergy.spigot.bot_sam.Sam;
+import usa.devrocoding.synergy.spigot.assets.FileStructure.FileType;
+import usa.devrocoding.synergy.spigot.botsam.Sam;
 import usa.devrocoding.synergy.spigot.files.yml.YMLFile;
 import usa.devrocoding.synergy.spigot.listeners.EventHandlers;
 
 import java.io.FileNotFoundException;
-import java.net.ConnectException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -84,14 +82,15 @@ public class PluginManager extends Module {
 
         /* LOAD DEFAULT FILE STRUCTURE */
         this.fileStructure
-                .add("modules", null, "modules", FileStructure.FileType.YML)
+            .add("modules", null, "modules", FileType.YML)
 //                .add("buddy", null, "Buddy", FileStructure.FileType.YML)
-                .add("settings", null, "settings", FileStructure.FileType.YML)
-                .add("storage", null, "database", FileStructure.FileType.JSON)
-                .add("example_changelog", "changelogs/server", "example_changelog", FileStructure.FileType.YML)
-                .add("en", "lang", "en_EN", FileStructure.FileType.YML)
-                .add("nl", "lang", "nl_NL", FileStructure.FileType.YML)
-                .save();
+            .add("settings", null, "settings", FileType.YML)
+            .add("warps", null, "warps", FileType.JSON)
+            .add("example_changelog", "changelogs/server", "example_changelog", FileType.YML)
+            .add("en", "lang", "en_EN", FileType.YML)
+            .add("nl", "lang", "nl_NL", FileType.YML)
+            .add("offensive_words", null, "offensive", FileType.JSON)
+            .save();
         try{
             this.fileStructure.getYMLFile("settings").set(
                     new HashMap<String, Object>(){{
@@ -102,6 +101,7 @@ public class PluginManager extends Module {
                         put("sql.port", 3306);
                         put("network.name", "Synergy Network");
                         put("network.isLobby", false);
+                        put("network.isProduction", false);
                         put("network.serverName", "hub");
                     }}
             );

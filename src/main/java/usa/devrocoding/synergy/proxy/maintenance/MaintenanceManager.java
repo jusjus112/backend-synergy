@@ -21,6 +21,8 @@ import java.util.Map;
 
 public class MaintenanceManager extends ProxyModule {
 
+    // TODO: When disabling maintenance, kick everyone with a cooldown
+
     @Getter
     private List<String> serverOnMaintenance = new ArrayList<>();
     @Getter

@@ -32,7 +32,7 @@ public class UtilLoc {
 
 	public static Location getHighestBlockLocation(Location location){
 		Block b = location.getWorld().getHighestBlockAt(location.getBlockX(), location.getBlockZ());
-		return new Location(b.getLocation().getWorld(), b.getLocation().getBlockX(), b.getLocation().getBlockY() + 1, b.getLocation().getBlockZ());
+		return new Location(b.getLocation().getWorld(), b.getLocation().getBlockX()+0.5, b.getLocation().getBlockY()+1D, b.getLocation().getBlockZ()+0.5);
 	}
 
 	public static Location add(Location l, double x, double y, double z) {
@@ -179,6 +179,14 @@ public class UtilLoc {
 
 	public static Location newInstance(Location loc) {
 		return new Location(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+	}
+
+	public static String niceString(Location location){
+		return "X: "+location.getX()+", Y: "+location.getY()+", Z: "+location.getZ();
+	}
+
+	public static String niceStringWithoutY(Location location){
+		return "X: "+location.getX()+", Z: "+location.getZ();
 	}
 
 	public static String serialize(Location location){

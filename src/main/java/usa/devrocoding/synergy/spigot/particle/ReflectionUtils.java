@@ -1,5 +1,7 @@
 package usa.devrocoding.synergy.spigot.particle;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.bukkit.Bukkit;
 
 import java.lang.reflect.Constructor;
@@ -430,7 +432,9 @@ public final class ReflectionUtils {
 		CHARACTER(char.class, Character.class),
 		FLOAT(float.class, Float.class),
 		DOUBLE(double.class, Double.class),
-		BOOLEAN(boolean.class, Boolean.class);
+		BOOLEAN(boolean.class, Boolean.class),
+		ARRAY(List.class, ArrayList.class),
+		STRING("".getClass(), String.class);
 
 		private static final Map<Class<?>, DataType> CLASS_MAP = new HashMap<Class<?>, DataType>();
 		private final Class<?> primitive;

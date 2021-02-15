@@ -32,9 +32,10 @@ public class WarpGUI extends Gui {
         surroundWith(new GuiElement() {
             @Override
             public ItemStack getIcon(SynergyUser synergyUser) {
-                return new ItemBuilder(Material.STAINED_GLASS_PANE).setMaterialData(new MaterialData((byte) 7))
-                        .setName(" ")
-                        .build();
+                return new ItemBuilder(Material.STAINED_GLASS_PANE)
+                    .setDamage((byte) 7)
+                    .setName(" ")
+                    .build();
             }
             @Override
             public void click(SynergyUser synergyUser, ClickType clickType, Gui gui) {}
@@ -44,26 +45,16 @@ public class WarpGUI extends Gui {
         int index = 0;
 
         if (warpManager.getWarps().size() <= 0){
-            addElement(22, new GuiElement() {
-                @Override
-                public ItemStack getIcon(SynergyUser synergyUser) {
-                    return new ItemBuilder(Material.BARRIER)
-                            .setName("No warps has been created!")
-                            .build();
-                }
-
-                @Override
-                public void click(SynergyUser synergyUser, ClickType clickType, Gui gui) {
-
-                }
-            });
+            addNoWarpsItem();
             return;
         }
 
         for(Warp warp : warpManager.getWarps()){
             // No warps allowed called Spawn
-            if (warp.getName().contains("tutorial")||warp.getName().contains("spawn"))
+            if (warp.getName().contains("tutorial")||warp.getName().contains("spawn")||warp.getName().contains("cell")) {
+
                 continue;
+            }
 
             if (this.getUser().hasPermission(warp.getPermissionNode(), false)) {
                 int place = getCenterInput().get(index);
@@ -71,7 +62,7 @@ public class WarpGUI extends Gui {
                 addElement(place, new GuiElement() {
                     @Override
                     public ItemStack getIcon(SynergyUser synergyUser) {
-                        return new ItemBuilder(Material.WATER_LILY)
+                        return new ItemBuilder(Material.EYE_OF_ENDER)
                                 .setName("&d&l" + warp.getName())
                                 .build();
                     }
@@ -85,5 +76,24 @@ public class WarpGUI extends Gui {
                 index++;
             }
         }
+        if (index <= 0){
+            addNoWarpsItem();
+        }
+    }
+
+    private void addNoWarpsItem(){
+        addElement(22, new GuiElement() {
+            @Override
+            public ItemStack getIcon(SynergyUser synergyUser) {
+                return new ItemBuilder(Material.BARRIER)
+                    .setName("No warps have been found :(")
+                    .build();
+            }
+
+            @Override
+            public void click(SynergyUser synergyUser, ClickType clickType, Gui gui) {
+
+            }
+        });
     }
 }

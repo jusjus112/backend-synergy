@@ -1,13 +1,17 @@
 package usa.devrocoding.synergy.proxy.assets;
 
+import java.util.Arrays;
+import java.util.Objects;
 import lombok.Getter;
 import net.md_5.bungee.api.config.ServerInfo;
 import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.discord.Discord;
 import usa.devrocoding.synergy.discord.utilities.MessageBuilder;
+import usa.devrocoding.synergy.discord.utilities.MessageBuilder.SetType;
 import usa.devrocoding.synergy.proxy.Core;
 import usa.devrocoding.synergy.proxy.ProxyModule;
 import usa.devrocoding.synergy.proxy.assets.commands.CommandSynergyProxyReload;
+import usa.devrocoding.synergy.proxy.assets.listener.AutomatedReportsListener;
 import usa.devrocoding.synergy.proxy.maintenance.listener.ProxyPingListener;
 import usa.devrocoding.synergy.proxy.files.ProxyYMLFile;
 
@@ -23,16 +27,22 @@ public class AssetManager extends ProxyModule {
     @Getter
     private ProxyYMLFile ymlFile;
     @Getter
-    private Map<String, String> discordChannels = new HashMap<>();
+    private final Map<String, String> discordChannels = new HashMap<>();
     @Getter
-    private List<String> offlineServers = new ArrayList<>();
+    private final List<String> offlineServers = new ArrayList<>();
 
     public AssetManager(Core plugin){
         super(plugin, "Assets Manager", true);
 
+        registerListeners(
+            new AutomatedReportsListener()
+        );
+
         registerCommands(
                 new CommandSynergyProxyReload()
         );
+
+        initServerChecker();
     }
 
     @Override
@@ -68,6 +78,8 @@ public class AssetManager extends ProxyModule {
         map.put("sql.password", "password");
         map.put("sql.port", 3306);
 
+        map.put("server.isProduction", false);
+
         this.ymlFile = new ProxyYMLFile(getPlugin(), getPlugin().getDataFolder(), "settings");
         this.ymlFile.set(map);
     }
@@ -82,28 +94,38 @@ public class AssetManager extends ProxyModule {
                             if (!AssetManager.this.offlineServers.contains(server.getName())) {
                                 AssetManager.this.offlineServers.add(server.getName());
                                 Synergy.error(server.getName()+" cannot be pinged! Might be offline!");
-                                Discord.getJda().getTextChannelById("631213379658317831").sendMessage(
-                                        new MessageBuilder(
-                                                "⚠⚠ WARNING | Server might be offline ⚠⚠",
-                                                "@here, **"+server.getName().toUpperCase() + "** Is offline or doesn't respond to any pings!"
-                                        )
-                                        .addField("Reason of downtime", throwable.getLocalizedMessage(), false)
-                                        .overwriteColor(Color.RED)
-                                        .build()
-                                ).queue();
+//                                Discord.getJda().getTextChannelById("732884673172078594").sendMessage(
+//                                        new MessageBuilder(
+//                                            "⚠⚠ WARNING | Server might be offline ⚠⚠",
+//                                            SetType.TITLE
+////                                                "@here, **"+server.getName().toUpperCase() + "** Is offline or doesn't respond to any pings!"
+//                                        )
+//                                        .addField(
+//                                            "Server Affected",
+//                                            server.getName() + " ("+server.getAddress().getPort()+")",
+//                                            false
+//                                        )
+//                                        .addField(
+//                                            "Reason of downtime",
+//                                            throwable.getLocalizedMessage(),
+//                                            false
+//                                        )
+//                                        .overwriteColor(Color.RED)
+//                                        .build()
+//                                ).queue();
                             }
                         }else{
                             if (AssetManager.this.offlineServers.contains(server.getName())) {
                                 AssetManager.this.offlineServers.remove(server.getName());
                                 Synergy.success(server.getName()+" is back online!");
-                                Discord.getJda().getTextChannelById("631213379658317831").sendMessage(
-                                        new MessageBuilder(
-                                                "Server has responded to our ping",
-                                                "@here, **"+server.getName().toUpperCase() + "** is back up and is responding to our pings."
-                                        )
-                                                .overwriteColor(Color.GREEN)
-                                                .build()
-                                ).queue();
+//                                Discord.getJda().getTextChannelById("732884673172078594").sendMessage(
+//                                        new MessageBuilder(
+//                                            server.getName() + " has received our ping!",
+//                                                server.getName() + "is back up and is responding to our pings."
+//                                        )
+//                                                .overwriteColor(Color.GREEN)
+//                                                .build()
+//                                ).queue();
                             }
                         }
                     });

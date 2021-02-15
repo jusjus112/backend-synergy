@@ -15,9 +15,6 @@ import java.util.Map;
 
 public class WandManager extends Module {
 
-    @Getter
-    private Map<SynergyUser, SelectorWand> selectorWands = new HashMap<>();
-
     public WandManager(Core plugin){
         super(plugin, "Wand Manager", false);
 
@@ -29,19 +26,5 @@ public class WandManager extends Module {
     @Override
     public void reload(String response) {
 
-    }
-
-    public ItemStack getWand(){
-        return new ItemBuilder(Material.GOLD_AXE)
-                .setName("§6Wand of Selections")
-                .setLore(
-                        "With this magic wand you are",
-                        "able to make selections based",
-                        "on the worldedit selection wand.",
-                        " ",
-                        "§eLEFT CLICK §7for setting the first position",
-                        "§eRIGHT CLICK §7for setting the second position"
-                )
-                .build();
     }
 }

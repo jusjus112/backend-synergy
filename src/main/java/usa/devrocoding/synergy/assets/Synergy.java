@@ -12,6 +12,9 @@ import java.util.Random;
 
 public class Synergy {
 
+    @Getter @Setter
+    private static boolean production = false;
+
     public enum SynergyColor{
         CHAT(ChatColor.GRAY),
                 INFO(ChatColor.YELLOW),
@@ -87,11 +90,12 @@ public class Synergy {
     @Setter @Getter
     private static usa.devrocoding.synergy.spigot.Core spigotAPI;
     @Getter
-    private static LetterGenerator letterGenerator = new LetterGenerator();
+    private static final LetterGenerator letterGenerator = new LetterGenerator();
     @Getter
-    private static Logo logos = new Logo();
+    private static final Logo logos = new Logo();
 
     public static void debug(String... messages){
+        if (isProduction()) return;
         Arrays.stream(messages).forEach(s -> System.out.println(LinuxColorCodes.ANSI_PURPLE+"[Synergy DEBUG] "+s+LinuxColorCodes.ANSI_RESET));
     }
 
@@ -100,7 +104,7 @@ public class Synergy {
     }
 
     public static void discord(String... messages){
-        Arrays.stream(messages).forEach(s -> System.out.println(format("", LinuxColorCodes.ANSI_YELLOW, s)));
+        Arrays.stream(messages).forEach(s -> System.out.println(format("bot", LinuxColorCodes.ANSI_YELLOW, s)));
     }
 
     public static void success(String... messages){

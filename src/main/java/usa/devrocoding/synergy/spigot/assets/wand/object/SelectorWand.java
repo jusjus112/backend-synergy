@@ -1,18 +1,40 @@
 package usa.devrocoding.synergy.spigot.assets.wand.object;
 
+import com.google.common.collect.Lists;
+import java.util.List;
 import lombok.Getter;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.inventory.ItemStack;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.assets.wand.event.SelectorWandCompletionEvent;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
+import usa.devrocoding.synergy.spigot.utilities.ItemBuilder;
 
-public class SelectorWand {
+@Getter
+public abstract class SelectorWand extends ItemBuilder {
 
-    @Getter
     private Location firstLocation;
-    @Getter
     private Location secondLocation;
+
+    @Getter
+    private static List<SelectorWand> selectorWands = Lists.newArrayList();
+
+    public SelectorWand() {
+        super(Material.GOLD_AXE, 1);
+        setName("§6Wand of Selections");
+        setLore(
+            "With this magic wand you are",
+            "able to make selections based",
+            "on the worldedit selection wand.",
+            " ",
+            "§eLEFT CLICK §7for setting the first position",
+            "§eRIGHT CLICK §7for setting the second position"
+        ).build();
+
+        selectorWands.add(this);
+    }
 
     public enum SelectorUnit{
         FIRST,
@@ -29,19 +51,14 @@ public class SelectorWand {
                 break;
         }
         if (this.firstLocation != null && this.secondLocation != null){
-            user.getPlayer().getInventory().remove(Core.getPlugin().getWandManager().getWand());
+            user.getPlayer().getInventory().remove(this);
             Region region = new Region(this.firstLocation, this.secondLocation);
             Core.getPlugin().getServer().getPluginManager().callEvent(new SelectorWandCompletionEvent(this, user, region));
-
-            Core.getPlugin().getWandManager().getSelectorWands().remove(user);
+            this.onfinish(user, region);
+            selectorWands.remove(this);
         }
     }
 
-    public void give(SynergyUser user){
-        if (!user.getPlayer().getInventory().contains(Core.getPlugin().getWandManager().getWand())) {
-            user.getPlayer().getInventory().addItem(Core.getPlugin().getWandManager().getWand());
-            Core.getPlugin().getWandManager().getSelectorWands().put(user, this);
-        }
-    }
+    public abstract void onfinish(SynergyUser synergyUser, Region region);
 
 }

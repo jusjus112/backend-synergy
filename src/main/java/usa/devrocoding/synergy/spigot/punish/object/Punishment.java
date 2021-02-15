@@ -47,15 +47,24 @@ public class Punishment {
         }
     }
 
-    public String getBanMessage() {
-        return "§7§l<§e/§7§l> §f§lYOUR ACCOUNT HAS BEEN §c§lBANNED §f§lFROM "+ Core.getPlugin().getManifest().server_name().toUpperCase() +" §7§l<§e/§7§l>"+"\n"+
+    public String getBanMessage(String server) {
+        String stringType;
+        switch (type){
+            case KICK:
+                stringType = "KICKED";
+                break;
+            default:
+                stringType = "BANNED";
+        }
+        return "§7§l<§e/§7§l> §f§lYOUR ACCOUNT HAS BEEN §c§l"+stringType+" §f§lFROM "+ server.toUpperCase() +" §7§l<§e/§7§l>"+"\n"+
                 " \n"+
 //                "§7Banned by: §e"+this.getPunisherName()+"\n"+
                 "§7Ban Category: §c"+this.getCategory().getName()+"\n"+
                 "§7Ban Level: §c"+this.getLevel().getName()+"\n"+
                 " \n"+
-                (isPermanent() ? "§f§lThis ban is §c§lPERMANENT" : "§f§lUNBANNED ON §b§l"+this.getPlainerMessage())+"\n"+
-                "§7You may appeal your ban at §ewww.mirageprisons.net";
+                (type == PunishType.KICK ? "\n" :
+                (isPermanent() ? "§f§lThis ban is §c§lPERMANENT" : "§f§lUNBANNED ON §b§l"+this.getPlainerMessage())+"\n")+
+                "§7You may appeal your ban on our discord: §ewww.discord.mirageprisons.net";
     }
 
     public boolean isActive() {

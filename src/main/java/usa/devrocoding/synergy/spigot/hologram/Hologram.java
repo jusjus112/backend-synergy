@@ -1,6 +1,8 @@
 package usa.devrocoding.synergy.spigot.hologram;
 
+import java.util.concurrent.ThreadLocalRandom;
 import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.server.v1_12_R1.*;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
@@ -19,20 +21,31 @@ import java.util.function.Predicate;
 
 public class Hologram {
 
-    @Getter
+    @Getter @Setter
     private HologramLine hologramLine;
     @Getter
-    private Location location;
+    private final Location location;
     private EntityArmorStand entityArmorStand;
     @Getter
-    private Predicate<Player> shouldShow;
+    private final Predicate<Player> shouldShow;
     private String lineCache = "";
+    private boolean removed = false;
     private boolean rangeUpdate = true;
+    @Getter
+    private final String id;
 
     public Hologram(Location location, HologramLine hologramLine, Predicate<Player> shouldShow) {
+        this(
+            String.format("%05d", ThreadLocalRandom.current().nextInt(10000)),
+            location, hologramLine, shouldShow
+        );
+    }
+
+    public Hologram(String id, Location location, HologramLine hologramLine, Predicate<Player> shouldShow) {
         this.location = location;
         this.hologramLine = hologramLine;
         this.shouldShow = shouldShow;
+        this.id = id;
     }
 
     public boolean shouldShow(Player player) {
@@ -49,6 +62,10 @@ public class Hologram {
 
     public void send(SynergyUser synergyUser) {
         // (!player.hasMetadata("NPC") && player.getLocation().distanceSquared(this.location) <= SEND_RADIUS_SQUARED)
+        if (this.removed){
+            remove(synergyUser.getPlayer());
+            return;
+        }
         if (!isEmpty(synergyUser) && shouldShow(synergyUser.getPlayer())) {
             if (!isValid()) {
                 new BukkitRunnable(){
@@ -128,6 +145,10 @@ public class Hologram {
         Core.getPlugin().getRunnableManager().runTaskLater("as", core -> UtilPlayer.sendPacket(player, new PacketPlayOutSpawnEntityLiving(armorStand)), 2L);
 //        PacketPlayOutEntityMetadata packetPlayOutEntityMetadata = new PacketPlayOutEntityMetadata(armorStand.getId(), armorStand.getDataWatcher(), false);
 //        UtilPlayer.sendPacket(player, packetPlayOutEntityMetadata);
+    }
+
+    public void remove(){
+        this.removed = true;
     }
 
     public void remove(Player player) {

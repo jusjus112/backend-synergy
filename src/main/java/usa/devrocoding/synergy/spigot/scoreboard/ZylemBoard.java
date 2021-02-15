@@ -8,7 +8,7 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 import usa.devrocoding.synergy.spigot.Core;
-import usa.devrocoding.synergy.spigot.user.object.Rank;
+import usa.devrocoding.synergy.assets.Rank;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 
 import java.util.*;
@@ -17,26 +17,37 @@ public class ZylemBoard {
 
 	private static Core backend;
 
-	private Player p;
+	@Getter
+	private Player player;
 	private SynergyUser user;
 
+	@Getter
 	private Scoreboard scoreboard;
 	@Getter
 	private Objective sidebarObjective, undernameObjective, tablistObjective;
 	private List<String> sidebar;
+	private ScoreboardPolicy scoreboardPolicy;
 
 	private static final Map<String, SynergyUser> staticNametags = new HashMap<>();
 
-	public ZylemBoard(Core backend, Player p, SynergyUser user) {
+	public ZylemBoard(Core backend, SynergyUser user, ScoreboardPolicy scoreboardPolicy) {
 		ZylemBoard.backend = backend;
 
-		this.p = p;
+		this.player = user.getPlayer();
 		this.user = user;
 		this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
 		this.sidebar = new ArrayList<>();
+		this.scoreboardPolicy = scoreboardPolicy;
+
 		for (SynergyUser staticNametag : staticNametags.values())
 			setStaticNametag0(staticNametag);
-		getPlayer().setScoreboard(scoreboard);
+		getPlayer()
+				.setScoreboard(scoreboard);
+	}
+
+	public void setNewPolicy(ScoreboardPolicy scoreboardPolicy){
+		this.scoreboardPolicy = scoreboardPolicy;
+		update();
 	}
 
 	public void update() {
@@ -47,7 +58,7 @@ public class ZylemBoard {
 	}
 
 	public void updateSidebar() {
-		if (backend.getScoreboardManager().getCustomLines() == null && backend.getScoreboardManager().getScoreboardPolicy().getSidebar(user) == null) {
+		if (this.scoreboardPolicy.getSidebar(user) == null) {
 			if (sidebarObjective != null) {
 				sidebarObjective.unregister();
 				sidebarObjective = null;
@@ -55,7 +66,7 @@ public class ZylemBoard {
 			return;
 		}
 
-		setSidebar(backend.getScoreboardManager().getCustomLines() == null ? backend.getScoreboardManager().getScoreboardPolicy().getSidebar(user) : backend.getScoreboardManager().getCustomLines());
+		setSidebar(this.scoreboardPolicy.getSidebar(user));
 	}
 
 	public void updateTeams() {
@@ -71,8 +82,8 @@ public class ZylemBoard {
 			if (pl == null)
 				team.unregister();
 			else {
-				String prefix = backend.getScoreboardManager().getScoreboardPolicy().getPrefix(user, backend.getUserManager().getUser(pl));
-				String suffix = backend.getScoreboardManager().getScoreboardPolicy().getSuffix(user, backend.getUserManager().getUser(pl));
+				String prefix = this.scoreboardPolicy.getPrefix(user, backend.getUserManager().getUser(pl));
+				String suffix = this.scoreboardPolicy.getSuffix(user, backend.getUserManager().getUser(pl));
 				if (prefix != null && !team.getPrefix().equals(prefix))
 					team.setPrefix(backend.getScoreboardManager().trimPrefix(prefix));
 				else if (prefix == null && team.getPrefix() != null)
@@ -89,8 +100,8 @@ public class ZylemBoard {
 			if (scoreboard.getTeam(teamName) == null) {
 				Team team = scoreboard.registerNewTeam(teamName);
 				team.addEntry(pl.getName());
-				String prefix = backend.getScoreboardManager().getScoreboardPolicy().getPrefix(user, backend.getUserManager().getUser(pl));
-				String suffix = backend.getScoreboardManager().getScoreboardPolicy().getSuffix(user, backend.getUserManager().getUser(pl));
+				String prefix = this.scoreboardPolicy.getPrefix(user, backend.getUserManager().getUser(pl));
+				String suffix = this.scoreboardPolicy.getSuffix(user, backend.getUserManager().getUser(pl));
 				if (prefix != null)
 					team.setPrefix(backend.getScoreboardManager().trimPrefix(prefix));
 				if (suffix != null)
@@ -100,7 +111,7 @@ public class ZylemBoard {
 	}
 
 	public void updateUndername() {
-		if (backend.getScoreboardManager().getScoreboardPolicy().getUndername(user) == null) {
+		if (this.scoreboardPolicy.getUndername(user) == null) {
 			if (undernameObjective != null) {
 				undernameObjective.unregister();
 				undernameObjective = null;
@@ -110,11 +121,11 @@ public class ZylemBoard {
 				undernameObjective = scoreboard.registerNewObjective("undername", "dummy");
 				undernameObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
 			}
-			if (!undernameObjective.getDisplayName().equals(backend.getScoreboardManager().getScoreboardPolicy().getUndername(user)))
-				undernameObjective.setDisplayName(backend.getScoreboardManager().getScoreboardPolicy().getUndername(user));
+			if (!undernameObjective.getDisplayName().equals(this.scoreboardPolicy.getUndername(user)))
+				undernameObjective.setDisplayName(this.scoreboardPolicy.getUndername(user));
 			for (Player pl : Bukkit.getOnlinePlayers()) {
 				String name = pl.getName();
-				int score = backend.getScoreboardManager().getScoreboardPolicy().getUndernameScore(user, backend.getUserManager().getUser(pl));
+				int score = this.scoreboardPolicy.getUndernameScore(user, backend.getUserManager().getUser(pl));
 				if (undernameObjective.getScore(name).getScore() != score)
 					undernameObjective.getScore(name).setScore(score);
 			}
@@ -122,7 +133,7 @@ public class ZylemBoard {
 	}
 
 	public void updateTablist() {
-		if (backend.getScoreboardManager().getScoreboardPolicy().getTablist(user) == null) {
+		if (this.scoreboardPolicy.getTablist(user) == null) {
 			if (tablistObjective != null) {
 				tablistObjective.unregister();
 				tablistObjective = null;
@@ -132,11 +143,11 @@ public class ZylemBoard {
 				tablistObjective = scoreboard.registerNewObjective("tablist", "dummy");
 				tablistObjective.setDisplaySlot(DisplaySlot.PLAYER_LIST);
 			}
-			if (!tablistObjective.getDisplayName().equals(backend.getScoreboardManager().getScoreboardPolicy().getTablist(user)))
-				tablistObjective.setDisplayName(backend.getScoreboardManager().getScoreboardPolicy().getTablist(user));
+			if (!tablistObjective.getDisplayName().equals(this.scoreboardPolicy.getTablist(user)))
+				tablistObjective.setDisplayName(this.scoreboardPolicy.getTablist(user));
 			for (Player pl : Bukkit.getOnlinePlayers()) {
 				String name = pl.getName();
-				int score = backend.getScoreboardManager().getScoreboardPolicy().getTablistScore(user, backend.getUserManager().getUser(pl));
+				int score = this.scoreboardPolicy.getTablistScore(user, backend.getUserManager().getUser(pl));
 				if (tablistObjective.getScore(name).getScore() != score)
 					tablistObjective.getScore(name).setScore(score);
 			}
@@ -202,7 +213,7 @@ public class ZylemBoard {
 		}
 
 		team = scoreboard.registerNewTeam(getTeamName(user));
-		String prefix = backend.getScoreboardManager().getScoreboardPolicy().getPrefix(null, user), suffix = backend.getScoreboardManager().getScoreboardPolicy().getSuffix(null, user);
+		String prefix = this.scoreboardPolicy.getPrefix(null, user), suffix = this.scoreboardPolicy.getSuffix(null, user);
 		if (prefix != null) {
 			team.setPrefix(prefix);
 		}
@@ -215,10 +226,10 @@ public class ZylemBoard {
 		if (undernameObjective == null) {
 			undernameObjective = scoreboard.registerNewObjective("undername", "dummy");
 			undernameObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
-			undernameObjective.setDisplayName(backend.getScoreboardManager().getScoreboardPolicy().getUndername(user));
+			undernameObjective.setDisplayName(this.scoreboardPolicy.getUndername(user));
 		}
 
-		undernameObjective.getScore(user.getName()).setScore(backend.getScoreboardManager().getScoreboardPolicy().getUndernameScore(null, user));
+		undernameObjective.getScore(user.getName()).setScore(this.scoreboardPolicy.getUndernameScore(null, user));
 	}
 
 	public static String getTeamName(SynergyUser subject) {
@@ -226,10 +237,11 @@ public class ZylemBoard {
 			return "NONE";
 		}
 		
-		String sort = String.valueOf(Rank.values().length - subject.getRank().ordinal());
+		StringBuilder sort = new StringBuilder(
+				String.valueOf(Rank.values().length - subject.getRank().ordinal()));
 
 		while (sort.length() < String.valueOf(Rank.values().length).length()) {
-			sort = "0" + sort;
+			sort.insert(0, "0");
 		}
 
 		String displayName = sort + "-" + subject.getName();
@@ -239,17 +251,5 @@ public class ZylemBoard {
 
 	public static Map<String, SynergyUser> getStaticNametags() {
 		return staticNametags;
-	}
-
-	public Player getPlayer() {
-		return p;
-	}
-
-	public SynergyUser getUser() {
-		return user;
-	}
-
-	public Scoreboard getScoreboard() {
-		return scoreboard;
 	}
 }

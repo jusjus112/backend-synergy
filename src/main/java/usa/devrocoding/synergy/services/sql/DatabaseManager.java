@@ -1,29 +1,26 @@
 package usa.devrocoding.synergy.services.sql;
 
+import java.io.InputStream;
+import java.util.concurrent.atomic.AtomicInteger;
 import lombok.Getter;
 
-import usa.devrocoding.synergy.assets.Cache;
 import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.services.SQLService;
 import usa.devrocoding.synergy.spigot.user.object.UserExperience;
 
-import java.net.ConnectException;
 import java.sql.*;
-import java.util.Arrays;
-import java.util.Formatter;
 import java.util.HashMap;
 import java.util.Map;
 
+@Getter
 public class DatabaseManager {
 
     /**
      * TODO: Disconnect connection after a while with no queries
      */
 
-    @Getter
     private Connection connection;
-    @Getter
-    private SQLService sqlService;
+    private final SQLService sqlService;
 
     public DatabaseManager(SQLService service){
         this.sqlService = service;
@@ -43,7 +40,7 @@ public class DatabaseManager {
 
             try{
                 this.connection = DriverManager.getConnection("jdbc:mysql://" + getSqlService().getHost() + ":" + getSqlService().getPort()
-                        + "/" + getSqlService().getDatabase(), getSqlService().getUsername(), getSqlService().getPassword());
+                        + "/" + getSqlService().getDatabase() + "?autoReconnect=true&useUnicode=yes", getSqlService().getUsername(), getSqlService().getPassword());
             }catch (Exception e){
                 throw new SQLException("Unable to connect, SQL server might be down..");
             }
@@ -62,49 +59,63 @@ public class DatabaseManager {
     public void loadDefaultTables(){
         // Generate Tables
         new TableBuilder("users", this)
-                .addColumn("uuid", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, true)
+                .addColumn("uuid", SQLDataType.BINARY, 16,false, SQLDefaultType.NO_DEFAULT, true)
                 .addColumn("name", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
                 .addColumn("rank", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
                 .addColumn("user_experience", SQLDataType.VARCHAR, 100,false, SQLDefaultType.CUSTOM.setCustom(UserExperience.NOOB.toString().toUpperCase()), false)
-                .addColumn("xp", SQLDataType.DOUBLE, -1,true, SQLDefaultType.CUSTOM.setCustom(0), false)
                 .execute();
         new TableBuilder("punishments", this)
-                .addColumn("uuid", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
+                .addColumn("uuid", SQLDataType.BINARY, 16,false, SQLDefaultType.NO_DEFAULT, false)
                 .addColumn("type", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
                 .addColumn("category", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
                 .addColumn("level", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
                 .addColumn("issued", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
                 .addColumn("till", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
-                .addColumn("punisher", SQLDataType.VARCHAR, 100,false, SQLDefaultType.NO_DEFAULT, false)
+                .addColumn("punisher", SQLDataType.BINARY, 16,false, SQLDefaultType.NO_DEFAULT, false)
                 .addColumn("active", SQLDataType.BIT, -1,false, SQLDefaultType.NO_DEFAULT, false)
                 .execute();
     }
 
-    public boolean update(String table, Map<String, Object> data, String where){
+    public boolean update(String table, Map<String, Object> data, Map<String, Object> whereData){
         HashMap<Integer, Object> indexed = new HashMap<>();
         try {
             connect();
             StringBuilder query = new StringBuilder("UPDATE synergy_"+table+" SET ");
-            StringBuilder whereQuery = new StringBuilder(" WHERE "+where);
 
-            int a=1;
-            for(String key : data.keySet()){
-                if (a>1) query.append(", ");
-                Object value = data.get(key);
-                query.append(key+"=?");
+            data.remove("uuid");
+            data.remove("id");
 
-                indexed.put(a, value);
-                a++;
-            }
+            final int[] a = {1};
+            data.forEach((s, o) -> {
+                if (a[0] >1) query.append(", ");
+                query.append("`").append(s).append("`").append("=?");
+                indexed.put(a[0], o);
+                a[0]++;
+            });
 
-            query.append(whereQuery.toString());
+            query.append(" WHERE ");
 
-//            Synergy.debug(query.toString());
+            AtomicInteger i = new AtomicInteger();
+            whereData.forEach((s, o) -> {
+                if (i.get() > 0) query.append(" AND ");
+                query.append("`").append(s).append("`").append("=?");
+                indexed.put(a[0], o);
+                a[0]++;
+                i.getAndIncrement();
+            });
+
+            Synergy.debug("QUERY", query.toString());
+
+            Synergy.debug(data + " = DATA");
             PreparedStatement preparedStatement = getConnection().prepareStatement(query.toString());
 
             for(Integer index : indexed.keySet()){
                 Object value = indexed.get(index);
 
+                if (value instanceof InputStream){
+                    preparedStatement.setBinaryStream(index, (InputStream) value);
+                    continue;
+                }
                 preparedStatement.setObject(index, value);
             }
 
@@ -113,6 +124,7 @@ public class DatabaseManager {
             return true;
         }catch (SQLException e){
             Synergy.warn("Can't execute update statement. " + e.getMessage());
+            e.printStackTrace();
             return false;
         }
     }
@@ -138,12 +150,16 @@ public class DatabaseManager {
         if (where != null) {
             for (int b : data.keySet()) {
                 Object object = data.get(b);
+
+                if (object instanceof InputStream){
+                    statement.setBinaryStream(b, (InputStream) object);
+                    continue;
+                }
                 statement.setObject(b, object);
             }
         }
 
-        ResultSet resultSet = statement.executeQuery();
-        return resultSet;
+        return statement.executeQuery();
     }
 
     public ResultSet executeQuery(String query) {
@@ -212,7 +228,7 @@ public class DatabaseManager {
                     query.append(", ");
                     values.append(", ");
                 }
-                query.append("`"+key+"`");
+                query.append("`").append(key).append("`");
                 values.append('?');
 
                 indexed.put(a, data.get(key));
@@ -222,11 +238,18 @@ public class DatabaseManager {
             values.append(")");
             query.append(values.toString());
 
+            Synergy.debug(query.toString());
+            Synergy.debug(data + " = VALUES data");
+
             PreparedStatement preparedStatement = getConnection().prepareStatement(query.toString());
 
             for(Integer index : indexed.keySet()){
                 Object value = indexed.get(index);
 
+                if (value instanceof InputStream){
+                    preparedStatement.setBinaryStream(index, (InputStream) value);
+                    continue;
+                }
                 preparedStatement.setObject(index, value);
             }
 
@@ -234,9 +257,10 @@ public class DatabaseManager {
 //            disconnect();
             return true;
         }catch (SQLException e){
-            Synergy.warn("Can't execute statement. " + e.getMessage());
+//            Synergy.warn("Can't execute statement. " + e.getMessage());
+//            e.printStackTrace();
+            return false;
         }
-        return false;
     }
 
 }

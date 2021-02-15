@@ -1,13 +1,18 @@
 package usa.devrocoding.synergy.spigot.user.listener;
 
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.HoverEvent.Action;
+import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
+import usa.devrocoding.synergy.spigot.user.event.SynergyUserChatEvent;
 import usa.devrocoding.synergy.spigot.user.object.MessageModification;
-import usa.devrocoding.synergy.spigot.user.object.Rank;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
-import usa.devrocoding.synergy.spigot.utilities.UtilString;
 
 public class UserChatListener implements Listener {
 
@@ -16,28 +21,45 @@ public class UserChatListener implements Listener {
         e.setCancelled(true);
 
         SynergyUser chatter = Core.getPlugin().getUserManager().getUser(e.getPlayer().getUniqueId());
-        String prefix = chatter.getRank().getColor()+chatter.getName()+": "+chatter.getRank().getTextColor();
-        if (chatter.getRank() != Rank.NONE) {
-            prefix = chatter.getRank().getColor()+"["+chatter.getRank().getPrefix()+chatter.getRank().getColor()+"] §f"+chatter.getName()+": ";
+
+        Core.getPlugin().getProtectManager().getOffensiveWords().forEach(s -> {
+            e.setMessage(e.getMessage().replaceAll(s, "§c\\*\\*\\*§r"));
+        });
+
+        SynergyUserChatEvent synergyUserChatEvent = new SynergyUserChatEvent(
+            chatter, e.getMessage(),
+            chatter.getDisplayName() + ChatColor.WHITE + ": " +
+                chatter.getRank().getTextColor() + e.getMessage()
+        );
+
+        Core.getPlugin().getServer().getPluginManager().callEvent(synergyUserChatEvent);
+
+        boolean hasComponent = synergyUserChatEvent.getFormatComponent() != null;
+
+        if (synergyUserChatEvent.isCancelled()){
+            return;
         }
-        String message = (chatter.getRank().getTextColor()+e.getMessage());
 
         for(SynergyUser user : Core.getPlugin().getUserManager().getOnlineUsers()){
             if (e.getMessage().contains(user.getName())){
-                user.sendModifactionMessage(
-                        MessageModification.RAW,
-                        prefix + message.replaceAll(
-                                user.getName(),
-                                "§e"+user.getName()+user.getRank().getTextColor()
-                        )
-                );
+                if (hasComponent) {
+                    synergyUserChatEvent.getFormatComponent().setText(
+                        synergyUserChatEvent.getFormatComponent().getText().replaceAll(user.getName(),
+                        ChatColor.YELLOW + user.getName()));
+                    user.getPlayer().spigot().sendMessage(synergyUserChatEvent.getFormatComponent());
+                }else{
+                    user.getPlayer().sendMessage
+                        (synergyUserChatEvent.getFormat().replaceAll(
+                        user.getName(), ChatColor.YELLOW + user.getName()));
+                }
                 user.getSoundControl().pling();
                 continue;
             }
-            user.sendModifactionMessage(
-                    MessageModification.RAW,
-                    prefix + message
-            );
+            if (hasComponent){
+                user.getPlayer().spigot().sendMessage(synergyUserChatEvent.getFormatComponent());
+            }else{
+                user.getPlayer().sendMessage(synergyUserChatEvent.getFormat());
+            }
         }
     }
 
