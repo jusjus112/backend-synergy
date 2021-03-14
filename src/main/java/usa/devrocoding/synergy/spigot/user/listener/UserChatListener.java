@@ -1,9 +1,11 @@
 package usa.devrocoding.synergy.spigot.user.listener;
 
+import java.util.regex.Pattern;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.HoverEvent.Action;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,9 +23,18 @@ public class UserChatListener implements Listener {
         e.setCancelled(true);
 
         SynergyUser chatter = Core.getPlugin().getUserManager().getUser(e.getPlayer().getUniqueId());
+        String message = e.getMessage();
+
+        if (chatter.getMessageCache().equalsIgnoreCase(message)){
+            chatter.error("You cannot say the same message twice!");
+            return;
+        }
 
         Core.getPlugin().getProtectManager().getOffensiveWords().forEach(s -> {
-            e.setMessage(e.getMessage().replaceAll(s, "§c\\*\\*\\*§r"));
+            e.setMessage(e.getMessage().replaceAll(
+                "(?i)"+Pattern.quote(s),
+                "§c\\*\\*\\*§r")
+            );
         });
 
         SynergyUserChatEvent synergyUserChatEvent = new SynergyUserChatEvent(
@@ -39,6 +50,8 @@ public class UserChatListener implements Listener {
         if (synergyUserChatEvent.isCancelled()){
             return;
         }
+
+        chatter.setMessageCache(message);
 
         for(SynergyUser user : Core.getPlugin().getUserManager().getOnlineUsers()){
             if (e.getMessage().contains(user.getName())){

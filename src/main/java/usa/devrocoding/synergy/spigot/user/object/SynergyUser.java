@@ -46,6 +46,7 @@ public class SynergyUser {
     private final UUID uuid;
     private final String name;
     private Rank rank;
+    private Timestamp joinedOn;
     private final LanguageFile language;
     @Setter
     private List<Punishment> punishments;
@@ -56,6 +57,8 @@ public class SynergyUser {
     private Map<Objective, Timestamp> objectives;
     private Economy economy;
     private final Map<Objective, Date> objectivesToBeUpdated;
+    @Getter @Setter
+    private String messageCache = "";
     @Setter
     private Objective currentObjective;
     private final Map<Achievement, Date> achievementsToBeUpdated;
@@ -73,6 +76,7 @@ public class SynergyUser {
         this.name = name;
         this.rank = rank;
         this.language = language;
+        this.joinedOn = new Timestamp(System.currentTimeMillis());
         this.punishments = Lists.newArrayList();
         this.userExperience = UserExperience.NOOB;
         this.achievements = Maps.newHashMap();
@@ -86,6 +90,14 @@ public class SynergyUser {
         if (save) {
             Core.getPlugin().getUserManager().getUsers().put(uuid, this);
         }
+    }
+
+    public void setJoinedOn(Timestamp joinedOn) {
+        if (joinedOn == null){
+            this.joinedOn = new Timestamp(System.currentTimeMillis());
+            return;
+        }
+        this.joinedOn = joinedOn;
     }
 
     public void setEconomy(Economy economy) {

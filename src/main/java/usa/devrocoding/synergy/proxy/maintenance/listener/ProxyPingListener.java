@@ -19,7 +19,7 @@ public class ProxyPingListener implements Listener {
         MaintenanceManager maintenanceManager = Core.getCore().getMaintenanceManager();
 
         try{
-                        if (maintenanceManager.isServerOnMaintenance("proxy")) {
+            if (maintenanceManager.isServerOnMaintenance("proxy")) {
                 e.getResponse().getVersion().setProtocol(1);
                 e.getResponse().getVersion().setName((String)maintenanceManager.getMotd().get("version"));
 
@@ -62,7 +62,7 @@ public class ProxyPingListener implements Listener {
                     e.getResponse().getPlayers().getOnline()+1+
                         (int)maintenanceManager.getMotd().get("motd.fakePlayerCount")
                 );
-                e.getResponse().getPlayers().setMax(1);
+                e.getResponse().getPlayers().setMax(e.getResponse().getPlayers().getOnline() + 2);
             }
         }catch (Exception exception){
             Synergy.error("MOTD Formatting wrong, sending fail safe!");

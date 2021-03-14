@@ -68,6 +68,8 @@ public class AssetManager extends ProxyModule {
     public void initDiscordSettings(){
         HashMap<String, Object> map = new HashMap<>();
 
+        map.put("discord.token", "SECRET_BOT_TOKEN_HERE");
+
         for(String server : getPlugin().getProxy().getServers().keySet()){
             map.put("discord.channels."+server, "0000000000000000");
         }

@@ -109,7 +109,7 @@ public class Core extends Plugin {
 
         // Initialize the discord bot
         if (Synergy.isProduction()) {
-            Discord.initTerminal();
+            Discord.initTerminal(f.getConfiguration().getString("discord.token"));
         }else{
             Synergy.warn("Synergy is in TEST mode! Production systems are not active!");
         }

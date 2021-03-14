@@ -36,7 +36,7 @@ public class Synergy {
         }
 
         @Getter
-        private ChatColor color;
+        private final ChatColor color;
 
         SynergyColor(ChatColor color){
             this.color = color;
@@ -96,7 +96,7 @@ public class Synergy {
 
     public static void debug(String... messages){
         if (isProduction()) return;
-        Arrays.stream(messages).forEach(s -> System.out.println(LinuxColorCodes.ANSI_PURPLE+"[Synergy DEBUG] "+s+LinuxColorCodes.ANSI_RESET));
+        Arrays.stream(messages).forEach(s -> System.out.println(LinuxColorCodes.ANSI_RED+"[Synergy DEBUG] "+LinuxColorCodes.ANSI_YELLOW+s+LinuxColorCodes.ANSI_RESET));
     }
 
     public static void info(String... messages){

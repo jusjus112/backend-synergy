@@ -7,6 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
+import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.assets.wand.event.SelectorWandCompletionEvent;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
@@ -19,7 +20,7 @@ public abstract class SelectorWand extends ItemBuilder {
     private Location secondLocation;
 
     @Getter
-    private static List<SelectorWand> selectorWands = Lists.newArrayList();
+    private static final List<SelectorWand> selectorWands = Lists.newArrayList();
 
     public SelectorWand() {
         super(Material.GOLD_AXE, 1);
@@ -42,6 +43,7 @@ public abstract class SelectorWand extends ItemBuilder {
     }
 
     public void select(SynergyUser user, SelectorUnit selectorUnit, Block block){
+        Synergy.debug("SELECTING 1");
         switch (selectorUnit){
             case FIRST:
                 this.firstLocation = block.getLocation();
@@ -50,11 +52,15 @@ public abstract class SelectorWand extends ItemBuilder {
                 this.secondLocation = block.getLocation();
                 break;
         }
+        Synergy.debug("SELECTING 2");
         if (this.firstLocation != null && this.secondLocation != null){
+            Synergy.debug("SELECTING 3");
             user.getPlayer().getInventory().remove(this);
             Region region = new Region(this.firstLocation, this.secondLocation);
             Core.getPlugin().getServer().getPluginManager().callEvent(new SelectorWandCompletionEvent(this, user, region));
             this.onfinish(user, region);
+            Synergy.debug("SELECTING 4");
+            Synergy.debug("SELECTING 4 = " + this.toString());
             selectorWands.remove(this);
         }
     }

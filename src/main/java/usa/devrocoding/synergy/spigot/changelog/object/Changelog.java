@@ -50,25 +50,7 @@ public class Changelog {
     }
 
     public void open(Player player){
-        ItemStack book = this.bookBuilder.build();
-        int slot = player.getInventory().getHeldItemSlot();
-        ItemStack old = player.getInventory().getItem(slot);
-
-        new BukkitRunnable(){
-            @Override
-            public void run() {
-                player.getInventory().setItem(slot, book);
-
-                ByteBuf buf = Unpooled.buffer(256);
-                buf.setByte(0, (byte)0);
-                buf.writerIndex(1);
-
-                PacketPlayOutCustomPayload packet = new PacketPlayOutCustomPayload("MC|BOpen", new PacketDataSerializer(buf));
-                ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
-
-                player.getInventory().setItem(slot, old);
-            }
-        }.runTaskLater(Core.getPlugin(), 3L);
+        this.bookBuilder.open(player);
     }
 
 }

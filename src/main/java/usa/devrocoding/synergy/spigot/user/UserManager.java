@@ -119,6 +119,7 @@ public class UserManager extends Module {
         if (resultSet != null) {
             final SynergyUser user;
             Rank rank = Rank.NONE;
+            Timestamp joinedOn;
             List<Punishment> punishments;
             Map<Achievement, Timestamp> achievements;
             Map<Objective, Timestamp> objectives;
@@ -131,6 +132,7 @@ public class UserManager extends Module {
                     UUID uuid = UtilSQL.convertBinaryStream(resultSet.getBinaryStream("uuid"));
                     Synergy.debug(uuid + " = UUID");
                     Synergy.debug(uuid.toString() + " = UUID");
+                    joinedOn = resultSet.getTimestamp("joined_on");
 
                     if (Rank.fromName(resultSet.getString("rank")) != null) {
                         Synergy.debug("USER HAS RANK...");
@@ -155,6 +157,7 @@ public class UserManager extends Module {
                         save
                     );
 
+                    user.setJoinedOn(joinedOn);
                     user.setPunishments(punishments);
                     user.setAchievements(achievements);
                     user.setStatistics(statistics);
@@ -194,6 +197,7 @@ public class UserManager extends Module {
                     put("uuid", UtilSQL.convertUniqueId(synergyUser.getUuid()));
                     put("name", synergyUser.getName());
                     put("rank", synergyUser.getRank().toString().toUpperCase());
+                    put("joined_on", synergyUser.getJoinedOn());
                     put("user_experience", synergyUser.getUserExperience().toString().toUpperCase());
                 }};
                 Synergy.debug(data + " = UPDATE USER MAP");

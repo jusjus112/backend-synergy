@@ -68,11 +68,11 @@ public class Discord {
 //        }
     }
 
-    public static void initTerminal(){
+    public static void initTerminal(String token){
         Synergy.discord("Loading JDA Api....");
 
         try{
-            JDABuilder builder = JDABuilder.createDefault("NTQ0NjAxNTA2ODcyMDMzMjkx.D0NfOA.J4fn34LTsrHe9Ms7OI2pX4oj5bw");
+            JDABuilder builder = JDABuilder.createDefault(token);
             Synergy.discord("Loading the Discord Bot....");
             // Bot properties
             builder.setAutoReconnect(true);
@@ -110,7 +110,7 @@ public class Discord {
             Synergy.discord("Discord Bot loaded!");
         }catch (Exception e){
             Synergy.error("Discord failed to load!");
-            e.printStackTrace();
+            Synergy.error(e.getMessage());
         }
     }
 

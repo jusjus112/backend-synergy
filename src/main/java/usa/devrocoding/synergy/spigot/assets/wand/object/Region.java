@@ -18,6 +18,7 @@ import java.util.List;
 @Getter
 public class Region {
 
+    private final World world;
     private final Location firstLocation;
     private final Location secondLocation;
     private final int xMin;
@@ -28,6 +29,7 @@ public class Region {
     private final int zMax;
 
     public Region(@NonNull Location loc1, @NonNull Location loc2){
+        this.world = loc1.getWorld();
         this.firstLocation = loc1;
         this.secondLocation = loc2;
 
