@@ -15,6 +15,7 @@ import usa.devrocoding.synergy.assets.Rank;
 import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.achievement.object.Achievement;
+import usa.devrocoding.synergy.spigot.achievement.object.SequenceAchievement;
 import usa.devrocoding.synergy.spigot.assets.C;
 import usa.devrocoding.synergy.spigot.botsam.Sam;
 import usa.devrocoding.synergy.spigot.botsam.object.SamMessage;
@@ -387,6 +388,11 @@ public class SynergyUser {
         if (!hasAchievement(achievement)){
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
+            if (achievement instanceof SequenceAchievement){
+
+                return;
+            }
+
             this.achievements.put(achievement, timestamp);
             this.achievementsToBeUpdated.put(achievement, timestamp);
         }
@@ -401,7 +407,7 @@ public class SynergyUser {
         }
     }
 
-    public boolean hasAchievement(Achievement achievement){
+    public boolean hasAchievement(Achievement achievement, int... sequence){
         return getAchievements().containsKey(achievement);
     }
 

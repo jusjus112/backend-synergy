@@ -11,7 +11,7 @@ import usa.devrocoding.synergy.spigot.warp.exception.WarpAlreadyExists;
 public class Warp {
 
     @Getter
-    private String name;
+    private final String name;
     @Getter @Setter
     private Location location;
 

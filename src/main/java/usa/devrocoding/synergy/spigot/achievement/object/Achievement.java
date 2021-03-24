@@ -12,6 +12,8 @@ import usa.devrocoding.synergy.spigot.listeners.Listeners;
 import usa.devrocoding.synergy.spigot.objectives.event.ObjectiveEvent;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 
+import java.util.Arrays;
+
 @Getter
 public abstract class Achievement {
 
@@ -47,4 +49,8 @@ public abstract class Achievement {
             eventClass, listener, EventPriority.HIGHEST, listener, Core.getPlugin());
     }
 
+    @Override
+    public String toString() {
+        return getClass().getSimpleName().toUpperCase();
+    }
 }

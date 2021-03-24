@@ -31,7 +31,7 @@ import java.util.*;
 public class AchievementManager extends Module {
 
     @Getter
-    private List<Achievement> availableAchievements = new ArrayList<>();
+    private final List<Achievement> availableAchievements = new ArrayList<>();
 
     public AchievementManager(Core plugin){
         super(plugin, "Achievement Manager", false);
@@ -107,7 +107,7 @@ public class AchievementManager extends Module {
                 synergyUser.getAchievementsToBeUpdated().forEach((achievement, date) -> {
                     HashMap<String, Object> data = new HashMap<String, Object>() {{
                         put("uuid", UtilSQL.convertUniqueId(synergyUser.getUuid()));
-                        put("achievement", achievement.getClass().getSimpleName().toUpperCase());
+                        put("achievement", achievement.toString());
                         put("achieved_on", java.sql.Timestamp.from(date.toInstant()));
                     }};
                     getPlugin().getDatabaseManager().insert("achievements", data);
