@@ -22,7 +22,7 @@ public class CommandEconomy extends SynergyCommand {
     if (args.length == 0){
       synergyUser.info("Your Coins: " + synergyUser.getEconomy().getCoins());
     }else{
-      if (synergyUser.getRank().isHigherThan(Rank.ADMIN)){
+      if (synergyUser.getRank().isHigherThanAndEqualTo(Rank.ADMIN)){
 
         if (args.length > 2) {
           BigDecimal bigDecimal = null;

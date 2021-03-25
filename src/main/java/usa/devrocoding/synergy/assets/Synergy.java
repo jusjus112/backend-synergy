@@ -12,6 +12,8 @@ import java.util.Random;
 
 public class Synergy {
 
+    public final static String URL_REGEX = "^((https?|ftp)://|(www|ftp)\\.)?[a-z0-9-]+(\\.[a-z0-9-]+)+([/?].*)?$";
+
     @Getter @Setter
     private static boolean production = false;
 

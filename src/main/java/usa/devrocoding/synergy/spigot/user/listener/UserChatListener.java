@@ -1,5 +1,6 @@
 package usa.devrocoding.synergy.spigot.user.listener;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -36,6 +37,12 @@ public class UserChatListener implements Listener {
                 "§c\\*\\*\\*§r")
             );
         });
+
+        Pattern p = Pattern.compile(Synergy.URL_REGEX);
+        if (p.matcher(e.getMessage()).find()){
+            chatter.error("Advertising is now allowed!");
+            return;
+        }
 
         SynergyUserChatEvent synergyUserChatEvent = new SynergyUserChatEvent(
             chatter, e.getMessage(),
