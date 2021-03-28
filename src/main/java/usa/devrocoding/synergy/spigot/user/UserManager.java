@@ -146,7 +146,7 @@ public class UserManager extends Module {
                     statistics = getPlugin().getStatisticManager().retrieveStatistics(uuid);
                     economy = getPlugin().getEconomyManager().retrieveEconomy(uuid);
 
-                    Synergy.debug(statistics + " = STATS");
+//                    Synergy.debug(statistics + " = STATS");
 
                     user = new SynergyUser(
                         uuid,

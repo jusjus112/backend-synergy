@@ -103,11 +103,14 @@ public class HologramManager extends Module implements Listener {
 //        }
 
         for(HologramLine hologramLine : hologramLines){
-            Location loc = UtilLoc.newInstance(location).add(0,hologramLines.size() * HOLOGRAM_DISTANCE,0)
-                .subtract(0, i * HOLOGRAM_DISTANCE, 0);
-            Hologram hologram = new Hologram(loc, hologramLine, predicate);
-            hologramList.add(hologram);
-            this.globalHolograms.add(hologram);
+//            if (!(hologramLine instanceof EmptyHologramLine)) {
+                Location loc = UtilLoc.newInstance(location)
+                    .add(0, hologramLines.size() * HOLOGRAM_DISTANCE, 0)
+                    .subtract(0, i * HOLOGRAM_DISTANCE, 0);
+                Hologram hologram = new Hologram(loc, hologramLine, predicate);
+                hologramList.add(hologram);
+                this.globalHolograms.add(hologram);
+//            }
             i++;
         }
         for(SynergyUser synergyUser : getPlugin().getUserManager().getOnlineUsers()){
@@ -132,16 +135,19 @@ public class HologramManager extends Module implements Listener {
     private void createHologramForPlayer(UUID uuid){
         List<Hologram> list = new ArrayList<>();
 
+        final int[] i = {0};
         Lists.newArrayList(this.globalHolograms).forEach(hologram -> {
             try{
                 list.add(new Hologram(hologram.getId(), hologram.getLocation(),
                     hologram.getHologramLine(), hologram.getShouldShow()));
+                i[0]++;
             }catch (Exception e){
                 e.printStackTrace();
             }
         });
-        if (!list.isEmpty())
+        if (!list.isEmpty()) {
             this.holograms.put(uuid, list);
+        }
     }
 
     private void update(SynergyUser synergyUser){
@@ -149,10 +155,12 @@ public class HologramManager extends Module implements Listener {
 
         if (holograms.containsKey(uuid)){
             try{
-                Lists.newArrayList(holograms.get(uuid)).forEach(hologram -> {
+                for (Hologram hologram : holograms.get(uuid)) {
                     hologram.send(synergyUser);
-                });
-            }catch (Exception ignored){}
+                }
+            }catch (Exception exception){
+                exception.printStackTrace();
+            }
         }
     }
 
@@ -169,10 +177,10 @@ public class HologramManager extends Module implements Listener {
     @EventHandler
     public void on(UserLoadEvent e) {
         // Async because of the user join server impact
-        getPlugin().getRunnableManager().runTask("Hologram onJoin", (echo) -> {
+        getPlugin().getRunnableManager().runTaskLater("Hologram onJoin", (echo) -> {
             createHologramForPlayer(e.getUser().getUuid());
 //            update(e.getUser());
-        });
+        }, 30);
     }
 
     @EventHandler

@@ -45,6 +45,9 @@ public class GuildMessageReceiveListener extends ListenerAdapter {
       Matcher m = p.matcher(e.getMessage().getContentRaw());//replace with string to compare
 
       if (m.find()){
+        if (e.getMember().getPermissions().contains(DiscordRank.STAFF.getHighestPermission())){
+          return;
+        }
         e.getMessage().delete().queue();
         e.getTextChannel().sendMessage(
                 "**Warning: Advertising website's or other discord servers is not allowed**, " + e.getMember().getAsMention()

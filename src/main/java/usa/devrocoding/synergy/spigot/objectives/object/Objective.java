@@ -1,9 +1,11 @@
 package usa.devrocoding.synergy.spigot.objectives.object;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Optional;
 import jdk.internal.jline.internal.Nullable;
 import lombok.Getter;
+import org.bukkit.Sound;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
 import usa.devrocoding.synergy.assets.Cache;
@@ -47,11 +49,13 @@ public abstract class Objective {
     public abstract String[] rewards();
     public abstract Cache<Integer, Integer> percentage(SynergyUser synergyUser);
     public abstract void mechanics();
+    public void onStart(SynergyUser synergyUser){}
     public abstract void onFinish(SynergyUser synergyUser);
     public abstract Class<? extends Objective> unlockFirst();
     public abstract Class<? extends Objective> next();
 
     public void sendFinishMessage(SynergyUser synergyUser){
+        synergyUser.getSoundControl().play(Sound.ENTITY_PLAYER_LEVELUP);
         synergyUser.sendModifactionMessage(
             MessageModification.CENTERED,
             new ArrayList<String>(){{
@@ -61,10 +65,18 @@ public abstract class Objective {
                 if (Objective.this.next != null){
                     add(" ");
                     add("§5§lNext Objective:");
-                    add("§e\""+Objective.this.next.name()+"\"");
+                    Arrays.stream(Objective.this.next.description()).forEach(s -> {
+                        add("  §e" + s);
+                    });
                 }
                 add(" ");
             }}
+        );
+
+        synergyUser.getDisplay().sendTitleAndSubTitle(
+            "§5§lNext Objective:",
+            "§e\""+Objective.this.next.name()+"\"",
+            20,50,20
         );
     }
 
@@ -106,6 +118,7 @@ public abstract class Objective {
         if (!synergyUser.hasObjective(this.next)) {
             Synergy.debug("HAS NEXT OBJECTIVE READY 2");
             synergyUser.setCurrentObjective(this.next);
+            this.next.onStart(synergyUser);
         }else{
             Synergy.debug("HAS NEXT OBJECTIVE 3");
             synergyUser.setCurrentObjective(null);
