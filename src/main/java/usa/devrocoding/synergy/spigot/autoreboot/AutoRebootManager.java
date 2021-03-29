@@ -57,7 +57,7 @@ public class AutoRebootManager extends Module {
                 for (int i = 0; i < 2; i++) {
                     if (users.hasNext()) {
                         // TODO: ConcurrentModificationException
-                        String reason = "§5§lMiragePrisons\n§eAutomatic Server Shutdown";
+                        String reason = "§5§lMiragePrisons\n§eAutomatic Server Restart";
                         try{
                             users.next().kick(reason);
                         }catch (Exception e){

@@ -17,7 +17,7 @@ public class CommandPlugins extends SynergyCommand {
 
     private final String[] disbandedNames = new String[]{
         "NoCheatPlus", "WorldEdit", "BungeeTabListPlus", "LuckPerms", "FastAsyncWorldEdit",
-        "WorldBorder", "ImageOnMap", "WorldBorder", "F3Name"
+        "WorldBorder", "ImageOnMap", "WorldBorder", "F3Name", "BuycraftConfirm", "Votifier"
     };
 
     public CommandPlugins(Core plugin) {

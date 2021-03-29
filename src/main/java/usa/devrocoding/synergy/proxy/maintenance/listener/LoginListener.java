@@ -1,5 +1,6 @@
 package usa.devrocoding.synergy.proxy.maintenance.listener;
 
+import java.util.List;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -25,6 +26,13 @@ public class LoginListener implements Listener {
                 // TODO: Fix, will give errors on game servers when on maintenance
                 e.getPlayer().disconnect(new TextComponent(ChatColor.translateAlternateColorCodes('&', (String)maintenanceManager.getMotd().get("kick_message"))));
             }
+        }
+        List<String> offlineServers = Core.getCore().getAssetManager().getOfflineServers();
+        if (offlineServers.size() > 0){
+            e.getPlayer().disconnect(new TextComponent(ChatColor.RED +
+                "Server is still RESTARTING..\n"+
+                "Please allow the server to boot up.\n\n"+
+                ChatColor.GRAY+"[REQUEST]: HTTP 102 Data Received No Response Yet"));
         }
     }
 

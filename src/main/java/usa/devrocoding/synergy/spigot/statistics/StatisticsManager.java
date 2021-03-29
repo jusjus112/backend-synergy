@@ -144,6 +144,12 @@ public class StatisticsManager extends Module {
           "SELECT users.rank, users.name, users.uuid, stats.data FROM synergy_statistics AS stats " +
               "LEFT JOIN synergy_users AS users ON stats.uuid = users.uuid " +
               "WHERE stats.type = '" + statisticType.toString().toUpperCase() + "' " +
+              "AND users.rank != 'OWNER' " +
+              "AND users.rank != 'MANAGER' " +
+              "AND users.rank != 'ADMIN' " +
+              "AND users.rank != 'SRDEVELOPER' " +
+              "AND users.rank != 'JRDEVELOPER' " +
+              "AND users.rank != 'OWNER' "+
               "ORDER BY data DESC LIMIT " + this.showLimit
       );
 

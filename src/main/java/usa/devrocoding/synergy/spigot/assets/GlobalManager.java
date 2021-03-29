@@ -36,7 +36,9 @@ public class GlobalManager extends Module {
             new CommandSpawn(plugin),
             new CommandWeather(plugin),
             new CommandSystems(plugin),
-            new CommandTime(plugin)
+            new CommandTime(plugin),
+            new CommandDiscord(plugin),
+            new CommandVotes(plugin)
         );
 
         registerListener(
