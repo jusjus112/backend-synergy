@@ -34,7 +34,7 @@ public class UserChatListener implements Listener {
         Core.getPlugin().getProtectManager().getOffensiveWords().forEach(s -> {
             e.setMessage(e.getMessage().replaceAll(
                 "(?i)"+Pattern.quote(s),
-                "§c\\*\\*\\*§r")
+                "§c\\*\\*\\*" + chatter.getRank().getTextColor())
             );
         });
 

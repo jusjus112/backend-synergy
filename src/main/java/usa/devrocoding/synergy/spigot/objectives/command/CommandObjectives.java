@@ -13,7 +13,7 @@ public class CommandObjectives extends SynergyCommand {
 
     public CommandObjectives(Core plugin) {
         super(plugin, Rank.NONE, "List of available objectives",
-            false,"objectives", "obj");
+            false,"objectives", "obj", "objective");
     }
 
     @Override

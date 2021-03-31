@@ -18,8 +18,8 @@ public class CommandVotes extends SynergyCommand {
         synergyUser.sendModifactionMessage(
             MessageModification.RAW,
             "§cYou can vote on the following sites:",
-            "  §d1. www.minecraft-mp.com/server-s280161/",
-            "  §d2. www.minecraftservers.org/server/607304/"
+            "  §d1. www.minecraft-mp.com/server/280161/vote/",
+            "  §d2. www.minecraftservers.org/vote/607304/"
         );
     }
 
