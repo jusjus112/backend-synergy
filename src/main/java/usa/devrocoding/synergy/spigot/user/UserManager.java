@@ -168,9 +168,6 @@ public class UserManager extends Module {
                         Core.getPlugin().getGoogleAuthManager()
                             .getUserStuffFromDatabase(uuid, user);
                     }
-
-                    resultSet.close();
-                    Core.getPlugin().getDatabaseManager().disconnect();
                     return user;
                 }else{
                     Synergy.debug("RESULT = EMPTY");

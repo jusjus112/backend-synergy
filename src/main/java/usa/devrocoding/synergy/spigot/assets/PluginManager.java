@@ -49,18 +49,22 @@ public class PluginManager extends Module {
             getPlugin().setDatabaseManager(new DatabaseManager(new SQLService(
                     f.get().getString("sql.host"),
                     f.get().getString("sql.database"),
+                    f.get().getInt("sql.port"),
                     f.get().getString("sql.username"),
-                    f.get().getString("sql.password"),
-                    f.get().getInt("sql.port"))));
+                    f.get().getString("sql.password")
+                )));
 
             // Connect to SQL
             Synergy.info("Connecting to SQL....");
-            if (getPlugin().getDatabaseManager().connect()) {
+
+            try{
+
                 Synergy.success("Connected to your SQL Service Provider");
                 getPlugin().getDatabaseManager().loadDefaultTables(); // Generate the default tables if they didn't exist
                 return true;
-            }else{
+            }catch (Exception e){
                 Synergy.error("Cannot connect to MySQL. Something went wrong.", "Using JSON files as your database!");
+                Bukkit.getServer().shutdown();
                 return false;
             }
         }catch (FileNotFoundException e){

@@ -95,6 +95,7 @@ dependencies {
     compile group: 'com.warrenstrange', name: 'googleauth', version: '1.1.2' // GoogleAuth
     compile 'org.apache.httpcomponents:httpclient:4.5.6' // HTTP requests
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.8.1' // Apache utils
+    compile group: 'com.zaxxer', name: 'HikariCP', version: '4.0.3' // HikariCP
 //    compile 'org.bstats:bstats-bukkit:1.5' // bStats
     
     // GOOGLE

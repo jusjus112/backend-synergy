@@ -1,5 +1,6 @@
 package usa.devrocoding.synergy.spigot.statistics.thread;
 
+import com.google.common.collect.Lists;
 import java.util.function.Consumer;
 import lombok.RequiredArgsConstructor;
 import usa.devrocoding.synergy.spigot.Core;
@@ -12,9 +13,8 @@ public class StatisticsThread implements Consumer<Core> {
 
   @Override
   public void accept(Core core) {
-    Core.getPlugin().getUserManager().getOnlineUsers().forEach(
+    Lists.newArrayList(Core.getPlugin().getUserManager().getOnlineUsers()).forEach(
         this.statisticsManager::updateGlobalStats);
-
   }
 
 }

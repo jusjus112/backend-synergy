@@ -141,8 +141,6 @@ public class PunishManager extends Module {
                     put("issued", punishment.getIssued());
                 }}
             );
-
-            Synergy.debug("PUNISHMENT ACTIVE 2 - "+punishment.isActive());
         });
     }
 
@@ -150,18 +148,13 @@ public class PunishManager extends Module {
         List<Punishment> punishments = new ArrayList<>();
 
         try{
-            Synergy.debug("1 - PUNISHMENTS");
-            Synergy.debug(uuid.toString() + " = 1 - PUNISHMENTS");
             ResultSet result = Core.getPlugin().getDatabaseManager().getResults(
                     "punishments ", "uuid=?", new HashMap<Integer, Object>(){{
                         put(1, UtilSQL.convertUniqueId(uuid));
                     }}
             );
             boolean update = false;
-            Synergy.debug("2 - PUNISHMENTS");
-            Synergy.debug(result.isClosed() + " = 2 - PUNISHMENTS");
             while (result.next()){
-                Synergy.debug("3 - PUNISHMENTS");
                 boolean active = result.getBoolean("active");
                 long till = Long.parseLong(result.getString("till"));
 
@@ -171,8 +164,6 @@ public class PunishManager extends Module {
                         update = true;
                     }
                 }
-                Synergy.debug("4 - PUNISHMENTS");
-                Synergy.debug("PUNISHMENTS = "+result.getString("issued"));
 
                 punishments.add(new Punishment(
                         uuid,
@@ -185,7 +176,6 @@ public class PunishManager extends Module {
                         active
                 ));
             }
-            Synergy.debug("5 - PUNISHMENTS");
             if (update){
                 Core.getPlugin().getPunishManager().updatePunishments(punishments);
             }

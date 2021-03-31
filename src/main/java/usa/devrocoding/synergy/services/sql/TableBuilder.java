@@ -5,6 +5,7 @@ import usa.devrocoding.synergy.assets.Synergy;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import usa.devrocoding.synergy.services.SQLService;
 
 public class TableBuilder {
 
@@ -64,7 +65,7 @@ public class TableBuilder {
                             new HashMap<Integer, Object>(){{
                                 put(1, name);
                                 put(2, "synergy_"+tableName);
-                                put(3, databaseManager.getSqlService().getDatabase());
+                                put(3, SQLService.DATABASE_NAME);
                             }}
                     ).next()) {
                     query_update += "ALTER TABLE synergy_"+this.tableName+" ADD "+specs+";";

@@ -74,16 +74,16 @@ public class Core extends Plugin {
             this.databaseManager = new DatabaseManager(new SQLService(
                     f.getConfiguration().getString("sql.host"),
                     f.getConfiguration().getString("sql.database"),
+                    f.getConfiguration().getInt("sql.port"),
                     f.getConfiguration().getString("sql.username"),
-                    f.getConfiguration().getString("sql.password"),
-                    f.getConfiguration().getInt("sql.port")));
+                    f.getConfiguration().getString("sql.password")
+                ));
 
             // Connect to SQL
             Synergy.info("Connecting to SQL....");
-            this.databaseManager.connect();
             Synergy.info("Connected to your SQL Service Provider");
 
-        }catch (SQLException e){
+        }catch (Exception e){
             Synergy.error("I can't connect to your SQL Service provider");
             Synergy.error("Can't enable proxy without Synergy!");
             getProxy().stop();

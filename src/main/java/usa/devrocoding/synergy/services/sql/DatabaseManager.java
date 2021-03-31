@@ -2,8 +2,12 @@ package usa.devrocoding.synergy.services.sql;
 
 import java.io.InputStream;
 import java.util.concurrent.atomic.AtomicInteger;
+import javax.sql.rowset.CachedRowSet;
+import javax.sql.rowset.RowSetFactory;
+import javax.sql.rowset.RowSetProvider;
 import lombok.Getter;
 
+import lombok.RequiredArgsConstructor;
 import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.services.SQLService;
 import usa.devrocoding.synergy.spigot.user.object.UserExperience;
@@ -23,41 +27,10 @@ public class DatabaseManager {
      *
      */
 
-    private Connection connection;
     private final SQLService sqlService;
 
     public DatabaseManager(SQLService service){
         this.sqlService = service;
-    }
-
-    public boolean connect() throws SQLException {
-        if (this.connection != null && !connection.isClosed()){
-            return false;
-        }
-        if (getSqlService().isIniatialized()) {
-            try{
-                Class.forName("com.mysql.jdbc.Driver");
-            }catch (ClassNotFoundException e){
-                Synergy.error("We can't find a SQL server on this machine!", "Install one first in order to use MySQL.");
-                return false;
-            }
-
-            try{
-                this.connection = DriverManager.getConnection("jdbc:mysql://" + getSqlService().getHost() + ":" + getSqlService().getPort()
-                        + "/" + getSqlService().getDatabase() + "?autoReconnect=true&useUnicode=yes", getSqlService().getUsername(), getSqlService().getPassword());
-            }catch (Exception e){
-                throw new SQLException("Unable to connect, SQL server might be down..");
-            }
-            return true;
-        }else{
-            throw new SQLException("SQL Information is wrong or empty! Check 'Settings.yml'");
-        }
-    }
-
-    public void disconnect() throws SQLException {
-        if (!this.connection.isClosed()) {
-            this.connection.close();
-        }
     }
 
     public void loadDefaultTables(){
@@ -84,7 +57,6 @@ public class DatabaseManager {
     public boolean update(String table, Map<String, Object> data, Map<String, Object> whereData){
         HashMap<Integer, Object> indexed = new HashMap<>();
         try {
-            connect();
             StringBuilder query = new StringBuilder("UPDATE synergy_"+table+" SET ");
 
             data.remove("uuid");
@@ -109,10 +81,8 @@ public class DatabaseManager {
                 i.getAndIncrement();
             });
 
-            Synergy.debug("QUERY", query.toString());
-
-            Synergy.debug(data + " = DATA");
-            PreparedStatement preparedStatement = getConnection().prepareStatement(query.toString());
+            Connection connection = SQLService.connection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query.toString());
 
             for(Integer index : indexed.keySet()){
                 Object value = indexed.get(index);
@@ -125,11 +95,11 @@ public class DatabaseManager {
             }
 
             preparedStatement.executeUpdate();
-//            disconnect();
+            connection.close();
             return true;
         }catch (SQLException e){
-            Synergy.warn("Can't execute update statement. " + e.getMessage());
-            e.printStackTrace();
+//            Synergy.warn("Can't execute update statement. " + e.getMessage());
+//            e.printStackTrace();
             return false;
         }
     }
@@ -140,15 +110,12 @@ public class DatabaseManager {
     }
 
     public ResultSet getResults(String tablePrefix, String table, String where, Map<Integer, Object> data) throws SQLException {
-        connect();
-
         StringBuilder query = new StringBuilder(
                 "SELECT * FROM "+(tablePrefix==null?"":tablePrefix+"_")+table+(where != null ? (" WHERE "+where) : "")
         );
 
-//        Synergy.debug(query.toString());
-
-        PreparedStatement statement = getConnection().prepareStatement(
+        Connection connection = SQLService.connection();
+        PreparedStatement statement = connection.prepareStatement(
             query.toString()
         );
 
@@ -164,22 +131,31 @@ public class DatabaseManager {
             }
         }
 
-        return statement.executeQuery();
+        ResultSet resultSet = statement.executeQuery();
+        RowSetFactory factory = RowSetProvider.newFactory();
+        CachedRowSet crs = factory.createCachedRowSet();
+        crs.populate(resultSet);
+        try{
+            return crs;
+        }finally {
+            connection.close();
+        }
     }
 
     public ResultSet executeQuery(String query) {
         try {
-            connect();
+            Connection connection = SQLService.connection();
+            ResultSet resultSet = connection.prepareStatement(query).executeQuery();
+
+            RowSetFactory factory = RowSetProvider.newFactory();
+            CachedRowSet crs = factory.createCachedRowSet();
+            crs.populate(resultSet);
+            try{
+                return crs;
+            }finally {
+                connection.close();
+            }
         }catch (SQLException e){
-            Synergy.warn("Can't connect again... " + e.getMessage());
-        }
-//        Synergy.debug(query);
-        try {
-            ResultSet resultSet = getConnection().prepareStatement(query).executeQuery();
-//            disconnect();
-            return resultSet;
-        }catch (SQLException e){
-//            e.printStackTrace();
             Synergy.warn("Can't executeQuery statement. " + e.getMessage());
         }
         return null;
@@ -187,31 +163,22 @@ public class DatabaseManager {
 
     public void execute(String query){
         try {
-            connect();
+            Connection connection = SQLService.connection();
+            connection.prepareStatement(query).execute();
+
+            connection.close();
         }catch (SQLException e){
-            Synergy.warn("Can't connect again... " + e.getMessage());
-        }
-//        Synergy.debug(query);
-        try {
-            getConnection().prepareStatement(query).execute();
-//            disconnect();
-        }catch (SQLException e){
-//            e.printStackTrace();
             Synergy.warn("Can't execute statement. " + e.getMessage());
         }
     }
 
     public void executeUpdate(String query){
         try {
-            connect();
+            Connection connection = SQLService.connection();
+            connection.prepareStatement(query).executeUpdate();
+
+            connection.close();
         }catch (SQLException e){
-            Synergy.warn("Can't connect again... " + e.getMessage());
-        }
-        try {
-            getConnection().prepareStatement(query).executeUpdate();
-//            disconnect();
-        }catch (SQLException e){
-//            e.printStackTrace();
             Synergy.warn("Can't executeUpdate statement. " + e.getMessage());
         }
     }
@@ -223,7 +190,6 @@ public class DatabaseManager {
     public boolean execute(String prefix, String table, Map<String, Object> data, boolean insert) {
         HashMap<Integer, Object> indexed = new HashMap<>();
         try {
-            connect();
             StringBuilder query = new StringBuilder(prefix+" synergy_"+table+" ("),
             values = new StringBuilder(") VALUES(");
 
@@ -246,7 +212,8 @@ public class DatabaseManager {
             Synergy.debug(query.toString());
             Synergy.debug(data + " = VALUES data");
 
-            PreparedStatement preparedStatement = getConnection().prepareStatement(query.toString());
+            Connection connection = SQLService.connection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query.toString());
 
             for(Integer index : indexed.keySet()){
                 Object value = indexed.get(index);
@@ -259,11 +226,11 @@ public class DatabaseManager {
             }
 
             preparedStatement.executeUpdate();
-//            disconnect();
+
+            connection.close();
             return true;
         }catch (SQLException e){
 //            Synergy.warn("Can't execute statement. " + e.getMessage());
-//            e.printStackTrace();
             return false;
         }
     }

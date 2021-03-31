@@ -30,7 +30,7 @@ public class ProtocolClient {
 
   // https://github.com/Steveice10/MCProtocolLib
 
-  private final static int clients = 10;
+  private final static int clients = 9;
   private final static int limitPerJoin = 1;
   private final static int threadLimit = 1000;
 
