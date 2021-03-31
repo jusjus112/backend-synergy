@@ -52,11 +52,10 @@ public class WarpGUI extends Gui {
         for(Warp warp : warpManager.getWarps()){
             // No warps allowed called Spawn
             if (warp.getName().contains("tutorial")||warp.getName().contains("spawn")||warp.getName().contains("cell")) {
-
                 continue;
             }
 
-            if (this.getUser().hasPermission(warp.getPermissionNode(), false)) {
+//            if (this.getUser().hasPermission(warp.getPermissionNode(), false)) {
                 int place = getCenterInput().get(index);
 
                 addElement(place, new GuiElement() {
@@ -74,7 +73,7 @@ public class WarpGUI extends Gui {
                     }
                 });
                 index++;
-            }
+//            }
         }
         if (index <= 0){
             addNoWarpsItem();

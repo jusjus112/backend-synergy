@@ -17,6 +17,10 @@ public class DatabaseManager {
 
     /**
      * TODO: Disconnect connection after a while with no queries
+     *
+     * https://www.baeldung.com/java-connection-pooling
+     * https://stackoverflow.com/questions/34117164/java-async-mysql-queries
+     *
      */
 
     private Connection connection;

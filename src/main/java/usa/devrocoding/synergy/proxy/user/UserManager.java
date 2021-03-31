@@ -17,7 +17,7 @@ import java.util.*;
 public class UserManager extends ProxyModule {
 
     @Getter
-    private Map<UUID, ProxyUser> proxyUsers = new HashMap<>();
+    private final Map<UUID, ProxyUser> proxyUsers = new HashMap<>();
 
     public UserManager(Core plugin){
         super(plugin, "User Manager", false);

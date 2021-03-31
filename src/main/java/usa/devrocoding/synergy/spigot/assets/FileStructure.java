@@ -1,6 +1,5 @@
 package usa.devrocoding.synergy.spigot.assets;
 
-import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.files.json.JSONFile;
 import usa.devrocoding.synergy.spigot.files.txt.TXTFile;
@@ -20,7 +19,6 @@ public class FileStructure {
     public enum FileType{
         JSON, YML, TXT
     }
-
 
     public YMLFile getYMLFile(String key)throws FileNotFoundException {
         if (ymlFiles.containsKey(key)){

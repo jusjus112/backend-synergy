@@ -50,6 +50,10 @@ public class ProxyUser {
         e.completeIntent(Core.getCore());
     }
 
+    public boolean hasFriend(ProxyUser proxyUser){
+        return proxyUser.getFriends().contains(this.uuid);
+    }
+
     public String getDisplayName(){
         if (this.rank == Rank.NONE){
             return this.rank.getTextColor() + this.getProxiedPlayer().getDisplayName();

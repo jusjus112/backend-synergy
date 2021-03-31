@@ -12,6 +12,7 @@ import lombok.Getter;
 import usa.devrocoding.synergy.proxy.Core;
 import usa.devrocoding.synergy.proxy.ProxyModule;
 import usa.devrocoding.synergy.proxy.buddy.command.CommandBuddy;
+import usa.devrocoding.synergy.proxy.buddy.command.CommandMessage;
 import usa.devrocoding.synergy.proxy.buddy.object.BuddyRequest;
 import usa.devrocoding.synergy.proxy.user.object.ProxyUser;
 import usa.devrocoding.synergy.services.sql.SQLDataType;
@@ -38,7 +39,8 @@ public class BuddyManager extends ProxyModule {
     this.friendsToUpdate = Maps.newHashMap();
 
     registerCommands(
-        new CommandBuddy()
+        new CommandBuddy(),
+        new CommandMessage()
     );
   }
 
