@@ -28,17 +28,18 @@ public class SQLService {
         return getDataSource().getConnection();
     }
 
-    private static HikariDataSource getDataSource() {
+    public static HikariDataSource getDataSource() {
         if (dataSource1 == null) {
             generateNewDataSource(true);
         }
         if (dataSource2 == null) {
             generateNewDataSource(false);
         }
-        try{
-            return dataSource1;
-        }catch (Exception e){
+
+        if (dataSource1.getHikariPoolMXBean().getIdleConnections() <= 0){
             return dataSource2;
+        }else{
+            return dataSource1;
         }
     }
 
@@ -59,9 +60,9 @@ public class SQLService {
         hikariConfig.setUsername(USERNAME);
         hikariConfig.setPassword(PASSWORD);
         hikariConfig.setMaximumPoolSize(25);
-        hikariConfig.setIdleTimeout(30000);
-        hikariConfig.setConnectionTimeout(1000);
-        hikariConfig.setMaxLifetime(300000);
+//        hikariConfig.setMinimumIdle(0);
+//        hikariConfig.setIdleTimeout(30000);
+//        hikariConfig.setConnectionTimeout(60000);
         hikariConfig.addDataSourceProperty("cachePrepStmts", "true" );
         hikariConfig.addDataSourceProperty("prepStmtCacheSize", "250" );
         hikariConfig.addDataSourceProperty("prepStmtCacheSqlLimit", "2048" );

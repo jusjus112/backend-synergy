@@ -50,12 +50,12 @@ public class CommandManager extends Module{
                 "banlist","list","clear","execute","replaceitem",
                 "ban-ip","pardon-ip","save-off","save-on","restart",
                 "debug", "eather","time","effect","gamerule","difficulty",
-                "give","help","stop","time","whitelist","spigot","restart",
+                "help","stop","time","whitelist","spigot","restart",
                 "powertool","powertooltoggle","tp2p","tele","tp","gm", "gmc","gma","gmc","gms","gmsp","gmt",
                 "creativemode","spectatormode","adventuremode","gamemode",
 
                 "summon",
-
+//                "give"
                 "nuke","more","banip","backup","compass","kittycannon",
                 "pt","setworth","worth","ul",
                 "uptime","v","tptoggle","tnt","whereami","ping","pong","ptt","list","plist",
@@ -63,7 +63,7 @@ public class CommandManager extends Module{
                 "survivalmode","shoutworld","bcw","godmode","news","grenade","vanish",
                 "info","fireball","strike","lightning",
                 "me","tree","firework","gc","god"
-                ));
+            ));
         }};
 
 //        if (Synergy.isProduction()){

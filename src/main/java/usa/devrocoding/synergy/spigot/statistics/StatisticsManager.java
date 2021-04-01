@@ -153,35 +153,38 @@ public class StatisticsManager extends Module {
               "ORDER BY data DESC LIMIT " + this.showLimit
       );
 
-      try{
-        while (result.next()){
-          Rank rank = Rank.valueOf(result.getString("rank"));
-          String userName = result.getString("name");
-          UUID uuid = UtilSQL.convertBinaryStream(result.getBinaryStream("uuid"));
-          double data = result.getDouble("data");
+      if (result != null) {
+        try {
+          while (result.next()) {
+            Rank rank = Rank.valueOf(result.getString("rank"));
+            String userName = result.getString("name");
+            UUID uuid = UtilSQL.convertBinaryStream(result.getBinaryStream("uuid"));
+            double data = result.getDouble("data");
 
-          SynergyUser targetUser = Core.getPlugin().getUserManager().getUser(uuid);
-          if (targetUser != null){
-            // User is online
-            data = targetUser.getStatistic(statisticType).get();
+            SynergyUser targetUser = Core.getPlugin().getUserManager().getUser(uuid);
+            if (targetUser != null) {
+              // User is online
+              data = targetUser.getStatistic(statisticType).get();
+            }
+
+            if (data <= 0) {
+              continue;
+            }
+
+            map.put(rank.getPrefix() + " " + rank.getTextColor() + userName + ChatColor.RESET,
+                data);
           }
+          LinkedHashMap<String, Double> reverseSortedMap = new LinkedHashMap<>();
 
-          if (data <= 0){
-            continue;
-          }
+          map.entrySet()
+              .stream()
+              .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+              .forEachOrdered(x -> reverseSortedMap.put(x.getKey(), x.getValue()));
 
-          map.put(rank.getPrefix() + " " + rank.getTextColor() + userName + ChatColor.RESET, data);
+          this.globalStats.put(statisticType, reverseSortedMap);
+        } catch (Exception ignored) {
+
         }
-        LinkedHashMap<String, Double> reverseSortedMap = new LinkedHashMap<>();
-
-        map.entrySet()
-            .stream()
-            .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-            .forEachOrdered(x -> reverseSortedMap.put(x.getKey(), x.getValue()));
-
-        this.globalStats.put(statisticType, reverseSortedMap);
-      }catch (SQLException ignored){
-
       }
 
       if (synergyUser != null) {

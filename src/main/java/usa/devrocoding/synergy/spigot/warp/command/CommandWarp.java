@@ -13,7 +13,7 @@ public class CommandWarp extends SynergyCommand {
 
     public CommandWarp(Core plugin) {
         super(plugin, Rank.NONE, "List of available warps",
-            false,"warp");
+            false,"warp", "warps");
     }
 
     @Override

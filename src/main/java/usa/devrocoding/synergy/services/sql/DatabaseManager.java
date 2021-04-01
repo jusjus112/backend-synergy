@@ -81,21 +81,25 @@ public class DatabaseManager {
                 i.getAndIncrement();
             });
 
-            Connection connection = SQLService.connection();
-            PreparedStatement preparedStatement = connection.prepareStatement(query.toString());
+            try(Connection connection = SQLService.connection()){
 
-            for(Integer index : indexed.keySet()){
-                Object value = indexed.get(index);
+                PreparedStatement preparedStatement = connection.prepareStatement(query.toString());
 
-                if (value instanceof InputStream){
-                    preparedStatement.setBinaryStream(index, (InputStream) value);
-                    continue;
+                for(Integer index : indexed.keySet()){
+                    Object value = indexed.get(index);
+
+                    if (value instanceof InputStream){
+                        preparedStatement.setBinaryStream(index, (InputStream) value);
+                        continue;
+                    }
+                    preparedStatement.setObject(index, value);
                 }
-                preparedStatement.setObject(index, value);
-            }
 
-            preparedStatement.executeUpdate();
-            connection.close();
+                preparedStatement.executeUpdate();
+
+                preparedStatement.close();
+                connection.close();
+            }
             return true;
         }catch (SQLException e){
 //            Synergy.warn("Can't execute update statement. " + e.getMessage());
@@ -113,48 +117,50 @@ public class DatabaseManager {
                 "SELECT * FROM "+(tablePrefix==null?"":tablePrefix+"_")+table+(where != null ? (" WHERE "+where) : "")
         );
 
-        Connection connection = SQLService.connection();
-        PreparedStatement statement = connection.prepareStatement(
-            query.toString()
-        );
+        try(Connection connection = SQLService.connection()) {
+            PreparedStatement statement = connection.prepareStatement(
+                query.toString()
+            );
 
-        if (where != null) {
-            for (int b : data.keySet()) {
-                Object object = data.get(b);
+            if (where != null) {
+                for (int b : data.keySet()) {
+                    Object object = data.get(b);
 
-                if (object instanceof InputStream){
-                    statement.setBinaryStream(b, (InputStream) object);
-                    continue;
+                    if (object instanceof InputStream) {
+                        statement.setBinaryStream(b, (InputStream) object);
+                        continue;
+                    }
+                    statement.setObject(b, object);
                 }
-                statement.setObject(b, object);
             }
-        }
 
-        ResultSet resultSet = statement.executeQuery();
-        RowSetFactory factory = RowSetProvider.newFactory();
-        CachedRowSet crs = factory.createCachedRowSet();
-        crs.populate(resultSet);
-
-        connection.close();
-<<<<<<< HEAD
-=======
-
->>>>>>> 1cf160899106629cc4f6efde68d8cd9da138692e
-        return crs;
-    }
-
-    public ResultSet executeQuery(String query) {
-        try {
-            Connection connection = SQLService.connection();
-            ResultSet resultSet = connection.prepareStatement(query).executeQuery();
-
+            ResultSet resultSet = statement.executeQuery();
             RowSetFactory factory = RowSetProvider.newFactory();
             CachedRowSet crs = factory.createCachedRowSet();
             crs.populate(resultSet);
 
+            statement.close();
+            resultSet.close();
             connection.close();
 
             return crs;
+        }
+    }
+
+    public ResultSet executeQuery(String query) {
+        try {
+            try(Connection connection = SQLService.connection()) {
+                ResultSet resultSet = connection.prepareStatement(query).executeQuery();
+
+                RowSetFactory factory = RowSetProvider.newFactory();
+                CachedRowSet crs = factory.createCachedRowSet();
+                crs.populate(resultSet);
+
+                resultSet.close();
+                connection.close();
+
+                return crs;
+            }
         }catch (SQLException e){
             Synergy.warn("Can't executeQuery statement. " + e.getMessage());
         }
@@ -163,10 +169,11 @@ public class DatabaseManager {
 
     public void execute(String query){
         try {
-            Connection connection = SQLService.connection();
-            connection.prepareStatement(query).execute();
+            try(Connection connection = SQLService.connection()) {
+                connection.prepareStatement(query).execute();
 
-            connection.close();
+                connection.close();
+            }
         }catch (SQLException e){
             Synergy.warn("Can't execute statement. " + e.getMessage());
         }
@@ -174,10 +181,11 @@ public class DatabaseManager {
 
     public void executeUpdate(String query){
         try {
-            Connection connection = SQLService.connection();
-            connection.prepareStatement(query).executeUpdate();
+            try(Connection connection = SQLService.connection()) {
+                connection.prepareStatement(query).executeUpdate();
 
-            connection.close();
+                connection.close();
+            }
         }catch (SQLException e){
             Synergy.warn("Can't executeUpdate statement. " + e.getMessage());
         }
@@ -212,22 +220,24 @@ public class DatabaseManager {
             Synergy.debug(query.toString());
             Synergy.debug(data + " = VALUES data");
 
-            Connection connection = SQLService.connection();
-            PreparedStatement preparedStatement = connection.prepareStatement(query.toString());
+            try(Connection connection = SQLService.connection()) {
+                PreparedStatement preparedStatement = connection.prepareStatement(query.toString());
 
-            for(Integer index : indexed.keySet()){
-                Object value = indexed.get(index);
+                for (Integer index : indexed.keySet()) {
+                    Object value = indexed.get(index);
 
-                if (value instanceof InputStream){
-                    preparedStatement.setBinaryStream(index, (InputStream) value);
-                    continue;
+                    if (value instanceof InputStream) {
+                        preparedStatement.setBinaryStream(index, (InputStream) value);
+                        continue;
+                    }
+                    preparedStatement.setObject(index, value);
                 }
-                preparedStatement.setObject(index, value);
+
+                preparedStatement.executeUpdate();
+
+                preparedStatement.close();
+                connection.close();
             }
-
-            preparedStatement.executeUpdate();
-
-            connection.close();
             return true;
         }catch (SQLException e){
 //            Synergy.warn("Can't execute statement. " + e.getMessage());
