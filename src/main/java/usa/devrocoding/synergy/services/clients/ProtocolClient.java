@@ -1,6 +1,5 @@
 package usa.devrocoding.synergy.services.clients;
 
-import com.github.steveice10.mc.auth.exception.request.RequestException;
 import com.github.steveice10.mc.auth.service.AuthenticationService;
 import com.github.steveice10.mc.auth.service.SessionService;
 import com.github.steveice10.mc.protocol.MinecraftConstants;
@@ -21,6 +20,7 @@ import com.github.steveice10.packetlib.event.session.DisconnectedEvent;
 import com.github.steveice10.packetlib.event.session.PacketReceivedEvent;
 import com.github.steveice10.packetlib.event.session.SessionAdapter;
 import com.github.steveice10.packetlib.tcp.TcpSessionFactory;
+
 import java.net.Proxy;
 import java.util.Arrays;
 import java.util.UUID;
@@ -30,13 +30,14 @@ public class ProtocolClient {
 
   // https://github.com/Steveice10/MCProtocolLib
 
-  private final static int clients = 9;
+  private final static int clients = 1;
   private final static int limitPerJoin = 1;
   private final static int threadLimit = 1000;
 
-  private static final String HOST = "127.0.0.1";
-  private static final String register = "/boss queue Witchqueen";
-  private static final int PORT = 25577;
+//  private static final String HOST = "127.0.0.1";
+  private static final String HOST = "51.195.148.172";
+  private static final String register = "";
+  private static final int PORT = 25565;
   private static final Proxy AUTH_PROXY = Proxy.NO_PROXY;
   private static final ProxyInfo PROXY = null;
 
@@ -110,21 +111,35 @@ public class ProtocolClient {
   private static void login(String username) {
     MinecraftProtocol protocol = null;
     if(PASSWORD != null) {
-      try {
-        AuthenticationService authService = new AuthenticationService();
-        authService.setUsername(USERNAME);
-        authService.setPassword(PASSWORD);
-        authService.setProxy(AUTH_PROXY);
-        authService.login();
+      AuthenticationService authService = new AuthenticationService();
+      authService.setUsername(USERNAME);
+      authService.setPassword(PASSWORD);
+      authService.setProxy(AUTH_PROXY);
+//        authService.login();
 
-        // Can also use "new MinecraftProtocol(USERNAME, PASSWORD)"
-        // if you don't need a proxy or any other customizations.
-        protocol = new MinecraftProtocol(String.valueOf(authService));
-        System.out.println("Successfully authenticated user.");
-      } catch(RequestException e) {
-        e.printStackTrace();
-        return;
-      }
+      // Can also use "new MinecraftProtocol(USERNAME, PASSWORD)"
+      // if you don't need a proxy or any other customizations.
+      protocol = new MinecraftProtocol(String.valueOf(authService));
+      System.out.println("Successfully authenticated user.");
+
+//      try {
+//        AuthenticationResponse authResponse = OpenMCAuthenticator.authenticate("username", "password");
+//        String authToken = authResponse.getAccessToken();
+//
+//        AuthenticationService authService = new AuthenticationService(authToken);
+//        authService.setUsername(USERNAME);
+//        authService.setPassword(PASSWORD);
+//        authService.setProxy(AUTH_PROXY);
+//        authService.login();
+//
+//        System.out.println("LOGGED IN");
+//      } catch (RequestException e) {
+//        System.out.println("Bad username or password");
+//      } catch (AuthenticationUnavailableException e){
+//        System.out.println("Authentication servers unavailable");
+//      } catch (com.github.steveice10.mc.auth.exception.request.RequestException e) {
+//        e.printStackTrace();
+//      }
     } else {
       username = username.replaceAll("-", "_"); // - is not allowed
       protocol = new MinecraftProtocol(username);

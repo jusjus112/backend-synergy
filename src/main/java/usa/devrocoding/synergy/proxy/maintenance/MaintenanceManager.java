@@ -3,6 +3,8 @@ package usa.devrocoding.synergy.proxy.maintenance;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import lombok.Getter;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.TextComponent;
 import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.proxy.Core;
 import usa.devrocoding.synergy.proxy.ProxyModule;
@@ -18,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class MaintenanceManager extends ProxyModule {
 
@@ -103,13 +106,30 @@ public class MaintenanceManager extends ProxyModule {
         enableMaintenance(getProxyServer());
     }
 
+    public TextComponent goodbyeMessage(){
+        return new TextComponent(Synergy.SynergyColor.ERROR + "Maintenance mode has been enabled.");
+    }
+
     public void enableMaintenance(String server){
         if (server == null){
             enableMaintenance();
+            return;
         }
 
         if (!isServerOnMaintenance(server)) {
             this.serverOnMaintenance.add(server);
+        }
+
+        getPlugin().getProxy().broadcast(new TextComponent(
+                Synergy.SynergyColor.ERROR + "" +ChatColor.BOLD + "MAINTENANCE HAS BEEN ENABLED\n" +
+                Synergy.SynergyColor.ERROR + "This server is now in maintenance.\n" +
+                Synergy.SynergyColor.ERROR + "You will be kicked automatically in "+ Synergy.SynergyColor.INFO +"30 seconds."
+        ));
+
+        if (server.equalsIgnoreCase(getProxyServer())) {
+            getPlugin().getProxy().getScheduler().schedule(getPlugin(), () ->
+                getPlugin().getProxy().getPlayers().forEach(proxiedPlayer ->
+                    proxiedPlayer.disconnect(goodbyeMessage())), 30, TimeUnit.SECONDS);
         }
     }
 

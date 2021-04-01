@@ -1,12 +1,12 @@
 package usa.devrocoding.synergy.discord.utilities;
 
-import jdk.internal.jline.internal.Nullable;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 
 import java.awt.*;
-import usa.devrocoding.synergy.discord.utilities.MessageBuilder.SetType;
+
+import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
 
 public class MessageBuilder {
 

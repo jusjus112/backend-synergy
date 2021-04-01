@@ -119,6 +119,7 @@ public class ItemBuilder extends ItemStack{
     public ItemBuilder setUnbreakable(boolean unbreakable) {
         initItemMeta();
         this.itemMeta.setUnbreakable(unbreakable);
+        this.itemMeta.spigot().setUnbreakable(true);
         return this;
     }
 
