@@ -135,11 +135,9 @@ public class DatabaseManager {
         RowSetFactory factory = RowSetProvider.newFactory();
         CachedRowSet crs = factory.createCachedRowSet();
         crs.populate(resultSet);
-        try{
-            return crs;
-        }finally {
-            connection.close();
-        }
+
+        connection.close();
+        return crs;
     }
 
     public ResultSet executeQuery(String query) {
