@@ -47,6 +47,7 @@ public class SynergyUser {
     private final UUID uuid;
     private final String name;
     private Rank rank;
+    private boolean loaded;
     private Timestamp joinedOn;
     private final LanguageFile language;
     @Setter

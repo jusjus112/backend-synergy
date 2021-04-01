@@ -14,6 +14,8 @@ public class SQLService {
     private static String PASSWORD;
     private static Integer PORT;
 
+    private static HikariDataSource dataSource1, dataSource2;
+
     public SQLService(String host, String databaseName, int port, String user, String password){
         HOST = host;
         DATABASE_NAME = databaseName;
@@ -22,22 +24,31 @@ public class SQLService {
         PASSWORD = password;
     }
 
-    private static HikariDataSource dataSource;
-
     public static Connection connection() throws SQLException{
         return getDataSource().getConnection();
     }
 
     private static HikariDataSource getDataSource() {
-        if (dataSource == null) {
-            generateNewDataSource();
+        if (dataSource1 == null) {
+            generateNewDataSource(true);
         }
-        return dataSource;
+        if (dataSource2 == null) {
+            generateNewDataSource(false);
+        }
+        try{
+            return dataSource1;
+        }catch (Exception e){
+            return dataSource2;
+        }
     }
 
-    private static void generateNewDataSource() {
+    private static void generateNewDataSource(boolean sourceOne) {
         HikariConfig hikariConfig = getConfig();
-        dataSource = new HikariDataSource(hikariConfig);
+        if (sourceOne) {
+            dataSource1 = new HikariDataSource(hikariConfig);
+        }else{
+            dataSource2 = new HikariDataSource(hikariConfig);
+        }
     }
 
     private static HikariConfig getConfig(){
@@ -47,9 +58,9 @@ public class SQLService {
         hikariConfig.setJdbcUrl(jdbcUrl);
         hikariConfig.setUsername(USERNAME);
         hikariConfig.setPassword(PASSWORD);
-        hikariConfig.setMaximumPoolSize(15);
-        hikariConfig.setIdleTimeout(2000);
-        hikariConfig.setConnectionTimeout(2000);
+        hikariConfig.setMaximumPoolSize(25);
+        hikariConfig.setIdleTimeout(30000);
+        hikariConfig.setConnectionTimeout(1000);
         hikariConfig.setMaxLifetime(300000);
         hikariConfig.addDataSourceProperty("cachePrepStmts", "true" );
         hikariConfig.addDataSourceProperty("prepStmtCacheSize", "250" );

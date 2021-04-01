@@ -105,8 +105,7 @@ public class DatabaseManager {
     }
 
     public ResultSet getResults(String table, String where, Map<Integer, Object> data) throws SQLException {
-        ResultSet resultSet = getResults("synergy", table, where, data);
-        return resultSet;
+        return getResults("synergy", table, where, data);
     }
 
     public ResultSet getResults(String tablePrefix, String table, String where, Map<Integer, Object> data) throws SQLException {
@@ -135,11 +134,10 @@ public class DatabaseManager {
         RowSetFactory factory = RowSetProvider.newFactory();
         CachedRowSet crs = factory.createCachedRowSet();
         crs.populate(resultSet);
-        try{
-            return crs;
-        }finally {
-            connection.close();
-        }
+
+        connection.close();
+
+        return crs;
     }
 
     public ResultSet executeQuery(String query) {
@@ -150,11 +148,10 @@ public class DatabaseManager {
             RowSetFactory factory = RowSetProvider.newFactory();
             CachedRowSet crs = factory.createCachedRowSet();
             crs.populate(resultSet);
-            try{
-                return crs;
-            }finally {
-                connection.close();
-            }
+
+            connection.close();
+
+            return crs;
         }catch (SQLException e){
             Synergy.warn("Can't executeQuery statement. " + e.getMessage());
         }

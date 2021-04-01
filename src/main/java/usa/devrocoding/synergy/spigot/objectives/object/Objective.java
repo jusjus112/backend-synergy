@@ -2,10 +2,9 @@ package usa.devrocoding.synergy.spigot.objectives.object;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Optional;
-import jdk.internal.jline.internal.Nullable;
 import lombok.Getter;
 import org.bukkit.Sound;
+import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
 import usa.devrocoding.synergy.assets.Cache;
@@ -21,7 +20,8 @@ import usa.devrocoding.synergy.spigot.utilities.UtilMath;
 public abstract class Objective {
 
     @Getter
-    private @Nullable Objective next = null;
+    private @Nullable
+    Objective next = null;
     @Getter
     private @Nullable Objective unlockFirst = null;
 

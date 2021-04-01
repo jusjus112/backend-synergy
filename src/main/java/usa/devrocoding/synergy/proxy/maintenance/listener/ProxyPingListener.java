@@ -19,7 +19,7 @@ public class ProxyPingListener implements Listener {
         MaintenanceManager maintenanceManager = Core.getCore().getMaintenanceManager();
 
         try{
-            if (maintenanceManager.isServerOnMaintenance("proxy")) {
+            if (maintenanceManager.isServerOnMaintenance(maintenanceManager.getProxyServer())) {
                 e.getResponse().getVersion().setProtocol(1);
                 e.getResponse().getVersion().setName((String)maintenanceManager.getMotd().get("version"));
 
