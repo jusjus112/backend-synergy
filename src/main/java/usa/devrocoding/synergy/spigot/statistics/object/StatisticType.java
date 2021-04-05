@@ -11,7 +11,7 @@ public enum StatisticType {
   BLOCKS_MINED(
       "Most Blocks Mined",
       "blocks mined",
-      "Most Blocks Mined"
+      "Most Blocks Mined (All Mines)"
   ),
   BLOCKS_MINED_DESERT(
       "Most Desert Blocks Mined",

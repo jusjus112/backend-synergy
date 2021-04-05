@@ -56,7 +56,7 @@ public class ProxyUser {
     }
 
     public boolean canHaveMoreFriends(){
-        int max = 3;
+        int max;
         switch (getRank()){
             case SORCERER:
                 max = 5;
@@ -72,8 +72,10 @@ public class ProxyUser {
             case MIRAGE:
                 max = 999;
                 break;
+            default:
+                max = 3;
         }
-        return getFriends().size() >= max;
+        return getFriends().size() <= max;
     }
 
     public boolean hasFriend(ProxyUser proxyUser){
