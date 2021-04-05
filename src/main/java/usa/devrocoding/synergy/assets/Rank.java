@@ -27,7 +27,7 @@ public enum Rank {
     JRMODERATOR(11, "JRMODERATOR", "MOD", ChatColor.BLUE, "rank.jrmoderator"),
     SRMODERATOR(12, "SRMODERATOR", "MOD", ChatColor.BLUE, "rank.srmoderator"),
     ADMIN(13, "ADMIN", "ADMIN", ChatColor.RED, "rank.admin"),
-    MANAGER(14, "MANAGER", "ADMIN", ChatColor.RED, "rank.manager"),
+    MANAGER(14, "MANAGER", "DIRECTOR", ChatColor.RED, "rank.manager"),
     JRDEVELOPER(15, "JRDEVELOPER", "DEV", ChatColor.LIGHT_PURPLE, "rank.jrdeveloper"),
     SRDEVELOPER(16, "SRDEVELOPER", "DEV", ChatColor.LIGHT_PURPLE, "rank.srdeveloper"),
     OWNER(17, "OWNER", "OWNER", ChatColor.RED, "rank.owner");

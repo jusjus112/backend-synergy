@@ -14,6 +14,7 @@ import usa.devrocoding.synergy.services.sql.TableBuilder;
 import usa.devrocoding.synergy.services.sql.UtilSQL;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
+import usa.devrocoding.synergy.spigot.economy.command.CommandCrystal;
 import usa.devrocoding.synergy.spigot.economy.command.CommandEconomy;
 import usa.devrocoding.synergy.spigot.economy.object.Economy;
 import usa.devrocoding.synergy.spigot.statistics.object.Statistic;
@@ -33,7 +34,8 @@ public class EconomyManager extends Module {
             .execute();
 
         registerCommand(
-            new CommandEconomy(getPlugin())
+            new CommandEconomy(getPlugin()),
+            new CommandCrystal(getPlugin())
         );
     }
 

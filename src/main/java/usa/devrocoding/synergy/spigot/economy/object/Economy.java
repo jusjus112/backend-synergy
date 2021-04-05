@@ -38,6 +38,13 @@ public class Economy{
     synergyUser.getStatistic(StatisticType.EARNED_COINS).overwrite(this.coins.doubleValue());
   }
 
+  public void setShards(int shards){
+    this.shards = shards;
+    if (getShards() < 0){
+      this.shards = 0;
+    }
+  }
+
   public void addShards(int shards){
     this.shards += shards;
     synergyUser.sendModifactionMessage(MessageModification.RAW, "§e+ " + shards + " Crystal(s).");

@@ -195,6 +195,49 @@ public class DatabaseManager {
         return execute("INSERT INTO", table, data, true);
     }
 
+    public boolean remove(String table, Map<String, Object> whereData) {
+        HashMap<Integer, Object> indexed = new HashMap<>();
+        try {
+            StringBuilder query = new StringBuilder("DELETE FROM synergy_"+table+" WHERE ");
+            final int[] a = {1};
+
+            AtomicInteger i = new AtomicInteger();
+            whereData.forEach((s, o) -> {
+                if (i.get() > 0) query.append(" AND ");
+                query.append("`").append(s).append("`").append("=?");
+                indexed.put(a[0], o);
+                a[0]++;
+                i.getAndIncrement();
+            });
+
+            Synergy.debug("REMOVE QUERY = " + query.toString());
+            try(Connection connection = SQLService.connection()){
+
+                PreparedStatement preparedStatement = connection.prepareStatement(query.toString());
+
+                for(Integer index : indexed.keySet()){
+                    Object value = indexed.get(index);
+
+                    if (value instanceof InputStream){
+                        preparedStatement.setBinaryStream(index, (InputStream) value);
+                        continue;
+                    }
+                    preparedStatement.setObject(index, value);
+                }
+
+                preparedStatement.executeUpdate();
+
+                preparedStatement.close();
+                connection.close();
+            }
+            return true;
+        }catch (SQLException e){
+//            Synergy.warn("Can't execute remove statement. " + e.getMessage());
+//            e.printStackTrace();
+            return false;
+        }
+    }
+
     public boolean execute(String prefix, String table, Map<String, Object> data, boolean insert) {
         HashMap<Integer, Object> indexed = new HashMap<>();
         try {

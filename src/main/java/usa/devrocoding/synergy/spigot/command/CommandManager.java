@@ -55,7 +55,7 @@ public class CommandManager extends Module{
                 "creativemode","spectatormode","adventuremode","gamemode",
 
                 "summon",
-//                "give"
+                "give",
                 "nuke","more","banip","backup","compass","kittycannon",
                 "pt","setworth","worth","ul",
                 "uptime","v","tptoggle","tnt","whereami","ping","pong","ptt","list","plist",

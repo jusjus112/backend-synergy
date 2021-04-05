@@ -9,6 +9,7 @@ import net.md_5.bungee.api.event.ServerConnectedEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import net.md_5.bungee.event.EventPriority;
+import usa.devrocoding.synergy.assets.Pair;
 import usa.devrocoding.synergy.assets.Rank;
 import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.proxy.Core;
@@ -25,9 +26,10 @@ public class UserJoinProxyListener implements Listener {
 
         Core.getCore().getProxy().getScheduler().runAsync(Core.getCore(), () -> {
             List<Punishment> punishments = Core.getCore().getPunishManager().retrievePunishments(e.getConnection().getUniqueId());
-            List<UUID> friends = Core.getCore().getBuddyManager().getFriendsForUser(e.getConnection().getUniqueId());
+            List<Pair<UUID, String>>  friends = Core.getCore().getBuddyManager().getFriendsForUser(e.getConnection().getUniqueId());
 
             Rank rank = Rank.NONE;
+            String name = null;
 
             try {
                 ResultSet resultSet = Core.getCore().getDatabaseManager().getResults("users", "uuid=?",
@@ -40,12 +42,13 @@ public class UserJoinProxyListener implements Listener {
                     Synergy.debug("USER HAS RANK");
                     Synergy.debug("USER HAS RANK = " + resultSet.getString("rank"));
                     rank = Rank.fromName(resultSet.getString("rank"));
+                    name = resultSet.getString("name");
                 }
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
 
-            ProxyUser newUser = new ProxyUser(e.getConnection().getUniqueId(), rank);
+            ProxyUser newUser = new ProxyUser(e.getConnection().getUniqueId(), rank, name);
             newUser.setPunishments(punishments);
             newUser.setFriends(friends);
 

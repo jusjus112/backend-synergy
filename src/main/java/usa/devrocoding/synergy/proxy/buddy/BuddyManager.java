@@ -9,10 +9,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import lombok.Getter;
+import usa.devrocoding.synergy.assets.Pair;
 import usa.devrocoding.synergy.proxy.Core;
 import usa.devrocoding.synergy.proxy.ProxyModule;
 import usa.devrocoding.synergy.proxy.buddy.command.CommandBuddy;
 import usa.devrocoding.synergy.proxy.buddy.command.CommandMessage;
+import usa.devrocoding.synergy.proxy.buddy.command.CommandReply;
 import usa.devrocoding.synergy.proxy.buddy.object.BuddyRequest;
 import usa.devrocoding.synergy.proxy.user.object.ProxyUser;
 import usa.devrocoding.synergy.services.sql.SQLDataType;
@@ -24,7 +26,7 @@ import usa.devrocoding.synergy.services.sql.UtilSQL;
 public class BuddyManager extends ProxyModule {
 
   private final Map<ProxyUser, List<BuddyRequest>> buddyRequests;
-  private final Map<ProxyUser, List<UUID>> friendsToUpdate;
+  private final Map<ProxyUser, List<Pair<UUID, String>>> friendsToUpdate;
 
   public BuddyManager(Core plugin){
     super(plugin, "Buddy Manager", false);
@@ -32,7 +34,8 @@ public class BuddyManager extends ProxyModule {
     new TableBuilder("friends", getPlugin().getDatabaseManager())
         .addColumn("uuid", SQLDataType.BINARY, 16, false, SQLDefaultType.NO_DEFAULT, false)
         .addColumn("friend", SQLDataType.BINARY, 16, false, SQLDefaultType.NO_DEFAULT, false)
-        .setConstraints("uuid", "friend")
+        .addColumn("name", SQLDataType.VARCHAR, 100, false, SQLDefaultType.NO_DEFAULT, false)
+        .setConstraints("uuid", "friend", "name")
         .execute();
 
     this.buddyRequests = Maps.newHashMap();
@@ -40,7 +43,8 @@ public class BuddyManager extends ProxyModule {
 
     registerCommands(
         new CommandBuddy(),
-        new CommandMessage()
+        new CommandMessage(),
+        new CommandReply()
     );
   }
 
@@ -54,13 +58,63 @@ public class BuddyManager extends ProxyModule {
 
   }
 
+  public void privateMessage(ProxyUser proxyUser, ProxyUser targetUser, String message){
+    targetUser.setLastMessageReceived(proxyUser);
+    targetUser.getProxiedPlayer().sendMessage(
+        "§d[Private] §c" + proxyUser.getProxiedPlayer().getName() + ": §f" + message
+    );
+    proxyUser.getProxiedPlayer().sendMessage(
+        "§d[Private] §c" + proxyUser.getProxiedPlayer().getName() + ": §f" + message
+    );
+  }
+
   public void addFriend(ProxyUser proxyUser, ProxyUser targetUser){
-    List<UUID> friends = this.friendsToUpdate.getOrDefault(proxyUser, Lists.newArrayList());
-    friends.add(targetUser.getUuid());
+    List<Pair<UUID, String>> friends = this.friendsToUpdate.getOrDefault(proxyUser, Lists.newArrayList());
+
+    friends.add(new Pair<UUID, String>(){{
+      setLeft(targetUser.getUuid());
+      setRight(targetUser.getDisplayName());
+    }});
 
     this.friendsToUpdate.put(proxyUser, friends);
 
-    proxyUser.getFriends().add(targetUser.getUuid());
+    proxyUser.getFriends().add(new Pair<UUID, String>(){{
+      setLeft(targetUser.getUuid());
+      setRight(targetUser.getDisplayName());
+    }});
+  }
+
+  public boolean removeFriend(ProxyUser proxyUser, String friendName){
+    Pair<UUID, String> friend = proxyUser.getFriends().stream().filter(uuidStringPair ->
+      uuidStringPair.getRight().contains(friendName)
+    ).findFirst().orElse(null);
+
+    if (friend != null){
+      proxyUser.getFriends().remove(friend);
+
+      ProxyUser targetUser = getPlugin().getUserManager().getUser(friend.getLeft());
+      if (targetUser != null){
+        targetUser.getFriends().stream().filter(uuidStringPair ->
+            uuidStringPair.getLeft().equals(proxyUser.getUuid()))
+              .findFirst().ifPresent(uuidStringPair ->
+                targetUser.getFriends().remove(uuidStringPair));
+      }
+
+      getPlugin().getProxy().getScheduler().runAsync(getPlugin(), () -> {
+        getPlugin().getDatabaseManager().remove("friends", new HashMap<String, Object>(){{
+          put("uuid", UtilSQL.convertUniqueId(proxyUser.getUuid()));
+          put("friend", UtilSQL.convertUniqueId(friend.getLeft()));
+          put("name", friend.getRight());
+        }});
+        getPlugin().getDatabaseManager().remove("friends", new HashMap<String, Object>(){{
+          put("uuid", UtilSQL.convertUniqueId(friend.getLeft()));
+          put("friend", UtilSQL.convertUniqueId(proxyUser.getUuid()));
+          put("name", proxyUser.getDisplayName());
+        }});
+      });
+      return true;
+    }
+    return false;
   }
 
   public BuddyRequest getRequestByUser(ProxyUser proxyUser, ProxyUser targetUser){
@@ -81,8 +135,8 @@ public class BuddyManager extends ProxyModule {
     this.buddyRequests.put(buddyRequest.getSenderUser(), buddyRequests);
   }
 
-  public List<UUID> getFriendsForUser(UUID uuid){
-    List<UUID> friends = Lists.newArrayList();
+  public List<Pair<UUID, String>> getFriendsForUser(UUID uuid){
+    List<Pair<UUID, String>> friends = Lists.newArrayList();
     try{
       ResultSet resultSet = getPlugin().getDatabaseManager().getResults(
           "friends", "uuid=?", new HashMap<Integer, Object>(){{
@@ -90,7 +144,10 @@ public class BuddyManager extends ProxyModule {
           }});
 
       if (resultSet.next()){
-        friends.add(UtilSQL.convertBinaryStream(resultSet.getBinaryStream("friend")));
+        friends.add(new Pair<UUID, String>(){{
+          setLeft(UtilSQL.convertBinaryStream(resultSet.getBinaryStream("friend")));
+          setRight(resultSet.getString("name"));
+        }});
       }
       return friends;
     }catch (SQLException e){
@@ -101,10 +158,11 @@ public class BuddyManager extends ProxyModule {
 
   public void updateFriendsForUser(ProxyUser proxyUser){
     getPlugin().getProxy().getScheduler().runAsync(getPlugin(), () -> {
-      this.friendsToUpdate.getOrDefault(proxyUser, Lists.newArrayList()).forEach(uuid -> {
+      this.friendsToUpdate.getOrDefault(proxyUser, Lists.newArrayList()).forEach(uuidStringPair -> {
         getPlugin().getDatabaseManager().insert("friends", new HashMap<String, Object>(){{
           put("uuid", UtilSQL.convertUniqueId(proxyUser.getUuid()));
-          put("friend", UtilSQL.convertUniqueId(uuid));
+          put("friend", UtilSQL.convertUniqueId(uuidStringPair.getLeft()));
+          put("name", uuidStringPair.getRight());
         }});
       });
     });

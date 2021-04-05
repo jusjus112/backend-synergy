@@ -317,7 +317,7 @@ public class SynergyUser {
                             UtilString.centered(s)));
                 break;
             default:
-                Arrays.stream(messages).forEach(s -> getPlayer().sendMessage(s));
+                Arrays.stream(messages).forEach(s -> getPlayer().sendMessage(C.translateColors(s)));
                 break;
         }
     }

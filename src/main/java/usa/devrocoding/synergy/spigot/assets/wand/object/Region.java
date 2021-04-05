@@ -5,9 +5,11 @@ import lombok.NonNull;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 import usa.devrocoding.synergy.spigot.utilities.UtilLoc;
 
@@ -117,16 +119,31 @@ public class Region {
         return this.toString();
     }
 
-    public Iterator<Block> blockList() {
-        List<Block> bL = new ArrayList<>(this.getTotalBlockSize());
+    public boolean hasOnlyBlocks(){
+        return this.blockList(true).size() >= getTotalBlockSize();
+    }
+
+    public List<Block> blockList(boolean skipAir) {
+        List<Block> bL = new ArrayList<>();
         for (int x = xMin; x <= xMax; ++x) {
             for (int y = yMin; y <= yMax; ++y) {
                 for (int z = zMin; z <= zMax; ++z) {
-                    bL.add(this.firstLocation.getWorld().getBlockAt(x, y, z));
+                    Block block = this.firstLocation.getWorld().getBlockAt(x, y, z);
+                    if (skipAir && block.getType() == Material.AIR)
+                        continue;
+                    bL.add(block);
                 }
             }
         }
-        return bL.iterator();
+        return bL;
+    }
+
+    public List<Block> blockList() {
+        return blockList(false);
+    }
+
+    public Iterator<Block> blockIterator(){
+        return blockList().iterator();
     }
 
     public int getHeight() {

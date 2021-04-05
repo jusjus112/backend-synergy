@@ -7,6 +7,7 @@ import lombok.Setter;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.LoginEvent;
+import usa.devrocoding.synergy.assets.Pair;
 import usa.devrocoding.synergy.assets.Rank;
 import usa.devrocoding.synergy.proxy.Core;
 import usa.devrocoding.synergy.spigot.punish.PunishType;
@@ -24,11 +25,15 @@ public class ProxyUser {
     private List<Punishment> punishments = new ArrayList<>();
     private final Rank rank;
     @Setter
-    private List<UUID> friends;
+    private ProxyUser lastMessageReceived = null;
+    @Setter
+    private List<Pair<UUID, String>> friends;
+    private final String name;
 
-    public ProxyUser(UUID uuid, Rank rank){
+    public ProxyUser(UUID uuid, Rank rank, String name){
         this.uuid = uuid;
         this.rank = rank;
+        this.name = name;
         this.friends = Lists.newArrayList();
 
         Core.getCore().getUserManager().getProxyUsers().put(this.uuid, this);
@@ -50,15 +55,38 @@ public class ProxyUser {
         e.completeIntent(Core.getCore());
     }
 
+    public boolean canHaveMoreFriends(){
+        int max = 3;
+        switch (getRank()){
+            case SORCERER:
+                max = 5;
+            case MAGE:
+                max = 10;
+                break;
+            case WIZARD:
+                max = 15;
+                break;
+            case IMMORTAL:
+                max = 20;
+                break;
+            case MIRAGE:
+                max = 999;
+                break;
+        }
+        return getFriends().size() >= max;
+    }
+
     public boolean hasFriend(ProxyUser proxyUser){
-        return proxyUser.getFriends().contains(this.uuid);
+        return getFriends().stream().anyMatch(uuidStringPair ->
+            uuidStringPair.getLeft().equals(proxyUser.getUuid()));
     }
 
     public String getDisplayName(){
-        if (this.rank == Rank.NONE){
-            return this.rank.getTextColor() + this.getProxiedPlayer().getDisplayName();
-        }
-        return this.rank.getPrefix() + " " + this.rank.getTextColor() + this.getProxiedPlayer().getDisplayName();
+//        if (this.rank == Rank.NONE){
+//            return this.rank.getTextColor() + this.getProxiedPlayer().getDisplayName();
+//        }
+//        return this.rank.getPrefix() + " " + this.rank.getTextColor() + this.getProxiedPlayer().getDisplayName();
+        return this.getProxiedPlayer().getDisplayName();
     }
 
     public final String prefix = "§d§l</> "+ ChatColor.RESET;
