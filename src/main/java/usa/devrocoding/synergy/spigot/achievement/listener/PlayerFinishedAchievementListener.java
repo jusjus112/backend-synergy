@@ -24,7 +24,7 @@ public class PlayerFinishedAchievementListener implements Listener {
         e.getSynergyUser()
             .sendModifactionMessage(
                 MessageModification.CENTERED,
-                e.getAchievement().rewards()
+                e.getAchievement().rewards(e.getSynergyUser())
             );
         e.getSynergyUser()
             .sendModifactionMessage(

@@ -71,11 +71,33 @@ public enum StatisticType {
       "Most Mushroom Farmed"
   ),
 
+  // Bosses
   MOST_BOSSES_KILLED(
     "Most Bosses Killed",
     "bosses killed",
     "Total Bosses Killed"
   ),
+  MOST_WICH_QUEEN_KILLED(
+    "Most Witch Queen Killed",
+    "bosses killed",
+    "Most Witch Queen Killed"
+  ),
+  MOST_SAND_SLAYER_KILLED(
+    "Most Sand Slayer Killed",
+    "bosses killed",
+    "Most Sand Slayer Killed"
+  ),
+  MOST_CETUS_KILLED(
+    "Most Cetus Killed",
+    "bosses killed",
+    "Most Cetus Killed"
+  ),
+  MOST_SPORE_KING_KILLED(
+    "Most Spore King Killed",
+    "bosses killed",
+    "Most Spore King Killed"
+  ),
+
   PLAYER_KILLS(
     "Most Player Killed",
     "kills",
@@ -91,7 +113,6 @@ public enum StatisticType {
     "spells used",
     "Most Spells Used"
   ),
-
   TREES_CUT(
       "Most Trees Sliced",
       "trees sliced",

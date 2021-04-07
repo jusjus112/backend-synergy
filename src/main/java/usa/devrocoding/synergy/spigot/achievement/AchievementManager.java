@@ -78,7 +78,7 @@ public class AchievementManager extends Module {
                     )
                     .addLore(achievement.getDescription())
                     .addLore(" ", "§7§lRewards:")
-                    .addLore(achievement.rewards())
+                    .addLore(achievement.rewards(synergyUser))
                     .addLore(" ", availability)
                     .build();
             }

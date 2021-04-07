@@ -26,7 +26,7 @@ public abstract class Achievement {
         mechanics();
     }
 
-    public abstract String[] rewards();
+    public abstract String[] rewards(SynergyUser synergyUser);
     public abstract void onFinish(SynergyUser synergyUser);
     public abstract void mechanics();
 
