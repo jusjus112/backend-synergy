@@ -102,7 +102,7 @@ public class DatabaseManager {
             }
             return true;
         }catch (SQLException e){
-//            Synergy.warn("Can't execute update statement. " + e.getMessage());
+            Synergy.warn("Can't execute update statement. " + e.getMessage());
 //            e.printStackTrace();
             return false;
         }

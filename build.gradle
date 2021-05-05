@@ -40,8 +40,12 @@ repositories {
 //        dirs 'libs'
 //    }
 
+//    maven {
+//        url "http://repo.dmulloy2.net/content/groups/public/" // Spigot
+//    }
+
     maven {
-        url "http://repo.dmulloy2.net/content/groups/public/" // Spigot
+        url "http://repo.dmulloy2.net/" // Spigot & Packetwrapper
     }
 
     maven {
@@ -83,7 +87,7 @@ dependencies {
     compileOnly 'me.clip:placeholderapi:2.9.2' // PAPI
     compileOnly "com.github.MilkBowl:VaultAPI:1.7" // Vault
     compileOnly group: "com.comphenix.protocol", name: "ProtocolLib", version: "4.5.0-SNAPSHOT";
-    compile group: "com.comphenix.packetwrapper", name: "PacketWrapper", version: "1.13-R0.1-SNAPSHOT";
+    compile 'com.comphenix.packetwrapper:PacketWrapper:1.13-R0.1-SNAPSHOT';
     compile 'com.github.Steveice10:MCProtocolLib:1.15.2-1' // Player clients
     compile 'com.github.WesJD.AnvilGUI:anvilgui:5d0f592c63' // AnvilGUI
 

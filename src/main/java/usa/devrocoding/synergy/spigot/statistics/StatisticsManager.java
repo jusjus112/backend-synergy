@@ -86,7 +86,7 @@ public class StatisticsManager extends Module {
     hologramLines.add(new HologramLine() {
       @Override
       public String getMessage(SynergyUser synergyUser) {
-        return "§5§l" + statisticType.getHologramTitle();
+        return "§5§l" + statisticType.getHologramTitle() + " §f○§c§lLIVE";
       }
     });
 
@@ -249,7 +249,6 @@ public class StatisticsManager extends Module {
                     );
                   }
                 }
-
               }
         })
     );
