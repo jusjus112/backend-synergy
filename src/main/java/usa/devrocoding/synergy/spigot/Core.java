@@ -43,7 +43,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Getter
-@SynergyMani(backend_name = "Synergy", main_color = ChatColor.AQUA, permission_prefix = "synergy", proxy = "BungeeCord", server_name = "MiragePrisons")
+@SynergyMani(backend_name = "Synergy", main_color = ChatColor.AQUA, permission_prefix = "synergy", proxy = "BungeeCord", server_name = "Server Name")
 public class Core extends SynergyPlugin {
 
     @Getter @Setter
