@@ -1,12 +1,10 @@
 package usa.devrocoding.synergy.proxy.plugin_messaging.object;
 
 import lombok.Getter;
-import net.md_5.bungee.api.config.ServerInfo;
-import net.md_5.bungee.api.connection.Connection;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Event;
 import org.jetbrains.annotations.Nullable;
-import usa.devrocoding.synergy.assets.PluginMessageType;
+import usa.devrocoding.synergy.includes.PluginMessageType;
 
 public class SynergyPMEvent extends Event {
 

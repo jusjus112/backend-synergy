@@ -1,13 +1,11 @@
 package usa.devrocoding.synergy.proxy.maintenance.listener;
 
 import java.util.List;
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.ServerPing;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.event.ProxyPingEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
-import usa.devrocoding.synergy.assets.Synergy;
+import usa.devrocoding.synergy.includes.Synergy;
 import usa.devrocoding.synergy.proxy.Core;
 import usa.devrocoding.synergy.proxy.assets.utils.UtilMOTD;
 import usa.devrocoding.synergy.proxy.maintenance.MaintenanceManager;

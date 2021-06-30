@@ -7,8 +7,7 @@ import javax.sql.rowset.RowSetFactory;
 import javax.sql.rowset.RowSetProvider;
 import lombok.Getter;
 
-import lombok.RequiredArgsConstructor;
-import usa.devrocoding.synergy.assets.Synergy;
+import usa.devrocoding.synergy.includes.Synergy;
 import usa.devrocoding.synergy.services.SQLService;
 import usa.devrocoding.synergy.spigot.user.object.UserExperience;
 

@@ -8,7 +8,7 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 import usa.devrocoding.synergy.spigot.Core;
-import usa.devrocoding.synergy.assets.Rank;
+import usa.devrocoding.synergy.includes.Rank;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 
 import java.util.*;

@@ -1,7 +1,6 @@
 package usa.devrocoding.synergy.services.sql;
 
-import java.util.Arrays;
-import usa.devrocoding.synergy.assets.Synergy;
+import usa.devrocoding.synergy.includes.Synergy;
 
 import java.sql.SQLException;
 import java.util.HashMap;

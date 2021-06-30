@@ -1,4 +1,4 @@
-package usa.devrocoding.synergy.assets.letters;
+package usa.devrocoding.synergy.includes.letters;
 
 public class Logo {
 

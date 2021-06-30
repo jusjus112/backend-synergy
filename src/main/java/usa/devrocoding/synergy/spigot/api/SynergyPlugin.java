@@ -2,8 +2,8 @@ package usa.devrocoding.synergy.spigot.api;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
-import usa.devrocoding.synergy.assets.Synergy;
-import usa.devrocoding.synergy.assets.object.LinuxColorCodes;
+import usa.devrocoding.synergy.includes.Synergy;
+import usa.devrocoding.synergy.includes.object.LinuxColorCodes;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
 

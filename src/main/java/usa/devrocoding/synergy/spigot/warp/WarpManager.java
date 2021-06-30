@@ -7,7 +7,7 @@ import java.io.FileNotFoundException;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import usa.devrocoding.synergy.assets.Synergy;
+import usa.devrocoding.synergy.includes.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
 import usa.devrocoding.synergy.spigot.files.json.JSONFile;
@@ -32,7 +32,7 @@ public class WarpManager extends Module {
     }
 
     @Override
-    public void reload(String response) {}
+    public void onReload(String response) {}
 
     public void addWarp(Warp warp) throws WarpAlreadyExists {
         if (this.warps.contains(warp)){

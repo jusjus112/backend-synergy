@@ -1,16 +1,24 @@
-package usa.devrocoding.synergy.assets;
+package usa.devrocoding.synergy.includes;
 
+import java.util.Collection;
 import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.ChatColor;
-import usa.devrocoding.synergy.assets.letters.LetterGenerator;
-import usa.devrocoding.synergy.assets.letters.Logo;
-import usa.devrocoding.synergy.assets.object.LinuxColorCodes;
+import usa.devrocoding.synergy.includes.handler.SynergyPlugin;
+import usa.devrocoding.synergy.includes.letters.LetterGenerator;
+import usa.devrocoding.synergy.includes.letters.Logo;
+import usa.devrocoding.synergy.includes.object.LinuxColorCodes;
 
 import java.util.Arrays;
 import java.util.Random;
 
 public class Synergy {
+
+    public static Collection<SynergyPlugin> plugins;
+
+    public static void registerSpigotModule(SynergyPlugin plugin){
+        plugins.add(plugin);
+    }
 
     public final static String URL_REGEX = "^((https?|ftp)://|(www|ftp)\\.)?[a-z0-9-]+(\\.[a-z0-9-]+)+([/?].*)?$";
 
@@ -89,8 +97,6 @@ public class Synergy {
         }
     }
 
-    @Setter @Getter
-    private static usa.devrocoding.synergy.spigot.Core spigotAPI;
     @Getter
     private static final LetterGenerator letterGenerator = new LetterGenerator();
     @Getter

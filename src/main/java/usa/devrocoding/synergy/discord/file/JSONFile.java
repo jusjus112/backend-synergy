@@ -3,8 +3,7 @@ package usa.devrocoding.synergy.discord.file;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import org.json.simple.JSONObject;
-import usa.devrocoding.synergy.assets.Synergy;
+import usa.devrocoding.synergy.includes.Synergy;
 
 import java.io.File;
 import java.io.FileInputStream;

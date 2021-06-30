@@ -4,8 +4,8 @@ import java.util.Iterator;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
-import usa.devrocoding.synergy.assets.Synergy;
-import usa.devrocoding.synergy.assets.object.SynergyPeriod;
+import usa.devrocoding.synergy.includes.Synergy;
+import usa.devrocoding.synergy.includes.object.SynergyPeriod;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
 import usa.devrocoding.synergy.spigot.autoreboot.command.CommandReboot;
@@ -32,7 +32,7 @@ public class AutoRebootManager extends Module {
     }
 
     @Override
-    public void reload(String response) {
+    public void onReload(String response) {
         this.restarting = true;
     }
 

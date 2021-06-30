@@ -1,10 +1,8 @@
 package usa.devrocoding.synergy.spigot.command;
 
 import com.google.common.collect.Lists;
-import com.sun.org.apache.xerces.internal.xs.StringList;
 import org.bukkit.Bukkit;
 import org.bukkit.command.*;
-import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
 import usa.devrocoding.synergy.spigot.assets.object.Message;
@@ -67,7 +65,7 @@ public class CommandManager extends Module{
         }};
 
 //        if (Synergy.isProduction()){
-            disabled_cmds.addAll(Arrays.asList("kill","reload","rl","op"));
+            disabled_cmds.addAll(Arrays.asList("kill","onReload","rl","op"));
 //        }
 
         for (String cmd : disabled_cmds){
@@ -91,7 +89,12 @@ public class CommandManager extends Module{
     }
 
     @Override
-    public void reload(String response) {
+    public void onReload(String response) {
+
+    }
+
+    @Override
+    public void onDisable() {
 
     }
 
@@ -112,6 +115,16 @@ public class CommandManager extends Module{
             synergyCommand.getAliases().forEach(s -> {
                 this.knownCommands.put(s, synergyCommand);
                 this.knownCommands.put("synergy:" + s, synergyCommand);
+            });
+        }, 10L);
+    }
+
+    public void unregisterCommand(SynergyCommand synergyCommand){
+        this.commands.remove(synergyCommand);
+        Bukkit.getScheduler().runTaskLater(getPlugin(), () -> {
+            synergyCommand.getAliases().forEach(s -> {
+                this.knownCommands.remove(s, synergyCommand);
+                this.knownCommands.remove("synergy:" + s, synergyCommand);
             });
         }, 10L);
     }

@@ -2,9 +2,6 @@ package usa.devrocoding.synergy.spigot.assets;
 
 import lombok.Setter;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
-import usa.devrocoding.synergy.assets.Synergy;
-import usa.devrocoding.synergy.services.SQLService;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
 import usa.devrocoding.synergy.spigot.assets.commands.*;
@@ -65,7 +62,7 @@ public class GlobalManager extends Module {
     }
 
     @Override
-    public void reload(String response) {
+    public void onReload(String response) {
 
     }
 

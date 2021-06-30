@@ -2,7 +2,7 @@ package usa.devrocoding.synergy.spigot.pluginmessaging.event;
 
 import lombok.Getter;
 import usa.devrocoding.synergy.spigot.listeners.SynergyEvent;
-import usa.devrocoding.synergy.assets.PluginMessageBuilder;
+import usa.devrocoding.synergy.includes.PluginMessageBuilder;
 
 public class SynergyReceiveEvent extends SynergyEvent {
 

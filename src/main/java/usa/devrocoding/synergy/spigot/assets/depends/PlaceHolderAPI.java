@@ -12,7 +12,7 @@ public class PlaceHolderAPI extends Module {
     }
 
     @Override
-    public void reload(String response) {
+    public void onReload(String response) {
 
     }
 

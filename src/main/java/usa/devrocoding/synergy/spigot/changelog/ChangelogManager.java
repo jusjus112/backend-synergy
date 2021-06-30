@@ -1,14 +1,10 @@
 package usa.devrocoding.synergy.spigot.changelog;
 
 import com.google.common.collect.Lists;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import lombok.Getter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import usa.devrocoding.synergy.assets.Synergy;
+import usa.devrocoding.synergy.includes.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
 import usa.devrocoding.synergy.spigot.assets.C;
@@ -58,7 +54,7 @@ public class ChangelogManager extends Module {
     }
 
     @Override
-    public void reload(String response) {
+    public void onReload(String response) {
         cacheChangelogs();
     }
 

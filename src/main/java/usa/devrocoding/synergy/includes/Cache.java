@@ -1,14 +1,14 @@
-package usa.devrocoding.synergy.assets;
+package usa.devrocoding.synergy.includes;
 
-public class Pair<L, R> {
+public class Cache<L, R> {
 
     private L left;
     private R right;
 
-    public Pair() {
+    public Cache() {
     }
 
-    public Pair(L left, R right) {
+    public Cache(L left, R right) {
         this.left = left;
         this.right = right;
     }

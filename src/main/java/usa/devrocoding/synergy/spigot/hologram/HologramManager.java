@@ -2,21 +2,16 @@ package usa.devrocoding.synergy.spigot.hologram;
 
 import com.google.common.collect.Lists;
 import lombok.Getter;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
-import usa.devrocoding.synergy.spigot.hologram.object.EmptyHologramLine;
 import usa.devrocoding.synergy.spigot.hologram.object.HologramLine;
 import usa.devrocoding.synergy.spigot.user.event.UserLoadEvent;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
-import usa.devrocoding.synergy.spigot.utilities.UtilList;
 import usa.devrocoding.synergy.spigot.utilities.UtilLoc;
 import usa.devrocoding.synergy.spigot.utilities.UtilMath;
 
@@ -54,7 +49,7 @@ public class HologramManager extends Module implements Listener {
     }
 
     @Override
-    public void reload(String response) {
+    public void onReload(String response) {
 
     }
 

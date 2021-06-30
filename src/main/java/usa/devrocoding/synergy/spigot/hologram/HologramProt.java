@@ -2,13 +2,10 @@ package usa.devrocoding.synergy.spigot.hologram;
 
 import com.comphenix.packetwrapper.WrapperPlayServerEntityMetadata;
 import com.comphenix.packetwrapper.WrapperPlayServerSpawnEntity;
-import com.comphenix.packetwrapper.WrapperPlayServerSpawnEntityLiving;
-import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import lombok.Getter;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
-import usa.devrocoding.synergy.assets.Synergy;
+import usa.devrocoding.synergy.includes.Synergy;
 import usa.devrocoding.synergy.spigot.hologram.object.HologramLine;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 

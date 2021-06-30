@@ -4,9 +4,7 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.plugin.Command;
-import usa.devrocoding.synergy.assets.Synergy;
-import usa.devrocoding.synergy.discord.Discord;
-import usa.devrocoding.synergy.discord.utilities.MessageBuilder;
+import usa.devrocoding.synergy.includes.Synergy;
 import usa.devrocoding.synergy.proxy.Core;
 import usa.devrocoding.synergy.proxy.maintenance.MaintenanceManager;
 

@@ -1,9 +1,8 @@
 package usa.devrocoding.synergy.spigot.assets;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.bukkit.scheduler.BukkitRunnable;
-import usa.devrocoding.synergy.assets.object.SynergyPeriod;
+import usa.devrocoding.synergy.includes.object.SynergyPeriod;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.user.object.MessageModification;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;

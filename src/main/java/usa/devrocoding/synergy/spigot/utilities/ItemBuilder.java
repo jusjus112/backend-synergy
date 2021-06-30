@@ -1,7 +1,6 @@
 package usa.devrocoding.synergy.spigot.utilities;
 
 import com.google.common.collect.Lists;
-import lombok.Getter;
 import net.minecraft.server.v1_12_R1.NBTBase;
 import net.minecraft.server.v1_12_R1.NBTTagByte;
 import net.minecraft.server.v1_12_R1.NBTTagDouble;
@@ -19,7 +18,6 @@ import org.bukkit.material.MaterialData;
 
 import java.util.ArrayList;
 import java.util.List;
-import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.assets.XMaterial;
 import usa.devrocoding.synergy.spigot.utilities.item.SynergyNBTCompound;
 

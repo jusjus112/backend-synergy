@@ -10,7 +10,7 @@ import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
-import usa.devrocoding.synergy.assets.Synergy;
+import usa.devrocoding.synergy.includes.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.botsam.Sam;
 import usa.devrocoding.synergy.spigot.economy.object.Economy;
@@ -19,7 +19,7 @@ import usa.devrocoding.synergy.spigot.statistics.object.StatisticType;
 import usa.devrocoding.synergy.spigot.user.UserManager;
 import usa.devrocoding.synergy.spigot.user.event.UserLoadEvent;
 import usa.devrocoding.synergy.spigot.user.event.UserPreLoadEvent;
-import usa.devrocoding.synergy.assets.Rank;
+import usa.devrocoding.synergy.includes.Rank;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 
 public class UserJoinListener implements Listener {

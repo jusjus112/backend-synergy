@@ -1,11 +1,10 @@
 package usa.devrocoding.synergy.proxy.maintenance;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import lombok.Getter;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
-import usa.devrocoding.synergy.assets.Synergy;
+import usa.devrocoding.synergy.includes.Synergy;
 import usa.devrocoding.synergy.proxy.Core;
 import usa.devrocoding.synergy.proxy.ProxyModule;
 import usa.devrocoding.synergy.proxy.files.ProxyJSONFile;
@@ -15,7 +14,6 @@ import usa.devrocoding.synergy.proxy.maintenance.listener.LoginListener;
 import usa.devrocoding.synergy.proxy.maintenance.listener.ProxyPingListener;
 import usa.devrocoding.synergy.proxy.maintenance.listener.ServerConnectListener;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

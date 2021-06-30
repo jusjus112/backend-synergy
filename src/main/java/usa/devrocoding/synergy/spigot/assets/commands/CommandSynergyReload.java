@@ -2,7 +2,8 @@ package usa.devrocoding.synergy.spigot.assets.commands;
 
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-import usa.devrocoding.synergy.assets.Synergy;
+import usa.devrocoding.synergy.includes.Synergy;
+import usa.devrocoding.synergy.includes.SynergyResponse;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
 import usa.devrocoding.synergy.spigot.assets.C;
@@ -10,12 +11,10 @@ import usa.devrocoding.synergy.spigot.command.SynergyCommand;
 import usa.devrocoding.synergy.spigot.user.object.MessageModification;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 
-import java.lang.reflect.Method;
-
 public class CommandSynergyReload extends SynergyCommand {
 
     public CommandSynergyReload(Core plugin) {
-        super(plugin, "command.synergyreload", "Synergy's official reload command", true,"synergyreload","synreload","synr","synrl");
+        super(plugin, "command.synergyreload", "Synergy's official onReload command", true,"synergyreload","synreload","synr","synrl");
 
         setPlayerUsage("<module>");
         setConsoleUsage("<module>");
@@ -28,11 +27,11 @@ public class CommandSynergyReload extends SynergyCommand {
                 if (module.getShortname().toLowerCase().equalsIgnoreCase(args[0].toLowerCase())){
                     if (module.isReloadable()) {
                         synergyUser.message("Reloading "+module.getName()+"....");
-                        module.reload("accept");
+                        module.onReload(SynergyResponse.OK);
                         synergyUser.info("Reloaded the module for you");
                         return;
                     }else{
-                        synergyUser.warning("This module doesn't let me reload it!");
+                        synergyUser.warning("This module doesn't let me onReload it!");
                         return;
                     }
                 }
@@ -60,7 +59,7 @@ public class CommandSynergyReload extends SynergyCommand {
             for(Module module : Core.getPlugin().getModules()){
                 if (module.getShortname().toLowerCase().equalsIgnoreCase(args[0].toLowerCase())) {
                     if (module.isReloadable()) {
-                        module.reload("accept");
+                        module.onReload("accept");
                         Synergy.info("Reloaded "+module.getName()+" for you!");
                         return;
                     }else{

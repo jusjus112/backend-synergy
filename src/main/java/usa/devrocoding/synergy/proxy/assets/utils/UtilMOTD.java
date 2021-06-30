@@ -1,9 +1,7 @@
 package usa.devrocoding.synergy.proxy.assets.utils;
 
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang3.StringUtils;
-import usa.devrocoding.synergy.assets.Synergy;
 
 public class UtilMOTD {
 

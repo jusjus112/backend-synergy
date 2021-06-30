@@ -2,10 +2,9 @@ package usa.devrocoding.synergy.spigot.autoreboot.thread;
 
 import lombok.Getter;
 import org.bukkit.Sound;
-import usa.devrocoding.synergy.assets.Synergy;
-import usa.devrocoding.synergy.assets.object.SynergyPeriod;
+import usa.devrocoding.synergy.includes.Synergy;
+import usa.devrocoding.synergy.includes.object.SynergyPeriod;
 import usa.devrocoding.synergy.spigot.Core;
-import usa.devrocoding.synergy.spigot.assets.C;
 import usa.devrocoding.synergy.spigot.user.object.MessageModification;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 import usa.devrocoding.synergy.spigot.utilities.UtilTime;

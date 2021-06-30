@@ -17,7 +17,7 @@ public class RunnableManager extends Module {
     }
 
     @Override
-    public void reload(String response) {
+    public void onReload(String response) {
 
     }
 

@@ -5,7 +5,7 @@ import com.google.common.io.ByteStreams;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import usa.devrocoding.synergy.spigot.Core;
-import usa.devrocoding.synergy.assets.PluginMessageBuilder;
+import usa.devrocoding.synergy.includes.PluginMessageBuilder;
 import usa.devrocoding.synergy.spigot.pluginmessaging.event.SynergyReceiveEvent;
 
 import java.io.ByteArrayInputStream;

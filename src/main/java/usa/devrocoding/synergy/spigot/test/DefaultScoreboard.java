@@ -2,7 +2,7 @@ package usa.devrocoding.synergy.spigot.test;
 
 import org.bukkit.ChatColor;
 import usa.devrocoding.synergy.spigot.scoreboard.ScoreboardPolicy;
-import usa.devrocoding.synergy.assets.Rank;
+import usa.devrocoding.synergy.includes.Rank;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 
 import java.util.Arrays;

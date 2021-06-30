@@ -7,7 +7,7 @@ import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
-import usa.devrocoding.synergy.assets.Synergy;
+import usa.devrocoding.synergy.includes.Synergy;
 import usa.devrocoding.synergy.services.sql.SQLDataType;
 import usa.devrocoding.synergy.services.sql.SQLDefaultType;
 import usa.devrocoding.synergy.services.sql.TableBuilder;
@@ -20,7 +20,6 @@ import usa.devrocoding.synergy.spigot.achievement.object.Achievement;
 import usa.devrocoding.synergy.spigot.botsam.Sam;
 import usa.devrocoding.synergy.spigot.gui.Gui;
 import usa.devrocoding.synergy.spigot.gui.GuiElement;
-import usa.devrocoding.synergy.spigot.objectives.object.Objective;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 import usa.devrocoding.synergy.spigot.utilities.ItemBuilder;
 
@@ -53,7 +52,12 @@ public class AchievementManager extends Module {
     }
 
     @Override
-    public void reload(String response) {
+    public void onReload(String response) {
+
+    }
+
+    @Override
+    public void onDisable() {
 
     }
 

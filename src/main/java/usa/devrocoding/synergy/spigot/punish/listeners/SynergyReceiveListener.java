@@ -2,10 +2,10 @@ package usa.devrocoding.synergy.spigot.punish.listeners;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import usa.devrocoding.synergy.assets.Synergy;
+import usa.devrocoding.synergy.includes.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.pluginmessaging.event.SynergyReceiveEvent;
-import usa.devrocoding.synergy.assets.PluginMessageType;
+import usa.devrocoding.synergy.includes.PluginMessageType;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 
 public class SynergyReceiveListener implements Listener {

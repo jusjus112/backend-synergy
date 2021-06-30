@@ -1,14 +1,12 @@
-package usa.devrocoding.synergy.assets;
+package usa.devrocoding.synergy.includes;
 
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.Optional;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.md_5.bungee.api.ChatColor;
 import usa.devrocoding.synergy.spigot.Core;
 
-import java.util.List;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 
 @RequiredArgsConstructor

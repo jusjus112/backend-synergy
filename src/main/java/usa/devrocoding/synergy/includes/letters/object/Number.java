@@ -1,4 +1,4 @@
-package usa.devrocoding.synergy.assets.letters.object;
+package usa.devrocoding.synergy.includes.letters.object;
 
 import lombok.Getter;
 

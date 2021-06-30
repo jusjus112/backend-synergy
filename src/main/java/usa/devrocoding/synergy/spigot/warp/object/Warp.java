@@ -3,7 +3,6 @@ package usa.devrocoding.synergy.spigot.warp.object;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
-import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 import usa.devrocoding.synergy.spigot.warp.exception.WarpAlreadyExists;

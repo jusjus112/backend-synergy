@@ -3,9 +3,8 @@ package usa.devrocoding.synergy.spigot.botsam.object;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 import org.bukkit.ChatColor;
-import usa.devrocoding.synergy.assets.PluginMessageBuilder;
-import usa.devrocoding.synergy.assets.PluginMessageType;
-import usa.devrocoding.synergy.assets.Synergy;
+import usa.devrocoding.synergy.includes.PluginMessageBuilder;
+import usa.devrocoding.synergy.includes.PluginMessageType;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
 import usa.devrocoding.synergy.spigot.assets.C;
@@ -19,7 +18,6 @@ import java.util.Calendar;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
-import usa.devrocoding.synergy.spigot.user.object.MessageModification;
 
 public class ErrorHandler extends Handler {
 

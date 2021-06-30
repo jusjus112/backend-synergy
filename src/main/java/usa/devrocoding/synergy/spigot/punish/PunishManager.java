@@ -1,11 +1,11 @@
 package usa.devrocoding.synergy.spigot.punish;
 
-import usa.devrocoding.synergy.assets.Synergy;
+import usa.devrocoding.synergy.includes.Synergy;
 import usa.devrocoding.synergy.services.sql.UtilSQL;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
-import usa.devrocoding.synergy.assets.PluginMessageBuilder;
-import usa.devrocoding.synergy.assets.PluginMessageType;
+import usa.devrocoding.synergy.includes.PluginMessageBuilder;
+import usa.devrocoding.synergy.includes.PluginMessageType;
 import usa.devrocoding.synergy.spigot.punish.command.CommandPunish;
 import usa.devrocoding.synergy.spigot.punish.listeners.MuteListener;
 import usa.devrocoding.synergy.spigot.punish.listeners.SynergyReceiveListener;
@@ -34,7 +34,7 @@ public class PunishManager extends Module {
     }
 
     @Override
-    public void reload(String response) {
+    public void onReload(String response) {
 
     }
 

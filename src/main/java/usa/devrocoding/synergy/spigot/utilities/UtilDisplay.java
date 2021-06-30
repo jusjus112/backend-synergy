@@ -9,7 +9,7 @@ import net.minecraft.server.v1_12_R1.PlayerConnection;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import usa.devrocoding.synergy.assets.Synergy;
+import usa.devrocoding.synergy.includes.Synergy;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

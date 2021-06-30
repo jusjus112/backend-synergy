@@ -1,4 +1,4 @@
-package usa.devrocoding.synergy.assets;
+package usa.devrocoding.synergy.includes;
 
 import lombok.Getter;
 

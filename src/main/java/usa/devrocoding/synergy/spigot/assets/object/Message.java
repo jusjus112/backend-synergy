@@ -5,7 +5,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
 import usa.devrocoding.synergy.spigot.assets.C;
-import usa.devrocoding.synergy.assets.Pair;
+import usa.devrocoding.synergy.includes.Pair;
 import usa.devrocoding.synergy.spigot.files.yml.YMLFile;
 
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ public class Message extends Module {
     }
 
     @Override
-    public void reload(String response) {
+    public void onReload(String response) {
 
     }
 

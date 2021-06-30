@@ -1,7 +1,6 @@
 package usa.devrocoding.synergy.discord;
 
 import lombok.Getter;
-import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -9,17 +8,14 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
-import usa.devrocoding.synergy.assets.Synergy;
-import usa.devrocoding.synergy.assets.object.LinuxColorCodes;
+import usa.devrocoding.synergy.includes.Synergy;
 import usa.devrocoding.synergy.discord.assets.DiscordManager;
 import usa.devrocoding.synergy.discord.command.CommandManager;
-import usa.devrocoding.synergy.discord.file.FileManager;
 import usa.devrocoding.synergy.discord.protection.ProtectionManager;
 import usa.devrocoding.synergy.discord.server.MessageManager;
 import usa.devrocoding.synergy.discord.suggest.SuggestManager;
 import usa.devrocoding.synergy.discord.terminal.TerminalManager;
 
-import java.util.Arrays;
 import usa.devrocoding.synergy.discord.ticket.TicketsManager;
 
 public class Discord {

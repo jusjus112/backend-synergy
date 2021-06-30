@@ -1,4 +1,4 @@
-package usa.devrocoding.synergy.assets.key_validation;
+package usa.devrocoding.synergy.includes.key_validation;
 
 public class ValidationManager {
 

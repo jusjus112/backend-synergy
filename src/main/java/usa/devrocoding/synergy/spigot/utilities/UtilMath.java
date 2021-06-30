@@ -1,17 +1,11 @@
 package usa.devrocoding.synergy.spigot.utilities;
 
-import com.google.common.io.ByteStreams;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.math.BigDecimal;
-import java.nio.ByteBuffer;
-import java.util.UUID;
 import org.bukkit.Location;
 
 import java.text.DecimalFormat;
 import java.util.Random;
-import usa.devrocoding.synergy.assets.Synergy;
+import usa.devrocoding.synergy.includes.Synergy;
 
 /**
  * @Author Hypixel LLC

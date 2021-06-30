@@ -2,9 +2,8 @@ package usa.devrocoding.synergy.spigot.objectives.command;
 
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-import usa.devrocoding.synergy.assets.Rank;
+import usa.devrocoding.synergy.includes.Rank;
 import usa.devrocoding.synergy.spigot.Core;
-import usa.devrocoding.synergy.spigot.achievement.gui.AchievementGUI;
 import usa.devrocoding.synergy.spigot.command.SynergyCommand;
 import usa.devrocoding.synergy.spigot.objectives.gui.ObjectivesGUI;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;

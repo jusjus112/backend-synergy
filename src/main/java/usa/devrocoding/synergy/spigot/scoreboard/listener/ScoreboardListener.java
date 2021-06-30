@@ -1,19 +1,15 @@
 package usa.devrocoding.synergy.spigot.scoreboard.listener;
 
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.NameTagVisibility;
 import org.bukkit.scoreboard.Team;
-import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.scoreboard.ScoreboardManager;
 import usa.devrocoding.synergy.spigot.scoreboard.ZylemBoard;
-import usa.devrocoding.synergy.spigot.user.event.UserLoadEvent;
 
 public class ScoreboardListener implements Listener {
 

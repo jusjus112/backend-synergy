@@ -1,7 +1,5 @@
 package usa.devrocoding.synergy.spigot.statistics.object;
 
-import usa.devrocoding.synergy.assets.Synergy;
-
 public class Statistic {
 
   private double data;

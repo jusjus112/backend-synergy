@@ -4,8 +4,6 @@ import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.MaterialData;
-import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.gui.Gui;
 import usa.devrocoding.synergy.spigot.gui.GuiElement;

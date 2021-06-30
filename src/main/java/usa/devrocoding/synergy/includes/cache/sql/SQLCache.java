@@ -1,6 +1,6 @@
-package usa.devrocoding.synergy.assets.cache.sql;
+package usa.devrocoding.synergy.includes.cache.sql;
 
-import usa.devrocoding.synergy.assets.Pair;
+import usa.devrocoding.synergy.includes.Pair;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,15 +1,13 @@
 package usa.devrocoding.synergy.discord.protection.listener;
 
-import java.awt.Color;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import usa.devrocoding.synergy.assets.Synergy;
+import usa.devrocoding.synergy.includes.Synergy;
 import usa.devrocoding.synergy.discord.object.DiscordRank;
 
 public class GuildMessageReceiveListener extends ListenerAdapter {

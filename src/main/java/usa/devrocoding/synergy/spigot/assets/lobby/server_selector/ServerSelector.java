@@ -1,7 +1,7 @@
 package usa.devrocoding.synergy.spigot.assets.lobby.server_selector;
 
 import lombok.Getter;
-import usa.devrocoding.synergy.assets.Synergy;
+import usa.devrocoding.synergy.includes.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.assets.FileStructure;
 import usa.devrocoding.synergy.spigot.files.yml.YMLFile;

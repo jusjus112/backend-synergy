@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import lombok.Getter;
-import usa.devrocoding.synergy.assets.Pair;
+import usa.devrocoding.synergy.includes.Pair;
 import usa.devrocoding.synergy.proxy.Core;
 import usa.devrocoding.synergy.proxy.ProxyModule;
 import usa.devrocoding.synergy.proxy.buddy.command.CommandBuddy;

@@ -3,7 +3,7 @@ package usa.devrocoding.synergy.spigot.two_factor_authentication.command;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-import usa.devrocoding.synergy.assets.Synergy;
+import usa.devrocoding.synergy.includes.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.command.SynergyCommand;
 import usa.devrocoding.synergy.spigot.two_factor_authentication.GoogleAuthManager;

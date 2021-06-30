@@ -1,4 +1,4 @@
-package usa.devrocoding.synergy.assets.object;
+package usa.devrocoding.synergy.includes.object;
 
 public class LinuxColorCodes {
 

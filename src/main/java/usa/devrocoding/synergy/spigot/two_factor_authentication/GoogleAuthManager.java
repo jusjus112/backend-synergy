@@ -19,20 +19,14 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
-import usa.devrocoding.synergy.assets.Synergy;
-import usa.devrocoding.synergy.assets.TinyURL;
+import usa.devrocoding.synergy.includes.Synergy;
+import usa.devrocoding.synergy.includes.TinyURL;
 import usa.devrocoding.synergy.services.sql.SQLDataType;
 import usa.devrocoding.synergy.services.sql.SQLDefaultType;
 import usa.devrocoding.synergy.services.sql.TableBuilder;
 import usa.devrocoding.synergy.services.sql.UtilSQL;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
-import usa.devrocoding.synergy.spigot.two_factor_authentication.command.Command2FA;
-import usa.devrocoding.synergy.spigot.two_factor_authentication.listener.PlayerChatEvent;
-import usa.devrocoding.synergy.spigot.two_factor_authentication.listener.PlayerExecuteCommandListener;
-import usa.devrocoding.synergy.spigot.two_factor_authentication.listener.PlayerMoveListener;
-import usa.devrocoding.synergy.spigot.two_factor_authentication.listener.PlayerQuitListener;
-import usa.devrocoding.synergy.spigot.two_factor_authentication.listener.ServerConnectListener;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 import usa.devrocoding.synergy.spigot.utilities.UtilString;
 
@@ -72,7 +66,7 @@ public class GoogleAuthManager extends Module implements ICredentialRepository {
     }
 
     @Override
-    public void reload(String response) {
+    public void onReload(String response) {
 
     }
 

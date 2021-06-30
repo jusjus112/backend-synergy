@@ -1,20 +1,13 @@
 package usa.devrocoding.synergy.spigot.gui;
 
-import com.google.common.collect.Lists;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 import lombok.Getter;
-import org.apache.commons.lang.Validate;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import usa.devrocoding.synergy.assets.Cache;
-import usa.devrocoding.synergy.assets.Pair;
-import usa.devrocoding.synergy.assets.Synergy;
+import usa.devrocoding.synergy.includes.Pair;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.gui.object.GuiSize;
 import usa.devrocoding.synergy.spigot.gui.object.MenuInventoryHolder;

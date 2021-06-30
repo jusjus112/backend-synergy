@@ -3,8 +3,6 @@ package usa.devrocoding.synergy.spigot.statistics;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -13,13 +11,10 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
-import usa.devrocoding.synergy.assets.Rank;
-import usa.devrocoding.synergy.assets.Synergy;
-import usa.devrocoding.synergy.assets.object.SynergyPeriod;
+import usa.devrocoding.synergy.includes.Rank;
+import usa.devrocoding.synergy.includes.object.SynergyPeriod;
 import usa.devrocoding.synergy.services.sql.SQLDataType;
 import usa.devrocoding.synergy.services.sql.SQLDefaultType;
 import usa.devrocoding.synergy.services.sql.TableBuilder;
@@ -32,8 +27,6 @@ import usa.devrocoding.synergy.spigot.hologram.object.HologramLine;
 import usa.devrocoding.synergy.spigot.statistics.object.Statistic;
 import usa.devrocoding.synergy.spigot.statistics.object.StatisticType;
 import usa.devrocoding.synergy.spigot.statistics.thread.StatisticsThread;
-import usa.devrocoding.synergy.spigot.user.UserManager;
-import usa.devrocoding.synergy.spigot.user.event.UserLoadEvent;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 import usa.devrocoding.synergy.spigot.utilities.UtilMath;
 
@@ -70,7 +63,7 @@ public class StatisticsManager extends Module {
   }
 
   @Override
-  public void reload(String s) {
+  public void onReload(String s) {
 
   }
 

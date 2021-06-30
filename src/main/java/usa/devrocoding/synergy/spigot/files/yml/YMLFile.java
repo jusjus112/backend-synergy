@@ -1,17 +1,13 @@
 package usa.devrocoding.synergy.spigot.files.yml;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 
 import lombok.Getter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import usa.devrocoding.synergy.assets.Synergy;
-import usa.devrocoding.synergy.spigot.assets.C;
+import usa.devrocoding.synergy.includes.Synergy;
 
 /**
  * @Author JusJusOneOneTwo

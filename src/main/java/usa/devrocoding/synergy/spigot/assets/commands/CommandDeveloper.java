@@ -2,11 +2,11 @@ package usa.devrocoding.synergy.spigot.assets.commands;
 
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-import usa.devrocoding.synergy.assets.object.LinuxColorCodes;
+import usa.devrocoding.synergy.includes.object.LinuxColorCodes;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.assets.C;
 import usa.devrocoding.synergy.spigot.command.SynergyCommand;
-import usa.devrocoding.synergy.assets.Rank;
+import usa.devrocoding.synergy.includes.Rank;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 import usa.devrocoding.synergy.spigot.utilities.MemoryUtils;
 

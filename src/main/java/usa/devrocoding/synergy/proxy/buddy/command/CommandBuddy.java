@@ -6,11 +6,10 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
-import usa.devrocoding.synergy.assets.Pair;
+import usa.devrocoding.synergy.includes.Pair;
 import usa.devrocoding.synergy.proxy.Core;
 import usa.devrocoding.synergy.proxy.buddy.object.BuddyRequest;
 import usa.devrocoding.synergy.proxy.user.object.ProxyUser;
-import usa.devrocoding.synergy.spigot.assets.C;
 
 public class CommandBuddy extends Command {
 

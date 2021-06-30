@@ -1,7 +1,7 @@
-package usa.devrocoding.synergy.assets.letters;
+package usa.devrocoding.synergy.includes.letters;
 
-import usa.devrocoding.synergy.assets.letters.object.Letter;
-import usa.devrocoding.synergy.assets.letters.object.Number;
+import usa.devrocoding.synergy.includes.letters.object.Letter;
+import usa.devrocoding.synergy.includes.letters.object.Number;
 
 import java.util.ArrayList;
 import java.util.List;

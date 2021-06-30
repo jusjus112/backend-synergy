@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import usa.devrocoding.synergy.assets.Synergy;
+import usa.devrocoding.synergy.includes.Synergy;
 import usa.devrocoding.synergy.services.sql.UtilSQL;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
@@ -20,7 +20,7 @@ import usa.devrocoding.synergy.spigot.user.event.UserLoadEvent;
 import usa.devrocoding.synergy.spigot.user.listener.UserChatListener;
 import usa.devrocoding.synergy.spigot.user.listener.UserJoinListener;
 import usa.devrocoding.synergy.spigot.user.listener.UserQuitListener;
-import usa.devrocoding.synergy.assets.Rank;
+import usa.devrocoding.synergy.includes.Rank;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 
 import java.sql.ResultSet;
@@ -47,7 +47,7 @@ public class UserManager extends Module {
     }
 
     @Override
-    public void reload(String response) {
+    public void onReload(String response) {
 
     }
 

@@ -1,13 +1,10 @@
 package usa.devrocoding.synergy.spigot.punish.command;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.command.SynergyCommand;
 import usa.devrocoding.synergy.spigot.punish.gui.PunishGUI;
-import usa.devrocoding.synergy.spigot.user.event.UserLoadEvent;
-import usa.devrocoding.synergy.assets.Rank;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 
 public class CommandPunish extends SynergyCommand {

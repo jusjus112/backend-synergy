@@ -1,7 +1,6 @@
 package usa.devrocoding.synergy.spigot.version;
 
 import org.bukkit.Bukkit;
-import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
 
@@ -12,7 +11,7 @@ public class VersionManager extends Module {
     }
 
     @Override
-    public void reload(String response) {
+    public void onReload(String response) {
 
     }
 

@@ -1,13 +1,10 @@
 package usa.devrocoding.synergy.spigot.economy;
 
-import com.google.common.collect.Maps;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
-import usa.devrocoding.synergy.assets.Synergy;
+import usa.devrocoding.synergy.includes.Synergy;
 import usa.devrocoding.synergy.services.sql.SQLDataType;
 import usa.devrocoding.synergy.services.sql.SQLDefaultType;
 import usa.devrocoding.synergy.services.sql.TableBuilder;
@@ -17,8 +14,6 @@ import usa.devrocoding.synergy.spigot.Module;
 import usa.devrocoding.synergy.spigot.economy.command.CommandCrystal;
 import usa.devrocoding.synergy.spigot.economy.command.CommandEconomy;
 import usa.devrocoding.synergy.spigot.economy.object.Economy;
-import usa.devrocoding.synergy.spigot.statistics.object.Statistic;
-import usa.devrocoding.synergy.spigot.statistics.object.StatisticType;
 import usa.devrocoding.synergy.spigot.user.object.SynergyUser;
 
 public class EconomyManager extends Module {
@@ -40,7 +35,7 @@ public class EconomyManager extends Module {
     }
 
     @Override
-    public void reload(String response) {
+    public void onReload(String response) {
 
     }
 

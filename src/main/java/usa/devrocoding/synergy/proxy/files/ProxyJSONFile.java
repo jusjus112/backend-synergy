@@ -3,7 +3,7 @@ package usa.devrocoding.synergy.proxy.files;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import usa.devrocoding.synergy.assets.Synergy;
+import usa.devrocoding.synergy.includes.Synergy;
 import usa.devrocoding.synergy.proxy.Core;
 
 import java.io.File;

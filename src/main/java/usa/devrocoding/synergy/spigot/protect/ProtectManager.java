@@ -3,7 +3,7 @@ package usa.devrocoding.synergy.spigot.protect;
 import com.google.common.collect.Lists;
 import java.util.List;
 import lombok.Getter;
-import usa.devrocoding.synergy.assets.Synergy;
+import usa.devrocoding.synergy.includes.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
 import usa.devrocoding.synergy.spigot.files.json.JSONFile;
@@ -20,7 +20,7 @@ public class ProtectManager extends Module {
   }
 
   @Override
-  public void reload(String response) {
+  public void onReload(String response) {
     this.offensiveWords = this.getOffensiveWords();
   }
 

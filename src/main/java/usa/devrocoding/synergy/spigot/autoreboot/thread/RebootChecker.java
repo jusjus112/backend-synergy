@@ -1,7 +1,7 @@
 package usa.devrocoding.synergy.spigot.autoreboot.thread;
 
 import lombok.Getter;
-import usa.devrocoding.synergy.assets.object.SynergyPeriod;
+import usa.devrocoding.synergy.includes.object.SynergyPeriod;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.autoreboot.AutoRebootManager;
 

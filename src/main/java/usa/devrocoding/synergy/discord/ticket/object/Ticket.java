@@ -9,7 +9,6 @@ import lombok.Setter;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
-import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.discord.Discord;
 import usa.devrocoding.synergy.discord.utilities.MessageBuilder;
 import usa.devrocoding.synergy.spigot.utilities.UtilString;

@@ -7,8 +7,6 @@ import lombok.Getter;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
-import usa.devrocoding.synergy.assets.Synergy;
-import usa.devrocoding.synergy.discord.Discord;
 import usa.devrocoding.synergy.discord.DiscordModule;
 import usa.devrocoding.synergy.discord.assets.Codes;
 import usa.devrocoding.synergy.discord.ticket.command.CommandTicketAdd;
@@ -16,7 +14,6 @@ import usa.devrocoding.synergy.discord.ticket.command.CommandTicketClose;
 import usa.devrocoding.synergy.discord.ticket.command.CommandTicketRemove;
 import usa.devrocoding.synergy.discord.ticket.listener.ReactionAddListener;
 import usa.devrocoding.synergy.discord.ticket.object.Ticket;
-import usa.devrocoding.synergy.discord.utilities.MessageBuilder;
 
 public class TicketsManager extends DiscordModule {
 

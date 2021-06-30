@@ -7,11 +7,9 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.apache.commons.lang3.ArrayUtils;
-import usa.devrocoding.synergy.assets.Synergy;
 import usa.devrocoding.synergy.discord.Discord;
 import usa.devrocoding.synergy.discord.command.object.DiscordCommand;
 
-import java.util.Arrays;
 import usa.devrocoding.synergy.discord.utilities.MessageBuilder;
 
 public class CommandListener extends ListenerAdapter {

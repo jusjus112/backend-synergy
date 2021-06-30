@@ -1,21 +1,14 @@
 package usa.devrocoding.synergy.proxy.assets;
 
-import java.util.Arrays;
-import java.util.Objects;
 import lombok.Getter;
 import net.md_5.bungee.api.config.ServerInfo;
-import usa.devrocoding.synergy.assets.Synergy;
-import usa.devrocoding.synergy.discord.Discord;
-import usa.devrocoding.synergy.discord.utilities.MessageBuilder;
-import usa.devrocoding.synergy.discord.utilities.MessageBuilder.SetType;
+import usa.devrocoding.synergy.includes.Synergy;
 import usa.devrocoding.synergy.proxy.Core;
 import usa.devrocoding.synergy.proxy.ProxyModule;
 import usa.devrocoding.synergy.proxy.assets.commands.CommandSynergyProxyReload;
 import usa.devrocoding.synergy.proxy.assets.listener.AutomatedReportsListener;
-import usa.devrocoding.synergy.proxy.maintenance.listener.ProxyPingListener;
 import usa.devrocoding.synergy.proxy.files.ProxyYMLFile;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

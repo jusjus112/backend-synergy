@@ -1,7 +1,7 @@
 package usa.devrocoding.synergy.spigot.assets;
 
 import lombok.Getter;
-import usa.devrocoding.synergy.assets.Cache;
+import usa.devrocoding.synergy.includes.Cache;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
 import usa.devrocoding.synergy.spigot.assets.exceptions.cache.CacheAlreadyExistsException;
@@ -50,7 +50,7 @@ public class CacheManager extends Module {
     }
 
     @Override
-    public void reload(String response) {
+    public void onReload(String response) {
 
     }
 }

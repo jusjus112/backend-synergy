@@ -1,7 +1,7 @@
 package usa.devrocoding.synergy.spigot.punish;
 
 import lombok.Getter;
-import usa.devrocoding.synergy.assets.Rank;
+import usa.devrocoding.synergy.includes.Rank;
 
 @Getter
 public enum PunishIcon {

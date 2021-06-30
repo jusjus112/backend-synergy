@@ -4,7 +4,6 @@ import com.github.enerccio.gson.JsonHelper;
 import com.github.enerccio.gson.JsonHelper.IJsonPredicate;
 import com.github.enerccio.gson.builders.ValueBuilder;
 import com.github.enerccio.gson.visitors.JsonElementType;
-import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -14,7 +13,7 @@ import java.text.ParseException;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import usa.devrocoding.synergy.assets.Synergy;
+import usa.devrocoding.synergy.includes.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 
 import java.io.File;

@@ -1,10 +1,8 @@
 package usa.devrocoding.synergy.proxy.assets.listener;
 
-import java.util.Arrays;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
-import usa.devrocoding.synergy.assets.PluginMessageType;
-import usa.devrocoding.synergy.assets.Synergy;
+import usa.devrocoding.synergy.includes.PluginMessageType;
 import usa.devrocoding.synergy.discord.Discord;
 import usa.devrocoding.synergy.proxy.plugin_messaging.object.SynergyPMEvent;
 

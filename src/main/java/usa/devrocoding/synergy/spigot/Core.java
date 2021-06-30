@@ -3,10 +3,11 @@ package usa.devrocoding.synergy.spigot;
 import com.google.inject.Injector;
 import lombok.Getter;
 import lombok.Setter;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.ChatColor;
 import org.bukkit.scheduler.BukkitRunnable;
 import usa.devrocoding.synergy.services.sql.DatabaseManager;
-import usa.devrocoding.synergy.assets.Synergy;
+import usa.devrocoding.synergy.includes.Synergy;
 import usa.devrocoding.synergy.spigot.achievement.AchievementManager;
 import usa.devrocoding.synergy.spigot.api.SynergyPlugin;
 import usa.devrocoding.synergy.spigot.assets.*;
@@ -44,10 +45,7 @@ import java.util.List;
 
 @Getter
 @SynergyMani(backend_name = "Synergy", main_color = ChatColor.AQUA, permission_prefix = "synergy", proxy = "BungeeCord", server_name = "Server Name")
-public class Core extends SynergyPlugin {
-
-    @Getter @Setter
-    private static Core plugin;
+public class Core extends SynergySpigot {
 
     private boolean loaded = false,
                     ready = false,
@@ -93,8 +91,6 @@ public class Core extends SynergyPlugin {
 
     @Override
     public void preInit(){
-        setPlugin(this);
-
         SynergyBinder binder = new SynergyBinder(this);
         Injector injector = binder.createInjector();
         injector.injectMembers(this);
@@ -196,20 +192,19 @@ public class Core extends SynergyPlugin {
         // Update all the messages that are being sent..
         Message.update();
 
-//        try{
-//            Metrics metrics = new Metrics(this); // Enable the stats
-//            if (!metrics.isEnabled()){
-//                Synergy.error("Plugin stopped sending data to bStats! bStats error..");
-//            }
-//        }catch (Exception e){
-//            Synergy.error(e.getMessage());
-//        }
+        try{
+            new Metrics(this,6197); // Enable the stats
+        }catch (Exception e){
+            Synergy.error(e.getMessage());
+            Synergy.error("Plugin stopped sending data to bStats! bStats error..");
+        }
 
         Synergy.info("Loaded a total of "+Module.getTotal()+" Modules & Systems!");
         Module.total = 0;
 
         this.loaded = true;
         this.disabled = false;
+
 
         if (!Synergy.isProduction()) {
             Synergy.warn("Synergy is in TEST mode! Production systems are not active!");
@@ -244,9 +239,9 @@ public class Core extends SynergyPlugin {
         }
     }
 
-    /*
+    /**
      * This method is being executed after the server is
-     * completely enabled and all the plugin are loaded!
+     *  completely enabled and all the plugin are loaded!
      */
     private void onServerEnabled(){
         // Init all the warps because of a world manager problem
@@ -256,7 +251,7 @@ public class Core extends SynergyPlugin {
         this.modules.forEach(Module::onServerLoad);
     }
 
-    // Called when typed /synergy restart/reload
+    // Called when typed /synergy restart/onReload
     public void onRestart(){
         this.loaded = false;
         onDisable();

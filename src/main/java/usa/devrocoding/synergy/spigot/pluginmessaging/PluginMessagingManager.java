@@ -5,15 +5,14 @@ import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import usa.devrocoding.synergy.assets.Synergy;
+import usa.devrocoding.synergy.includes.Synergy;
 import usa.devrocoding.synergy.spigot.Core;
 import usa.devrocoding.synergy.spigot.Module;
 import usa.devrocoding.synergy.spigot.pluginmessaging.listener.PluginMessageReceiveListener;
-import usa.devrocoding.synergy.assets.PluginMessageType;
+import usa.devrocoding.synergy.includes.PluginMessageType;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
-import java.io.IOException;
 
 public class PluginMessagingManager extends Module {
 
@@ -28,7 +27,7 @@ public class PluginMessagingManager extends Module {
     }
 
     @Override
-    public void reload(String response) {
+    public void onReload(String response) {
 
     }
 

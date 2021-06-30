@@ -2,7 +2,7 @@ package usa.devrocoding.synergy.spigot.assets;
 
 import lombok.Getter;
 import org.bukkit.Bukkit;
-import usa.devrocoding.synergy.assets.Synergy;
+import usa.devrocoding.synergy.includes.Synergy;
 import usa.devrocoding.synergy.services.SQLService;
 import usa.devrocoding.synergy.services.sql.DatabaseManager;
 import usa.devrocoding.synergy.spigot.Core;
@@ -37,7 +37,7 @@ public class PluginManager extends Module {
     }
 
     @Override
-    public void reload(String response) {
+    public void onReload(String response) {
 
     }
 
