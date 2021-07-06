@@ -178,6 +178,10 @@ public class Region {
         return UtilLoc.newInstance(this.secondLocation);
     }
 
+    public Location randomLowestLocation(){
+        return UtilLoc.getHighestBlockLocation(randomLocation());
+    }
+
     public Location randomLocation(){
         Location min = this.firstLocation,
             max = this.secondLocation;
